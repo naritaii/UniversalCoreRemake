@@ -1,0 +1,6 @@
+name: UniversalCoreRemake
+version: 1.0.0
+author: StupidBot, Zychotic
+main: me.stupidbot.universalcoreremake.UniversalCoreRemake
+api-version: 1.0-SNAPSHOT
+website: stupidbot.me
