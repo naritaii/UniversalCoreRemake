@@ -8,12 +8,10 @@ public class Halo extends Trail {
         super();
     }
 
-    @Override
     void onRun(Location loc) {
         System.currentTimeMillis();
     }
 
-    @Override
     String getName() {
         return "Halo";
     }
