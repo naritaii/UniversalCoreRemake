@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="UniversalCoreRemake:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/UniversalCoreRemake_jar</output-path>
+    <root id="archive" name="UniversalCoreRemake.jar">
+      <element id="module-output" name="UniversalCoreRemake" />
+    </root>
+  </artifact>
+</component>

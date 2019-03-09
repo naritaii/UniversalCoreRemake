@@ -40,7 +40,7 @@ public class Trail implements Listener {
 
     @EventHandler
     public void OnPlayerJoin(PlayerJoinEvent e) {
-        UniversalPlayer p = (UniversalPlayer) e.getPlayer();
+        Player p = e.getPlayer();
 
     }
 }
