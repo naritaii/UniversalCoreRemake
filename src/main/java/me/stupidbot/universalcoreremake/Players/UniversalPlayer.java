@@ -1,30 +1,9 @@
 package me.stupidbot.universalcoreremake.Players;
 
-import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.conversations.Conversation;
-import org.bukkit.conversations.ConversationAbandonedEvent;
-import org.bukkit.entity.*;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.inventory.*;
-import org.bukkit.map.MapView;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionAttachment;
-import org.bukkit.permissions.PermissionAttachmentInfo;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.util.Vector;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 public class UniversalPlayer {
 

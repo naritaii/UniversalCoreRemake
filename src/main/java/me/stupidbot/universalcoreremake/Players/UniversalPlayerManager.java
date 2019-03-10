@@ -18,46 +18,49 @@ import java.util.*;
 
 public class UniversalPlayerManager implements Listener {
 
-    private List<UniversalPlayer> universalPlayers;
-    private Dictionary<UUID, Integer> universalPlayerDictionary;
+    private static List<UniversalPlayer> universalPlayers = new ArrayList<UniversalPlayer>();
+    private static HashMap<UUID, Integer> universalPlayerDictionary = new HashMap<UUID, Integer>();
 
-    public UniversalPlayer getUniversalPlayer(Player p) {
+    public static UniversalPlayer getUniversalPlayer(Player p) {
         int index = universalPlayerDictionary.get(p.getUniqueId());
-        UniversalPlayer uP = universalPlayers.get(index);
+        UniversalPlayer up = universalPlayers.get(index);
 
-        if (uP == null)
-            uP = createUniversalPlayer(p);
+        if (up == null)
+            up = createUniversalPlayer(p);
 
-        return uP;
+        return up;
     }
 
-    private UniversalPlayer createUniversalPlayer(Player p) {
+    public static List<UniversalPlayer> getOnlineUniversalPlayers() {
+        return universalPlayers;
+    }
+
+    public static UniversalPlayer createUniversalPlayer(Player p) {
         File pFileLoc = getPlayerDataFile(p);
         FileConfiguration pFile = loadPlayerDataFile(pFileLoc);
 
-        UniversalPlayer uP = new UniversalPlayer(pFileLoc, pFile);
+        UniversalPlayer up = new UniversalPlayer(pFileLoc, pFile);
 
 
-        uP.setPlayerDataName(p.getName());
-        if (uP.getPlayerDataFirstPlayed() == null)
-            uP.setPlayerDataFirstPlayed(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date()));
+        up.setPlayerDataName(p.getName());
+        if (up.getPlayerDataFirstPlayed() == null)
+            up.setPlayerDataFirstPlayed(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date()));
 
 
         universalPlayerDictionary.put(p.getUniqueId(), universalPlayers.size());
-        universalPlayers.add(uP);
+        universalPlayers.add(up);
 
-        return uP;
+        return up;
     }
 
-    private File getPlayerDataFile(Player p) {
-        return new File(
+    private static File getPlayerDataFile(Player p) {
+        File pFile = new File(
                 UniversalCoreRemake.getInstance().getDataFolder() + File.separator + "Player Data" + File.separator +
                         p.getUniqueId() + ".yml");
-    }
+        File pdf = new File(UniversalCoreRemake.getInstance().getDataFolder() + File.separator + "Player Data");
 
-    private FileConfiguration loadPlayerDataFile(Player p) {
-        File pFile = getPlayerDataFile(p);
-
+        if (!pdf.exists())
+            pdf.mkdirs();
         if (!pFile.exists())
             try {
                 pFile.createNewFile();
@@ -66,18 +69,16 @@ public class UniversalPlayerManager implements Listener {
                 return null;
             }
 
+        return pFile;
+    }
+
+    private static FileConfiguration loadPlayerDataFile(Player p) {
+        File pFile = getPlayerDataFile(p);
+
         return YamlConfiguration.loadConfiguration(pFile);
     }
 
-    private FileConfiguration loadPlayerDataFile(File f) {
-        if (!f.exists())
-            try {
-                f.createNewFile();
-            } catch (IOException e) { // TODO Properly handle errors
-                e.printStackTrace();
-                return null;
-            }
-
+    private static FileConfiguration loadPlayerDataFile(File f) {
         return YamlConfiguration.loadConfiguration(f);
     }
 

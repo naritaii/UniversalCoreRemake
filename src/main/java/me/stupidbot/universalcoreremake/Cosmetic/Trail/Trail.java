@@ -1,5 +1,6 @@
 package me.stupidbot.universalcoreremake.Cosmetic.Trail;
 
+import me.stupidbot.universalcoreremake.Cosmetic.Cosmetic;
 import me.stupidbot.universalcoreremake.Players.UniversalPlayer;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import org.bukkit.Bukkit;
@@ -11,7 +12,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.List;
 
-public class Trail implements Listener {
+public class Trail extends Cosmetic implements Listener {
     private List<UniversalPlayer> trailsToRun;
     private static UniversalCoreRemake plugin = UniversalCoreRemake.getInstance();
 

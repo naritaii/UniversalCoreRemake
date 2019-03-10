@@ -3,6 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/UniversalCoreRemake_jar</output-path>
     <root id="archive" name="UniversalCoreRemake.jar">
       <element id="module-output" name="UniversalCoreRemake" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/java/plugin.yml" />
     </root>
   </artifact>
 </component>
