@@ -31,26 +31,43 @@ public class UniversalPlayer {
         }
     }
 
-    public void setPlayerDataName(String s) {
+    public String setPlayerDataName(String s) {
         pFile.set("Name.Name", s);
+        return s;
     }
 
     public String getPlayerDataName() {
         return (String) pFile.get("Name.Name");
     }
 
-    public void setPlayerDataFirstPlayed(String s) {
+    public String setPlayerDataFirstPlayed(String s) {
         pFile.set("Stats.FirstJoin", s);
+        return s;
     }
 
     public String getPlayerDataFirstPlayed() {
         return (String) pFile.get("Stats.FirstJoin");
     }
-    public void setPlayerDataLastPlayed(String s) {
+    public String setPlayerDataLastPlayed(String s) {
         pFile.set("Stats.LastPlayed", s);
+        return s;
     }
 
     public String getPlayerDataLastPlayed() {
         return (String) pFile.get("Stats.LastPlayed");
+    }
+
+    public String setPlayerDataCosmeticIdTrail(String s) {
+        pFile.set("Cosmetic.TrailID", s);
+        return s;
+    }
+
+    public String getPlayerDataCosmeticIdTrail() {
+        String s = (String) pFile.get("Cosmetic.TrailID");
+
+        if (s == null)
+            s = setPlayerDataCosmeticIdTrail("none");
+
+        return s;
     }
 }

@@ -1,6 +1,7 @@
 package me.stupidbot.universalcoreremake.Players;
 
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -12,7 +13,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -21,18 +21,12 @@ public class UniversalPlayerManager implements Listener {
     private static List<UniversalPlayer> universalPlayers = new ArrayList<UniversalPlayer>();
     private static HashMap<UUID, Integer> universalPlayerDictionary = new HashMap<UUID, Integer>();
 
-    public static UniversalPlayer getUniversalPlayer(Player p) {
-        int index = universalPlayerDictionary.get(p.getUniqueId());
-        UniversalPlayer up = universalPlayers.get(index);
-
-        if (up == null)
-            up = createUniversalPlayer(p);
-
-        return up;
-    }
-
     public static List<UniversalPlayer> getOnlineUniversalPlayers() {
         return universalPlayers;
+    }
+
+    private static HashMap<UUID, Integer> getUniversalPlayerDictionary() {
+        return universalPlayerDictionary;
     }
 
     public static UniversalPlayer createUniversalPlayer(Player p) {
@@ -46,9 +40,19 @@ public class UniversalPlayerManager implements Listener {
         if (up.getPlayerDataFirstPlayed() == null)
             up.setPlayerDataFirstPlayed(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date()));
 
+        List<UniversalPlayer> ups = getOnlineUniversalPlayers();
+        getUniversalPlayerDictionary().put(p.getUniqueId(), ups.size());
+        ups.add(up);
 
-        universalPlayerDictionary.put(p.getUniqueId(), universalPlayers.size());
-        universalPlayers.add(up);
+        return up;
+    }
+
+    public static UniversalPlayer getUniversalPlayer(Player p) {
+        int index = getUniversalPlayerDictionary().get(p.getUniqueId());
+        UniversalPlayer up = getOnlineUniversalPlayers().get(index);
+
+        if (up == null)
+            up = createUniversalPlayer(p);
 
         return up;
     }
@@ -80,6 +84,16 @@ public class UniversalPlayerManager implements Listener {
 
     private static FileConfiguration loadPlayerDataFile(File f) {
         return YamlConfiguration.loadConfiguration(f);
+    }
+
+    public static void onEnable() {
+        for (Player all : Bukkit.getOnlinePlayers())
+            UniversalPlayerManager.createUniversalPlayer(all);
+    }
+
+    public static void onDisable() {
+        for (UniversalPlayer all : UniversalPlayerManager.getOnlineUniversalPlayers())
+            all.savePlayerDataFile();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
