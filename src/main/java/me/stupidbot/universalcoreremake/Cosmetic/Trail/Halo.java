@@ -1,6 +1,6 @@
 package me.stupidbot.universalcoreremake.Cosmetic.Trail;
 
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 
 public class Halo extends Trail {
 
@@ -8,7 +8,7 @@ public class Halo extends Trail {
         super();
     }
 
-    void onRun(LivingEntity e) {
+    void onRun(Player p) {
         System.currentTimeMillis();
     }
 
@@ -17,4 +17,6 @@ public class Halo extends Trail {
     }
 
     String getId() { return "halo"; }
+
+    String getDescription() { return  "A golden circle above your head."; }
 }

@@ -5,8 +5,6 @@ import me.stupidbot.universalcoreremake.Players.UniversalPlayer;
 import me.stupidbot.universalcoreremake.Players.UniversalPlayerManager;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -38,7 +36,7 @@ public class Trail extends Cosmetic implements Listener {
         List<Trail> trails = getTrails();
         HashMap<String, Integer> trailsDictionary = getTrailsDictionary();
 
-        return trailsDictionary.get(trails.get(id));
+        return trails.get(trailsDictionary.get(id));
     }
 
     private static void registerTrail(Trail... trails) {
@@ -48,9 +46,9 @@ public class Trail extends Cosmetic implements Listener {
         for (int i = 0; i < j; i++) {
             Trail trail = arrayOfTrails[i];
 
-            List<Trail> trails = getTrails();
-            registeredTrailsDictionary.put(trail.getId(), trails.size());
-            trails.add(trail);
+            List<Trail> allTrails = getTrails();
+            registeredTrailsDictionary.put(trail.getId(), allTrails.size());
+            allTrails.add(trail);
         }
     }
 
@@ -81,7 +79,7 @@ public class Trail extends Cosmetic implements Listener {
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(UniversalCoreRemake.getInstance(), new Runnable() {
             public void run() {
-                for ()
+                Bukkit.broadcastMessage("test");
             }
         }, 1, 0);
     }
@@ -100,7 +98,7 @@ public class Trail extends Cosmetic implements Listener {
             addOrUpdateTrailToRun(p);
     }
 
-    void onRun(LivingEntity e) { }
+    void onRun(Player p) { }
 
     String getName() {
         return null;
