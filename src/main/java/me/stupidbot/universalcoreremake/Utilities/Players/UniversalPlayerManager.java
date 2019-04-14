@@ -1,4 +1,4 @@
-package me.stupidbot.universalcoreremake.Players;
+package me.stupidbot.universalcoreremake.Utilities.Players;
 
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import org.bukkit.Bukkit;
@@ -21,7 +21,7 @@ public class UniversalPlayerManager implements Listener {
     private static List<UniversalPlayer> universalPlayers = new ArrayList<UniversalPlayer>();
     private static HashMap<UUID, Integer> universalPlayerDictionary = new HashMap<UUID, Integer>();
 
-    public static List<UniversalPlayer> getOnlineUniversalPlayers() {
+    private static List<UniversalPlayer> getOnlineUniversalPlayers() {
         return universalPlayers;
     }
 
@@ -29,7 +29,7 @@ public class UniversalPlayerManager implements Listener {
         return universalPlayerDictionary;
     }
 
-    public static UniversalPlayer createUniversalPlayer(Player p) {
+    private static UniversalPlayer createUniversalPlayer(Player p) {
         File pFileLoc = getPlayerDataFile(p);
         FileConfiguration pFile = loadPlayerDataFile(pFileLoc);
 
@@ -79,6 +79,7 @@ public class UniversalPlayerManager implements Listener {
     private static FileConfiguration loadPlayerDataFile(Player p) {
         File pFile = getPlayerDataFile(p);
 
+        assert pFile != null;
         return YamlConfiguration.loadConfiguration(pFile);
     }
 

@@ -4,3 +4,8 @@ author: StupidBot, Zychotic, MagaMuga
 main: me.stupidbot.universalcoreremake.UniversalCoreRemake
 api-version: 1.8
 website: stupidbot.me
+commands:
+   settrail:
+      aliases: [ settrails, setplayertrail, setplayertrails ]
+      description: Set active trail
+      usage: /settrail <id> [player]

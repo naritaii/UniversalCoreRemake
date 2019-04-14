@@ -1,21 +1,23 @@
 package me.stupidbot.universalcoreremake;
 
+import me.stupidbot.universalcoreremake.Commands.CommandExecutor;
 import me.stupidbot.universalcoreremake.Cosmetic.Trail.Trail;
-import me.stupidbot.universalcoreremake.Players.UniversalPlayerManager;
+import me.stupidbot.universalcoreremake.Utilities.Players.UniversalPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class UniversalCoreRemake extends JavaPlugin {
-
     private static UniversalCoreRemake instance;
 
     @Override
     public void onEnable() {
         instance = this;
+        CommandExecutor executor = new CommandExecutor(instance);
 
         registerEvents(instance, new Trail(), new UniversalPlayerManager());
+        registerCommands(executor, "settrail");
 
         UniversalPlayerManager.onEnable();
         Trail.onEnable();
@@ -34,12 +36,23 @@ public class UniversalCoreRemake extends JavaPlugin {
         return instance;
     }
 
-    private static void registerEvents(Plugin plugin, Listener... listeners) {
+    private void registerEvents(Plugin plugin, Listener... listeners) {
         Listener[] arrayOfListeners;
         int j = (arrayOfListeners = listeners).length;
+
         for (int i = 0; i < j; i++) {
             Listener listener = arrayOfListeners[i];
             Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
+        }
+    }
+
+    private void registerCommands(CommandExecutor executor, String... commands) {
+        String[] arrayOfCommands;
+        int j = (arrayOfCommands = commands).length;
+
+        for (int i = 0; i < j; i++) {
+            String command = arrayOfCommands[i];
+            getCommand(command).setExecutor(executor);
         }
     }
 }

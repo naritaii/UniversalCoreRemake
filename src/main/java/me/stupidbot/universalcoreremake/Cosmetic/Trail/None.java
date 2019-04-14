@@ -1,12 +1,12 @@
 package me.stupidbot.universalcoreremake.Cosmetic.Trail;
 
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 
 public class None extends Trail {
 
     public None() { super(); }
 
-    void onRun(LivingEntity e) { }
+    void run(Player p) { }
 
     String getName() {
         return "None";

@@ -8,7 +8,7 @@ public class Halo extends Trail {
         super();
     }
 
-    void onRun(Player p) {
+    void run(Player p) {
         System.currentTimeMillis();
     }
 

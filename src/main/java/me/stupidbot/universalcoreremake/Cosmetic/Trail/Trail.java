@@ -1,9 +1,9 @@
 package me.stupidbot.universalcoreremake.Cosmetic.Trail;
 
 import me.stupidbot.universalcoreremake.Cosmetic.Cosmetic;
-import me.stupidbot.universalcoreremake.Players.UniversalPlayer;
-import me.stupidbot.universalcoreremake.Players.UniversalPlayerManager;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
+import me.stupidbot.universalcoreremake.Utilities.Players.UniversalPlayer;
+import me.stupidbot.universalcoreremake.Utilities.Players.UniversalPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,6 +24,10 @@ public class Trail extends Cosmetic implements Listener {
         super();
     }
 
+    private static HashMap<UUID, String> getTrailsToRun() {
+        return trailsToRun;
+    }
+
     private static List<Trail> getTrails() {
         return registeredTrails;
     }
@@ -32,7 +36,7 @@ public class Trail extends Cosmetic implements Listener {
         return registeredTrailsDictionary;
     }
 
-    private Trail getTrail(String id) {
+    private static Trail getTrail(String id) {
         List<Trail> trails = getTrails();
         HashMap<String, Integer> trailsDictionary = getTrailsDictionary();
 
@@ -60,7 +64,20 @@ public class Trail extends Cosmetic implements Listener {
         return trail;
     }
 
-    private String getTrailToRun(Player p) {
+    public static String addOrUpdateTrailToRun(Player p, String id) {
+       if (getTrail(id) != null)
+           trailsToRun.put(p.getUniqueId(), id);
+       else
+           throw new IllegalArgumentException("id (\"" + id + "\") is not a registered trail");
+
+        return id;
+    }
+
+    private static void removeTrailToRun(Player p) {
+        trailsToRun.remove(p.getUniqueId());
+    }
+
+    private static String getTrailToRun(Player p) {
         String trail = trailsToRun.get(p.getUniqueId());
 
         if (trail == null)
@@ -69,7 +86,7 @@ public class Trail extends Cosmetic implements Listener {
         return trail;
     }
 
-    public static void startTrailsRunnable() {
+    private static void startTrailsRunnable() {
         for (Player all : Bukkit.getOnlinePlayers()) {
             UniversalPlayer up = (UniversalPlayer) all;
 
@@ -79,7 +96,14 @@ public class Trail extends Cosmetic implements Listener {
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(UniversalCoreRemake.getInstance(), new Runnable() {
             public void run() {
-                Bukkit.broadcastMessage("test");
+               for (UUID id : getTrailsToRun().keySet()) {
+                   Player p = Bukkit.getPlayer(id);
+
+                   if (p.isOnline())
+                        getTrail(getTrailToRun(p)).run(p);
+                   else
+                       removeTrailToRun(p);
+               }
             }
         }, 1, 0);
     }
@@ -98,7 +122,7 @@ public class Trail extends Cosmetic implements Listener {
             addOrUpdateTrailToRun(p);
     }
 
-    void onRun(Player p) { }
+    void run(Player p) { }
 
     String getName() {
         return null;

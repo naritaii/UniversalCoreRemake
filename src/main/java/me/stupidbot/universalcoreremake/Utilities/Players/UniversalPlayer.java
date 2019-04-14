@@ -1,4 +1,4 @@
-package me.stupidbot.universalcoreremake.Players;
+package me.stupidbot.universalcoreremake.Utilities.Players;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -23,7 +23,7 @@ public class UniversalPlayer {
         return pFile;
     }
 
-    public void savePlayerDataFile() {
+    void savePlayerDataFile() {
         try {
             pFile.save(pFileLoc);
         } catch (IOException e) { // TODO Properly handle errors
@@ -48,6 +48,7 @@ public class UniversalPlayer {
     public String getPlayerDataFirstPlayed() {
         return (String) pFile.get("Stats.FirstJoin");
     }
+
     public String setPlayerDataLastPlayed(String s) {
         pFile.set("Stats.LastPlayed", s);
         return s;
@@ -57,7 +58,7 @@ public class UniversalPlayer {
         return (String) pFile.get("Stats.LastPlayed");
     }
 
-    public String setPlayerDataCosmeticIdTrail(String s) {
+    private String setPlayerDataCosmeticIdTrail(String s) {
         pFile.set("Cosmetic.TrailID", s);
         return s;
     }
