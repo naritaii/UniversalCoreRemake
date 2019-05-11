@@ -1,11 +1,11 @@
 name: UniversalCoreRemake
 version: 1.0-SNAPSHOT
-author: StupidBot, Zychotic, MagaMuga
+author: Corrupted Prisons Dev Team
 main: me.stupidbot.universalcoreremake.UniversalCoreRemake
 api-version: 1.8
-website: stupidbot.me
+website: https://github.com/StupidBot/UniversalCoreRemake
 commands:
    settrail:
-      aliases: [ settrails, setplayertrail, setplayertrails ]
+      aliases: [ setplayertrail, setcosmetictrail ]
       description: Set active trail
       usage: /settrail <id> [player]

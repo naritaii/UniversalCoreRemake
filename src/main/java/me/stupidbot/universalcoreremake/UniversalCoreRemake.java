@@ -2,6 +2,7 @@ package me.stupidbot.universalcoreremake;
 
 import me.stupidbot.universalcoreremake.Commands.CommandExecutor;
 import me.stupidbot.universalcoreremake.Cosmetic.Trail.Trail;
+import me.stupidbot.universalcoreremake.Utilities.BlockMetadata;
 import me.stupidbot.universalcoreremake.Utilities.Players.UniversalPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -19,7 +20,9 @@ public class UniversalCoreRemake extends JavaPlugin {
         registerEvents(instance, new Trail(), new UniversalPlayerManager());
         registerCommands(executor, "settrail");
 
+        // MySQL.connect();
         UniversalPlayerManager.onEnable();
+        BlockMetadata.onEnable();
         Trail.onEnable();
 
         System.out.println(getName() + " is now enabled!");
@@ -28,6 +31,8 @@ public class UniversalCoreRemake extends JavaPlugin {
     @Override
     public void onDisable() {
         UniversalPlayerManager.onDisable();
+        BlockMetadata.onDisable();
+        // MySQL.disconnect();
 
         System.out.println(getName() + " is now disabled!");
     }

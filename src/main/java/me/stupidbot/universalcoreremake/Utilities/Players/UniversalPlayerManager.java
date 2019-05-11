@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class UniversalPlayerManager implements Listener {
+    private static String dataFolderPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator + "player_data";
 
     private static List<UniversalPlayer> universalPlayers = new ArrayList<UniversalPlayer>();
     private static HashMap<UUID, Integer> universalPlayerDictionary = new HashMap<UUID, Integer>();
@@ -58,10 +59,8 @@ public class UniversalPlayerManager implements Listener {
     }
 
     private static File getPlayerDataFile(Player p) {
-        File pFile = new File(
-                UniversalCoreRemake.getInstance().getDataFolder() + File.separator + "Player Data" + File.separator +
-                        p.getUniqueId() + ".yml");
-        File pdf = new File(UniversalCoreRemake.getInstance().getDataFolder() + File.separator + "Player Data");
+        File pFile = new File(dataFolderPath + File.separator + p.getUniqueId() + ".yml");
+        File pdf = new File(dataFolderPath);
 
         if (!pdf.exists())
             pdf.mkdirs();
@@ -109,7 +108,7 @@ public class UniversalPlayerManager implements Listener {
         Player p = e.getPlayer();
         UniversalPlayer uP = getUniversalPlayer(p);
 
-        uP.setPlayerDataLastPlayed(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date()));
+        uP.setPlayerDataLastPlayed(new SimpleDateFormat("MM/dd/yyyy_HH:mm:ss").format(new Date()));
 
         uP.savePlayerDataFile();
     }
