@@ -12,14 +12,14 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class BlockMetadata {
-    private static String folderPath = UniversalCoreRemake.getInstance().getDataFolder().toString();
-    private static String dataPath = folderPath + File.separator + "block_metadata.yml";
+    private static final String folderPath = UniversalCoreRemake.getInstance().getDataFolder().toString();
+    private static final String dataPath = folderPath + File.separator + "block_metadata.yml";
 
-    static HashMap<Location, HashMap<String, String>> blocksMetas = new HashMap<Location, HashMap<String, String>>();
+    private static final HashMap<Location, HashMap<String, String>> blocksMetas = new HashMap<Location, HashMap<String, String>>();
 
     // Won't save value to file if value = null
     // Will save b to file if all b's values are null but won't load and therefore be deleted on next save
-    public void setMetadata(Block b, String metadata, String value) {
+    public static void setMetadata(Block b, String metadata, String value) {
         Location loc = b.getLocation();
         if (blocksMetas.containsKey(loc)) {
             HashMap<String, String> metaDataMap = blocksMetas.get(loc);
@@ -52,7 +52,15 @@ public class BlockMetadata {
             return null;
     }
 
-    public void deleteAllMetadata(Block b) {
+    public static HashMap<String, String> getAllMetadata(Block b) {
+        Location loc = b.getLocation();
+        if (blocksMetas.containsKey(loc))
+            return blocksMetas.get(loc);
+        else
+            return null;
+    }
+
+    public static void deleteAllMetadata(Block b) {
         blocksMetas.remove(b.getLocation());
     }
 
@@ -71,15 +79,15 @@ public class BlockMetadata {
 
         FileConfiguration data = YamlConfiguration.loadConfiguration(file);
 
-        if (data.get("Blocks") != null) {
+        if (data.get("Block") != null) {
             int i = 0;
             while (true) {
                 String locF = (String) data.get("Block." + i + ".Location");
                 if (locF == null)
                     break;
                 String[] locS = locF.split(",");
-                Location loc = new Location(Bukkit.getWorld(locS[0]), Integer.valueOf(locS[1]), Integer.valueOf(locS[2]),
-                        Integer.valueOf(locS[3]));
+                Location loc = new Location(Bukkit.getWorld(locS[0]), Integer.parseInt(locS[1]), Integer.parseInt(locS[2]),
+                        Integer.parseInt(locS[3]));
 
                 String metadatasF = ((String) data.get("Block." + i + ".Metadata"));
                 if (metadatasF == null)
@@ -93,12 +101,8 @@ public class BlockMetadata {
 
 
                 HashMap<String, String> metas = new HashMap<String, String>();
-                for (int s = 0; s < metadatas.length - 1; s++)
-                    try {
-                        metas.put(metadatas[s], values[s]);
-                    } catch (NullPointerException e) {
-                        continue;
-                    }
+                for (int s = 0; s < metadatas.length; s++)
+                    metas.put(metadatas[s], values[s]);
                 blocksMetas.put(loc, metas);
 
                 i++;
@@ -113,34 +117,33 @@ public class BlockMetadata {
 
             if (!path.exists())
                 path.mkdirs();
-            if (!file.exists())
-                try {
-                    file.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             FileConfiguration data = YamlConfiguration.loadConfiguration(file);
             int i = 0;
             for (Location key : blocksMetas.keySet()) {
-                data.set("Block." + i + ".Location", key.getWorld() + "," + key.getBlockX() + "," + key.getBlockY()
+                data.set("Block." + i + ".Location", key.getWorld().getName() + "," + key.getBlockX() + "," + key.getBlockY()
                         + "," + key.getBlockZ());
 
-                String metas = "";
+                StringBuffer metas = new StringBuffer();
                 for (String meta : blocksMetas.get(key).keySet()) {
-                    if (!metas.equals(""))
-                        metas += ",";
-                    metas += meta;
+                    if (metas.length() != 0)
+                        metas.append(",");
+                    metas.append(meta);
                 }
-                data.set("Block." + i + ".Metadata", metas.equals("") ? null : metas);
+                data.set("Block." + i + ".Metadata", metas.length() == 0 ? null : metas.toString());
 
-                String values = "";
+                StringBuffer values = new StringBuffer();
                 for (String value : blocksMetas.get(key).values()) {
-                    if (!values.equals(""))
-                        values += ",";
-                    values += value;
+                    if (values.length() != 0)
+                        values.append(",");
+                    values.append(value);
                 }
-                data.set("Block." + i + ".Values", metas.equals("") ? null : values);
+                data.set("Block." + i + ".Values", values.length() == 0 ? null : values.toString());
 
                 i++;
             }

@@ -10,14 +10,14 @@ import java.sql.SQLException;
 
 public class MySQL {
 
-    public static String host = "54.37.159.155";
-    public static String port = "3306";
-    public static String database = "s36834_maindb";
-    public static String username = "u36834_fOf4IIcGgT";
-    public static String password = "rPtJbO1x1TzDK78s";
-    public static Connection con;
+    private static final String host = "54.37.159.155";
+    private static final String port = "3306";
+    private static final String database = "s36834_maindb";
+    private static final String username = "u36834_fOf4IIcGgT";
+    private static final String password = "rPtJbO1x1TzDK78s";
+    private static Connection con;
 
-    static ConsoleCommandSender console = Bukkit.getConsoleSender();
+    private static final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     // connect
     public void connect() {

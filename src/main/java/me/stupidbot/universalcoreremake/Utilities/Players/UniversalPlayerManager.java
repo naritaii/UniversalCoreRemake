@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class UniversalPlayerManager implements Listener {
-    private static String dataFolderPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator + "player_data";
+    private static final String dataFolderPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator + "player_data";
 
     private static List<UniversalPlayer> universalPlayers = new ArrayList<UniversalPlayer>();
     private static HashMap<UUID, Integer> universalPlayerDictionary = new HashMap<UUID, Integer>();
@@ -39,7 +39,7 @@ public class UniversalPlayerManager implements Listener {
 
         up.setPlayerDataName(p.getName());
         if (up.getPlayerDataFirstPlayed() == null)
-            up.setPlayerDataFirstPlayed(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date()));
+            up.setPlayerDataFirstPlayed(new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss").format(new Date()));
 
         List<UniversalPlayer> ups = getOnlineUniversalPlayers();
         getUniversalPlayerDictionary().put(p.getUniqueId(), ups.size());
@@ -49,10 +49,12 @@ public class UniversalPlayerManager implements Listener {
     }
 
     public static UniversalPlayer getUniversalPlayer(Player p) {
-        int index = getUniversalPlayerDictionary().get(p.getUniqueId());
-        UniversalPlayer up = getOnlineUniversalPlayers().get(index);
+        Integer index = getUniversalPlayerDictionary().get(p.getUniqueId());
+        UniversalPlayer up;
 
-        if (up == null)
+        if (index != null)
+            up = getOnlineUniversalPlayers().get(index);
+        else
             up = createUniversalPlayer(p);
 
         return up;
@@ -92,8 +94,10 @@ public class UniversalPlayerManager implements Listener {
     }
 
     public static void onDisable() {
-        for (UniversalPlayer all : UniversalPlayerManager.getOnlineUniversalPlayers())
+        for (UniversalPlayer all : UniversalPlayerManager.getOnlineUniversalPlayers()) {
+            all.setPlayerDataLastPlayed(new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss").format(new Date()));
             all.savePlayerDataFile();
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -103,13 +107,14 @@ public class UniversalPlayerManager implements Listener {
         createUniversalPlayer(p);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void OnPlayerQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        UniversalPlayer uP = getUniversalPlayer(p);
+        UniversalPlayer up = getUniversalPlayer(p);
 
-        uP.setPlayerDataLastPlayed(new SimpleDateFormat("MM/dd/yyyy_HH:mm:ss").format(new Date()));
+        up.setPlayerDataLastPlayed(new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss").format(new Date()));
 
-        uP.savePlayerDataFile();
+
+        up.savePlayerDataFile();
     }
 }

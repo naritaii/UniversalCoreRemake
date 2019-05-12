@@ -7,8 +7,8 @@ import java.io.IOException;
 
 public class UniversalPlayer {
 
-    private File pFileLoc;
-    private FileConfiguration pFile;
+    private final File pFileLoc;
+    private final FileConfiguration pFile;
 
     UniversalPlayer(File pFileLoc, FileConfiguration pFile) {
         this.pFileLoc = pFileLoc;
@@ -58,7 +58,7 @@ public class UniversalPlayer {
         return (String) pFile.get("Stats.LastPlayed");
     }
 
-    private String setPlayerDataCosmeticIdTrail(String s) {
+    public String setPlayerDataCosmeticIdTrail(String s) {
         pFile.set("Cosmetic.TrailID", s);
         return s;
     }

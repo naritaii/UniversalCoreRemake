@@ -26,7 +26,7 @@ public class ItemMetadata {
     }
 
     public static boolean hasMetadata(ItemStack item, String metadata) {
-        return item.getTag() == null ? false : item.getTag().hasKey(metadata);
+        return item.getTag() != null && item.getTag().hasKey(metadata);
     }
 
     public static Object getMetadata(org.bukkit.inventory.ItemStack item, String metadata) {
@@ -44,7 +44,7 @@ public class ItemMetadata {
         NBTBase base = null;
 
         if (value instanceof Boolean) {
-            base = new NBTTagByte((byte) (((Boolean) value).booleanValue() ? 1 : 0));
+            base = new NBTTagByte((byte) ((Boolean) value ? 1 : 0));
         } else if (value instanceof Long) {
             base = new NBTTagLong((Long) value);
         } else if (value instanceof Integer) {

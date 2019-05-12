@@ -1,7 +1,7 @@
 package me.stupidbot.universalcoreremake;
 
 import me.stupidbot.universalcoreremake.Commands.CommandExecutor;
-import me.stupidbot.universalcoreremake.Cosmetic.Trail.Trail;
+import me.stupidbot.universalcoreremake.Cosmetic.Trail.TrailManager;
 import me.stupidbot.universalcoreremake.Utilities.BlockMetadata;
 import me.stupidbot.universalcoreremake.Utilities.Players.UniversalPlayerManager;
 import org.bukkit.Bukkit;
@@ -15,15 +15,15 @@ public class UniversalCoreRemake extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        CommandExecutor executor = new CommandExecutor(instance);
+        CommandExecutor executor = new CommandExecutor();
 
-        registerEvents(instance, new Trail(), new UniversalPlayerManager());
-        registerCommands(executor, "settrail");
+        registerEvents(instance, new TrailManager(), new UniversalPlayerManager());
+        registerCommands(executor, "settrail", "setblockmeta");
 
         // MySQL.connect();
         UniversalPlayerManager.onEnable();
         BlockMetadata.onEnable();
-        Trail.onEnable();
+        TrailManager.onEnable();
 
         System.out.println(getName() + " is now enabled!");
     }
