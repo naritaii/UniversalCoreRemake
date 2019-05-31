@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private UniversalCoreRemake instance;
 
-    private final SetTrail setTrail = new SetTrail();
+    private final Exp exp = new Exp();
     private final SetBlockMeta setBlockMeta = new SetBlockMeta();
 
     public CommandExecutor() {
@@ -16,8 +16,8 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("settrail"))
-            return setTrail.execute(s, cmd, label, args);
+        if (cmd.getName().equalsIgnoreCase("exp"))
+            return exp.execute(s, cmd, label, args);
         else if (cmd.getName().equalsIgnoreCase("setblockmeta"))
             return setBlockMeta.execute(s, cmd, label, args);
         else

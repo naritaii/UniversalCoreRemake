@@ -26,48 +26,83 @@ public class UniversalPlayer {
     void savePlayerDataFile() {
         try {
             pFile.save(pFileLoc);
-        } catch (IOException e) { // TODO Properly handle errors
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public String setPlayerDataName(String s) {
+
+    public int setDataLevel(int i) {
+        pFile.set("XP.Level", i);
+        return i;
+    }
+
+    public int getDataLevel() {
+        int i;
+        i = pFile.getInt("XP.Level");
+        return i;
+    }
+
+    public int setDataXp(int i) {
+        pFile.set("XP.XP", i);
+        return i;
+    }
+
+    public int getDataXp() {
+        int i;
+        i = pFile.getInt("XP.XP");
+        return i;
+    }
+
+    public int setDataTotalXp(int i) {
+        pFile.set("XP.TotalXP", i);
+        return i;
+    }
+
+    public int getDataTotalXp() {
+        int i;
+        i = pFile.getInt("XP.TotalXP");
+        return i;
+    }
+
+    public String setDataName(String s) {
         pFile.set("Name.Name", s);
         return s;
     }
 
-    public String getPlayerDataName() {
+    public String getDataName() {
         return (String) pFile.get("Name.Name");
     }
 
-    public String setPlayerDataFirstPlayed(String s) {
+    public String setDataFirstPlayed(String s) {
         pFile.set("Stats.FirstJoin", s);
         return s;
     }
 
-    public String getPlayerDataFirstPlayed() {
+    public String getDataFirstPlayed() {
         return (String) pFile.get("Stats.FirstJoin");
     }
 
-    public String setPlayerDataLastPlayed(String s) {
+    public String setDataLastPlayed(String s) {
         pFile.set("Stats.LastPlayed", s);
         return s;
     }
 
-    public String getPlayerDataLastPlayed() {
+    public String getDataLastPlayed() {
         return (String) pFile.get("Stats.LastPlayed");
     }
 
-    public String setPlayerDataCosmeticIdTrail(String s) {
+
+    public String setDataCosmeticIdTrail(String s) {
         pFile.set("Cosmetic.TrailID", s);
         return s;
     }
 
-    public String getPlayerDataCosmeticIdTrail() {
+    public String getDataCosmeticIdTrail() {
         String s = (String) pFile.get("Cosmetic.TrailID");
 
         if (s == null)
-            s = setPlayerDataCosmeticIdTrail("none");
+            s = setDataCosmeticIdTrail("none");
 
         return s;
     }

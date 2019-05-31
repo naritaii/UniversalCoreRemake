@@ -2,6 +2,7 @@ package me.stupidbot.universalcoreremake.Utilities.Players;
 
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -22,7 +23,7 @@ public class UniversalPlayerManager implements Listener {
     private static List<UniversalPlayer> universalPlayers = new ArrayList<UniversalPlayer>();
     private static HashMap<UUID, Integer> universalPlayerDictionary = new HashMap<UUID, Integer>();
 
-    private static List<UniversalPlayer> getOnlineUniversalPlayers() {
+    private static List<UniversalPlayer> getAllUniversalPlayers() {
         return universalPlayers;
     }
 
@@ -37,15 +38,36 @@ public class UniversalPlayerManager implements Listener {
         UniversalPlayer up = new UniversalPlayer(pFileLoc, pFile);
 
 
-        up.setPlayerDataName(p.getName());
-        if (up.getPlayerDataFirstPlayed() == null)
-            up.setPlayerDataFirstPlayed(new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss").format(new Date()));
+        up.setDataName(p.getName());
 
-        List<UniversalPlayer> ups = getOnlineUniversalPlayers();
+        if (up.getDataFirstPlayed() == null)
+            up.setDataFirstPlayed(new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss").format(new Date()));
+        if (up.getDataLevel() == 0)
+            up.setDataLevel(1);
+
+
+        List<UniversalPlayer> ups = getAllUniversalPlayers();
         getUniversalPlayerDictionary().put(p.getUniqueId(), ups.size());
         ups.add(up);
 
         return up;
+    }
+
+    private static UniversalPlayer createUniversalPlayer(OfflinePlayer p) {
+        File pFileLoc = getPlayerDataFile(p);
+
+        if (pFileLoc != null) {
+            FileConfiguration pFile = loadPlayerDataFile(pFileLoc);
+
+            UniversalPlayer up = new UniversalPlayer(pFileLoc, pFile);
+
+            List<UniversalPlayer> ups = getAllUniversalPlayers();
+            getUniversalPlayerDictionary().put(p.getUniqueId(), ups.size());
+            ups.add(up);
+
+            return up;
+        } else
+            return null;
     }
 
     public static UniversalPlayer getUniversalPlayer(Player p) {
@@ -53,7 +75,19 @@ public class UniversalPlayerManager implements Listener {
         UniversalPlayer up;
 
         if (index != null)
-            up = getOnlineUniversalPlayers().get(index);
+            up = getAllUniversalPlayers().get(index);
+        else
+            up = createUniversalPlayer(p);
+
+        return up;
+    }
+
+    public static UniversalPlayer getUniversalPlayer(OfflinePlayer p) {
+        Integer index = getUniversalPlayerDictionary().get(p.getUniqueId());
+        UniversalPlayer up;
+
+        if (index != null)
+            up = getAllUniversalPlayers().get(index);
         else
             up = createUniversalPlayer(p);
 
@@ -69,12 +103,21 @@ public class UniversalPlayerManager implements Listener {
         if (!pFile.exists())
             try {
                 pFile.createNewFile();
-            } catch (IOException e) { // TODO Properly handle errors
+            } catch (IOException e) {
                 e.printStackTrace();
                 return null;
             }
 
         return pFile;
+    }
+
+    private static File getPlayerDataFile(OfflinePlayer p) {
+        File pFile = new File(dataFolderPath + File.separator + p.getUniqueId() + ".yml");
+
+        if (!pFile.exists())
+            return null;
+        else
+            return pFile;
     }
 
     private static FileConfiguration loadPlayerDataFile(Player p) {
@@ -94,8 +137,8 @@ public class UniversalPlayerManager implements Listener {
     }
 
     public static void onDisable() {
-        for (UniversalPlayer all : UniversalPlayerManager.getOnlineUniversalPlayers()) {
-            all.setPlayerDataLastPlayed(new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss").format(new Date()));
+        for (UniversalPlayer all : UniversalPlayerManager.getAllUniversalPlayers()) {
+            all.setDataLastPlayed(new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss").format(new Date()));
             all.savePlayerDataFile();
         }
     }
@@ -112,7 +155,7 @@ public class UniversalPlayerManager implements Listener {
         Player p = e.getPlayer();
         UniversalPlayer up = getUniversalPlayer(p);
 
-        up.setPlayerDataLastPlayed(new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss").format(new Date()));
+        up.setDataLastPlayed(new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss").format(new Date()));
 
 
         up.savePlayerDataFile();

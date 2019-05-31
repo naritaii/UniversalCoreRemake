@@ -1,0 +1,15 @@
+name: ${project.artifactId}
+version: ${project.version}
+author: ${project.groupId}
+website: ${project.url}
+api-version: 1.8
+main: me.stupidbot.universalcoreremake.UniversalCoreRemake
+commands:
+   exp:
+      aliases: [ xp, giveexp, givexp ]
+      description: Give exp
+      usage: /exp <levelup|<amount>> [player]
+   setblockmeta:
+      alias: setblockmetadata
+      description: Set block meta
+      usage: /setblockmeta <remove|<metadata> <value>>
