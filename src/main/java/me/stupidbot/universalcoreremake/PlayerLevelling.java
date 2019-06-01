@@ -52,6 +52,7 @@ public class PlayerLevelling implements Listener {
         lvlAnim.start();
         TextUtils.sendSubtitle(p, "&a" + TextUtils.toRoman(oldLvl) + " &e\u27A2 &a" + TextUtils.toRoman(lvl),
                 5, 80, 0);
+
         p.playSound(p.getLocation(), Sound.ENDERDRAGON_GROWL, 1, 1.5f);
 
         p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&l=-------------------------------------------="));
