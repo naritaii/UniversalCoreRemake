@@ -19,6 +19,10 @@ public class TextUtils {
         return NumberFormat.getNumberInstance(Locale.US).format(i);
     }
 
+    public static String addCommas(double d) {
+        return NumberFormat.getNumberInstance(Locale.US).format(d);
+    }
+
     public static void sendTitle(Player p, String msg, int fadeIn, int stayTime, int fadeOut) {
         /* PacketPlayOutTitle title = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE,
                 IChatBaseComponent.ChatSerializer.a(ChatColor.translateAlternateColorCodes('&',

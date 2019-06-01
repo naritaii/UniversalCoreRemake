@@ -39,6 +39,9 @@ public class UniversalPlayerManager implements Listener {
 
 
         up.setDataName(p.getName());
+        String prefix = UniversalCoreRemake.getChat().getPlayerPrefix(p);
+        up.setDataPrefix(prefix);
+        up.setDataNameColor(prefix.substring(0, 2));
 
         if (up.getDataFirstPlayed() == null)
             up.setDataFirstPlayed(new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss").format(new Date()));

@@ -26,7 +26,7 @@ public class UniversalCoreRemake extends JavaPlugin {
         effectManager = new EffectManager(this);
         CommandExecutor executor = new CommandExecutor();
 
-        registerEvents(instance, new UniversalPlayerManager(), new PlayerLevelling());
+        registerEvents(instance, new UniversalPlayerManager(), new PlayerLevelling(), new ChatFormat());
         registerCommands(executor, "exp", "setblockmeta");
         setupEconomy();
         setupChat();
