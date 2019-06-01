@@ -66,6 +66,11 @@
             <id>elmakers-repo</id>
             <url>http://maven.elmakers.com/repository/</url>
         </repository>
+        <!--Vault-->
+        <repository>
+            <id>vault-repo</id>
+            <url>http://nexus.hc.to/content/repositories/pub_releases</url>
+        </repository>
     </repositories>
     <dependencies>
         <!--Spigot-->
@@ -88,6 +93,13 @@
             <artifactId>EffectLib</artifactId>
             <version>5.9</version>
             <scope>compile</scope>
+        </dependency>
+        <!--Vault-->
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.7</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

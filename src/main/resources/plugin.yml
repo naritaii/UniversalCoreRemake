@@ -3,6 +3,7 @@ version: ${project.version}
 author: ${project.groupId}
 website: ${project.url}
 api-version: 1.8
+depend: [Vault]
 main: me.stupidbot.universalcoreremake.UniversalCoreRemake
 commands:
    exp:
