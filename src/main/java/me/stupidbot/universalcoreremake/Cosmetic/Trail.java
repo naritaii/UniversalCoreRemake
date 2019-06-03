@@ -15,10 +15,9 @@ public enum Trail {
     private void set(Player p) {
         try {
             Effect eff = (Effect) Class.forName(reference).newInstance();
-
+            // set effect
         } catch (Exception e) {
-
-
+            // set no effect
         }
     }
 }
