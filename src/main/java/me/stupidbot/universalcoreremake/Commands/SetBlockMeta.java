@@ -2,7 +2,7 @@ package me.stupidbot.universalcoreremake.Commands;
 
 import me.stupidbot.universalcoreremake.Utilities.BlockMetadata;
 import me.stupidbot.universalcoreremake.Utilities.Players.PlayerUtils;
-import me.stupidbot.universalcoreremake.Utilities.Text.TextUtils;
+import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

@@ -2,7 +2,7 @@ package me.stupidbot.universalcoreremake;
 
 import me.stupidbot.universalcoreremake.Utilities.Players.UniversalPlayer;
 import me.stupidbot.universalcoreremake.Utilities.Players.UniversalPlayerManager;
-import me.stupidbot.universalcoreremake.Utilities.Text.TextUtils;
+import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;

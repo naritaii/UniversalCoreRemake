@@ -3,7 +3,7 @@ package me.stupidbot.universalcoreremake.Commands;
 import me.stupidbot.universalcoreremake.PlayerLevelling;
 import me.stupidbot.universalcoreremake.Utilities.Players.UniversalPlayer;
 import me.stupidbot.universalcoreremake.Utilities.Players.UniversalPlayerManager;
-import me.stupidbot.universalcoreremake.Utilities.Text.TextUtils;
+import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

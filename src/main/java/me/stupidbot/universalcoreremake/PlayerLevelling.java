@@ -5,7 +5,7 @@ import de.slikey.effectlib.util.DynamicLocation;
 import me.stupidbot.universalcoreremake.Effects.LevelUp;
 import me.stupidbot.universalcoreremake.Utilities.Players.UniversalPlayer;
 import me.stupidbot.universalcoreremake.Utilities.Players.UniversalPlayerManager;
-import me.stupidbot.universalcoreremake.Utilities.Text.TextUtils;
+import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;

@@ -1,4 +1,4 @@
 package me.stupidbot.universalcoreremake.Cosmetic;
 
-public enum Tags {
+public enum Tag {
 }
