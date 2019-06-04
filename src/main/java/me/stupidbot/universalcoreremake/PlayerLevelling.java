@@ -26,6 +26,7 @@ public class PlayerLevelling implements Listener {
 
         int currentXp = up.setDataXp(up.getDataXp() + amount);
         up.setDataTotalXp(up.getDataTotalXp() + amount);
+
         if (currentXp >= xpToNextLevel(up.getDataLevel()))
             levelUp(p);
         else
