@@ -20,9 +20,7 @@ public class ItemLevelling {
         ItemUtils.setMetadata(i, "XP.XP", currentXp);
 
         if (currentXp  >= xpToNextLevel(lvl)) {
-            lvl++;
-            ItemUtils.setMetadata(i, "XP.Level", lvl);
-
+            ItemUtils.setMetadata(i, "XP.Level", ++lvl);
             return updateItem(i);
         } else
             return updateItem(i);
@@ -36,6 +34,9 @@ public class ItemLevelling {
 
         im.setDisplayName(ChatColor.translateAlternateColorCodes('&',
                 "&r" + TextUtils.capitalizeFully(i.getType().toString()) + " &d&l" + lvl));
+
+        // TODO Change item lore and account for enchants/"mutations". Item XP will probably be called something like
+        // TODO "corruption" on the client side despite just being labelled as XP in code.
 
         i.setItemMeta(im);
         return i;
