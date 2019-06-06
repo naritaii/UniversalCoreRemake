@@ -4,7 +4,7 @@ import de.slikey.effectlib.EffectManager;
 import me.stupidbot.universalcoreremake.Commands.CommandExecutor;
 import me.stupidbot.universalcoreremake.Listeners.ChatFormat;
 import me.stupidbot.universalcoreremake.Managers.BlockMetadataManger;
-import me.stupidbot.universalcoreremake.Managers.Mining;
+import me.stupidbot.universalcoreremake.Managers.MiningManager;
 import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayerManager;
 import me.stupidbot.universalcoreremake.Utilities.PlayerLevelling;
 import net.milkbowl.vault.chat.Chat;
@@ -19,6 +19,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class UniversalCoreRemake extends JavaPlugin {
     private static UniversalCoreRemake instance;
     private static EffectManager effectManager;
+    private static UniversalPlayerManager universalPlayerManager;
+    private static MiningManager miningManager;
+    private static BlockMetadataManger blockMetadataManager;
     private static Economy econ = null;
     private static Permission perms = null;
     private static Chat chat = null;
@@ -26,35 +29,37 @@ public class UniversalCoreRemake extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+
         effectManager = new EffectManager(this);
+        universalPlayerManager = new UniversalPlayerManager();
+        miningManager = new MiningManager();
+        blockMetadataManager = new BlockMetadataManger();
         CommandExecutor executor = new CommandExecutor();
 
-        registerEvents(instance, new UniversalPlayerManager(), new PlayerLevelling(), new ChatFormat(), new Mining());
-        registerCommands(executor, "exp", "setblockmeta");
+
+        registerEvents(instance, universalPlayerManager, new PlayerLevelling(), new ChatFormat(), miningManager);
+
+        universalPlayerManager.initialize();
+        miningManager.initialize();
+        blockMetadataManager.initialize();
         setupEconomy();
         setupChat();
         setupPermissions();
 
-        UniversalPlayerManager.initialize();
-        BlockMetadataManger.onEnable();
+        registerCommands(executor, "exp", "setblockmeta");
+
 
         System.out.println(getName() + " is now enabled!");
     }
 
     @Override
     public void onDisable() {
-        UniversalPlayerManager.disable();
-        BlockMetadataManger.onDisable();
+        universalPlayerManager.disable();
+        effectManager.dispose();
+        blockMetadataManager.disable();
+        miningManager.disable();
 
         System.out.println(getName() + " is now disabled!");
-    }
-
-    public static UniversalCoreRemake getInstance() {
-        return instance;
-    }
-
-    public static EffectManager getEffectManager() {
-        return effectManager;
     }
 
     private void registerEvents(Plugin plugin, Listener... listeners) {
@@ -76,6 +81,23 @@ public class UniversalCoreRemake extends JavaPlugin {
             getCommand(command).setExecutor(executor);
         }
     }
+
+    public static UniversalCoreRemake getInstance() {
+        return instance;
+    }
+
+    public static EffectManager getEffectManager() {
+        return effectManager;
+    }
+
+    public static UniversalPlayerManager getUniversalPlayerManager() {
+        return universalPlayerManager;
+    }
+
+    public static BlockMetadataManger getBlockMetadataManager() {
+        return blockMetadataManager;
+    }
+
 
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {

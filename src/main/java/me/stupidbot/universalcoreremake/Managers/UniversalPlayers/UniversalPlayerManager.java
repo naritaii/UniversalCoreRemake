@@ -17,22 +17,22 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class UniversalPlayerManager implements Listener {
-    // TODO Make a single instance of this class and call that instead of using static
-    private static final String dataFolderPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator + "player_data";
+    private final String dataFolderPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator + "player_data";
 
-    private static List<UniversalPlayer> universalPlayers = new ArrayList<UniversalPlayer>();
-    private static HashMap<UUID, Integer> universalPlayerDictionary = new HashMap<UUID, Integer>();
+    private final List<UniversalPlayer> universalPlayers = new ArrayList<>();
+    private final HashMap<UUID, Integer> universalPlayerDictionary = new HashMap<>();
 
-    private static List<UniversalPlayer> getAllUniversalPlayers() {
+    private List<UniversalPlayer> getAllUniversalPlayers() {
         return universalPlayers;
     }
 
-    private static HashMap<UUID, Integer> getUniversalPlayerDictionary() {
+    private HashMap<UUID, Integer> getUniversalPlayerDictionary() {
         return universalPlayerDictionary;
     }
 
-    private static UniversalPlayer createUniversalPlayer(Player p) {
+    private UniversalPlayer createUniversalPlayer(Player p) {
         File pFileLoc = getPlayerDataFile(p);
         FileConfiguration pFile = loadPlayerDataFile(pFileLoc);
 
@@ -57,7 +57,7 @@ public class UniversalPlayerManager implements Listener {
         return up;
     }
 
-    private static UniversalPlayer createUniversalPlayer(OfflinePlayer p) {
+    private UniversalPlayer createUniversalPlayer(OfflinePlayer p) {
         File pFileLoc = getPlayerDataFile(p);
 
         if (pFileLoc != null) {
@@ -74,7 +74,7 @@ public class UniversalPlayerManager implements Listener {
             return null;
     }
 
-    public static UniversalPlayer getUniversalPlayer(Player p) {
+    public UniversalPlayer getUniversalPlayer(Player p) {
         Integer index = getUniversalPlayerDictionary().get(p.getUniqueId());
         UniversalPlayer up;
 
@@ -86,7 +86,7 @@ public class UniversalPlayerManager implements Listener {
         return up;
     }
 
-    public static UniversalPlayer getUniversalPlayer(OfflinePlayer p) {
+    public UniversalPlayer getUniversalPlayer(OfflinePlayer p) {
         Integer index = getUniversalPlayerDictionary().get(p.getUniqueId());
         UniversalPlayer up;
 
@@ -98,7 +98,7 @@ public class UniversalPlayerManager implements Listener {
         return up;
     }
 
-    private static File getPlayerDataFile(Player p) {
+    private File getPlayerDataFile(Player p) {
         File pFile = new File(dataFolderPath + File.separator + p.getUniqueId() + ".yml");
         File pdf = new File(dataFolderPath);
 
@@ -115,7 +115,7 @@ public class UniversalPlayerManager implements Listener {
         return pFile;
     }
 
-    private static File getPlayerDataFile(OfflinePlayer p) {
+    private File getPlayerDataFile(OfflinePlayer p) {
         File pFile = new File(dataFolderPath + File.separator + p.getUniqueId() + ".yml");
 
         if (!pFile.exists())
@@ -124,27 +124,26 @@ public class UniversalPlayerManager implements Listener {
             return pFile;
     }
 
-    private static FileConfiguration loadPlayerDataFile(Player p) {
+    private FileConfiguration loadPlayerDataFile(Player p) {
         File pFile = getPlayerDataFile(p);
 
         assert pFile != null;
         return YamlConfiguration.loadConfiguration(pFile);
     }
 
-    private static FileConfiguration loadPlayerDataFile(File f) {
+    private FileConfiguration loadPlayerDataFile(File f) {
         return YamlConfiguration.loadConfiguration(f);
     }
 
-    public static void initialize() {
-        for (Player all : Bukkit.getOnlinePlayers())
-            UniversalPlayerManager.createUniversalPlayer(all);
+    public void initialize() {
+        Bukkit.getOnlinePlayers().forEach(this::createUniversalPlayer);
     }
 
-    public static void disable() {
-        for (UniversalPlayer all : UniversalPlayerManager.getAllUniversalPlayers()) {
-            all.setDataLastPlayed(new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss").format(new Date()));
-            all.savePlayerDataFile();
-        }
+    public void disable() {
+        getAllUniversalPlayers().forEach((UniversalPlayer up) -> {
+            up.setDataLastPlayed(new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss").format(new Date()));
+            up.savePlayerDataFile();
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

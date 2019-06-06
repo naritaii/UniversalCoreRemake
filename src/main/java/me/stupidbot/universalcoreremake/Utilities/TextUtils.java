@@ -37,7 +37,7 @@ public class TextUtils {
         ((CraftPlayer) p).getHandle().playerConnection.sendPacket(length);
     }
 
-    public static void sendSubtitle(Player p, String msg, int fadeIn, int stayTime, int fadeOut) {
+    static void sendSubtitle(Player p, String msg, int fadeIn, int stayTime, int fadeOut) {
        /* PacketPlayOutTitle title = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE,
                 IChatBaseComponent.ChatSerializer.a(ChatColor.translateAlternateColorCodes('&',
                         "{\"text\": \"" + msg + "\"}")), fadeIn, stayTime, fadeOut);
@@ -51,7 +51,7 @@ public class TextUtils {
         ((CraftPlayer) p).getHandle().playerConnection.sendPacket(length);
     }
 
-    public static String toRoman(int mInt) {
+    static String toRoman(int mInt) {
         String[] rnChars = { "M", "CM", "D", "C", "XC", "L", "X", "IX", "V", "I" };
         int[] rnVals = { 1000, 900, 500, 100, 90, 50, 10, 9, 5, 1 };
         StringBuilder retVal = new StringBuilder();
@@ -67,7 +67,7 @@ public class TextUtils {
     }
 
     // private final static int CENTER_PX = 154;
-    public static void sendCenteredMessage(Player player, String message) {
+    static void sendCenteredMessage(Player player, String message) {
         if (message == null || message.equals("")) {
             player.sendMessage("");
             return;
@@ -201,28 +201,28 @@ public class TextUtils {
         SPACE(' ', 3),
         DEFAULT('a', 4);
 
-        private char character;
-        private int length;
+        private final char character;
+        private final int length;
 
         DefaultFontInfo(char character, int length) {
             this.character = character;
             this.length = length;
         }
 
-        public char getCharacter(){
+        char getCharacter(){
             return this.character;
         }
 
-        public int getLength(){
+        int getLength(){
             return this.length;
         }
 
-        public int getBoldLength() {
+        int getBoldLength() {
             if (this == DefaultFontInfo.SPACE) return this.getLength();
             return this.length + 1;
         }
 
-        public static DefaultFontInfo getDefaultFontInfo(char c) {
+        static DefaultFontInfo getDefaultFontInfo(char c) {
             for( DefaultFontInfo dFI : DefaultFontInfo.values()){
                 if (dFI.getCharacter() == c) return dFI;
             }

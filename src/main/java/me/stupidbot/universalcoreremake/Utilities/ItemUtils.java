@@ -13,13 +13,14 @@ import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Objects;
 
-public class ItemUtils {
-    public static org.bukkit.inventory.ItemStack setMetadata(org.bukkit.inventory.ItemStack item, String metadata, Object value) {
+class ItemUtils {
+    static org.bukkit.inventory.ItemStack setMetadata(org.bukkit.inventory.ItemStack item, String metadata, Object value) {
         return CraftItemStack.asBukkitCopy(setMetadata(CraftItemStack.asNMSCopy(item), metadata, value));
     }
 
-    public static ItemStack setMetadata(ItemStack item, String metadata, Object value) {
+    private static ItemStack setMetadata(ItemStack item, String metadata, Object value) {
         if (item.getTag() == null)
             item.setTag(new NBTTagCompound());
 
@@ -28,19 +29,19 @@ public class ItemUtils {
         return item;
     }
 
-    public static boolean hasMetadata(org.bukkit.inventory.ItemStack item, String metadata) {
+    static boolean hasMetadata(org.bukkit.inventory.ItemStack item, String metadata) {
         return hasMetadata(CraftItemStack.asNMSCopy(item), metadata);
     }
 
-    public static boolean hasMetadata(ItemStack item, String metadata) {
+    private static boolean hasMetadata(ItemStack item, String metadata) {
         return item.getTag() != null && item.getTag().hasKey(metadata);
     }
 
-    public static Object getMetadata(org.bukkit.inventory.ItemStack item, String metadata) {
+    static Object getMetadata(org.bukkit.inventory.ItemStack item, String metadata) {
         return getMetadata(CraftItemStack.asNMSCopy(item), metadata);
     }
 
-    public static Object getMetadata(ItemStack item, String metadata) {
+    private static Object getMetadata(ItemStack item, String metadata) {
         if (!hasMetadata(item, metadata))
             return null;
 
@@ -136,21 +137,22 @@ public class ItemUtils {
         } catch(Exception e) {
             e.printStackTrace();
         }
+        assert outputStream != null;
 
-        return BaseEncoding.base64().encode(outputStream.toByteArray());
+        //noinspection UnstableApiUsage
+        return BaseEncoding.base64().encode(Objects.requireNonNull(outputStream).toByteArray());
     }
 
     public static ItemStack deserializeItemStack(String itemStackString) {
         if (itemStackString.equals("null")) return null;
 
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(BaseEncoding.base64().decode(itemStackString));
+        @SuppressWarnings("UnstableApiUsage") ByteArrayInputStream inputStream = new ByteArrayInputStream(BaseEncoding.base64().decode(itemStackString));
 
         Class<?> nbtTagCompoundClass = getNMSClass("NBTTagCompound");
         Class<?> nmsItemStackClass = getNMSClass("ItemStack");
-        Object nbtTagCompound = null;
         ItemStack itemStack = null;
         try {
-            nbtTagCompound = getNMSClass("NBTCompressedStreamTools").getMethod("a", InputStream.class).invoke(null, inputStream);
+            Object nbtTagCompound = getNMSClass("NBTCompressedStreamTools").getMethod("a", InputStream.class).invoke(null, inputStream);
             Object craftItemStack = nmsItemStackClass.getMethod("createStack", nbtTagCompoundClass).invoke(null, nbtTagCompound);
             itemStack = (ItemStack) getOBClass("inventory.CraftItemStack").getMethod("asBukkitCopy", nmsItemStackClass).invoke(null, craftItemStack);
         } catch(Exception e) {

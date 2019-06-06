@@ -7,7 +7,7 @@ public enum Trail {
     NONE(null),
     HALO("me.stupidbot.universalcoreremake.Effects.Trails.Halo");
 
-    private String reference;
+    private final String reference;
     Trail(String reference) {
         this.reference = reference;
     }

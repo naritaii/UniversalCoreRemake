@@ -7,7 +7,7 @@ import de.slikey.effectlib.util.ParticleEffect;
 import org.bukkit.Color;
 import org.bukkit.Location;
 
-public class Halo extends Effect {
+class Halo extends Effect {
     private int step = 0;
 
     public Halo(EffectManager effectManager) {

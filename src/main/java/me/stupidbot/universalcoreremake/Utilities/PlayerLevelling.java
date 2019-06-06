@@ -4,7 +4,6 @@ import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.util.DynamicLocation;
 import me.stupidbot.universalcoreremake.Effects.LevelUp;
 import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayer;
-import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayerManager;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -22,7 +21,7 @@ public class PlayerLevelling implements Listener {
     }
 
     public static void giveXp(Player p, int amount) {
-        UniversalPlayer up = UniversalPlayerManager.getUniversalPlayer(p);
+        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
 
         int currentXp = up.setDataXp(up.getDataXp() + amount);
         up.setDataTotalXp(up.getDataTotalXp() + amount);
@@ -34,7 +33,7 @@ public class PlayerLevelling implements Listener {
     }
 
     private static void levelUp(Player p) {
-        UniversalPlayer up = UniversalPlayerManager.getUniversalPlayer(p);
+        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
         int xp = up.getDataXp();
         int lvl = up.getDataLevel();
         int oldLvl = lvl;
@@ -69,7 +68,7 @@ public class PlayerLevelling implements Listener {
     }
 
     private static void updateUI(Player p) {
-        UniversalPlayer up = UniversalPlayerManager.getUniversalPlayer(p);
+        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
         int lvl = up.getDataLevel();
 
         p.setLevel(lvl);

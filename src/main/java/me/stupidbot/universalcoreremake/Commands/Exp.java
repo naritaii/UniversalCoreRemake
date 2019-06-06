@@ -1,24 +1,23 @@
 package me.stupidbot.universalcoreremake.Commands;
 
 import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayer;
-import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayerManager;
+import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.Utilities.PlayerLevelling;
 import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 class Exp {
-    public boolean execute(CommandSender s, Command cmd, String label, String[] args) {
+    boolean execute(CommandSender s, String label, String[] args) {
         if (!s.hasPermission("universalcore.admin"))
             s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     "&cYou don't have permission to use this command!"));
         else if (args.length == 0)
             s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     "&cInvalid usage! /" + label + " <levelup|<amount>> [player]"));
-        else if (args.length > 0) {
+        else {
             Player p = null;
             if (args.length > 1) {
                 p = Bukkit.getPlayer(args[1]);
@@ -34,7 +33,7 @@ class Exp {
 
                 if (p != null)
                     try {
-                        UniversalPlayer up = UniversalPlayerManager.getUniversalPlayer(p);
+                        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
 
                         int xp = args[0].equalsIgnoreCase("levelup") ?
                                 PlayerLevelling.xpToNextLevel(up.getDataLevel()) - up.getDataXp()

@@ -65,7 +65,7 @@ public class UniversalPlayer {
         return i;
     }
 
-    public String setDataName(String s) {
+    String setDataName(String s) {
         pFile.set("Name.Name", s);
         return s;
     }
@@ -74,7 +74,7 @@ public class UniversalPlayer {
         return (String) pFile.get("Name.Name");
     }
 
-    public String setDataNameColor(String s) {
+    String setDataNameColor(String s) {
         pFile.set("Name.Color", s);
         return s;
     }
@@ -83,7 +83,7 @@ public class UniversalPlayer {
         return (String) pFile.get("Name.Color");
     }
 
-    public String setDataPrefix(String s) {
+    String setDataPrefix(String s) {
         pFile.set("Name.Prefix", s);
         return s;
     }
@@ -92,16 +92,16 @@ public class UniversalPlayer {
         return (String) pFile.get("Name.Prefix");
     }
 
-    public String setDataFirstPlayed(String s) {
+    String setDataFirstPlayed(String s) {
         pFile.set("Stats.FirstJoin", s);
         return s;
     }
 
-    public String getDataFirstPlayed() {
+    String getDataFirstPlayed() {
         return (String) pFile.get("Stats.FirstJoin");
     }
 
-    public String setDataLastPlayed(String s) {
+    String setDataLastPlayed(String s) {
         pFile.set("Stats.LastPlayed", s);
         return s;
     }
@@ -111,7 +111,7 @@ public class UniversalPlayer {
     }
 
 
-    public String setDataCosmeticIdTrail(String s) {
+    private String setDataCosmeticIdTrail(String s) {
         pFile.set("Cosmetic.TrailID", s);
         return s;
     }

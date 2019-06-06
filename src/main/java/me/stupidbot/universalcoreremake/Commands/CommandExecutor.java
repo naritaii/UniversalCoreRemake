@@ -17,9 +17,9 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     @Override
     public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("exp"))
-            return exp.execute(s, cmd, label, args);
+            return exp.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("setblockmeta"))
-            return setBlockMeta.execute(s, cmd, label, args);
+            return setBlockMeta.execute(s, label, args);
         else
             return false;
         }

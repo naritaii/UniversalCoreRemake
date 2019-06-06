@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class ItemLevelling {
+class ItemLevelling {
     public static ItemStack giveXp(ItemStack i, int amount) {
         int currentXp;
         int lvl = Integer.parseInt((String) ItemUtils.getMetadata(i, "XPLevel"));
@@ -43,7 +43,7 @@ public class ItemLevelling {
         return i;
     }
 
-    public static int xpToNextLevel(int lvl) {
+    private static int xpToNextLevel(int lvl) {
         return (int) ((Math.pow(++lvl, 2) * 2));
     }
 }

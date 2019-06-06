@@ -1,7 +1,6 @@
 package me.stupidbot.universalcoreremake.Listeners;
 
 import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayer;
-import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayerManager;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.Utilities.PlayerLevelling;
 import me.stupidbot.universalcoreremake.Utilities.TextUtils;
@@ -20,7 +19,7 @@ public class ChatFormat implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void asyncPlayerChatEvent(AsyncPlayerChatEvent e) {
         Player p = e.getPlayer();
-        UniversalPlayer up = UniversalPlayerManager.getUniversalPlayer(p);
+        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
         String prefix = ChatColor.translateAlternateColorCodes('&',  up.getDataPrefix());
         String chatColor = ChatColor.translateAlternateColorCodes('&',
                 p.hasPermission("universalcoreremake.chatcolor.white") ? "&f" : "&7");

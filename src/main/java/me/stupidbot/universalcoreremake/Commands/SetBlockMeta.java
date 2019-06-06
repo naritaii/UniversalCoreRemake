@@ -1,19 +1,18 @@
 package me.stupidbot.universalcoreremake.Commands;
 
-import me.stupidbot.universalcoreremake.Managers.BlockMetadataManger;
+import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.Utilities.PlayerUtils;
 import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
 class SetBlockMeta {
-    public boolean execute(CommandSender s, Command cmd, String label, String[] args) {
+    boolean execute(CommandSender s, String label, String[] args) {
         if (s instanceof Player)
             if (!s.hasPermission("universalcore.admin"))
                 s.sendMessage(ChatColor.translateAlternateColorCodes('&',
@@ -28,10 +27,11 @@ class SetBlockMeta {
                     Material m = b.getType();
 
                     if (m != Material.AIR) {
-                        HashMap<String, String> metaMap = BlockMetadataManger.getAllMetadata(b);
+                        HashMap<String, String> metaMap =
+                                UniversalCoreRemake.getBlockMetadataManager().getAllMetadata(b);
 
                         if (metaMap != null) {
-                            BlockMetadataManger.deleteAllMetadata(b);
+                            UniversalCoreRemake.getBlockMetadataManager().deleteAllMetadata(b);
 
                             StringBuilder metas = new StringBuilder();
                             for (String meta : metaMap.keySet()) {
@@ -60,9 +60,9 @@ class SetBlockMeta {
                 Material m = b.getType();
 
                 if (m != Material.AIR) {
-                    BlockMetadataManger.setMetadata(b, args[0], args[1]);
+                    UniversalCoreRemake.getBlockMetadataManager().setMetadata(b, args[0], args[1]);
 
-                    HashMap<String, String> metaMap = BlockMetadataManger.getAllMetadata(b);
+                    HashMap<String, String> metaMap = UniversalCoreRemake.getBlockMetadataManager().getAllMetadata(b);
                     StringBuilder metas = new StringBuilder();
                     for (String meta : metaMap.keySet()) {
                         if (metas.length() != 0)

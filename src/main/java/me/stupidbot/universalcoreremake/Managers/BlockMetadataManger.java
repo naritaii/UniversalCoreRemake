@@ -11,16 +11,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class BlockMetadataManger {
-    // TODO Make a single instance of this class and call that instead of using static
-    private static final String folderPath = UniversalCoreRemake.getInstance().getDataFolder().toString();
-    private static final String dataPath = folderPath + File.separator + "block_metadata.yml";
+    private final String folderPath = UniversalCoreRemake.getInstance().getDataFolder().toString();
+    private final String dataPath = folderPath + File.separator + "block_metadata.yml";
 
-    private static final HashMap<Location, HashMap<String, String>> blocksMetas = new HashMap<Location, HashMap<String, String>>();
+    private final HashMap<Location, HashMap<String, String>> blocksMetas = new HashMap<>();
 
     // Won't save value to file if value = null
     // Will save b to file if all b's values are null but won't load and therefore be deleted on next save
-    public static void setMetadata(Block b, String metadata, String value) {
+    public void setMetadata(Block b, String metadata, String value) {
         Location loc = b.getLocation();
         if (blocksMetas.containsKey(loc)) {
             HashMap<String, String> metaDataMap = blocksMetas.get(loc);
@@ -28,14 +28,14 @@ public class BlockMetadataManger {
             metaDataMap.put(metadata, value);
             blocksMetas.put(loc, metaDataMap);
         } else {
-            HashMap<String, String> metaDataMap = new HashMap<String, String>();
+            HashMap<String, String> metaDataMap = new HashMap<>();
 
             metaDataMap.put(metadata, value);
             blocksMetas.put(loc, metaDataMap);
         }
     }
 
-    public static boolean hasMetadata(Block b, String metadata) {
+    boolean hasMetadata(Block b, String metadata) {
         Location loc = b.getLocation();
         if (blocksMetas.containsKey(loc)) {
             HashMap<String, String> metaDataMap = blocksMetas.get(loc);
@@ -53,19 +53,16 @@ public class BlockMetadataManger {
             return null;
     }
 
-    public static HashMap<String, String> getAllMetadata(Block b) {
+    public HashMap<String, String> getAllMetadata(Block b) {
         Location loc = b.getLocation();
-        if (blocksMetas.containsKey(loc))
-            return blocksMetas.get(loc);
-        else
-            return null;
+        return blocksMetas.getOrDefault(loc, null);
     }
 
-    public static void deleteAllMetadata(Block b) {
+    public void deleteAllMetadata(Block b) {
         blocksMetas.remove(b.getLocation());
     }
 
-    public static void onEnable() {
+    public void initialize() {
         File path = new File(folderPath);
         File file = new File(dataPath);
 
@@ -101,7 +98,7 @@ public class BlockMetadataManger {
                 String[] values = valuesF.split(",");
 
 
-                HashMap<String, String> metas = new HashMap<String, String>();
+                HashMap<String, String> metas = new HashMap<>();
                 for (int s = 0; s < metadatas.length; s++)
                     metas.put(metadatas[s], values[s]);
                 blocksMetas.put(loc, metas);
@@ -111,7 +108,7 @@ public class BlockMetadataManger {
         }
     }
 
-    public static void onDisable() {
+    public void disable() {
         if (!blocksMetas.isEmpty()) {
             File path = new File(folderPath);
             File file = new File(dataPath);
@@ -130,7 +127,7 @@ public class BlockMetadataManger {
                 data.set("Block." + i + ".Location", key.getWorld().getName() + "," + key.getBlockX() + "," + key.getBlockY()
                         + "," + key.getBlockZ());
 
-                StringBuffer metas = new StringBuffer();
+                StringBuilder metas = new StringBuilder();
                 for (String meta : blocksMetas.get(key).keySet()) {
                     if (metas.length() != 0)
                         metas.append(",");
@@ -138,7 +135,7 @@ public class BlockMetadataManger {
                 }
                 data.set("Block." + i + ".Metadata", metas.length() == 0 ? null : metas.toString());
 
-                StringBuffer values = new StringBuffer();
+                StringBuilder values = new StringBuilder();
                 for (String value : blocksMetas.get(key).values()) {
                     if (values.length() != 0)
                         values.append(",");
