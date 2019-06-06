@@ -1,4 +1,4 @@
-package me.stupidbot.universalcoreremake.Utilities.Players;
+package me.stupidbot.universalcoreremake.Utilities;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;

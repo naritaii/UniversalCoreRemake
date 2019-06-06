@@ -1,4 +1,4 @@
-package me.stupidbot.universalcoreremake.Utilities;
+package me.stupidbot.universalcoreremake.Managers;
 
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import org.bukkit.Bukkit;
@@ -11,7 +11,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class BlockMetadata {
+public class BlockMetadataManger {
+    // TODO Make a single instance of this class and call that instead of using static
     private static final String folderPath = UniversalCoreRemake.getInstance().getDataFolder().toString();
     private static final String dataPath = folderPath + File.separator + "block_metadata.yml";
 
@@ -34,7 +35,7 @@ public class BlockMetadata {
         }
     }
 
-    public boolean hasMetadata(Block b, String metadata) {
+    public static boolean hasMetadata(Block b, String metadata) {
         Location loc = b.getLocation();
         if (blocksMetas.containsKey(loc)) {
             HashMap<String, String> metaDataMap = blocksMetas.get(loc);

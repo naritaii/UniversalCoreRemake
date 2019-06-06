@@ -2,8 +2,11 @@ package me.stupidbot.universalcoreremake;
 
 import de.slikey.effectlib.EffectManager;
 import me.stupidbot.universalcoreremake.Commands.CommandExecutor;
-import me.stupidbot.universalcoreremake.Utilities.BlockMetadata;
-import me.stupidbot.universalcoreremake.Utilities.Players.UniversalPlayerManager;
+import me.stupidbot.universalcoreremake.Listeners.ChatFormat;
+import me.stupidbot.universalcoreremake.Managers.BlockMetadataManger;
+import me.stupidbot.universalcoreremake.Managers.Mining;
+import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayerManager;
+import me.stupidbot.universalcoreremake.Utilities.PlayerLevelling;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -26,22 +29,22 @@ public class UniversalCoreRemake extends JavaPlugin {
         effectManager = new EffectManager(this);
         CommandExecutor executor = new CommandExecutor();
 
-        registerEvents(instance, new UniversalPlayerManager(), new PlayerLevelling(), new ChatFormat());
+        registerEvents(instance, new UniversalPlayerManager(), new PlayerLevelling(), new ChatFormat(), new Mining());
         registerCommands(executor, "exp", "setblockmeta");
         setupEconomy();
         setupChat();
         setupPermissions();
 
-        UniversalPlayerManager.onEnable();
-        BlockMetadata.onEnable();
+        UniversalPlayerManager.initialize();
+        BlockMetadataManger.onEnable();
 
         System.out.println(getName() + " is now enabled!");
     }
 
     @Override
     public void onDisable() {
-        UniversalPlayerManager.onDisable();
-        BlockMetadata.onDisable();
+        UniversalPlayerManager.disable();
+        BlockMetadataManger.onDisable();
 
         System.out.println(getName() + " is now disabled!");
     }

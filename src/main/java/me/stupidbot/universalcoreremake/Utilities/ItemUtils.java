@@ -121,7 +121,7 @@ public class ItemUtils {
     }
 
     // Bukkit's serialize won't work with these custom nbt items so use these methods instead
-    public static String serializeItemStack(ItemStack itemStack){
+    public static String serializeItemStack(ItemStack itemStack) {
         if (itemStack == null) return "null";
 
         ByteArrayOutputStream outputStream = null;

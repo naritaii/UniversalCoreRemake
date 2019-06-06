@@ -1,7 +1,7 @@
 package me.stupidbot.universalcoreremake.Commands;
 
-import me.stupidbot.universalcoreremake.Utilities.BlockMetadata;
-import me.stupidbot.universalcoreremake.Utilities.Players.PlayerUtils;
+import me.stupidbot.universalcoreremake.Managers.BlockMetadataManger;
+import me.stupidbot.universalcoreremake.Utilities.PlayerUtils;
 import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -28,10 +28,10 @@ class SetBlockMeta {
                     Material m = b.getType();
 
                     if (m != Material.AIR) {
-                        HashMap<String, String> metaMap = BlockMetadata.getAllMetadata(b);
+                        HashMap<String, String> metaMap = BlockMetadataManger.getAllMetadata(b);
 
                         if (metaMap != null) {
-                            BlockMetadata.deleteAllMetadata(b);
+                            BlockMetadataManger.deleteAllMetadata(b);
 
                             StringBuilder metas = new StringBuilder();
                             for (String meta : metaMap.keySet()) {
@@ -60,9 +60,9 @@ class SetBlockMeta {
                 Material m = b.getType();
 
                 if (m != Material.AIR) {
-                    BlockMetadata.setMetadata(b, args[0], args[1]);
+                    BlockMetadataManger.setMetadata(b, args[0], args[1]);
 
-                    HashMap<String, String> metaMap = BlockMetadata.getAllMetadata(b);
+                    HashMap<String, String> metaMap = BlockMetadataManger.getAllMetadata(b);
                     StringBuilder metas = new StringBuilder();
                     for (String meta : metaMap.keySet()) {
                         if (metas.length() != 0)

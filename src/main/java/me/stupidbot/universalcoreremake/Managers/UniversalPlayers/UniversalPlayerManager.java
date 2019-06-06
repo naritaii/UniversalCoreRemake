@@ -1,4 +1,4 @@
-package me.stupidbot.universalcoreremake.Utilities.Players;
+package me.stupidbot.universalcoreremake.Managers.UniversalPlayers;
 
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import org.bukkit.Bukkit;
@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class UniversalPlayerManager implements Listener {
+    // TODO Make a single instance of this class and call that instead of using static
     private static final String dataFolderPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator + "player_data";
 
     private static List<UniversalPlayer> universalPlayers = new ArrayList<UniversalPlayer>();
@@ -134,12 +135,12 @@ public class UniversalPlayerManager implements Listener {
         return YamlConfiguration.loadConfiguration(f);
     }
 
-    public static void onEnable() {
+    public static void initialize() {
         for (Player all : Bukkit.getOnlinePlayers())
             UniversalPlayerManager.createUniversalPlayer(all);
     }
 
-    public static void onDisable() {
+    public static void disable() {
         for (UniversalPlayer all : UniversalPlayerManager.getAllUniversalPlayers()) {
             all.setDataLastPlayed(new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss").format(new Date()));
             all.savePlayerDataFile();

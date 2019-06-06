@@ -1,7 +1,9 @@
-package me.stupidbot.universalcoreremake;
+package me.stupidbot.universalcoreremake.Listeners;
 
-import me.stupidbot.universalcoreremake.Utilities.Players.UniversalPlayer;
-import me.stupidbot.universalcoreremake.Utilities.Players.UniversalPlayerManager;
+import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayer;
+import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayerManager;
+import me.stupidbot.universalcoreremake.UniversalCoreRemake;
+import me.stupidbot.universalcoreremake.Utilities.PlayerLevelling;
 import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;

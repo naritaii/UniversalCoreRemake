@@ -1,4 +1,4 @@
-package me.stupidbot.universalcoreremake.Utilities.Players;
+package me.stupidbot.universalcoreremake.Managers.UniversalPlayers;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
