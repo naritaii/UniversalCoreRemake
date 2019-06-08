@@ -1,5 +1,7 @@
 package me.stupidbot.universalcoreremake;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import de.slikey.effectlib.EffectManager;
 import me.stupidbot.universalcoreremake.Commands.CommandExecutor;
 import me.stupidbot.universalcoreremake.Listeners.ChatFormat;
@@ -19,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class UniversalCoreRemake extends JavaPlugin {
     private static UniversalCoreRemake instance;
     private static EffectManager effectManager;
+    private static ProtocolManager protocolManager;
     private static UniversalPlayerManager universalPlayerManager;
     private static MiningManager miningManager;
     private static BlockMetadataManger blockMetadataManager;
@@ -31,6 +34,7 @@ public class UniversalCoreRemake extends JavaPlugin {
         instance = this;
 
         effectManager = new EffectManager(this);
+        protocolManager = ProtocolLibrary.getProtocolManager();
         universalPlayerManager = new UniversalPlayerManager();
         miningManager = new MiningManager();
         blockMetadataManager = new BlockMetadataManger();
@@ -54,10 +58,10 @@ public class UniversalCoreRemake extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        universalPlayerManager.disable();
         effectManager.dispose();
-        blockMetadataManager.disable();
+        universalPlayerManager.disable();
         miningManager.disable();
+        blockMetadataManager.disable();
 
         System.out.println(getName() + " is now disabled!");
     }
@@ -88,6 +92,10 @@ public class UniversalCoreRemake extends JavaPlugin {
 
     public static EffectManager getEffectManager() {
         return effectManager;
+    }
+
+    public static ProtocolManager getProtocolManager() {
+        return protocolManager;
     }
 
     public static UniversalPlayerManager getUniversalPlayerManager() {

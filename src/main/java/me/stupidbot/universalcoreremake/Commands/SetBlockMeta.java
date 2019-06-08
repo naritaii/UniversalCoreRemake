@@ -1,7 +1,7 @@
 package me.stupidbot.universalcoreremake.Commands;
 
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
-import me.stupidbot.universalcoreremake.Utilities.PlayerUtils;
+import me.stupidbot.universalcoreremake.Utilities.BlockUtils;
 import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -23,7 +23,7 @@ class SetBlockMeta {
             else if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("remove")) {
                     Player p = (Player) s;
-                    Block b = PlayerUtils.getTargetBlock(p, 6);
+                    Block b = BlockUtils.getTargetBlock(p, 6);
                     Material m = b.getType();
 
                     if (m != Material.AIR) {
@@ -56,7 +56,7 @@ class SetBlockMeta {
                         "&cInvalid usage! /" + label + " <metadata> <value>"));
             } else {
                 Player p = (Player) s;
-                Block b = PlayerUtils.getTargetBlock(p, 6);
+                Block b = BlockUtils.getTargetBlock(p, 6);
                 Material m = b.getType();
 
                 if (m != Material.AIR) {

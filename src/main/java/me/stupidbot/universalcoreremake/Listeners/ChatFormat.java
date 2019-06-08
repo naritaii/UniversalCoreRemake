@@ -44,9 +44,7 @@ public class ChatFormat implements Listener {
                     .event(he).event(ce)
                 .append(chatColor + ": " + e.getMessage()).create();
 
-        for (Player all : e.getRecipients())
-            all.spigot().sendMessage(component);
-
+        e.getRecipients().forEach((Player r) -> r.spigot().sendMessage(component));
         e.setCancelled(true);
     }
 }
