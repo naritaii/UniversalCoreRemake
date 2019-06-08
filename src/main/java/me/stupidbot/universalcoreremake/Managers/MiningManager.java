@@ -85,8 +85,7 @@ public class MiningManager implements Listener {
                     if (d > finishedInt) {
                         timer.remove(id);
                         MineableBlock mb = MineableBlock.valueOf(b.getType().toString());
-                        putRegenningBlock(b,
-                                (int) (mb.getGetRegenerateTime() * 20));
+                        putRegenningBlock(b, (int) (mb.getGetRegenerateTime() * 20));
                         removeMiningPlayer(p);
                         b.setType(Material.BARRIER);
                         PlayerLevelling.giveXp(p, mb.getBaseXp());
@@ -136,14 +135,17 @@ public class MiningManager implements Listener {
     }
 
     enum MineableBlock {
-        RED_SANDSTONE(6.5d, 3d, Material.SANDSTONE, 0.05f, 1),
-        SANDSTONE(5d, 0d, Material.RED_SANDSTONE, 0.5f, 3);
+        RED_SANDSTONE(6.5d, 3d, Material.SANDSTONE, 0.05f, 1,
+                Material.RED_SANDSTONE),
+        SANDSTONE(5d, 0d, Material.RED_SANDSTONE, 0.5f, 3,
+                Material.SANDSTONE);
 
-        private final Double durability;
-        private final Double regenerateTime;
+        private final double durability;
+        private final double regenerateTime;
         private final Material enhanceBlock;
-        private final Float enhanceChance;
+        private final float enhanceChance;
         private final int baseXp;
+        private final Material loot;
 
         /**
          * @param durability Time in seconds block takes to mine with hand and no "modifiers".
@@ -151,20 +153,23 @@ public class MiningManager implements Listener {
          * @param enhanceBlock Block to turn into when enhanced.
          * @param enhanceChance Chance of turning block into enhanceBlock.
          * @param baseXp XP given without any multipliers.
+         * @param loot Item dropped.
          */
-        MineableBlock(Double durability, Double regenerateTime, Material enhanceBlock, Float enhanceChance, int baseXp) {
+        MineableBlock(Double durability, Double regenerateTime, Material enhanceBlock, Float enhanceChance,
+                      int baseXp, Material loot) {
             this.durability = durability;
             this.regenerateTime = regenerateTime;
             this.enhanceBlock = enhanceBlock;
             this.enhanceChance = enhanceChance;
             this.baseXp = baseXp;
+            this.loot = loot;
         }
 
-        Double getDurability() {
+        double getDurability() {
             return durability;
         }
 
-        Double getGetRegenerateTime() {
+        double getGetRegenerateTime() {
             return regenerateTime;
         }
 
@@ -172,12 +177,16 @@ public class MiningManager implements Listener {
             return enhanceBlock;
         }
 
-        Float getEnhanceChance() {
+        float getEnhanceChance() {
             return enhanceChance;
         }
 
         int getBaseXp() {
             return baseXp;
+        }
+
+        Material getLoot() {
+            return loot;
         }
     }
 }

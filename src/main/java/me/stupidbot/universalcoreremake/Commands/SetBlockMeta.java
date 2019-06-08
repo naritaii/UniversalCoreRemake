@@ -73,7 +73,7 @@ class SetBlockMeta {
                     }
                     s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             "&a" + TextUtils.capitalizeFully(m.toString()) +
-                                    " has now has the following tags: &e" + metas));
+                                    " now has the following tags: &e" + metas));
                 } else
                     s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             "&cYou're not looking at a block!"));
