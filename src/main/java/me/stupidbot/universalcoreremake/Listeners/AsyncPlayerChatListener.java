@@ -15,9 +15,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class ChatFormat implements Listener {
+public class AsyncPlayerChatListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
-    public void asyncPlayerChatEvent(AsyncPlayerChatEvent e) {
+    public void chatFormat(AsyncPlayerChatEvent e) {
         Player p = e.getPlayer();
         UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
         String prefix = ChatColor.translateAlternateColorCodes('&',  up.getDataPrefix());

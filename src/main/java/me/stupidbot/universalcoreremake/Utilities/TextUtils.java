@@ -1,6 +1,7 @@
 package me.stupidbot.universalcoreremake.Utilities;
 
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
+import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
@@ -64,6 +65,13 @@ public class TextUtils {
             }
         }
         return retVal.toString();
+    }
+
+    public static void sendActionbar(Player player, String message) {
+        IChatBaseComponent icbc = IChatBaseComponent.ChatSerializer.a(
+                ChatColor.translateAlternateColorCodes('&',"{\"text\":\"" + message + "\"}"));
+        PacketPlayOutChat packet = new PacketPlayOutChat(icbc, (byte) 2);
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
     }
 
     public String getProgressBar(int current, int max, int totalBars, String symbol, String completedColor,

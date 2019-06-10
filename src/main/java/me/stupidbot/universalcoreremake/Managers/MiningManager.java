@@ -1,35 +1,40 @@
 package me.stupidbot.universalcoreremake.Managers;
 
 import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.BlockPosition;
+import com.comphenix.protocol.wrappers.EnumWrappers;
+import de.slikey.effectlib.Effect;
+import me.stupidbot.universalcoreremake.Effects.BlockBreak;
+import me.stupidbot.universalcoreremake.Effects.BlockRegen;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.Utilities.BlockUtils;
 import me.stupidbot.universalcoreremake.Utilities.PlayerLevelling;
+import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class MiningManager implements Listener {
     private Map<UUID, Block> miningPlayers = new HashMap<>();
     private Map<Block, Integer> regen = new HashMap<>();
-    private BukkitTask miningTask;
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) { // Stop player from breaking blocks so we can handle block breaking
@@ -39,76 +44,102 @@ public class MiningManager implements Listener {
     }
 
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent e) {
-        Player p = e.getPlayer();
-        Block b = e.getClickedBlock();
-        if (e.getAction() == Action.LEFT_CLICK_BLOCK && b.getType() != Material.BARRIER &&
-                UniversalCoreRemake.getBlockMetadataManager().hasMetadata(b, "MINEABLE"))
-            putMiningPlayer(p, b);
-    }
-
-    @EventHandler
-    public void onPlayerChangeItemHeld(PlayerItemHeldEvent e) {
-        UUID id = e.getPlayer().getUniqueId();
-        miningPlayers.remove(id);
+    public void onChangeItemHeld(PlayerItemHeldEvent e) {
+        removeMiningPlayer(e.getPlayer());
     }
 
     public void initialize() {
-        Map<UUID, Integer> timer = new HashMap<>();
-        miningTask = new BukkitRunnable() {
+        // Click Listener
+        UniversalCoreRemake.getProtocolManager().addPacketListener(new PacketAdapter(UniversalCoreRemake.getInstance(),
+                ListenerPriority.MONITOR,
+                PacketType.Play.Client.BLOCK_DIG) {
             @Override
-            public void run() {
-                timer.forEach((UUID id, Integer i) -> {
-                    if (!miningPlayers.containsKey(id))
-                        timer.remove(id);
-                });
-                for (UUID id : miningPlayers.keySet()) { // Block being mined
-                    Player p = Bukkit.getPlayer(id);
-                    Block b = miningPlayers.get(id);
-                    int d = timer.getOrDefault(id, 0) + 1;
-                    int finishedInt = (int) (MineableBlock.valueOf(b.getType().toString()).getDurability() * 20);
+            public void onPacketReceiving(PacketEvent e) {
+                if (e.getPacketType() == PacketType.Play.Client.BLOCK_DIG) {
+                    PacketContainer packet = e.getPacket();
+                    EnumWrappers.PlayerDigType c = packet.getPlayerDigTypes().read(0);
+                    Player p = e.getPlayer();
 
-                    // Block Animation
-                    int stage = (int) Math.floor((d * 10d) / finishedInt);
-                    PacketContainer breakAnim = UniversalCoreRemake.getProtocolManager().createPacket(
-                            PacketType.Play.Server.BLOCK_BREAK_ANIMATION);
-                    breakAnim.getBlockPositionModifier().write(0, new BlockPosition(b.getX(), b.getY(),
-                            b.getZ()));
-                    breakAnim.getIntegers().write(0, BlockUtils.getBlockEntityId(b));
-                    breakAnim.getIntegers().write(1, stage);
-                    try {
-                        UniversalCoreRemake.getProtocolManager().sendServerPacket(p, breakAnim);
-                    } catch (InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
-
-                    if (d > finishedInt) {
-                        timer.remove(id);
-                        MineableBlock mb = MineableBlock.valueOf(b.getType().toString());
-                        putRegenningBlock(b, (int) (mb.getGetRegenerateTime() * 20));
+                    if (c == EnumWrappers.PlayerDigType.START_DESTROY_BLOCK) {
+                        Block b = packet.getBlockPositionModifier().read(0).toLocation(p.getWorld())
+                                .getBlock();
+                        if (b.getType() != Material.BARRIER &&
+                                UniversalCoreRemake.getBlockMetadataManager().hasMetadata(b, "MINEABLE"))
+                            putMiningPlayer(p, b);
+                    } else if (c == EnumWrappers.PlayerDigType.ABORT_DESTROY_BLOCK ||
+                            c == EnumWrappers.PlayerDigType.DROP_ALL_ITEMS ||
+                            c == EnumWrappers.PlayerDigType.DROP_ITEM)
                         removeMiningPlayer(p);
-                        b.setType(Material.BARRIER);
-                        PlayerLevelling.giveXp(p, mb.getBaseXp());
-                    } else
-                        timer.put(id, d);
-                }
-
-                for (Block b : regen.keySet()) { // Block has been mined
-                    int i = regen.get(b) - 1;
-
-                    if (i < 1) {
-                        b.setType(Material.valueOf(
-                                UniversalCoreRemake.getBlockMetadataManager().getMetadata(b, "MINEABLE")));
-                        removeRegenningBlock(b);
-                    } else
-                        putRegenningBlock(b, i);
                 }
             }
-        }.runTaskTimer(UniversalCoreRemake.getInstance(), 0, 1);
+        });
+
+        Map<UUID, Integer> timer = new HashMap<>();
+
+        // Main Runnable
+        Bukkit.getScheduler().runTaskTimerAsynchronously(UniversalCoreRemake.getInstance(), () -> {
+            // Cleanup timer
+            timer.keySet().stream().filter(id -> !miningPlayers.containsKey(id)).collect(Collectors.toList())
+                    .forEach(timer::remove);
+
+            for (UUID id : miningPlayers.keySet()) { // Block being mined
+                Player p = Bukkit.getPlayer(id);
+                Block b = miningPlayers.get(id);
+                int d = timer.getOrDefault(id, 0) + 1;
+                int finishedInt = (int) (MineableBlock.valueOf(b.getType().toString()).getDurability() * 20);
+
+                // Block Break Animation
+                int stage = (int) Math.floor((d * 10d) / finishedInt);
+                PacketContainer breakAnim = UniversalCoreRemake.getProtocolManager().createPacket(
+                        PacketType.Play.Server.BLOCK_BREAK_ANIMATION);
+                breakAnim.getBlockPositionModifier().write(0, new BlockPosition(b.getX(), b.getY(),
+                        b.getZ()));
+                breakAnim.getIntegers().write(0, BlockUtils.getBlockEntityId(b));
+                breakAnim.getIntegers().write(1, stage);
+                try {
+                    UniversalCoreRemake.getProtocolManager().sendServerPacket(p, breakAnim);
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+
+                if (d > finishedInt) { // Finished Mining
+                    MineableBlock mb = MineableBlock.valueOf(b.getType().toString());
+                    Effect eff = new BlockBreak(UniversalCoreRemake.getEffectManager());
+                    eff.material = b.getType();
+                    eff.setLocation(b.getLocation());
+                    eff.run();
+
+                    p.getInventory().addItem(new ItemStack((mb.getLoot()))); // TODO Make util for dropping item if
+                                                                             // TODO Inventory is full.
+                    PlayerLevelling.giveXp(p, mb.getBaseXp());
+                    TextUtils.sendActionbar(p, "&3XP: &a+" + mb.getBaseXp() +
+                            " &f" + TextUtils.capitalizeFully(b.getType().toString()) + ": &a+1");
+
+                    timer.remove(id);
+                    putRegenningBlock(b, (int) (mb.getGetRegenerateTime() * 20));
+                    removeMiningPlayer(p);
+                    b.setType(Material.BARRIER);
+                } else
+                    timer.put(id, d);
+            }
+
+            for (Block b : regen.keySet()) { // Block has been mined
+                int i = regen.get(b) - 1;
+
+                if (i < 1) { // Regen Block
+                    b.setType(Material.valueOf(
+                            UniversalCoreRemake.getBlockMetadataManager().getMetadata(b, "MINEABLE")));
+                    Effect eff = new BlockRegen(UniversalCoreRemake.getEffectManager());
+                    eff.setLocation(b.getLocation());
+                    eff.run();
+                    removeRegenningBlock(b);
+                } else
+                    putRegenningBlock(b, i);
+            }
+        }, 0, 1);
     }
 
     public void disable() {
-        miningTask.cancel();
         miningPlayers.clear();
         regen.forEach((Block b, Integer i) -> {
             b.getChunk().load();
@@ -123,7 +154,25 @@ public class MiningManager implements Listener {
     }
 
     private void removeMiningPlayer(Player p) {
-        miningPlayers.remove(p.getUniqueId());
+        UUID id = p.getUniqueId();
+        if (miningPlayers.containsKey(id)) {
+            Block b = miningPlayers.get(id);
+            PacketContainer breakAnim = UniversalCoreRemake.getProtocolManager().createPacket(
+                    PacketType.Play.Server.BLOCK_BREAK_ANIMATION);
+
+            breakAnim.getBlockPositionModifier().write(0, new BlockPosition(b.getX(), b.getY(),
+                    b.getZ()));
+            breakAnim.getIntegers().write(0, BlockUtils.getBlockEntityId(b));
+            breakAnim.getIntegers().write(1, 10);
+            try {
+                UniversalCoreRemake.getProtocolManager().sendServerPacket(p, breakAnim);
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+
+
+            miningPlayers.remove(id);
+        }
     }
 
     private void putRegenningBlock(Block b, int i) {
@@ -135,7 +184,7 @@ public class MiningManager implements Listener {
     }
 
     enum MineableBlock {
-        RED_SANDSTONE(6.5d, 3d, Material.SANDSTONE, 0.05f, 1,
+        RED_SANDSTONE(6.5d, 6.5d, Material.SANDSTONE, 0.05f, 1,
                 Material.RED_SANDSTONE),
         SANDSTONE(5d, 0d, Material.RED_SANDSTONE, 0.5f, 3,
                 Material.SANDSTONE);

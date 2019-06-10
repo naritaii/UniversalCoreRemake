@@ -136,7 +136,7 @@ public class UniversalPlayerManager implements Listener {
     }
 
     public void initialize() {
-        Bukkit.getOnlinePlayers().forEach(this::createUniversalPlayer);
+        Bukkit.getOnlinePlayers().forEach((Player p) -> createUniversalPlayer(p));
     }
 
     public void disable() {

@@ -4,7 +4,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import de.slikey.effectlib.EffectManager;
 import me.stupidbot.universalcoreremake.Commands.CommandExecutor;
-import me.stupidbot.universalcoreremake.Listeners.ChatFormat;
+import me.stupidbot.universalcoreremake.Listeners.AsyncPlayerChatListener;
 import me.stupidbot.universalcoreremake.Managers.BlockMetadataManger;
 import me.stupidbot.universalcoreremake.Managers.MiningManager;
 import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayerManager;
@@ -41,7 +41,8 @@ public class UniversalCoreRemake extends JavaPlugin {
         CommandExecutor executor = new CommandExecutor();
 
 
-        registerEvents(instance, universalPlayerManager, new PlayerLevelling(), new ChatFormat(), miningManager);
+        registerEvents(instance, universalPlayerManager, new PlayerLevelling(), new AsyncPlayerChatListener(),
+                miningManager);
 
         universalPlayerManager.initialize();
         miningManager.initialize();
