@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 
 class SetBlockMeta {
+    @SuppressWarnings("SameReturnValue")
     boolean execute(CommandSender s, String label, String[] args) {
         if (s instanceof Player)
             if (!s.hasPermission("universalcore.admin"))

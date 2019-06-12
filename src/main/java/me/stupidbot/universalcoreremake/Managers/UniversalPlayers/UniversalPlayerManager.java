@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.function.Consumer;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class UniversalPlayerManager implements Listener {
@@ -136,7 +137,7 @@ public class UniversalPlayerManager implements Listener {
     }
 
     public void initialize() {
-        Bukkit.getOnlinePlayers().forEach((Player p) -> createUniversalPlayer(p));
+        Bukkit.getOnlinePlayers().forEach((Consumer<Player>) this::createUniversalPlayer);
     }
 
     public void disable() {

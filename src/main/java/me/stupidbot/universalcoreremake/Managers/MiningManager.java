@@ -33,8 +33,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class MiningManager implements Listener {
-    private Map<UUID, Block> miningPlayers = new HashMap<>();
-    private Map<Block, Integer> regen = new HashMap<>();
+    private final Map<UUID, Block> miningPlayers = new HashMap<>();
+    private final Map<Block, Integer> regen = new HashMap<>();
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) { // Stop player from breaking blocks so we can handle block breaking
@@ -51,8 +51,7 @@ public class MiningManager implements Listener {
     public void initialize() {
         // Click Listener
         UniversalCoreRemake.getProtocolManager().addPacketListener(new PacketAdapter(UniversalCoreRemake.getInstance(),
-                ListenerPriority.MONITOR,
-                PacketType.Play.Client.BLOCK_DIG) {
+                ListenerPriority.MONITOR, PacketType.Play.Client.BLOCK_DIG) {
             @Override
             public void onPacketReceiving(PacketEvent e) {
                 if (e.getPacketType() == PacketType.Play.Client.BLOCK_DIG) {
