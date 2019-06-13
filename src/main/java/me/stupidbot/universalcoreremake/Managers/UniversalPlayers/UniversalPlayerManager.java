@@ -1,7 +1,9 @@
 package me.stupidbot.universalcoreremake.Managers.UniversalPlayers;
 
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
+import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -144,13 +146,16 @@ public class UniversalPlayerManager implements Listener {
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(UniversalCoreRemake.getInstance(), () -> {
             long startTime = System.nanoTime();
-            getAllUniversalPlayers().forEach((UniversalPlayer up) -> {
-                up.setDataLastPlayed(new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss").format(new Date()));
-                up.savePlayerDataFile();
-            });
+
+            getAllUniversalPlayers().forEach(UniversalPlayer::savePlayerDataFile);
+
             long endTime = System.nanoTime();
-            Bukkit.broadcast("Saved all cached UniversalPlayer data to file (took" +
-                    (endTime - startTime) / 1000000 + "ms)", "universalcore.admin");
+            String s = ChatColor.translateAlternateColorCodes('&',
+                    "&c[&fDEBUG&c]: &cSaved all cached UniversalPlayer data to file &a(took " +
+                            TextUtils.addCommas((endTime - startTime) / 1000000) + "ms)");
+
+            Bukkit.broadcast(s, "universalcore.admin");
+            System.out.println(s);
     }, (Duration.between(LocalDateTime.now(), LocalDateTime.now().plusHours(1).truncatedTo(ChronoUnit.HOURS))
                 .toMillis() / 1000) * 20, (20 * 60) * 60); // Run every hour
     }
