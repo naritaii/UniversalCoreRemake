@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 class Exp {
+    @SuppressWarnings("SameReturnValue")
     boolean execute(CommandSender s, String label, String[] args) {
         if (!s.hasPermission("universalcore.admin"))
             s.sendMessage(ChatColor.translateAlternateColorCodes('&',

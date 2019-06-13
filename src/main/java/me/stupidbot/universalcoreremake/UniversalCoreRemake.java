@@ -41,17 +41,17 @@ public class UniversalCoreRemake extends JavaPlugin {
         CommandExecutor executor = new CommandExecutor();
 
 
-        registerEvents(instance, universalPlayerManager, new PlayerLevelling(), new AsyncPlayerChatListener(),
-                miningManager);
+        registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager,
+                new AsyncPlayerChatListener());
 
-        universalPlayerManager.initialize();
-        miningManager.initialize();
-        blockMetadataManager.initialize();
         setupEconomy();
         setupChat();
         setupPermissions();
+        universalPlayerManager.initialize();
+        miningManager.initialize();
+        blockMetadataManager.initialize();
 
-        registerCommands(executor, "exp", "setblockmeta");
+        registerCommands(executor, "exp", "setblockmeta", "emoji");
 
 
         System.out.println(getName() + " is now enabled!");

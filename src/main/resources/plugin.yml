@@ -14,3 +14,7 @@ commands:
       alias: setblockmetadata
       description: Set block meta
       usage: /setblockmeta <remove|<metadata> <value>>
+   emoji:
+      alias: emojis
+      description: List emojis
+      usage: /emoji

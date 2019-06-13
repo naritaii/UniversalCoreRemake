@@ -1,10 +1,12 @@
 package me.stupidbot.universalcoreremake.Utilities;
 
+import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
@@ -22,6 +24,12 @@ public class TextUtils {
 
     public static String addCommas(double d) {
         return NumberFormat.getNumberInstance(Locale.US).format(d);
+    }
+
+    public static String getChatColor(OfflinePlayer p) {
+        return ChatColor.translateAlternateColorCodes('&',
+                UniversalCoreRemake.getPermissions().playerHas("world", p,
+                        "universalcoreremake.chatcolor.white") ? "&f" : "&7");
     }
 
     public static void sendTitle(Player p, String msg, int fadeIn, int stayTime, int fadeOut) {
@@ -52,6 +60,13 @@ public class TextUtils {
         ((CraftPlayer) p).getHandle().playerConnection.sendPacket(length);
     }
 
+    public static void sendActionbar(Player player, String message) {
+        IChatBaseComponent icbc = IChatBaseComponent.ChatSerializer.a(
+                ChatColor.translateAlternateColorCodes('&',"{\"text\":\"" + message + "\"}"));
+        PacketPlayOutChat packet = new PacketPlayOutChat(icbc, (byte) 2);
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+    }
+
     static String toRoman(int mInt) {
         String[] rnChars = { "M", "CM", "D", "C", "XC", "L", "X", "IX", "V", "I" };
         int[] rnVals = { 1000, 900, 500, 100, 90, 50, 10, 9, 5, 1 };
@@ -67,18 +82,11 @@ public class TextUtils {
         return retVal.toString();
     }
 
-    public static void sendActionbar(Player player, String message) {
-        IChatBaseComponent icbc = IChatBaseComponent.ChatSerializer.a(
-                ChatColor.translateAlternateColorCodes('&',"{\"text\":\"" + message + "\"}"));
-        PacketPlayOutChat packet = new PacketPlayOutChat(icbc, (byte) 2);
-        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
-    }
-
     public String getProgressBar(int current, int max, int totalBars, String symbol, String completedColor,
                                  String notCompletedColor) {
         float percent = (float) current / max;
 
-        int progressBars = (int) ((int) totalBars * percent);
+        int progressBars = (int) (totalBars * percent);
 
         int leftOver = (totalBars - progressBars);
 
@@ -255,6 +263,50 @@ public class TextUtils {
                 if (dFI.getCharacter() == c) return dFI;
             }
             return DefaultFontInfo.DEFAULT;
+        }
+    }
+
+    public static String escapeRegex(String str) {
+        return str.replaceAll("[\\<\\(\\[\\{\\\\\\^\\-\\=\\$\\!\\|\\]\\}\\)\\?\\*\\+\\.\\>]",
+                "\\\\$0");
+    }
+
+    public enum Emoji {
+        TABLE_FLIP(":tableflip:",
+                "&c\uFF08\u256F\u00B0\u25A1\u00B0\uFF09\u256F&f\uFE35 &7\u253B\u2501\u253B"),
+        REAL_SMOOTH(":realsmooth:",
+                "&e(\u3065 \uFFE3 \u00B3\uFFE3)\u3065&6\u24C8\u24C2\u24C4\u24C4\u24C9\u24BD"),
+        SHRUG(":shrug:", "&e\u00AF\\_(\u30C4)_/\u00AF"),
+        UWU(":uwu:", "&dU&5w&dU"),
+        WUT(":wut:", "&b\u2609&e_&b\u2609"),
+        SRS(":srs:", "&c(\u0CA0_\u0CA0)"),
+        WOOF(":woof:", "&e(\u1D54\u1D25\u1D54)"),
+        WAVE(":wave:", "&d( \uFF9F\u25E1\uFF9F)/"),
+        DAB(":dab:", "&9<o/"),
+        CHEER(":cheer:", "&ed(^o^)b"),
+        THANKS(":thanks:", "&e\\(^-^)/"),
+        HEART(":heart:", "&c\u2764"),
+        STAR(":star:", "&6\u272F"),
+        CROSS(":cross:", "&6\u271E"),
+        PEACE(":peace:", "&a\u270C"),
+        ONE_TWO_THREE(":123:", "&a1&e2&c3"),
+        OOF(":oof:", "&c&lOOF"),
+        ONE_HUNDRED(":100:", "&c&n100");
+
+        private final String placeholder;
+        private final String emoji;
+
+        Emoji(String placeholder, String emoji) {
+            this.placeholder = placeholder;
+            this.emoji = ChatColor.translateAlternateColorCodes('&', emoji + "&f");
+        }
+
+        public String getPlaceholder() {
+            return placeholder;
+        }
+
+        public String getEmoji() {
+            return emoji;
         }
     }
 }
