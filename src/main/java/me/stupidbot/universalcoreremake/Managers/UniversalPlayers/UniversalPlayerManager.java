@@ -15,13 +15,16 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.Consumer;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class UniversalPlayerManager implements Listener {
-    private final String dataFolderPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator + "player_data";
-
+    private final String dataFolderPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator +
+            "player_data";
     private final List<UniversalPlayer> universalPlayers = new ArrayList<>();
     private final HashMap<UUID, Integer> universalPlayerDictionary = new HashMap<>();
 
@@ -138,6 +141,18 @@ public class UniversalPlayerManager implements Listener {
 
     public void initialize() {
         Bukkit.getOnlinePlayers().forEach((Consumer<Player>) this::createUniversalPlayer);
+
+        Bukkit.getScheduler().runTaskTimerAsynchronously(UniversalCoreRemake.getInstance(), () -> {
+            long startTime = System.nanoTime();
+            getAllUniversalPlayers().forEach((UniversalPlayer up) -> {
+                up.setDataLastPlayed(new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss").format(new Date()));
+                up.savePlayerDataFile();
+            });
+            long endTime = System.nanoTime();
+            Bukkit.broadcast("Saved all cached UniversalPlayer data to file (took" +
+                    (endTime - startTime) / 1000000 + "ms)", "universalcore.admin");
+    }, (Duration.between(LocalDateTime.now(), LocalDateTime.now().plusHours(1).truncatedTo(ChronoUnit.HOURS))
+                .toMillis() / 1000) * 20, (20 * 60) * 60); // Run every hour
     }
 
     public void disable() {

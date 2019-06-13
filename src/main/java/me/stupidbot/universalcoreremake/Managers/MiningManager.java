@@ -134,6 +134,11 @@ public class MiningManager implements Listener {
                             enhancedBlockBreak.setLocation(b.getLocation());
                             enhancedBlockBreak.run();
 
+                            Effect blockBreak2 = new BlockBreak(UniversalCoreRemake.getEffectManager());
+                            blockBreak2.material = b.getType();
+                            blockBreak2.setLocation(b.getLocation());
+                            blockBreak2.run();
+
                             timer.put(id, 0);
                             b.setType(Material.valueOf(
                                     UniversalCoreRemake.getBlockMetadataManager().getMetadata(b, "MINEABLE")));
