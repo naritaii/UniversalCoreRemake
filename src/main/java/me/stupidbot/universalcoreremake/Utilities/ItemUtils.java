@@ -20,13 +20,13 @@ import java.util.Objects;
 public class ItemUtils {
     public static void addItemSafe(Player p, org.bukkit.inventory.ItemStack[] items) {
         boolean invFull = false;
-        for (int i = 0; i < items.length; i++) {
+        for (org.bukkit.inventory.ItemStack item : items) {
             invFull = p.getInventory().firstEmpty() == -1;
 
             if (!invFull)
-                p.getInventory().addItem(items[i]);
+                p.getInventory().addItem(item);
             else
-                p.getWorld().dropItemNaturally(p.getLocation(), items[i]);
+                p.getWorld().dropItemNaturally(p.getLocation(), item);
         }
         if (invFull)
             p.sendMessage(ChatColor.translateAlternateColorCodes('&',

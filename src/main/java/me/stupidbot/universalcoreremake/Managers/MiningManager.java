@@ -12,10 +12,7 @@ import me.stupidbot.universalcoreremake.Effects.BlockBreak;
 import me.stupidbot.universalcoreremake.Effects.BlockRegen;
 import me.stupidbot.universalcoreremake.Effects.EnhancedBlockBreak;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
-import me.stupidbot.universalcoreremake.Utilities.BlockUtils;
-import me.stupidbot.universalcoreremake.Utilities.ItemUtils;
-import me.stupidbot.universalcoreremake.Utilities.PlayerLevelling;
-import me.stupidbot.universalcoreremake.Utilities.TextUtils;
+import me.stupidbot.universalcoreremake.Utilities.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -33,8 +30,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static me.stupidbot.universalcoreremake.Managers.MiningManager.BreakBehavior.DEFAULT;
 
 public class MiningManager implements Listener {
     private final Map<UUID, Block> miningPlayers = new HashMap<>();
@@ -82,7 +77,6 @@ public class MiningManager implements Listener {
         });
 
         Map<UUID, Integer> timer = new HashMap<>();
-
         // Main Runnable
         Bukkit.getScheduler().runTaskTimerAsynchronously(UniversalCoreRemake.getInstance(), () -> {
             // Cleanup timer
@@ -90,32 +84,43 @@ public class MiningManager implements Listener {
                     .forEach(timer::remove);
 
             for (UUID id : miningPlayers.keySet()) { // Block being mined
+                // Setup Vars
                 Player p = Bukkit.getPlayer(id);
                 Block b = miningPlayers.get(id);
+                MineableBlock mb = MineableBlock.valueOf(b.getType().toString());
                 int d = timer.getOrDefault(id, 0) + 1;
-                int finishedInt = (int) (MineableBlock.valueOf(b.getType().toString()).getDurability() * 20);
+                boolean usingItem = ItemLevelling.getPickaxes().contains(p.getItemInHand().getType());
+                ItemStack itemInHand = p.getItemInHand();
+                float durabilityMod = mb.getDurability() * getItemMultiplier(itemInHand.getType());
+                int finishedInt = (int) ((mb.getDurability() - durabilityMod) * 20);
 
-                // Block Break Animation
-                int stage = (int) Math.floor((d * 10d) / finishedInt);
-                breakAnim(p, b, stage);
+                if (d < finishedInt) { // If Still Mining
+                    int stage = (int) Math.floor((d * 10d) / finishedInt);
+                    breakAnim(p, b, stage);
+
+                    timer.put(id, d);
+                } else { // If Finished Mining
+                    // Give Loot
+                    int amt = 1;
+                    ItemUtils.addItemSafe(p, new ItemStack[]{ new ItemStack(mb.getLoot(), amt) });
+
+                    int xp = mb.getBaseXp();
+                    PlayerLevelling.giveXp(p, xp);
 
 
-                if (d > finishedInt) { // Finished Mining
-                    MineableBlock mb = MineableBlock.valueOf(b.getType().toString());
-                    ItemUtils.addItemSafe(p, new ItemStack[]{ new ItemStack(mb.getLoot()) });
-                    PlayerLevelling.giveXp(p, mb.getBaseXp());
                     TextUtils.sendActionbar(p, "&2XP: &a+" + mb.getBaseXp() +
                             " &e" + TextUtils.capitalizeFully(b.getType().toString()) + ": &a+1");
 
-                    if (Math.random() < mb.getEnhanceChance())
+
+                    if (Math.random() < mb.getEnhanceChance()) // Enhance Block?
                         UniversalCoreRemake.getBlockMetadataManager().setMetadata(b, "MINEABLE",
                                 mb.getEnhanceBlock().toString());
 
-                    switch (mb.getOnBreak()) {
+
+                    switch (mb.getOnBreak()) { // What To Do On Block Break?
                         case DEFAULT:
                             Effect blockBreak = new BlockBreak(UniversalCoreRemake.getEffectManager());
-                            blockBreak.material = Material.valueOf(
-                                    UniversalCoreRemake.getBlockMetadataManager().getMetadata(b, "MINEABLE"));
+                            blockBreak.material = b.getType();
                             blockBreak.setLocation(b.getLocation());
                             blockBreak.run();
 
@@ -134,8 +139,7 @@ public class MiningManager implements Listener {
                                     UniversalCoreRemake.getBlockMetadataManager().getMetadata(b, "MINEABLE")));
                             break;
                     }
-                } else // Update Timer If Still Mining
-                    timer.put(id, d);
+                }
             }
 
             for (Block b : regen.keySet()) { // Block has been mined
@@ -200,14 +204,36 @@ public class MiningManager implements Listener {
         regen.remove(b);
     }
 
+    private float getItemMultiplier(Material m) {
+        Float diamondPickMultiplier = 0.75f;
+        Float goldPickMultiplier = 0.55f;
+        Float ironPickMultiplier = 0.5f;
+        Float stonePickMultiplier = 0.4f;
+        Float woodPickMultiplier = 0.2f;
+        switch(m) {
+            case WOOD_PICKAXE:
+                return woodPickMultiplier;
+            case STONE_PICKAXE:
+                return stonePickMultiplier;
+            case IRON_PICKAXE:
+                return ironPickMultiplier;
+            case GOLD_PICKAXE:
+                return goldPickMultiplier;
+            case DIAMOND_PICKAXE:
+                return diamondPickMultiplier;
+            default:
+                return 0f;
+        }
+    }
+
     enum MineableBlock {
-        RED_SANDSTONE(6.5d, 6.5d, Material.SANDSTONE, 0.05f, 1,
-                Material.RED_SANDSTONE, DEFAULT),
-        SANDSTONE(5.5d, 6.5d, Material.RED_SANDSTONE, 0.5f, 3,
+        RED_SANDSTONE(6.5f, 6.5f, Material.SANDSTONE, 0.075f, 1,
+                Material.RED_SANDSTONE, BreakBehavior.DEFAULT),
+        SANDSTONE(5.5f, 6.5f, Material.RED_SANDSTONE, 0.4f, 5,
                 Material.SANDSTONE, BreakBehavior.INSTANT_RESPAWN);
 
-        private final double durability;
-        private final double regenerateTime;
+        private final float durability;
+        private final float regenerateTime;
         private final Material enhanceBlock;
         private final float enhanceChance;
         private final int baseXp;
@@ -222,7 +248,7 @@ public class MiningManager implements Listener {
          * @param baseXp XP given without any multipliers.
          * @param loot Item dropped.
          */
-        MineableBlock(Double durability, Double regenerateTime, Material enhanceBlock, Float enhanceChance,
+        MineableBlock(float durability, float regenerateTime, Material enhanceBlock, float enhanceChance,
                       int baseXp, Material loot, BreakBehavior onBreak) {
             this.durability = durability;
             this.regenerateTime = regenerateTime;
@@ -233,11 +259,11 @@ public class MiningManager implements Listener {
             this.onBreak = onBreak;
         }
 
-        double getDurability() {
+        float getDurability() {
             return durability;
         }
 
-        double getGetRegenerateTime() {
+        float getGetRegenerateTime() {
             return regenerateTime;
         }
 
@@ -263,6 +289,6 @@ public class MiningManager implements Listener {
     }
 
     enum BreakBehavior {
-        DEFAULT, INSTANT_RESPAWN;
+        DEFAULT, INSTANT_RESPAWN
     }
 }

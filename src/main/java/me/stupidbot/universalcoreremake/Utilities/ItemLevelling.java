@@ -1,10 +1,17 @@
 package me.stupidbot.universalcoreremake.Utilities;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-class ItemLevelling {
+import java.util.Arrays;
+import java.util.List;
+
+public class ItemLevelling {
+    private static final List<Material> pickaxes =  Arrays.asList(Material.WOOD_PICKAXE, Material.STONE_PICKAXE,
+            Material.IRON_PICKAXE, Material.GOLD_PICKAXE, Material.DIAMOND_PICKAXE);
+
     public static ItemStack giveXp(ItemStack i, int amount) {
         int currentXp;
         int lvl = Integer.parseInt((String) ItemUtils.getMetadata(i, "XPLevel"));
@@ -45,5 +52,9 @@ class ItemLevelling {
 
     private static int xpToNextLevel(int lvl) {
         return (int) ((Math.pow(++lvl, 2) * 2));
+    }
+
+    public static List<Material> getPickaxes() {
+        return pickaxes;
     }
 }
