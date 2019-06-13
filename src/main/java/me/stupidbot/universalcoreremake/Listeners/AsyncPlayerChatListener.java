@@ -52,7 +52,7 @@ public class AsyncPlayerChatListener implements Listener {
     private String process(String s, Player p) { // TODO Make perms consistent and update legacy ones.
         if (p.hasPermission("universalmiscp.chat.emojis"))
             for (TextUtils.Emoji e : TextUtils.Emoji.values())
-                s = s.replaceAll("(?i)" + e.getPlaceholder(), e.getEmoji());
+                s = s.replaceAll("(?i)" + e.getPlaceholder(), TextUtils.escapeRegex(e.getEmoji()));
         if (p.hasPermission("universalcore.admin"))
             s = ChatColor.translateAlternateColorCodes('&', s);
 

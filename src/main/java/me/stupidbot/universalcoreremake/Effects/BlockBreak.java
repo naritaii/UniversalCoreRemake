@@ -12,9 +12,9 @@ public class BlockBreak extends Effect {
     public BlockBreak(EffectManager effectManager) {
         super(effectManager);
         type = EffectType.INSTANT;
-        particleOffsetX = 0.4f;
-        particleOffsetY = 0.4f;
-        particleOffsetZ = 0.4f;
+        particleOffsetX = 0.5f;
+        particleOffsetY = 0.5f;
+        particleOffsetZ = 0.5f;
     }
 
     @Override

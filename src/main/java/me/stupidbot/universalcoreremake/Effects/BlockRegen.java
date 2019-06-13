@@ -12,16 +12,16 @@ public class BlockRegen extends Effect {
     public BlockRegen(EffectManager effectManager) {
         super(effectManager);
         type = EffectType.INSTANT;
-        particleOffsetX = 0.8f;
-        particleOffsetY = 0.8f;
-        particleOffsetZ = 0.8f;
+        particleOffsetX = 0.7f;
+        particleOffsetY = 0.7f;
+        particleOffsetZ = 0.7f;
     }
 
     @Override
     public void onRun() {
         Location loc = getLocation().add(getLocation().getX() < 0 ? 0.5 : -0.5, 0.5,
                 getLocation().getZ() < 0 ? 0.5 : -0.5);
-        display(ParticleEffect.FLAME, loc, 0f, 25);
+        display(ParticleEffect.FLAME, loc, 0f, 20);
         loc.getWorld().playSound(loc, Sound.DRINK, 0.5f, 2f);
     }
 }

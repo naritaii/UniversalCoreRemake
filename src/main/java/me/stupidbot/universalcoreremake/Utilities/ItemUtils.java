@@ -4,7 +4,9 @@ import com.google.common.collect.Lists;
 import com.google.common.io.BaseEncoding;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.entity.Player;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,7 +17,22 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 
-class ItemUtils {
+public class ItemUtils {
+    public static void addItemSafe(Player p, org.bukkit.inventory.ItemStack[] items) {
+        boolean invFull = false;
+        for (int i = 0; i < items.length; i++) {
+            invFull = p.getInventory().firstEmpty() == -1;
+
+            if (!invFull)
+                p.getInventory().addItem(items[i]);
+            else
+                p.getWorld().dropItemNaturally(p.getLocation(), items[i]);
+        }
+        if (invFull)
+            p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    "&cYour inventory is full! Some items have been dropped!"));
+    }
+
     static org.bukkit.inventory.ItemStack setMetadata(org.bukkit.inventory.ItemStack item, String metadata, Object value) {
         return CraftItemStack.asBukkitCopy(setMetadata(CraftItemStack.asNMSCopy(item), metadata, value));
     }

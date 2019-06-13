@@ -19,19 +19,20 @@ class Emoji {
                 ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, e.getPlaceholder());
                 HoverEvent he = new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                         new ComponentBuilder(ChatColor.translateAlternateColorCodes('&',
-                                "&6Click to send the &c&l" + e.name() + "&6 emoji!")
+                                "&6Click to send the &c&l" +
+                                        e.name().replaceAll("_", " ") + "&6 emoji!")
                         ).create());
 
                 p.spigot().sendMessage(new ComponentBuilder(
                         ChatColor.translateAlternateColorCodes('&',
-                                "&e" + e.getPlaceholder() + " &d-> " + e.getEmoji()))
+                                "&a" + e.getPlaceholder() + " &f-> " + e.getEmoji()))
                                 .event(he).event(ce).create());
 
             });
         } else
             Arrays.stream(TextUtils.Emoji.values()).forEach((TextUtils.Emoji e) -> s.sendMessage(
                     ChatColor.translateAlternateColorCodes('&',
-                            "&e" + e.getPlaceholder() + " &d-> " + e.getEmoji())));
+                            "&a" + e.getPlaceholder() + " &f-> " + e.getEmoji())));
         return true;
     }
 }
