@@ -14,11 +14,19 @@ public class LevelUp extends Effect {
     private int step = 0;
     private int hue = 0;
     private int initAnim = 0;
+    public Player p = null;
 
     public LevelUp(EffectManager effectManager) {
         super(effectManager);
         type = EffectType.REPEATING;
         iterations = 360;
+    }
+
+    public LevelUp(EffectManager effectManager, Player p) {
+        super(effectManager);
+        type = EffectType.REPEATING;
+        iterations = 360;
+        this.p = p;
     }
 
     @Override
@@ -54,7 +62,6 @@ public class LevelUp extends Effect {
             step = 0;
 
 
-        Player p = getTargetPlayer();
         if (p != null && initAnim < 64) {
             if (initAnim == 0)
                 TextUtils.sendTitle(p, "&6&lLEVEL UP", 5, 80, 0);
