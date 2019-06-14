@@ -10,31 +10,31 @@ import java.util.Map;
 import java.util.UUID;
 
 public abstract class UniversalGUI {
-    public static Map<UUID, UniversalGUI> inventoriesByUuid = new HashMap<>();
-    public static Map<UUID, UUID> openInventories = new HashMap<>();
+    private static final Map<UUID, UniversalGUI> inventoriesByUuid = new HashMap<>();
+    public static final Map<UUID, UUID> openInventories = new HashMap<>();
 
-    private UUID uuid;
-    private Inventory inventory;
-    private Map<Integer, UniversalGUIAction> actions;
+    private final UUID uuid;
+    private final Inventory inventory;
+    private final Map<Integer, UniversalGUIAction> actions;
 
     public interface UniversalGUIAction {
         void click(Player player);
     }
 
-    public UniversalGUI(int inventorySize, String inventoryName) {
+    UniversalGUI(int inventorySize, String inventoryName) {
         inventory = Bukkit.createInventory(null, inventorySize, inventoryName);
         actions = new HashMap<>();
         inventoriesByUuid.put(uuid = UUID.randomUUID(), this);
     }
 
-    public final void setItem(int slot, ItemStack stack, UniversalGUIAction action) {
+    final void setItem(int slot, ItemStack stack, UniversalGUIAction action) {
         inventory.setItem(slot, stack);
         if (action != null) {
             actions.put(slot, action);
         }
     }
 
-    public final void setItem(int slot, ItemStack stack) {
+    final void setItem(int slot, ItemStack stack) {
         setItem(slot, stack, null);
     }
 
@@ -54,11 +54,11 @@ public abstract class UniversalGUI {
         getInventoriesByUUID().remove(getUUID());
     }
 
-    public final Inventory getInventory() {
+    final Inventory getInventory() {
         return inventory;
     }
 
-    public UUID getUUID() {
+    private UUID getUUID() {
         return uuid;
     }
 

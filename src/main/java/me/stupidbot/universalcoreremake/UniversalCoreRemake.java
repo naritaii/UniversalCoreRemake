@@ -52,7 +52,7 @@ public class UniversalCoreRemake extends JavaPlugin {
         miningManager.initialize();
         blockMetadataManager.initialize();
 
-        registerCommands(executor, "exp", "setblockmeta", "emoji");
+        registerCommands(executor, "exp", "setblockmeta", "emoji", "openmineraltrader");
 
 
         System.out.println(getName() + " is now enabled!");

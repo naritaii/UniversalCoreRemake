@@ -212,11 +212,11 @@ public class MiningManager implements Listener {
     }
 
     private float getItemMultiplier(Material m) {
-        Float diamondPickMultiplier = 0.75f;
-        Float goldPickMultiplier = 0.55f;
-        Float ironPickMultiplier = 0.5f;
-        Float stonePickMultiplier = 0.4f;
-        Float woodPickMultiplier = 0.2f;
+        float diamondPickMultiplier = 0.75f;
+        float goldPickMultiplier = 0.55f;
+        float ironPickMultiplier = 0.5f;
+        float stonePickMultiplier = 0.4f;
+        float woodPickMultiplier = 0.2f;
         switch(m) {
             case WOOD_PICKAXE:
                 return woodPickMultiplier;

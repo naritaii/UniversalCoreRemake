@@ -9,6 +9,7 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private final Exp exp = new Exp();
     private final SetBlockMeta setBlockMeta = new SetBlockMeta();
     private final Emoji emoji = new Emoji();
+    private final OpenMineralTrader openMineralTrader = new OpenMineralTrader();
 
 //    public CommandExecutor() {
 //        UniversalCoreRemake instance = this.instance;
@@ -22,6 +23,8 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
             return setBlockMeta.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("emoji"))
             return emoji.execute(s);
+        else if (cmd.getName().equalsIgnoreCase("openmineraltrader"))
+            return openMineralTrader.execute(s, label, args);
         else
             return false;
         }

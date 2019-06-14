@@ -7,7 +7,7 @@ depend: [Vault, ProtocolLib]
 main: me.stupidbot.universalcoreremake.UniversalCoreRemake
 commands:
    exp:
-      aliases: [ xp, giveexp, givexp ]
+      aliases: [xp, giveexp, givexp]
       description: Give exp
       usage: /exp <levelup|<amount>> [player]
    setblockmeta:
@@ -15,6 +15,10 @@ commands:
       description: Set block meta
       usage: /setblockmeta <remove|<metadata> <value>>
    emoji:
-      alias: emojis
+      aliases: [emojis]
       description: List emojis
       usage: /emoji
+   openmineraltrader:
+      aliases: [mineraltrader]
+      description: Open's Miner Trader GUI
+      usage: /openmineraltrader [player]

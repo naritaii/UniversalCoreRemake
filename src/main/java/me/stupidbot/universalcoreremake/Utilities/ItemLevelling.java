@@ -14,14 +14,10 @@ public class ItemLevelling {
             Material.IRON_PICKAXE, Material.GOLD_PICKAXE, Material.DIAMOND_PICKAXE);
 
     public static ItemStack giveXp(ItemStack i, int amount) {
-        int currentXp;
-        int lvl = Integer.parseInt((String) ItemUtils.getMetadata(i, "XPLevel"));
-        if (ItemUtils.hasMetadata(i, "XP"))
-            currentXp = Integer.parseInt((String) ItemUtils.getMetadata(i, "XP")) + amount;
-        else
-            currentXp = amount;
-        if (!ItemUtils.hasMetadata(i, "XPLevel"))
-            lvl = 1;
+        int currentXp = ItemUtils.hasMetadata(i, "XP") ?
+                Integer.parseInt((String) ItemUtils.getMetadata(i, "XP")) + amount : amount;
+        int lvl = ItemUtils.hasMetadata(i, "XPLevel")
+                ? Integer.parseInt((String) ItemUtils.getMetadata(i, "XPLevel")) : 1;
         
         ItemUtils.setMetadata(i, "XP", currentXp);
 
@@ -34,9 +30,8 @@ public class ItemLevelling {
 
     private static ItemStack updateItem(ItemStack i) {
         ItemMeta im = i.getItemMeta();
-        int lvl = Integer.parseInt((String) ItemUtils.getMetadata(i, "XPLevel"));
-        if (!ItemUtils.hasMetadata(i, "XPLevel"))
-            lvl = 1;
+        int lvl = ItemUtils.hasMetadata(i, "XPLevel")
+                ? Integer.parseInt((String) ItemUtils.getMetadata(i, "XPLevel")) : 1;
         String name = TextUtils.capitalizeFully(i.getType().toString());
         if (ItemUtils.hasMetadata(i, "CustomName"))
             name = (String) ItemUtils.getMetadata(i, "CustomName");
@@ -44,7 +39,7 @@ public class ItemLevelling {
         im.setDisplayName(ChatColor.translateAlternateColorCodes('&',
                 "&r" + name + " &5&l" + lvl));
 
-        ArrayList<String> lore = new ArrayList<String>();
+        ArrayList<String> lore = new ArrayList<>();
 
         im.setLore(lore);
 
