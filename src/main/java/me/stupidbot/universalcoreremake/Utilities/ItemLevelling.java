@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,7 +42,11 @@ public class ItemLevelling {
             name = (String) ItemUtils.getMetadata(i, "CustomName");
 
         im.setDisplayName(ChatColor.translateAlternateColorCodes('&',
-                "&r" + name + " &d&l" + lvl));
+                "&r" + name + " &5&l" + lvl));
+
+        ArrayList<String> lore = new ArrayList<String>();
+
+        im.setLore(lore);
 
         // TODO Change item lore and account for enchants/"mutations". Item XP will probably be called something like
         // TODO "corruption" on the client side despite just being labelled as XP in code.

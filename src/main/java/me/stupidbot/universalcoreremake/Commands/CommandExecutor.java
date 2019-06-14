@@ -1,11 +1,10 @@
 package me.stupidbot.universalcoreremake.Commands;
 
-import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class CommandExecutor implements org.bukkit.command.CommandExecutor {
-    private UniversalCoreRemake instance;
+/*    private UniversalCoreRemake instance;*/
 
     private final Exp exp = new Exp();
     private final SetBlockMeta setBlockMeta = new SetBlockMeta();

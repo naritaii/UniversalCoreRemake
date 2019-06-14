@@ -1,4 +1,4 @@
-package me.stupidbot.universalcoreremake.Gui;
+package me.stupidbot.universalcoreremake.GUI;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class UniversalGui {
-    private static Map<UUID, UniversalGui> inventoriesByUuid;
+public abstract class UniversalGUI {
+    private static Map<UUID, UniversalGUI> inventoriesByUuid;
     private static Map<UUID, UUID> openInventories;
 
     static {
@@ -26,7 +26,7 @@ public class UniversalGui {
         void click(Player player);
     }
 
-    public UniversalGui(int inventorySize, String inventoryName) {
+    public UniversalGUI(int inventorySize, String inventoryName) {
         inventory = Bukkit.createInventory(null, inventorySize, inventoryName);
         actions = new HashMap<>();
         inventoriesByUuid.put(uuid = UUID.randomUUID(), this);
@@ -71,7 +71,7 @@ public class UniversalGui {
         return actions;
     }
 
-    public static final Map<UUID, UniversalGui> getInventoriesByUuid() {
+    public static final Map<UUID, UniversalGUI> getInventoriesByUuid() {
         return inventoriesByUuid;
     }
 

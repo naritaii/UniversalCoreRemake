@@ -106,6 +106,8 @@ public class MiningManager implements Listener {
 
                     int xp = mb.getBaseXp();
                     PlayerLevelling.giveXp(p, xp);
+                    if (usingItem)
+                        p.setItemInHand(ItemLevelling.giveXp(itemInHand, xp));
 
 
                     TextUtils.sendActionbar(p, "&2XP: &a+" + mb.getBaseXp() +
