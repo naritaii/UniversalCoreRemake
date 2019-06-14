@@ -5,6 +5,7 @@ import com.comphenix.protocol.ProtocolManager;
 import de.slikey.effectlib.EffectManager;
 import me.stupidbot.universalcoreremake.Commands.CommandExecutor;
 import me.stupidbot.universalcoreremake.Listeners.AsyncPlayerChatListener;
+import me.stupidbot.universalcoreremake.Listeners.UniversalGUIListener;
 import me.stupidbot.universalcoreremake.Managers.BlockMetadataManger;
 import me.stupidbot.universalcoreremake.Managers.MiningManager;
 import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayerManager;
@@ -42,7 +43,7 @@ public class UniversalCoreRemake extends JavaPlugin {
 
 
         registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager,
-                new AsyncPlayerChatListener());
+                new AsyncPlayerChatListener(), new UniversalGUIListener());
 
         setupEconomy();
         setupChat();

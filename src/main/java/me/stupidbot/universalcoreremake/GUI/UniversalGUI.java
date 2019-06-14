@@ -10,19 +10,14 @@ import java.util.Map;
 import java.util.UUID;
 
 public abstract class UniversalGUI {
-    private static Map<UUID, UniversalGUI> inventoriesByUuid;
-    private static Map<UUID, UUID> openInventories;
-
-    static {
-        inventoriesByUuid = new HashMap<>();
-        openInventories = new HashMap<>();
-    }
+    public static Map<UUID, UniversalGUI> inventoriesByUuid = new HashMap<>();
+    public static Map<UUID, UUID> openInventories = new HashMap<>();
 
     private UUID uuid;
     private Inventory inventory;
-    private Map<Integer, UniversalGuiAction> actions;
+    private Map<Integer, UniversalGUIAction> actions;
 
-    public interface UniversalGuiAction {
+    public interface UniversalGUIAction {
         void click(Player player);
     }
 
@@ -32,7 +27,7 @@ public abstract class UniversalGUI {
         inventoriesByUuid.put(uuid = UUID.randomUUID(), this);
     }
 
-    public final void setItem(int slot, ItemStack stack, UniversalGuiAction action) {
+    public final void setItem(int slot, ItemStack stack, UniversalGUIAction action) {
         inventory.setItem(slot, stack);
         if (action != null) {
             actions.put(slot, action);
@@ -46,36 +41,36 @@ public abstract class UniversalGUI {
     public final void open(Player player) {
         player.openInventory(inventory);
 
-        openInventories.put(player.getUniqueId(), getUuid());
+        openInventories.put(player.getUniqueId(), getUUID());
     }
 
     public final void delete() {
         for (Player player: Bukkit.getOnlinePlayers()) {
-            if (getOpenInventories().get(player.getUniqueId()).equals(getUuid())) {
+            if (getOpenInventories().get(player.getUniqueId()).equals(getUUID())) {
                 player.closeInventory();
             }
         }
 
-        getInventoriesByUuid().remove(getUuid());
+        getInventoriesByUUID().remove(getUUID());
     }
 
     public final Inventory getInventory() {
         return inventory;
     }
 
-    public UUID getUuid() {
+    public UUID getUUID() {
         return uuid;
     }
 
-    public Map<Integer, UniversalGuiAction> getActions() {
+    public Map<Integer, UniversalGUIAction> getActions() {
         return actions;
     }
 
-    public static final Map<UUID, UniversalGUI> getInventoriesByUuid() {
+    public static Map<UUID, UniversalGUI> getInventoriesByUUID() {
         return inventoriesByUuid;
     }
 
-    public static final Map<UUID, UUID> getOpenInventories() {
+    public static Map<UUID, UUID> getOpenInventories() {
         return openInventories;
     }
 }
