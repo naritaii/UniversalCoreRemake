@@ -16,7 +16,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -51,7 +50,7 @@ public class UniversalPlayerManager implements Listener {
         up.setDataNameColor(prefix.substring(0, 2));
 
         if (up.getDataFirstPlayed() == null)
-            up.setDataFirstPlayed(new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss").format(new Date()));
+            up.setDataFirstPlayed(up.getSimpleDateFormat().format(new Date()));
         if (up.getDataLevel() == 0)
             up.setDataLevel(1);
 
@@ -152,7 +151,7 @@ public class UniversalPlayerManager implements Listener {
             long endTime = System.nanoTime();
             String s = ChatColor.translateAlternateColorCodes('&',
                     "&c[&fDEBUG&c]: &cSaved all cached UniversalPlayer data to file &a(took " +
-                            TextUtils.addCommas((endTime - startTime) / 1000000) + "ms)");
+                            TextUtils.addCommas((int) ((endTime - startTime) / 1000000)) + "ms)");
 
             Bukkit.broadcast(s, "universalcore.admin");
             System.out.println(s);
@@ -162,7 +161,7 @@ public class UniversalPlayerManager implements Listener {
 
     public void disable() {
         getAllUniversalPlayers().forEach((UniversalPlayer up) -> {
-            up.setDataLastPlayed(new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss").format(new Date()));
+            up.setDataLastPlayed(up.getSimpleDateFormat().format(new Date()));
             up.savePlayerDataFile();
         });
     }
@@ -179,7 +178,7 @@ public class UniversalPlayerManager implements Listener {
         Player p = e.getPlayer();
         UniversalPlayer up = getUniversalPlayer(p);
 
-        up.setDataLastPlayed(new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss").format(new Date()));
+        up.setDataLastPlayed(up.getSimpleDateFormat().format(new Date()));
 
 
         up.savePlayerDataFile();

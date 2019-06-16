@@ -20,28 +20,28 @@ public class AsyncPlayerChatListener implements Listener {
     public void chatFormat(AsyncPlayerChatEvent e) {
         Player p = e.getPlayer();
         UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
+        int lvl = up.getDataLevel();
+        String lvlTag =  PlayerLevelling.levelTag(lvl) + " ";
         String prefix = ChatColor.translateAlternateColorCodes('&',  up.getDataPrefix());
-        String chatColor = ChatColor.translateAlternateColorCodes('&',
-                p.hasPermission("universalcoreremake.chatcolor.white") ? "&f" : "&7");
+        String chatColor = TextUtils.getChatColor(p);
         String name = p.getName();
         String message = process(e.getMessage(), p);
-        int lvl = up.getDataLevel();
         ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/msg " + name);
         HoverEvent he = new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                 new ComponentBuilder( prefix + name + "\n" +
                         ChatColor.translateAlternateColorCodes(
-                                '&', "&7Level: &a" + lvl + " (" +
-                                        TextUtils.addCommas(up.getDataXp()) + "/" +
-                                        TextUtils.addCommas(PlayerLevelling.xpToNextLevel(lvl)) + " XP)" + "\n" +
+                                '&', "&7Level: &a" + lvl + " &7[" +
+                                        TextUtils.getProgressBar(up.getDataXp(), PlayerLevelling.xpToNextLevel(lvl),
+                                                18, "|", "&a", "&8") +
+                                        "&7]\n" +
                                         "&7Balance: &a$" +
                                         TextUtils.addCommas(UniversalCoreRemake.getEconomy().getBalance(p)) +
                                         "\n\n" +
                                         "&eClick to message " + up.getDataNamColor() + name
                         )
                 ).create());
-
         BaseComponent[] component = new ComponentBuilder(
-                prefix + name)
+                lvlTag + prefix + name)
                 .event(he).event(ce)
                 .append(chatColor + ": " + message).create();
 

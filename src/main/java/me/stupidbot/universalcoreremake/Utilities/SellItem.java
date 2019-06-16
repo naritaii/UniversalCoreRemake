@@ -24,4 +24,6 @@ public class SellItem {
     public ItemStack getItem() {
         return this.item;
     }
+
+    public Material getType() { return this.item.getType(); }
 }

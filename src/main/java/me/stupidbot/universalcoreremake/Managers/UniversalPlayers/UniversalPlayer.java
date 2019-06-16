@@ -4,15 +4,17 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 public class UniversalPlayer {
-
     private final File pFileLoc;
     private final FileConfiguration pFile;
+    private final SimpleDateFormat simpleDateFormat;
 
     UniversalPlayer(File pFileLoc, FileConfiguration pFile) {
         this.pFileLoc = pFileLoc;
         this.pFile = pFile;
+        simpleDateFormat = new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss");
     }
 
     public File getPlayerDataFile() {
@@ -21,6 +23,14 @@ public class UniversalPlayer {
 
     public FileConfiguration loadPlayerDataFile() {
         return pFile;
+    }
+
+    public SimpleDateFormat getSimpleDateFormat() {
+        return simpleDateFormat;
+    }
+
+    public boolean firstJoin() {
+        return getDataLastPlayed() == null;
     }
 
     void savePlayerDataFile() {
@@ -71,7 +81,7 @@ public class UniversalPlayer {
     }
 
     public String getDataName() {
-        return (String) pFile.get("Name.Name");
+        return pFile.getString("Name.Name");
     }
 
     String setDataNameColor(String s) {
@@ -80,7 +90,7 @@ public class UniversalPlayer {
     }
 
     public String getDataNamColor() {
-        return (String) pFile.get("Name.Color");
+        return pFile.getString("Name.Color");
     }
 
     String setDataPrefix(String s) {
@@ -89,7 +99,7 @@ public class UniversalPlayer {
     }
 
     public String getDataPrefix() {
-        return (String) pFile.get("Name.Prefix");
+        return pFile.getString("Name.Prefix");
     }
 
     String setDataFirstPlayed(String s) {
@@ -97,8 +107,17 @@ public class UniversalPlayer {
         return s;
     }
 
+    public int getDataStamina() {
+        return pFile.getInt("Player.Stamina");
+    }
+
+    public int setDataStamina(int i) {
+        pFile.set("Player.Stamina", i);
+        return i;
+    }
+
     String getDataFirstPlayed() {
-        return (String) pFile.get("Stats.FirstJoin");
+        return pFile.getString("Stats.FirstJoin");
     }
 
     String setDataLastPlayed(String s) {
@@ -107,7 +126,7 @@ public class UniversalPlayer {
     }
 
     public String getDataLastPlayed() {
-        return (String) pFile.get("Stats.LastPlayed");
+        return pFile.getString("Stats.LastPlayed");
     }
 
 
@@ -117,7 +136,7 @@ public class UniversalPlayer {
     }
 
     public String getDataCosmeticIdTrail() {
-        String s = (String) pFile.get("Cosmetic.TrailID");
+        String s = pFile.getString("Cosmetic.TrailID");
 
         if (s == null)
             s = setDataCosmeticIdTrail("none");

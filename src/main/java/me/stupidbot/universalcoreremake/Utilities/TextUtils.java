@@ -23,7 +23,7 @@ public class TextUtils {
     }
 
     public static String addCommas(double d) {
-        return NumberFormat.getNumberInstance(Locale.US).format(d);
+        return NumberFormat.getCurrencyInstance(Locale.US).format(d).substring(1);
     }
 
     public static String getChatColor(OfflinePlayer p) {
@@ -82,7 +82,7 @@ public class TextUtils {
         return retVal.toString();
     }
 
-    public String getProgressBar(int current, int max, int totalBars, String symbol, String completedColor,
+    public static String getProgressBar(int current, int max, int totalBars, String symbol, String completedColor,
                                  String notCompletedColor) {
         float percent = (float) current / max;
 

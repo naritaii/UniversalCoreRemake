@@ -120,7 +120,7 @@ public class BlockMetadataManger {
             long endTime = System.nanoTime();
             String s = ChatColor.translateAlternateColorCodes('&',
                     "&c[&fDEBUG&c]: &cSaved all custom block metadata data to file &a(took " +
-                            TextUtils.addCommas((endTime - startTime) / 1000000) + "ms)");
+                            TextUtils.addCommas((int) ((endTime - startTime) / 1000000)) + "ms)");
 
             Bukkit.broadcast(s, "universalcore.admin");
             System.out.println(s);

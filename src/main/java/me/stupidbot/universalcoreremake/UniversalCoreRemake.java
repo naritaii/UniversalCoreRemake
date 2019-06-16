@@ -8,9 +8,9 @@ import me.stupidbot.universalcoreremake.Listeners.AsyncPlayerChatListener;
 import me.stupidbot.universalcoreremake.Listeners.UniversalGUIListener;
 import me.stupidbot.universalcoreremake.Managers.BlockMetadataManger;
 import me.stupidbot.universalcoreremake.Managers.MiningManager;
-import me.stupidbot.universalcoreremake.Managers.StaminaManager;
 import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayerManager;
 import me.stupidbot.universalcoreremake.Utilities.PlayerLevelling;
+import me.stupidbot.universalcoreremake.Utilities.Stamina;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -40,13 +40,12 @@ public class UniversalCoreRemake extends JavaPlugin {
         universalPlayerManager = new UniversalPlayerManager();
         miningManager = new MiningManager();
         blockMetadataManager = new BlockMetadataManger();
-        StaminaManager staminaManager = new StaminaManager();
 
         CommandExecutor executor = new CommandExecutor();
 
 
         registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager,
-                staminaManager, new AsyncPlayerChatListener(), new UniversalGUIListener());
+                new Stamina(), new AsyncPlayerChatListener(), new UniversalGUIListener());
 
         setupEconomy();
         setupChat();
@@ -54,7 +53,6 @@ public class UniversalCoreRemake extends JavaPlugin {
         universalPlayerManager.initialize();
         miningManager.initialize();
         blockMetadataManager.initialize();
-        staminaManager.initialize();
 
         registerCommands(executor, "exp", "setblockmeta", "emoji", "openmineraltrader");
 
