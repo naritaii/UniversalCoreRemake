@@ -32,6 +32,9 @@ public class ItemUtils {
             p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     "&cYour inventory is full! Some items have been dropped!"));
     }
+    public static void addItemSafe(Player p, org.bukkit.inventory.ItemStack item) {
+        addItemSafe(p, new org.bukkit.inventory.ItemStack[]{ item });
+    }
 
     static org.bukkit.inventory.ItemStack setMetadata(org.bukkit.inventory.ItemStack item, String metadata, Object value) {
         return CraftItemStack.asBukkitCopy(setMetadata(CraftItemStack.asNMSCopy(item), metadata, value));

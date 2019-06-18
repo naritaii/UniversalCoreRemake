@@ -3,9 +3,9 @@ package me.stupidbot.universalcoreremake;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import de.slikey.effectlib.EffectManager;
+import fr.minuskube.inv.InventoryManager;
 import me.stupidbot.universalcoreremake.Commands.CommandExecutor;
 import me.stupidbot.universalcoreremake.Listeners.AsyncPlayerChatListener;
-import me.stupidbot.universalcoreremake.Listeners.UniversalGUIListener;
 import me.stupidbot.universalcoreremake.Managers.BlockMetadataManger;
 import me.stupidbot.universalcoreremake.Managers.MiningManager;
 import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayerManager;
@@ -30,6 +30,7 @@ public class UniversalCoreRemake extends JavaPlugin {
     private static Economy econ = null;
     private static Permission perms = null;
     private static Chat chat = null;
+    private static InventoryManager inventoryManager = null;
 
     @Override
     public void onEnable() {
@@ -40,12 +41,13 @@ public class UniversalCoreRemake extends JavaPlugin {
         universalPlayerManager = new UniversalPlayerManager();
         miningManager = new MiningManager();
         blockMetadataManager = new BlockMetadataManger();
+        inventoryManager = new InventoryManager(instance);
 
         CommandExecutor executor = new CommandExecutor();
 
 
-        registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager,
-                new Stamina(), new AsyncPlayerChatListener(), new UniversalGUIListener());
+        registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager, new Stamina(),
+                new AsyncPlayerChatListener());
 
         setupEconomy();
         setupChat();
@@ -53,8 +55,9 @@ public class UniversalCoreRemake extends JavaPlugin {
         universalPlayerManager.initialize();
         miningManager.initialize();
         blockMetadataManager.initialize();
+        inventoryManager.init();
 
-        registerCommands(executor, "exp", "setblockmeta", "emoji", "openmineraltrader");
+        registerCommands(executor, "exp", "setblockmeta", "emoji", "openmineraltrader", "openfoodtrader");
 
 
         System.out.println(getName() + " is now enabled!");
@@ -110,6 +113,7 @@ public class UniversalCoreRemake extends JavaPlugin {
         return blockMetadataManager;
     }
 
+    public static InventoryManager getInventoryManager() { return inventoryManager; }
 
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {

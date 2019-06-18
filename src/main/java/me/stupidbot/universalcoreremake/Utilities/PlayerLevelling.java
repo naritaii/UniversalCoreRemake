@@ -53,15 +53,7 @@ public class PlayerLevelling implements Listener {
                 5, 80, 0);
 
         p.playSound(p.getLocation(), Sound.ENDERDRAGON_GROWL, 1, 1.25f);
-
-        p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                "&8&l&m---------------------------------------------"));
-        TextUtils.sendCenteredMessage(p, "&a&k3&6 LEVEL UP! &a&k3");
-        p.sendMessage("");
-        TextUtils.sendCenteredMessage(p, "&7You are now level &a" + levelTag(lvl));
-            sendMilestone(p, oldLvl, lvl);
-        p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                "&8&l&m---------------------------------------------"));
+        sendLevelUpMessages(p, oldLvl, lvl);
 
 
         up.setDataXp(xp);
@@ -69,16 +61,27 @@ public class PlayerLevelling implements Listener {
         updateUI(p);
     }
 
-    private static void sendMilestone(Player p, int oldLvl, int lvl) {
-        for (int i = oldLvl; i < lvl; i++)
-            if (i == 2) {
-                p.sendMessage("\n");
-                TextUtils.sendCenteredMessage(p, "&7Level up to unlock new features and raise stamina!");
+    private static void sendLevelUpMessages(Player p, int oldLvl, int lvl) {
+        p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                "&8&l&m---------------------------------------------"));
+        TextUtils.sendCenteredMessage(p, "&a&k3&6 LEVEL UP! &a&k3");
+        p.sendMessage("");
+        TextUtils.sendCenteredMessage(p, "&7You are now level &a" + levelTag(lvl));
+
+        for (int i = oldLvl; i <= lvl; i++)
+            if (i == 1) {
+                p.sendMessage("");
+                TextUtils.sendCenteredMessage(p,
+                        "&7Level up to unlock features and raise stats like stamina!");
             } else if (i == 5) {
-                p.sendMessage("\n");
+                p.sendMessage("");
                 TextUtils.sendCenteredMessage(p, "&7Hey, you're getting pretty good at this. I think");
-                TextUtils.sendCenteredMessage(p, "&aQuest Master &7might have some &ejobs for you&7!");
+                TextUtils.sendCenteredMessage(p, "&aQuest Master &7might have some &ejobs for you&7,");
+                TextUtils.sendCenteredMessage(p, "&7type &c/spawn&7 to warp to spawn!");
             }
+
+        p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                "&8&l&m---------------------------------------------"));
     }
 
     private static void updateUI(Player p) {

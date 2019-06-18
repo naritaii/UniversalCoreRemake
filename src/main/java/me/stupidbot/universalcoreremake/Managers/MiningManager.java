@@ -11,6 +11,7 @@ import de.slikey.effectlib.Effect;
 import me.stupidbot.universalcoreremake.Effects.BlockBreak;
 import me.stupidbot.universalcoreremake.Effects.BlockRegen;
 import me.stupidbot.universalcoreremake.Effects.EnhancedBlockBreak;
+import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayer;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.Utilities.*;
 import org.bukkit.Bukkit;
@@ -96,63 +97,80 @@ public class MiningManager implements Listener {
                 Player p = Bukkit.getPlayer(id);
                 Block b = miningPlayers.get(id);
                 MineableBlock mb = MineableBlock.valueOf(b.getType().toString());
-                int d = timer.getOrDefault(id, 0) + 1;
-                boolean usingItem = ItemLevelling.getPickaxes().contains(p.getItemInHand().getType());
-                ItemStack itemInHand = p.getItemInHand();
-                float durabilityMod = mb.getDurability() * getItemMultiplier(itemInHand.getType());
-                int finishedInt = (int) ((mb.getDurability() - durabilityMod) * 20);
+                int stamina = mb.getBaseStaminaUsage();
 
-                if (d < finishedInt) { // If Still Mining
-                    int stage = (int) Math.floor((d * 10d) / finishedInt);
-                    breakAnim(p, b, stage);
+                if (Stamina.getStamina(p) < stamina) {
+                    removeMiningPlayer(p);
+                    TextUtils.sendTitle(p, "", 5, 20, 5);
+                    if (Stamina.getMaxStamina(p) >= stamina)
+                        TextUtils.sendSubtitle(p, "&c&lEAT TO REGAIN STAMINA", 5, 20, 5);
+                    else
+                        TextUtils.sendSubtitle(p, "&c&lNOT ENOUGH STAMINA", 5, 20, 5);
+                } else {
+                    int d = timer.getOrDefault(id, 0) + 1;
+                    boolean usingItem = ItemLevelling.getPickaxes().contains(p.getItemInHand().getType());
+                    ItemStack itemInHand = p.getItemInHand();
+                    float durabilityMod = mb.getDurability() * getItemMultiplier(itemInHand.getType());
+                    int finishedInt = (int) ((mb.getDurability() - durabilityMod) * 20);
 
-                    timer.put(id, d);
-                } else { // If Finished Mining
-                    // Give Loot
-                    int amt = 1;
-                    ItemUtils.addItemSafe(p, new ItemStack[]{ new ItemStack(mb.getLoot(), amt) });
+                    if (d < finishedInt) { // If Still Mining
+                        int stage = (int) Math.floor((d * 10d) / finishedInt);
+                        breakAnim(p, b, stage);
 
-                    int xp = mb.getBaseXp();
-                    PlayerLevelling.giveXp(p, xp);
-                    if (usingItem)
-                        p.setItemInHand(ItemLevelling.giveXp(itemInHand, xp));
+                        timer.put(id, d);
+                    } else { // If Finished Mining
+                        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
+                        up.setDataBlocksMined(up.getDataBlocksMined() + 1);
+
+                        int amt = 1;
+                        ItemUtils.addItemSafe(p, new ItemStack(mb.getLoot(), amt));
+
+                        int xp = mb.getBaseXp();
+                        PlayerLevelling.giveXp(p, xp);
+                        if (usingItem)
+                            p.setItemInHand(ItemLevelling.giveXp(itemInHand, xp));
+
+                        Stamina.removeStamina(p, stamina);
+                        TextUtils.sendActionbar(p, "&2XP: &a+" + mb.getBaseXp() +
+                                " &e" + TextUtils.capitalizeFully(b.getType().toString()) + ": &a+1" +
+                                " &3Stamina: &c-" + stamina);
 
 
-                    TextUtils.sendActionbar(p, "&2XP: &a+" + mb.getBaseXp() +
-                            " &e" + TextUtils.capitalizeFully(b.getType().toString()) + ": &a+1");
+                        if (Math.random() < mb.getEnhanceChance()) // Enhance Block?
+                            UniversalCoreRemake.getBlockMetadataManager().setMetadata(b, "MINEABLE",
+                                    mb.getEnhanceBlock().toString());
 
 
-                    if (Math.random() < mb.getEnhanceChance()) // Enhance Block?
-                        UniversalCoreRemake.getBlockMetadataManager().setMetadata(b, "MINEABLE",
-                                mb.getEnhanceBlock().toString());
+                        switch (mb.getOnBreak()) { // What To Do On Block Break?
+                            case DEFAULT:
+                                Effect blockBreak = new BlockBreak(UniversalCoreRemake.getEffectManager());
+                                blockBreak.material = b.getType();
+                                blockBreak.setLocation(b.getLocation());
+                                blockBreak.run();
 
+                                timer.remove(id);
+                                putRegenningBlock(b, (int) (mb.getGetRegenerateTime() * 20));
+                                b.setType(respawnBlock);
+                                removeMiningPlayer(p);
+                                break;
 
-                    switch (mb.getOnBreak()) { // What To Do On Block Break?
-                        case DEFAULT:
-                            Effect blockBreak = new BlockBreak(UniversalCoreRemake.getEffectManager());
-                            blockBreak.material = b.getType();
-                            blockBreak.setLocation(b.getLocation());
-                            blockBreak.run();
+                            case INSTANT_RESPAWN:
+                                Effect enhancedBlockBreak = new EnhancedBlockBreak(
+                                        UniversalCoreRemake.getEffectManager());
+                                enhancedBlockBreak.setLocation(b.getLocation());
+                                enhancedBlockBreak.run();
 
-                            timer.remove(id);
-                            putRegenningBlock(b, (int) (mb.getGetRegenerateTime() * 20));
-                            b.setType(respawnBlock);
-                            removeMiningPlayer(p);
-                            break;
-                        case INSTANT_RESPAWN:
-                            Effect enhancedBlockBreak = new EnhancedBlockBreak(UniversalCoreRemake.getEffectManager());
-                            enhancedBlockBreak.setLocation(b.getLocation());
-                            enhancedBlockBreak.run();
+                                Effect blockBreak2 = new BlockBreak(UniversalCoreRemake.getEffectManager());
+                                blockBreak2.material = b.getType();
+                                blockBreak2.setLocation(b.getLocation());
+                                blockBreak2.run();
 
-                            Effect blockBreak2 = new BlockBreak(UniversalCoreRemake.getEffectManager());
-                            blockBreak2.material = b.getType();
-                            blockBreak2.setLocation(b.getLocation());
-                            blockBreak2.run();
-
-                            timer.put(id, 0);
-                            b.setType(Material.valueOf(
-                                    UniversalCoreRemake.getBlockMetadataManager().getMetadata(b, "MINEABLE")));
-                            break;
+                                timer.put(id, 0);
+                                b.setType(Material.valueOf(
+                                        UniversalCoreRemake.getBlockMetadataManager().getMetadata(b,
+                                                "MINEABLE")));
+                                break;
+                        }
                     }
                 }
             }
@@ -243,9 +261,9 @@ public class MiningManager implements Listener {
 
     enum MineableBlock {
         RED_SANDSTONE(6.5f, 6.5f, Material.SANDSTONE, 0.075f, 1,
-                Material.RED_SANDSTONE, BreakBehavior.DEFAULT),
+                Material.RED_SANDSTONE, 1, BreakBehavior.DEFAULT),
         SANDSTONE(5.5f, 6.5f, Material.RED_SANDSTONE, 0.4f, 5,
-                Material.SANDSTONE, BreakBehavior.INSTANT_RESPAWN);
+                Material.SANDSTONE, 3, BreakBehavior.INSTANT_RESPAWN);
 
         private final float durability;
         private final float regenerateTime;
@@ -253,6 +271,7 @@ public class MiningManager implements Listener {
         private final float enhanceChance;
         private final int baseXp;
         private final Material loot;
+        private final int staminaBaseUsage;
         private final BreakBehavior onBreak;
 
         /**
@@ -262,9 +281,11 @@ public class MiningManager implements Listener {
          * @param enhanceChance Chance of turning block into enhanceBlock.
          * @param baseXp XP given without any multipliers.
          * @param loot Item dropped.
+         * @param staminaBaseUsage Stamina taken without any multipliers.
+         * @param onBreak What to do when (@link MineableBlock) is broken.
          */
         MineableBlock(float durability, float regenerateTime, Material enhanceBlock, float enhanceChance,
-                      int baseXp, Material loot, BreakBehavior onBreak) {
+                      int baseXp, Material loot, int staminaBaseUsage, BreakBehavior onBreak) {
             this.durability = durability;
             this.regenerateTime = regenerateTime;
             this.enhanceBlock = enhanceBlock;
@@ -272,6 +293,7 @@ public class MiningManager implements Listener {
             this.baseXp = baseXp;
             this.loot = loot;
             this.onBreak = onBreak;
+            this.staminaBaseUsage = staminaBaseUsage;
         }
 
         float getDurability() {
@@ -301,6 +323,8 @@ public class MiningManager implements Listener {
         BreakBehavior getOnBreak() {
             return onBreak;
         }
+
+        int getBaseStaminaUsage() { return staminaBaseUsage; }
     }
 
     enum BreakBehavior {

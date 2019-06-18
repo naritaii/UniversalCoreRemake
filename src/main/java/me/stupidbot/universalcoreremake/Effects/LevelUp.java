@@ -14,7 +14,7 @@ public class LevelUp extends Effect {
     private int step = 0;
     private int hue = 0;
     private int initAnim = 0;
-    public Player p = null;
+    private Player p = null;
 
     public LevelUp(EffectManager effectManager) {
         super(effectManager);

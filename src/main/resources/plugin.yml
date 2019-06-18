@@ -22,3 +22,7 @@ commands:
       aliases: [mineraltrader]
       description: Open's Miner Trader GUI
       usage: /openmineraltrader [player]
+   openfoodtrader:
+      aliases: [foodtrader]
+      description: Open's Food Trader GUI
+      usage: /openfoodtrader [player]

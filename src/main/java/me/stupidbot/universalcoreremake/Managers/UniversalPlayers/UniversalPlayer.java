@@ -107,15 +107,6 @@ public class UniversalPlayer {
         return s;
     }
 
-    public int getDataStamina() {
-        return pFile.getInt("Player.Stamina");
-    }
-
-    public int setDataStamina(int i) {
-        pFile.set("Player.Stamina", i);
-        return i;
-    }
-
     String getDataFirstPlayed() {
         return pFile.getString("Stats.FirstJoin");
     }
@@ -127,6 +118,15 @@ public class UniversalPlayer {
 
     public String getDataLastPlayed() {
         return pFile.getString("Stats.LastPlayed");
+    }
+
+    public int getDataBlocksMined() {
+        return pFile.getInt("Stats.BlocksMined");
+    }
+
+    public int setDataBlocksMined(int i) {
+        pFile.set("Stats.BlocksMined", i);
+        return i;
     }
 
 
@@ -142,5 +142,15 @@ public class UniversalPlayer {
             s = setDataCosmeticIdTrail("none");
 
         return s;
+    }
+
+
+    public int getDataStamina() {
+        return pFile.getInt("Stamina");
+    }
+
+    public int setDataStamina(int i) {
+        pFile.set("Stamina", i);
+        return i;
     }
 }

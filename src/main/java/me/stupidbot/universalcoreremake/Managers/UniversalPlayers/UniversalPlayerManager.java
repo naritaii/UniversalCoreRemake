@@ -1,6 +1,7 @@
 package me.stupidbot.universalcoreremake.Managers.UniversalPlayers;
 
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
+import me.stupidbot.universalcoreremake.Utilities.Stamina;
 import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,6 +17,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -49,10 +51,23 @@ public class UniversalPlayerManager implements Listener {
         up.setDataPrefix(prefix);
         up.setDataNameColor(prefix.substring(0, 2));
 
-        if (up.getDataFirstPlayed() == null)
+        if (up.firstJoin()) {
             up.setDataFirstPlayed(up.getSimpleDateFormat().format(new Date()));
-        if (up.getDataLevel() == 0)
             up.setDataLevel(1);
+            up.setDataStamina(Stamina.getMaxStamina(1));
+        } else // Editing UniversalPlayers in PlayerJoinEvent is glitchy so we handle it here if needed.
+            try {
+                if (new Date().getTime() - up.getSimpleDateFormat().parse(up.getDataLastPlayed())
+                        .getTime() >= 6.48e+7) { // 18 hours
+                    up.setDataStamina(Stamina.getMaxStamina(up.getDataLevel()));
+                    p.setFoodLevel(20);
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                            "&a&lALL STAMINA RECOVERED!&7 All stamina is recovered if you've been" +
+                                    "offline for 18+ hours."));
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
 
         List<UniversalPlayer> ups = getAllUniversalPlayers();
@@ -166,7 +181,7 @@ public class UniversalPlayerManager implements Listener {
         });
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void OnPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
 

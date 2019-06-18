@@ -34,7 +34,7 @@ import java.util.List;
 public class ItemBuilder implements Listener {
     private static final Plugin	                       plugin	= UniversalCoreRemake.getInstance();
     private static boolean	                           listener	= false;
-    private static final HashMap<String, PotionEffect>	effects	= new HashMap<String, PotionEffect>();
+    private static final HashMap<String, PotionEffect>	effects	= new HashMap<>();
 
     private final ItemStack	                           is;
 
@@ -100,7 +100,7 @@ public class ItemBuilder implements Listener {
         final ItemMeta meta = is.getItemMeta();
         List<String> lore = meta.getLore();
         if (lore == null) {
-            lore = new ArrayList<String>();
+            lore = new ArrayList<>();
         }
         lore.add(ChatColor.translateAlternateColorCodes('&', name));
         meta.setLore(lore);
@@ -184,7 +184,7 @@ public class ItemBuilder implements Listener {
      */
     public ItemBuilder clearLore() {
         final ItemMeta meta = is.getItemMeta();
-        meta.setLore(new ArrayList<String>());
+        meta.setLore(new ArrayList<>());
         is.setItemMeta(meta);
         return this;
     }
@@ -251,7 +251,7 @@ public class ItemBuilder implements Listener {
      * @return this builder for chaining
      * @since 1.2
      */
-    public ItemBuilder effect(PotionEffect effect) {
+    private ItemBuilder effect(PotionEffect effect) {
         if (!listener) {
             Bukkit.getPluginManager().registerEvents(this, plugin);
             listener = true;

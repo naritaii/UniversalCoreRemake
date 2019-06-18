@@ -46,7 +46,7 @@ public class TextUtils {
         ((CraftPlayer) p).getHandle().playerConnection.sendPacket(length);
     }
 
-    static void sendSubtitle(Player p, String msg, int fadeIn, int stayTime, int fadeOut) {
+    public static void sendSubtitle(Player p, String msg, int fadeIn, int stayTime, int fadeOut) {
        /* PacketPlayOutTitle title = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE,
                 IChatBaseComponent.ChatSerializer.a(ChatColor.translateAlternateColorCodes('&',
                         "{\"text\": \"" + msg + "\"}")), fadeIn, stayTime, fadeOut);
