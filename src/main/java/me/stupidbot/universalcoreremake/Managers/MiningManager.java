@@ -119,8 +119,10 @@ public class MiningManager implements Listener {
                     int finishedInt = (int) ((mb.getDurability() - durabilityMod) * 20);
 
                     if (d < finishedInt) { // If Still Mining
-                        int stage = (int) Math.floor((d * 10d) / finishedInt);
-                        breakAnim(p, b, stage);
+                        if ((d * 10f) % finishedInt == 0) {
+                            int stage = (int) Math.floor((d * 10f) / finishedInt);
+                            breakAnim(p, b, stage);
+                        }
 
                         timer.put(id, d);
                     } else { // If Finished Mining

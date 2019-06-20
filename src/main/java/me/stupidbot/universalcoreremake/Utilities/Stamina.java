@@ -21,7 +21,7 @@ public class Stamina implements Listener {
         ItemStack i = e.getItem();
         int stamina = BaseFoodStamina.valueOf(i.getType().toString()).getBaseFoodStamina();
         addStamina(p, stamina);
-        TextUtils.sendActionbar(p, "&3Stamina &a+" + stamina);
+        TextUtils.sendActionbar(p, "&3Stamina &a+" + stamina + " &e(" + getStamina(p) + "/" + getMaxStamina(p));
     }
 
     public static void addStamina(Player p, int i) {
