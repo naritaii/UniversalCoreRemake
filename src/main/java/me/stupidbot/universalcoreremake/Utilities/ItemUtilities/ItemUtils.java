@@ -1,4 +1,4 @@
-package me.stupidbot.universalcoreremake.Utilities;
+package me.stupidbot.universalcoreremake.Utilities.ItemUtilities;
 
 import com.google.common.collect.Lists;
 import com.google.common.io.BaseEncoding;

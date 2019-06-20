@@ -1,4 +1,4 @@
-package me.stupidbot.universalcoreremake.Utilities;
+package me.stupidbot.universalcoreremake.Utilities.ItemUtilities;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

@@ -2,7 +2,7 @@ package me.stupidbot.universalcoreremake.Commands;
 
 import fr.minuskube.inv.SmartInventory;
 import me.stupidbot.universalcoreremake.GUI.Buy;
-import me.stupidbot.universalcoreremake.Utilities.SellItem;
+import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.SellItem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

@@ -9,7 +9,7 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private final Exp exp = new Exp();
     private final SetBlockMeta setBlockMeta = new SetBlockMeta();
     private final Emoji emoji = new Emoji();
-    private final OpenMineralTrader openMineralTrader = new OpenMineralTrader();
+    private static final OpenMineralTrader openMineralTrader = new OpenMineralTrader();
     private final OpenFoodTrader openFoodTrader = new OpenFoodTrader();
 
 //    public CommandExecutor() {

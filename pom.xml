@@ -86,6 +86,16 @@
             <id>minuskube-repo</id>
             <url>https://github.com/MinusKube/SmartInvs/releases</url>
         </repository>
+        <!--Citizens-->
+        <repository>
+            <id>everything</id>
+            <url>http://repo.citizensnpcs.co/</url>
+        </repository>
+        <!--HolographicDisplays-->
+        <repository>
+            <id>codemc-repo</id>
+            <url>https://repo.codemc.org/repository/maven-public/</url>
+        </repository>
     </repositories>
     <dependencies>
         <!--Spigot-->
@@ -129,6 +139,21 @@
             <artifactId>smart-invs</artifactId>
             <version>1.2.7</version>
             <scope>compile</scope>
+        </dependency>
+        <!--Citizens-->
+        <dependency>
+            <groupId>net.citizensnpcs</groupId>
+            <artifactId>citizens</artifactId>
+            <version>2.0.25-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+        <!--HolographicDisplays-->
+        <dependency>
+            <groupId>com.gmail.filoghost.holographicdisplays</groupId>
+            <artifactId>holographicdisplays-api</artifactId>
+            <version>2.3.2</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

@@ -1,5 +1,6 @@
-package me.stupidbot.universalcoreremake.Utilities;
+package me.stupidbot.universalcoreremake.Utilities.ItemUtilities;
 
+import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
