@@ -6,6 +6,7 @@ import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.ItemBuilder;
+import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.ItemUtils;
 import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.SellItem;
 import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import net.milkbowl.vault.economy.Economy;
@@ -19,8 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class Buy implements InventoryProvider {
-    private List<SellItem> items = null;
-    private String title = null;
+    private List<SellItem> items;
+    private String title;
 
     private Buy(String title, List<SellItem> items) {
         this.items = items;
@@ -37,7 +38,7 @@ public class Buy implements InventoryProvider {
     }
 
     @Override
-    public void init(Player player, InventoryContents contents) {
+    public void init(Player p, InventoryContents contents) {
         ItemStack border = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15))
                 .name(" ").build();
         contents.fillBorders(ClickableItem.empty(border));
@@ -48,6 +49,7 @@ public class Buy implements InventoryProvider {
             String mName = TextUtils.capitalizeFully(m.toString());
             ItemStack icon = new ItemBuilder(si.getItem())
                     .name("&a" + mName)
+                    .clearLore()
                     .lore("")
                     .lore("&7Cost:")
                     .lore("&6$" + TextUtils.addCommas(cost))
@@ -56,14 +58,15 @@ public class Buy implements InventoryProvider {
 
             contents.add(ClickableItem.of(icon, e -> {
                 Economy econ = UniversalCoreRemake.getEconomy();
-                if (econ.getBalance(player) > cost) {
-                    UniversalCoreRemake.getEconomy().withdrawPlayer(player, cost);
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                if (econ.getBalance(p) > cost) {
+                    UniversalCoreRemake.getEconomy().withdrawPlayer(p, cost);
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             "&aYou bought &6" + mName +
                                     "&a for &c$" + TextUtils.addCommas(cost)));
-                    player.playSound(player.getLocation(), Sound.NOTE_PLING, 1f, 1f);
+                    ItemUtils.addItemSafe(p, si.getItem());
+                    p.playSound(p.getLocation(), Sound.NOTE_PLING, 1f, 1f);
                 } else
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             "&cYou don't have enough money!"));
             }));
         }

@@ -37,7 +37,7 @@ public class Sell implements InventoryProvider {
     }
 
     @Override
-    public void init(Player player, InventoryContents contents) {
+    public void init(Player p, InventoryContents contents) {
         ItemStack border = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15))
                 .name(" ").build();
         contents.fillBorders(ClickableItem.empty(border));
@@ -48,6 +48,7 @@ public class Sell implements InventoryProvider {
             String mName = TextUtils.capitalizeFully(m.toString());
             ItemStack icon = new ItemBuilder(si.getItem())
                     .name("&a" + mName)
+                    .clearLore()
                     .lore("")
                     .lore("&7Sell Price:")
                     .lore("&6$" + TextUtils.addCommas(cost))
@@ -55,7 +56,7 @@ public class Sell implements InventoryProvider {
                     .lore("&eClick to sell!").build();
 
             contents.add(ClickableItem.of(icon, e -> {
-                Inventory pinv = player.getInventory();
+                Inventory pinv = p.getInventory();
 
 
                 if (pinv.contains(m)) {
@@ -66,13 +67,13 @@ public class Sell implements InventoryProvider {
 
                     pinv.remove(m);
                     double money = amt * cost;
-                    UniversalCoreRemake.getEconomy().depositPlayer(player, money);
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    UniversalCoreRemake.getEconomy().depositPlayer(p, money);
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             "&aYou sold &3x" + TextUtils.addCommas(amt) + " " + mName +
                                     "&a for &6$" + TextUtils.addCommas(money)));
-                    player.playSound(player.getLocation(), Sound.NOTE_PLING, 1f, 1f);
+                    p.playSound(p.getLocation(), Sound.NOTE_PLING, 1f, 1f);
                 } else
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             "&cYou don't have any ") + mName + "!");
             }));
         }

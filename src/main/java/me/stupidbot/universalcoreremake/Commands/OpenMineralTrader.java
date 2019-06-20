@@ -2,7 +2,6 @@ package me.stupidbot.universalcoreremake.Commands;
 
 import fr.minuskube.inv.SmartInventory;
 import me.stupidbot.universalcoreremake.GUI.Sell;
-import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.ItemBuilder;
 import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.SellItem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,13 +17,7 @@ class OpenMineralTrader {
     OpenMineralTrader() {
         mineralTraderGui = Sell.getInventory("Mineral Trader", Arrays.asList(
                 new SellItem(Material.RED_SANDSTONE, 0.70),
-                new SellItem(Material.SANDSTONE, 2.00),
-                new SellItem(new ItemBuilder(Material.COAL_ORE).lore("&cCOMING SOON").build(), 0),
-                new SellItem(new ItemBuilder(Material.COAL).lore("&cCOMING SOON").build(), 0),
-                new SellItem(new ItemBuilder(Material.IRON_ORE).lore("&cCOMING SOON").build(), 0),
-                new SellItem(new ItemBuilder(Material.IRON_INGOT).lore("&cCOMING SOON").build(), 0),
-                new SellItem(new ItemBuilder(Material.GOLD_ORE).lore("&cCOMING SOON").build(), 0),
-                new SellItem(new ItemBuilder(Material.GOLD_INGOT).lore("&cCOMING SOON").build(), 0)));
+                new SellItem(Material.SANDSTONE, 2.00)));
     }
 
     @SuppressWarnings("SameReturnValue")
