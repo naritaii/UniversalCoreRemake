@@ -11,6 +11,7 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private final Emoji emoji = new Emoji();
     private static final OpenMineralTrader openMineralTrader = new OpenMineralTrader();
     private final OpenFoodTrader openFoodTrader = new OpenFoodTrader();
+    private final ReloadMOTD reloadMOTD = new ReloadMOTD();
 
 //    public CommandExecutor() {
 //        UniversalCoreRemake instance = this.instance;
@@ -28,6 +29,8 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
             return openMineralTrader.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("openfoodtrader"))
             return openFoodTrader.execute(s, label, args);
+        else if (cmd.getName().equalsIgnoreCase("reloadmotd"))
+            return reloadMOTD.execute(s);
         else
             return false;
         }

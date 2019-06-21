@@ -9,20 +9,24 @@ commands:
    exp:
       aliases: [xp, giveexp, givexp]
       description: Give exp
-      usage: /exp <levelup|<amount>> [player]
+      usage: /<command> <levelup|<amount>> [player]
    setblockmeta:
       alias: setblockmetadata
       description: Set block meta
-      usage: /setblockmeta <remove|<metadata> <value>>
+      usage: /<command> <remove|<metadata> <value>>
    emoji:
       aliases: [emojis]
       description: List emojis
-      usage: /emoji
+      usage: /<command>
    openmineraltrader:
       aliases: [mineraltrader]
-      description: Open's Miner Trader GUI
-      usage: /openmineraltrader [player]
+      description: Open Miner Trader GUI
+      usage: /<command> [player]
    openfoodtrader:
       aliases: [foodtrader]
-      description: Open's Food Trader GUI
-      usage: /openfoodtrader [player]
+      description: Open Food Trader GUI
+      usage: /<command> [player]
+   reloadmotd:
+      aliases: [motdreload]
+      description: Reload serverlist MOTD
+      usage: /<command>

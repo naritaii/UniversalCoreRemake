@@ -19,7 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.UUID;
 
-public class Buy implements InventoryProvider {
+public class Buy implements InventoryProvider { // TODO Replace temp fix
     private List<SellItem> items;
     private String title;
 

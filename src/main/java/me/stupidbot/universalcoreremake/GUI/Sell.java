@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.UUID;
 
-public class Sell implements InventoryProvider {
+public class Sell implements InventoryProvider { // TODO Replace temp fix
     private List<SellItem> items = null;
     private String title = null;
 

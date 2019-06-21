@@ -103,11 +103,9 @@ public class TextUtils {
     }
 
     // private final static int CENTER_PX = 154;
-    static void sendCenteredMessage(Player player, String message) {
-        if (message == null || message.equals("")) {
-            player.sendMessage("");
-            return;
-        }
+    public static String centerMessage(String message, int CENTER_PX) {
+        if (message == null || message.equals(""))
+            return "";
         message = ChatColor.translateAlternateColorCodes('&', message);
 
         int messagePxSize = 0;
@@ -126,7 +124,6 @@ public class TextUtils {
                 messagePxSize++;
             }
         }
-        int CENTER_PX = 154;
         int halvedMessageSize = messagePxSize / 2;
         int toCompensate = CENTER_PX - halvedMessageSize;
         int spaceLength = DefaultFontInfo.SPACE.getLength() + 1;
@@ -136,7 +133,11 @@ public class TextUtils {
             sb.append(" ");
             compensated += spaceLength;
         }
-        player.sendMessage(sb.toString() + message);
+        return sb.toString() + message;
+    }
+
+    public static void sendCenteredMessage(Player p, String message) {
+        p.sendMessage(centerMessage(message, 154));
     }
 
     enum DefaultFontInfo {

@@ -7,6 +7,7 @@ import fr.minuskube.inv.InventoryManager;
 import me.stupidbot.universalcoreremake.Commands.CommandExecutor;
 import me.stupidbot.universalcoreremake.Listeners.AsyncPlayerChatListener;
 import me.stupidbot.universalcoreremake.Managers.BlockMetadataManger;
+import me.stupidbot.universalcoreremake.Managers.MOTDManager;
 import me.stupidbot.universalcoreremake.Managers.MiningManager;
 import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayerManager;
 import me.stupidbot.universalcoreremake.Utilities.PlayerLevelling;
@@ -31,6 +32,7 @@ public class UniversalCoreRemake extends JavaPlugin {
     private static Permission perms = null;
     private static Chat chat = null;
     private static InventoryManager inventoryManager = null;
+    private static MOTDManager motdManager;
 
     @Override
     public void onEnable() {
@@ -42,12 +44,9 @@ public class UniversalCoreRemake extends JavaPlugin {
         miningManager = new MiningManager();
         blockMetadataManager = new BlockMetadataManger();
         inventoryManager = new InventoryManager(instance);
+        motdManager = new MOTDManager();
 
         CommandExecutor executor = new CommandExecutor();
-
-
-        registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager, new Stamina(),
-                new AsyncPlayerChatListener());
 
         setupEconomy();
         setupChat();
@@ -56,8 +55,12 @@ public class UniversalCoreRemake extends JavaPlugin {
         miningManager.initialize();
         blockMetadataManager.initialize();
         inventoryManager.init();
+        motdManager.reload();
 
-        registerCommands(executor, "exp", "setblockmeta", "emoji", "openmineraltrader", "openfoodtrader");
+        registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager, new Stamina(),
+                new AsyncPlayerChatListener(), motdManager);
+        registerCommands(executor, "exp", "setblockmeta", "emoji", "openmineraltrader", "openfoodtrader",
+                "reloadmotd");
 
 
         System.out.println(getName() + " is now enabled!");
@@ -113,7 +116,13 @@ public class UniversalCoreRemake extends JavaPlugin {
         return blockMetadataManager;
     }
 
-    public static InventoryManager getInventoryManager() { return inventoryManager; }
+    public static InventoryManager getInventoryManager() {
+        return inventoryManager;
+    }
+
+    public static MOTDManager getMotdManager() {
+        return motdManager;
+    }
 
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
