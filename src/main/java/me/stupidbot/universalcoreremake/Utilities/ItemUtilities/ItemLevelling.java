@@ -1,12 +1,10 @@
 package me.stupidbot.universalcoreremake.Utilities.ItemUtilities;
 
 import me.stupidbot.universalcoreremake.Utilities.TextUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,26 +27,21 @@ public class ItemLevelling {
             return updateItem(i);
     }
 
+    public static void giveXp(Player p, ItemStack i, int amount) {
+        p.setItemInHand(giveXp(i, amount));
+    }
+
     private static ItemStack updateItem(ItemStack i) {
-        ItemMeta im = i.getItemMeta();
         int lvl = ItemUtils.hasMetadata(i, "XPLevel")
                 ? Integer.parseInt((String) ItemUtils.getMetadata(i, "XPLevel")) : 1;
+        int currentXp = ItemUtils.hasMetadata(i, "XP") ?
+                Integer.parseInt((String) ItemUtils.getMetadata(i, "XP")) : 0;
         String name = TextUtils.capitalizeFully(i.getType().toString());
         if (ItemUtils.hasMetadata(i, "CustomName"))
             name = (String) ItemUtils.getMetadata(i, "CustomName");
 
-        im.setDisplayName(ChatColor.translateAlternateColorCodes('&',
-                "&r" + name + " &5&l" + lvl));
-
-        ArrayList<String> lore = new ArrayList<>();
-
-        im.setLore(lore);
-
-        // TODO Change item lore and account for enchants/"mutations". Item XP will probably be called something like
-        // TODO "corruption" on the client side despite just being labelled as XP in code.
-
-        i.setItemMeta(im);
-        return i;
+        return new ItemBuilder(i).name("&r" + name + " &5&l" + lvl)
+                .lore("").build();
     }
 
     private static int xpToNextLevel(int lvl) {
