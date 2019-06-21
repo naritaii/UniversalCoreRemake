@@ -62,7 +62,7 @@ public class UniversalPlayerManager implements Listener {
                     up.setDataStamina(Stamina.getMaxStamina(up.getDataLevel()));
                     p.setFoodLevel(20);
                     p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            "&a&lALL STAMINA RECOVERED!&8 All stamina is recovered when you've been " +
+                            "&a&lALL STAMINA RECOVERED!&7&o All stamina is recovered when you've been " +
                                     "offline for 18+ hours."));
                 }
             } catch (ParseException e) {

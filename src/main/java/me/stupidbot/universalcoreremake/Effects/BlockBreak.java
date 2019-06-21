@@ -4,6 +4,7 @@ import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.EffectType;
 import de.slikey.effectlib.util.ParticleEffect;
+import me.stupidbot.universalcoreremake.Utilities.LocationUtils;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 
@@ -19,8 +20,7 @@ public class BlockBreak extends Effect {
 
     @Override
     public void onRun() {
-        Location loc = getLocation().add(getLocation().getX() < 0 ? 0.5 : -0.5, 0.5,
-                getLocation().getZ() < 0 ? 0.5 : -0.5);
+        Location loc = LocationUtils.center(getLocation());
         display(ParticleEffect.BLOCK_CRACK, loc, 1f, 25);
         loc.getWorld().playSound(loc, Sound.DIG_STONE, 1f, 1f);
     }

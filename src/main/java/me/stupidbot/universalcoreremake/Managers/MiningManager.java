@@ -13,9 +13,9 @@ import me.stupidbot.universalcoreremake.Effects.BlockRegen;
 import me.stupidbot.universalcoreremake.Effects.EnhancedBlockBreak;
 import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayer;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
-import me.stupidbot.universalcoreremake.Utilities.BlockUtils;
 import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.ItemLevelling;
 import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.ItemUtils;
+import me.stupidbot.universalcoreremake.Utilities.LocationUtils;
 import me.stupidbot.universalcoreremake.Utilities.PlayerLevelling;
 import me.stupidbot.universalcoreremake.Utilities.Stamina;
 import me.stupidbot.universalcoreremake.Utilities.TextUtils;
@@ -227,7 +227,7 @@ public class MiningManager implements Listener {
                 PacketType.Play.Server.BLOCK_BREAK_ANIMATION);
         breakAnim.getBlockPositionModifier().write(0, new BlockPosition(b.getX(), b.getY(),
                 b.getZ()));
-        breakAnim.getIntegers().write(0, BlockUtils.getBlockEntityId(b));
+        breakAnim.getIntegers().write(0, LocationUtils.getBlockEntityId(b));
         breakAnim.getIntegers().write(1, stage);
         try {
             UniversalCoreRemake.getProtocolManager().sendServerPacket(p, breakAnim);
