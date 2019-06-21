@@ -18,6 +18,16 @@ import java.util.List;
 import java.util.Objects;
 
 public class ItemUtils {
+    public static org.bukkit.inventory.ItemStack removeItem(org.bukkit.inventory.ItemStack i, int removeAmount) {
+            int itemAmount = i.getAmount();
+            if (itemAmount <= removeAmount)
+                return new org.bukkit.inventory.ItemStack(org.bukkit.Material.AIR);
+            else {
+                i.setAmount(itemAmount - removeAmount);
+                return i;
+        }
+    }
+
     public static void addItemSafe(Player p, org.bukkit.inventory.ItemStack[] items) {
         boolean invFull = false;
         for (org.bukkit.inventory.ItemStack item : items) {

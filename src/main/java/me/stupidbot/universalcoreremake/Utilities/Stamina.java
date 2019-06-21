@@ -1,7 +1,7 @@
 package me.stupidbot.universalcoreremake.Utilities;
 
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
-import org.bukkit.Material;
+import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.ItemUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -9,7 +9,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffectType;
 
 public class Stamina implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
@@ -19,14 +18,14 @@ public class Stamina implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerItemConsume(PlayerItemConsumeEvent e) {
+        e.setCancelled(true);
         Player p = e.getPlayer();
         ItemStack i = e.getItem();
+        p.setItemInHand(ItemUtils.removeItem(p.getItemInHand(), 1));
         int stamina = BaseFoodStamina.valueOf(i.getType().toString()).getBaseFoodStamina();
         addStamina(p, stamina);
         TextUtils.sendActionbar(p, "&3Stamina &a+" + stamina +
                 " &e(" + getStamina(p) + "/" + getMaxStamina(p) + ")");
-        if (i.getType() == Material.ROTTEN_FLESH)
-            p.removePotionEffect(PotionEffectType.HUNGER);
     }
 
     public static void addStamina(Player p, int i) {

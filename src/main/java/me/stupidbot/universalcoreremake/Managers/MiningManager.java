@@ -34,6 +34,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -119,10 +120,8 @@ public class MiningManager implements Listener {
                     int finishedInt = (int) ((mb.getDurability() - durabilityMod) * 20);
 
                     if (d < finishedInt) { // If Still Mining
-                        if ((d * 10f) % finishedInt == 0) {
-                            int stage = (int) Math.floor((d * 10f) / finishedInt);
-                            breakAnim(p, b, stage);
-                        }
+                        int stage = (int) Math.floor((d * 10f) / finishedInt);
+                        breakAnim(p, b, stage);
 
                         timer.put(id, d);
                     } else { // If Finished Mining
@@ -135,7 +134,7 @@ public class MiningManager implements Listener {
                         int xp = mb.getBaseXp();
                         PlayerLevelling.giveXp(p, xp);
                         if (usingItem)
-                            ItemLevelling.giveXp(p, itemInHand, xp);
+                            itemInHand = ItemLevelling.giveXp(p, itemInHand, xp);
 
                         Stamina.removeStamina(p, stamina);
                         TextUtils.sendActionbar(p, "&2XP: &a+" + mb.getBaseXp() +
@@ -182,8 +181,11 @@ public class MiningManager implements Listener {
                 }
             }
 
-            for (Block b : regen.keySet()) { // Block has been mined
-                int i = regen.get(b) - 1;
+            Iterator iter = regen.entrySet().iterator(); // Use Iterator because of ConcurrentModificationException
+            while (iter.hasNext()) { // Block has been mined
+                Map.Entry pair = (Map.Entry) iter.next();
+                Block b = (Block) pair.getKey();
+                int i = (int) pair.getValue() - 1;
 
                 if (i < 1) { // Regen Block
                     b.setType(Material.valueOf(
@@ -192,7 +194,8 @@ public class MiningManager implements Listener {
                     Effect eff = new BlockRegen(UniversalCoreRemake.getEffectManager());
                     eff.setLocation(b.getLocation());
                     eff.run();
-                    removeRegenningBlock(b);
+                    // removeRegenningBlock(b); Use Iterator because of ConcurrentModificationException
+                    iter.remove();
                 } else
                     putRegenningBlock(b, i);
             }

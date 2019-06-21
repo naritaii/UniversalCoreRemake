@@ -27,8 +27,10 @@ public class ItemLevelling {
             return updateItem(i);
     }
 
-    public static void giveXp(Player p, ItemStack i, int amount) {
-        p.setItemInHand(giveXp(i, amount));
+    public static ItemStack giveXp(Player p, ItemStack i, int amount) {
+        ItemStack item = giveXp(i, amount);
+        p.setItemInHand(item);
+        return item;
     }
 
     private static ItemStack updateItem(ItemStack i) {
@@ -41,7 +43,8 @@ public class ItemLevelling {
             name = (String) ItemUtils.getMetadata(i, "CustomName");
 
         return new ItemBuilder(i).name("&r" + name + " &5&l" + lvl)
-                .lore("").build();
+                .clearLore()
+                .lore("&bXP: " + currentXp + "/" + xpToNextLevel(lvl)).build();
     }
 
     private static int xpToNextLevel(int lvl) {
