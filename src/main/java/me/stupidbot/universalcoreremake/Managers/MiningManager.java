@@ -269,6 +269,7 @@ public class MiningManager implements Listener {
         }
     }
 
+    @SuppressWarnings("unused")
     enum MineableBlock {
         RED_SANDSTONE(6.5f, 6.5f, Material.SANDSTONE, 0.075f, 1,
                 Material.RED_SANDSTONE, 1, BreakBehavior.DEFAULT),

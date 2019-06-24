@@ -117,8 +117,8 @@ public class ItemMetadata implements Listener {
 
             if (!customMetaItems.isEmpty()) {
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&aItems with hidden data break in creative mode and have been removed from" +
-                                "from your inventory.\nYou'll get them back when you &eget out of creative mode." +
+                        "&aItems with hidden data have been removed from your inventory so that no " +
+                                "data is lost.\nYou'll get them back when you &eget out of creative mode." +
                                 "\n&cIf the server shuts off while you're in creative mode you will lose your items " +
                                 "&lPERMANENTLY!"));
                 savedItems.put(p.getUniqueId(), customMetaItems);

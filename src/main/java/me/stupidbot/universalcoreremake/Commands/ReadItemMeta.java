@@ -3,6 +3,7 @@ package me.stupidbot.universalcoreremake.Commands;
 import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.ItemMetadata;
 import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -19,8 +20,9 @@ class ReadItemMeta {
             else {
                 Player p = (Player) s;
                 ItemStack i = p.getItemInHand();
+                Material m = i.getType();
 
-                if (i != null) {
+                if (m != Material.AIR) {
                     Map<String, String> metaMap = ItemMetadata.getMeta(i);
                     if (metaMap != null) {
                         StringBuilder metas = new StringBuilder();
@@ -31,16 +33,17 @@ class ReadItemMeta {
                             .append(":")
                             .append(metaMap.get(meta));
                         }
+
                         s.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                                "&a" + TextUtils.capitalizeFully(i.getType().toString()) +
-                                        " has the following meta &e" + metas));
+                                "&a" + TextUtils.capitalizeFully(m.toString()) +
+                                        " has the following metadata: &e" + metas));
                     } else
                         s.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                                "&a" + TextUtils.capitalizeFully(i.getType().toString()) +
+                                "&a" + TextUtils.capitalizeFully(m.toString()) +
                                         " has no custom metadata!"));
                 } else
                     s.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            "&cYou're not looking at a block!"));
+                            "&cYou're not holding any items!"));
             }
         else s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                 "&cOnly players may use this command!"));

@@ -37,7 +37,7 @@ class ReadBlockMeta {
                         }
                         s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                 "&a" + TextUtils.capitalizeFully(m.toString()) +
-                                        " has the following meta &e" + metas));
+                                        " has the following metadata &e" + metas));
                     } else
                         s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                 "&a" + TextUtils.capitalizeFully(m.toString()) +

@@ -3,6 +3,7 @@ package me.stupidbot.universalcoreremake.Commands;
 import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.ItemMetadata;
 import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -10,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Map;
 
 class SetItemMeta {
-    @SuppressWarnings("SameReturnValue")
+    @SuppressWarnings({"SameReturnValue", "ConstantConditions"})
     boolean execute(CommandSender s, String label, String[] args) {
         if (s instanceof Player)
             if (!s.hasPermission("universalcore.admin"))
@@ -23,8 +24,9 @@ class SetItemMeta {
                 if (args[0].equalsIgnoreCase("remove")) {
                     Player p = (Player) s;
                     ItemStack i = p.getItemInHand();
+                    Material m = i.getType();
 
-                    if (i != null) {
+                    if (m != Material.AIR) {
                         Map<String, String> metaMap = ItemMetadata.getMeta(i);
 
                         if (metaMap != null) {
@@ -40,10 +42,10 @@ class SetItemMeta {
                             }
                             s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                     "&aSuccessfully removed &e" + metas + " &afrom " +
-                                            TextUtils.capitalizeFully(i.getType().toString())));
+                                            TextUtils.capitalizeFully(m.toString())));
                         } else
                             s.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                                    "&c" + TextUtils.capitalizeFully(i.getType().toString()) +
+                                    "&c" + TextUtils.capitalizeFully(m.toString()) +
                                             " already had no custom metadata!"));
                     } else
                         s.sendMessage(ChatColor.translateAlternateColorCodes('&',
@@ -54,8 +56,9 @@ class SetItemMeta {
             } else {
                 Player p = (Player) s;
                 ItemStack i = p.getItemInHand();
+                Material m = i.getType();
 
-                if (i != null) {
+                if (m != Material.AIR) {
                     p.setItemInHand(ItemMetadata.setMeta(i, args[0], args[1]));
 
                     Map<String, String> metaMap = ItemMetadata.getMeta(i);
@@ -68,8 +71,8 @@ class SetItemMeta {
                         .append(metaMap.get(meta));
                     }
                     s.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            "&a" + TextUtils.capitalizeFully(i.getType().toString()) +
-                                    " now has the following tags: &e" + metas));
+                            "&a" + TextUtils.capitalizeFully(m.toString()) +
+                                    " now has the following metadata: &e" + metas));
                 } else
                     s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             "&cYou're not holding any items!"));

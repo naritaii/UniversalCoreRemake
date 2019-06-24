@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 
+@SuppressWarnings("SameParameterValue")
 public class UniversalPlayer {
     private final File pFileLoc;
     private final FileConfiguration pFile;

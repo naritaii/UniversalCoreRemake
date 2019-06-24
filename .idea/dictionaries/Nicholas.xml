@@ -9,6 +9,7 @@
       <w>dmulloy</w>
       <w>doomph</w>
       <w>dosgi</w>
+      <w>eget</w>
       <w>ejobs</w>
       <w>elmakers</w>
       <w>emoji</w>
@@ -43,10 +44,13 @@
       <w>pigman</w>
       <w>pinv</w>
       <w>qroot</w>
+      <w>readblockmeta</w>
+      <w>readitemmeta</w>
       <w>realsmooth</w>
       <w>regenning</w>
       <w>reloadmotd</w>
       <w>setblockmeta</w>
+      <w>setitemmeta</w>
       <w>slikey</w>
       <w>sortorg</w>
       <w>spigotmc</w>

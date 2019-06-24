@@ -22,6 +22,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+@SuppressWarnings("UnusedReturnValue")
 public class UniversalCoreRemake extends JavaPlugin {
     private static UniversalCoreRemake instance;
     private static EffectManager effectManager;
