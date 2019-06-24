@@ -33,11 +33,6 @@ public class TextUtils {
     }
 
     public static void sendTitle(Player p, String msg, int fadeIn, int stayTime, int fadeOut) {
-        /* PacketPlayOutTitle title = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE,
-                IChatBaseComponent.ChatSerializer.a(ChatColor.translateAlternateColorCodes('&',
-                        "{\"text\": \"" + msg + "\"}")), fadeIn, stayTime, fadeOut);
-
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(title); */
         IChatBaseComponent chatTitle = IChatBaseComponent.ChatSerializer.a(
                 ChatColor.translateAlternateColorCodes('&', "{\"text\": \"" + msg + "\"}"));
         PacketPlayOutTitle title = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, chatTitle);
@@ -47,11 +42,6 @@ public class TextUtils {
     }
 
     public static void sendSubtitle(Player p, String msg, int fadeIn, int stayTime, int fadeOut) {
-       /* PacketPlayOutTitle title = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE,
-                IChatBaseComponent.ChatSerializer.a(ChatColor.translateAlternateColorCodes('&',
-                        "{\"text\": \"" + msg + "\"}")), fadeIn, stayTime, fadeOut);
-
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(title); */
         IChatBaseComponent chatSubtitle = IChatBaseComponent.ChatSerializer.a(
                 ChatColor.translateAlternateColorCodes('&', "{\"text\": \"" + msg + "\"}"));
         PacketPlayOutTitle subtitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE, chatSubtitle);
@@ -60,11 +50,11 @@ public class TextUtils {
         ((CraftPlayer) p).getHandle().playerConnection.sendPacket(length);
     }
 
-    public static void sendActionbar(Player player, String message) {
+    public static void sendActionbar(Player p, String message) {
         IChatBaseComponent icbc = IChatBaseComponent.ChatSerializer.a(
                 ChatColor.translateAlternateColorCodes('&',"{\"text\":\"" + message + "\"}"));
         PacketPlayOutChat packet = new PacketPlayOutChat(icbc, (byte) 2);
-        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
     }
 
     static String toRoman(int mInt) {
@@ -102,7 +92,6 @@ public class TextUtils {
         return sb.toString();
     }
 
-    // private final static int CENTER_PX = 154;
     public static String centerMessage(String message, int CENTER_PX) {
         if (message == null || message.equals(""))
             return "";

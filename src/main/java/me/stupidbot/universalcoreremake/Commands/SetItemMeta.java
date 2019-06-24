@@ -1,17 +1,15 @@
 package me.stupidbot.universalcoreremake.Commands;
 
-import me.stupidbot.universalcoreremake.UniversalCoreRemake;
-import me.stupidbot.universalcoreremake.Utilities.LocationUtils;
+import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.ItemMetadata;
 import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 
-class SetBlockMeta {
+class SetItemMeta {
     @SuppressWarnings("SameReturnValue")
     boolean execute(CommandSender s, String label, String[] args) {
         if (s instanceof Player)
@@ -24,15 +22,13 @@ class SetBlockMeta {
             else if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("remove")) {
                     Player p = (Player) s;
-                    Block b = LocationUtils.getTargetBlock(p, 6);
-                    Material m = b.getType();
+                    ItemStack i = p.getItemInHand();
 
-                    if (m != Material.AIR) {
-                        Map<String, String> metaMap =
-                                UniversalCoreRemake.getBlockMetadataManager().getMeta(b);
+                    if (i != null) {
+                        Map<String, String> metaMap = ItemMetadata.getMeta(i);
 
                         if (metaMap != null) {
-                            UniversalCoreRemake.getBlockMetadataManager().removeAllMeta(b);
+                            p.setItemInHand(ItemMetadata.removeAllMeta(i));
 
                             StringBuilder metas = new StringBuilder();
                             for (String meta : metaMap.keySet()) {
@@ -44,26 +40,25 @@ class SetBlockMeta {
                             }
                             s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                     "&aSuccessfully removed &e" + metas + " &afrom " +
-                                            TextUtils.capitalizeFully(m.toString())));
+                                            TextUtils.capitalizeFully(i.getType().toString())));
                         } else
                             s.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                                    "&c" + TextUtils.capitalizeFully(m.toString()) +
+                                    "&c" + TextUtils.capitalizeFully(i.getType().toString()) +
                                             " already had no custom metadata!"));
                     } else
                         s.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                                "&cYou're not looking at a block!"));
+                                "&cYou're not holding any items!"));
                 } else
                     s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                         "&cInvalid usage! /" + label + " <metadata> <value>"));
             } else {
                 Player p = (Player) s;
-                Block b = LocationUtils.getTargetBlock(p, 6);
-                Material m = b.getType();
+                ItemStack i = p.getItemInHand();
 
-                if (m != Material.AIR) {
-                    UniversalCoreRemake.getBlockMetadataManager().setMeta(b, args[0], args[1]);
+                if (i != null) {
+                    p.setItemInHand(ItemMetadata.setMeta(i, args[0], args[1]));
 
-                    Map<String, String> metaMap = UniversalCoreRemake.getBlockMetadataManager().getMeta(b);
+                    Map<String, String> metaMap = ItemMetadata.getMeta(i);
                     StringBuilder metas = new StringBuilder();
                     for (String meta : metaMap.keySet()) {
                         if (metas.length() != 0)
@@ -73,11 +68,11 @@ class SetBlockMeta {
                         .append(metaMap.get(meta));
                     }
                     s.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            "&a" + TextUtils.capitalizeFully(m.toString()) +
+                            "&a" + TextUtils.capitalizeFully(i.getType().toString()) +
                                     " now has the following tags: &e" + metas));
                 } else
                     s.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            "&cYou're not looking at a block!"));
+                            "&cYou're not holding any items!"));
             }
         else  s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                 "&cOnly players may use this command!"));

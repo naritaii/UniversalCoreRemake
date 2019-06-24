@@ -17,11 +17,11 @@ import java.util.regex.Pattern;
 public final class Reflections {
 
     // Deduce the net.minecraft.server.v* package
-    private static String OBC_PREFIX = Bukkit.getServer().getClass().getPackage().getName();
-    private static String NMS_PREFIX = OBC_PREFIX.replace("org.bukkit.craftbukkit", "net.minecraft.server");
-    private static String VERSION = OBC_PREFIX.replace("org.bukkit.craftbukkit", "").replace(".", "");
+    private static final String OBC_PREFIX = Bukkit.getServer().getClass().getPackage().getName();
+    private static final String NMS_PREFIX = OBC_PREFIX.replace("org.bukkit.craftbukkit", "net.minecraft.server");
+    private static final String VERSION = OBC_PREFIX.replace("org.bukkit.craftbukkit", "").replace(".", "");
     // Variable replacement
-    private static Pattern MATCH_VARIABLE = Pattern.compile("\\{([^\\}]+)\\}");
+    private static final Pattern MATCH_VARIABLE = Pattern.compile("\\{([^\\}]+)\\}");
 
     private Reflections() {
     }
@@ -102,7 +102,7 @@ public final class Reflections {
      * @return the looked up class
      * @throws IllegalArgumentException If a variable or class could not be found
      */
-    public static Class<?> getClass(String lookupName) {
+    private static Class<?> getClass(String lookupName) {
         return getCanonicalClass(expandVariables(lookupName));
     }
 
@@ -126,19 +126,16 @@ public final class Reflections {
      * @return an object that invokes this constructor
      * @throws IllegalStateException If we cannot find this method
      */
-    public static ConstructorInvoker getConstructor(Class<?> clazz, Class<?>... params) {
+    private static ConstructorInvoker getConstructor(Class<?> clazz, Class<?>... params) {
         for (final Constructor<?> constructor : clazz.getDeclaredConstructors()) {
             if (Arrays.equals(constructor.getParameterTypes(), params)) {
 
                 constructor.setAccessible(true);
-                return new ConstructorInvoker() {
-                    @Override
-                    public Object invoke(Object... arguments) {
-                        try {
-                            return constructor.newInstance(arguments);
-                        } catch (Exception e) {
-                            throw new RuntimeException("Cannot invoke constructor " + constructor, e);
-                        }
+                return arguments -> {
+                    try {
+                        return constructor.newInstance(arguments);
+                    } catch (Exception e) {
+                        throw new RuntimeException("Cannot invoke constructor " + constructor, e);
                     }
                 };
             }
@@ -189,7 +186,7 @@ public final class Reflections {
      * @param index     the number of compatible fields to skip
      * @return the field accessor
      */
-    public static <T> FieldAccessor<T> getField(Class<?> target, Class<T> fieldType, int index) {
+    private static <T> FieldAccessor<T> getField(Class<?> target, Class<T> fieldType, int index) {
         return getField(target, null, fieldType, index);
     }
 
@@ -269,7 +266,7 @@ public final class Reflections {
      * @return an object that invokes this specific method
      * @throws IllegalStateException If we cannot find this method
      */
-    public static MethodInvoker getMethod(Class<?> clazz, String methodName, Class<?>... params) {
+    private static MethodInvoker getMethod(Class<?> clazz, String methodName, Class<?>... params) {
         return getTypedMethod(clazz, methodName, null, params);
     }
 
@@ -305,21 +302,18 @@ public final class Reflections {
      * @return an object that invokes this specific method
      * @throws IllegalStateException If we cannot find this method
      */
-    public static MethodInvoker getTypedMethod(Class<?> clazz, String methodName, Class<?> returnType, Class<?>... params) {
+    private static MethodInvoker getTypedMethod(Class<?> clazz, String methodName, Class<?> returnType, Class<?>... params) {
         for (final Method method : clazz.getDeclaredMethods()) {
             if ((methodName == null || method.getName().equals(methodName)) &&
                     (returnType == null) || method.getReturnType().equals(returnType) &&
                     Arrays.equals(method.getParameterTypes(), params)) {
 
                 method.setAccessible(true);
-                return new MethodInvoker() {
-                    @Override
-                    public Object invoke(Object target, Object... arguments) {
-                        try {
-                            return method.invoke(target, arguments);
-                        } catch (Exception e) {
-                            throw new RuntimeException("Cannot invoke method " + method, e);
-                        }
+                return (target, arguments) -> {
+                    try {
+                        return method.invoke(target, arguments);
+                    } catch (Exception e) {
+                        throw new RuntimeException("Cannot invoke method " + method, e);
                     }
                 };
             }
@@ -341,9 +335,10 @@ public final class Reflections {
      * @return the class
      * @see {@link #getClass()} for more information
      */
+    @SuppressWarnings("JavaDoc")
     public static Class<Object> getUntypedClass(String lookupName) {
-        @SuppressWarnings({"rawtypes", "unchecked"})
-        Class<Object> clazz = (Class<Object>) (Class) getClass(lookupName);
+        @SuppressWarnings({"unchecked"})
+        Class<Object> clazz = (Class<Object>) getClass(lookupName);
         return clazz;
     }
 
@@ -366,7 +361,7 @@ public final class Reflections {
          * @param arguments the arguments to pass to the constructor.
          * @return the constructed object.
          */
-        public Object invoke(Object... arguments);
+        Object invoke(Object... arguments);
     }
 
     /**
@@ -380,7 +375,7 @@ public final class Reflections {
          * @param arguments the arguments to pass to the method.
          * @return the return value, or NULL if is void.
          */
-        public Object invoke(Object target, Object... arguments);
+        Object invoke(Object target, Object... arguments);
     }
 
     /**
@@ -395,7 +390,7 @@ public final class Reflections {
          * @param target the target object, or NULL for a static field
          * @return the value of the field
          */
-        public T get(Object target);
+        T get(Object target);
 
         /**
          * Set the content of a field.
@@ -403,7 +398,7 @@ public final class Reflections {
          * @param target the target object, or NULL for a static field
          * @param value  the new value of the field
          */
-        public void set(Object target, Object value);
+        void set(Object target, Object value);
 
         /**
          * Determine if the given object has this field.
@@ -411,6 +406,6 @@ public final class Reflections {
          * @param target the object to test
          * @return TRUE if it does, FALSE otherwise
          */
-        public boolean hasField(Object target);
+        boolean hasField(Object target);
     }
 }

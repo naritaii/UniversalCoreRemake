@@ -20,18 +20,16 @@ import java.util.List;
 import java.util.UUID;
 
 public class Buy implements InventoryProvider { // TODO Replace temp fix
-    private List<SellItem> items;
-    private String title;
+    private final List<SellItem> items;
 
-    private Buy(String title, List<SellItem> items) {
+    private Buy(List<SellItem> items) {
         this.items = items;
-        this.title = title;
     }
 
     public static SmartInventory getInventory(String title, List<SellItem> items) {
         return SmartInventory.builder()
                 .id(UUID.randomUUID().toString())
-                .provider(new Buy(title, items))
+                .provider(new Buy(items))
                 .manager(UniversalCoreRemake.getInventoryManager())
                 .size(6, 9)
                 .title(title).build();

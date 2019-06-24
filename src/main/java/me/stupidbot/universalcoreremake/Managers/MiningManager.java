@@ -80,7 +80,7 @@ public class MiningManager implements Listener {
                                 .getBlock();
 
                         if (b.getType() != respawnBlock &&
-                                UniversalCoreRemake.getBlockMetadataManager().hasMetadata(b, "MINEABLE"))
+                                UniversalCoreRemake.getBlockMetadataManager().hasMeta(b, "MINEABLE"))
                             putMiningPlayer(p, b);
 
                     } else if (c == EnumWrappers.PlayerDigType.ABORT_DESTROY_BLOCK ||
@@ -143,7 +143,7 @@ public class MiningManager implements Listener {
 
 
                         if (Math.random() < mb.getEnhanceChance()) // Enhance Block?
-                            UniversalCoreRemake.getBlockMetadataManager().setMetadata(b, "MINEABLE",
+                            UniversalCoreRemake.getBlockMetadataManager().setMeta(b, "MINEABLE",
                                     mb.getEnhanceBlock().toString());
 
 
@@ -173,7 +173,7 @@ public class MiningManager implements Listener {
 
                                 timer.put(id, 0);
                                 b.setType(Material.valueOf(
-                                        UniversalCoreRemake.getBlockMetadataManager().getMetadata(b,
+                                        UniversalCoreRemake.getBlockMetadataManager().getMeta(b,
                                                 "MINEABLE")));
                                 break;
                         }
@@ -181,15 +181,15 @@ public class MiningManager implements Listener {
                 }
             }
 
-            Iterator iter = regen.entrySet().iterator(); // Use Iterator because of ConcurrentModificationException
+            Iterator<Map.Entry<Block, Integer>> iter = regen.entrySet().iterator(); // Use Iterator because of ConcurrentModificationException
             while (iter.hasNext()) { // Block has been mined
-                Map.Entry pair = (Map.Entry) iter.next();
-                Block b = (Block) pair.getKey();
-                int i = (int) pair.getValue() - 1;
+                Map.Entry<Block, Integer> pair = iter.next();
+                Block b = pair.getKey();
+                int i = pair.getValue() - 1;
 
                 if (i < 1) { // Regen Block
                     b.setType(Material.valueOf(
-                            UniversalCoreRemake.getBlockMetadataManager().getMetadata(b, "MINEABLE")));
+                            UniversalCoreRemake.getBlockMetadataManager().getMeta(b, "MINEABLE")));
 
                     Effect eff = new BlockRegen(UniversalCoreRemake.getEffectManager());
                     eff.setLocation(b.getLocation());
@@ -207,7 +207,7 @@ public class MiningManager implements Listener {
         regen.forEach((Block b, Integer i) -> {
             b.getChunk().load();
             b.setType(Material.valueOf(
-                    UniversalCoreRemake.getBlockMetadataManager().getMetadata(b, "MINEABLE")));
+                    UniversalCoreRemake.getBlockMetadataManager().getMeta(b, "MINEABLE")));
             regen.remove(b);
         });
     }

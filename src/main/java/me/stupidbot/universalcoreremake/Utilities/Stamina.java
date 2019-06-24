@@ -2,6 +2,7 @@ package me.stupidbot.universalcoreremake.Utilities;
 
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.ItemUtils;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,17 +19,19 @@ public class Stamina implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerItemConsume(PlayerItemConsumeEvent e) {
-        e.setCancelled(true);
-        Player p = e.getPlayer();
         ItemStack i = e.getItem();
-        p.setItemInHand(ItemUtils.removeItem(p.getItemInHand(), 1));
-        int stamina = BaseFoodStamina.valueOf(i.getType().toString()).getBaseFoodStamina();
-        addStamina(p, stamina);
-        TextUtils.sendActionbar(p, "&3Stamina &a+" + stamina +
-                " &e(" + getStamina(p) + "/" + getMaxStamina(p) + ")");
+        if (i.getType() != Material.POTION) {
+            Player p = e.getPlayer();
+            e.setCancelled(true);
+            p.setItemInHand(ItemUtils.removeItem(p.getItemInHand(), 1));
+            int stamina = BaseFoodStamina.valueOf(i.getType().toString()).getBaseFoodStamina();
+            addStamina(p, stamina);
+            TextUtils.sendActionbar(p, "&3Stamina &a+" + stamina +
+                    " &e(" + getStamina(p) + "/" + getMaxStamina(p) + ")");
+        }
     }
 
-    public static void addStamina(Player p, int i) {
+    private static void addStamina(Player p, int i) {
         setStamina(p, Math.min(getStamina(p) + i, getMaxStamina(p)));
     }
 
@@ -40,7 +43,7 @@ public class Stamina implements Listener {
         return UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p).getDataStamina();
     }
 
-    public static void setStamina(Player p, int i) {
+    private static void setStamina(Player p, int i) {
         UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p).setDataStamina(i);
         updateStamina(p);
     }
@@ -62,7 +65,7 @@ public class Stamina implements Listener {
     enum BaseFoodStamina {
         ROTTEN_FLESH(5);
 
-        int baseFoodStamina;
+        final int baseFoodStamina;
 
         BaseFoodStamina(int baseFoodStamina) {
             this.baseFoodStamina = baseFoodStamina;

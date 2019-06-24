@@ -27,7 +27,7 @@ import java.util.function.Consumer;
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class UniversalPlayerManager implements Listener {
     private final String dataFolderPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator +
-            "player_data";
+            "data" + File.separator + "player_data";
     private final List<UniversalPlayer> universalPlayers = new ArrayList<>();
     private final HashMap<UUID, Integer> universalPlayerDictionary = new HashMap<>();
 

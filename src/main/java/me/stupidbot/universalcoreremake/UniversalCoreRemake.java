@@ -10,6 +10,7 @@ import me.stupidbot.universalcoreremake.Managers.BlockMetadataManger;
 import me.stupidbot.universalcoreremake.Managers.MOTDManager;
 import me.stupidbot.universalcoreremake.Managers.MiningManager;
 import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayerManager;
+import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.ItemMetadata;
 import me.stupidbot.universalcoreremake.Utilities.PlayerLevelling;
 import me.stupidbot.universalcoreremake.Utilities.Stamina;
 import net.milkbowl.vault.chat.Chat;
@@ -58,9 +59,9 @@ public class UniversalCoreRemake extends JavaPlugin {
         motdManager.reload();
 
         registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager, new Stamina(),
-                new AsyncPlayerChatListener(), motdManager);
-        registerCommands(executor, "exp", "setblockmeta", "emoji", "openmineraltrader", "openfoodtrader",
-                "reloadmotd");
+                new AsyncPlayerChatListener(), motdManager, new ItemMetadata());
+        registerCommands(executor, "reloadmotd", "exp", "setblockmeta", "readblockmeta", "setitemmeta",
+                "readitemmeta", "emoji", "openmineraltrader", "openfoodtrader");
 
 
         System.out.println(getName() + " is now enabled!");
