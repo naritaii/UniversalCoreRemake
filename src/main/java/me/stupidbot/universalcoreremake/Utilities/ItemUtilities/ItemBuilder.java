@@ -81,11 +81,18 @@ public class ItemBuilder implements Listener {
      * @return this builder for chaining
      * @since 1.0
      */
-    public ItemBuilder name(final String name) {
+    private ItemBuilder name(final String name, final boolean color) {
         final ItemMeta meta = is.getItemMeta();
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+        if (color)
+            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+        else
+            meta.setDisplayName(name);
         is.setItemMeta(meta);
         return this;
+    }
+
+    public ItemBuilder name(final String name) {
+        return name(name, true);
     }
 
     /**
@@ -96,16 +103,23 @@ public class ItemBuilder implements Listener {
      * @return this builder for chaining
      * @since 1.0
      */
-    public ItemBuilder lore(final String name) {
+    public ItemBuilder lore(final String name, final boolean color) {
         final ItemMeta meta = is.getItemMeta();
         List<String> lore = meta.getLore();
         if (lore == null) {
             lore = new ArrayList<>();
         }
-        lore.add(ChatColor.translateAlternateColorCodes('&', name));
+        if (color)
+            lore.add(ChatColor.translateAlternateColorCodes('&', name));
+        else
+            lore.add(name);
         meta.setLore(lore);
         is.setItemMeta(meta);
         return this;
+    }
+
+    public ItemBuilder lore(final String name) {
+        return lore(name, true);
     }
 
     /**
@@ -323,7 +337,6 @@ public class ItemBuilder implements Listener {
 
     @EventHandler
     public void onItemApply(InventoryClickEvent e) {
-        // TODO add effects when item is applied
+        // T/ODO add effects when item is applied
     }
-
 }

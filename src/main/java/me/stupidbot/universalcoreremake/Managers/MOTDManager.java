@@ -27,8 +27,10 @@ public class MOTDManager implements Listener {
         File file = new File(dataPath);
 
         if (!path.exists())
+            //noinspection ResultOfMethodCallIgnored
             path.mkdirs();
         try {
+            //noinspection ResultOfMethodCallIgnored
             file.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
@@ -41,9 +43,9 @@ public class MOTDManager implements Listener {
         if (data.get("MOTD.SecondLine") == null)
             data.set("MOTD.SecondLine", "&e&kt&f GRAND OPENING &e&kt");
 
-        motd.append(TextUtils.centerMessage(data.getString("MOTD.FirstLine"), 127));
-        motd.append("\n");
-        motd.append(TextUtils.centerMessage(data.getString("MOTD.SecondLine"), 127));
+        motd.append(TextUtils.centerMessage(data.getString("MOTD.FirstLine"), 127))
+        .append("\n")
+        .append(TextUtils.centerMessage(data.getString("MOTD.SecondLine"), 127));
 
         try {
             data.save(file);

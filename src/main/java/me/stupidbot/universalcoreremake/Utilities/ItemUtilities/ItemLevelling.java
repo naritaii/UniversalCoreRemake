@@ -12,19 +12,24 @@ public class ItemLevelling {
     private static final List<Material> pickaxes =  Arrays.asList(Material.WOOD_PICKAXE, Material.STONE_PICKAXE,
             Material.IRON_PICKAXE, Material.GOLD_PICKAXE, Material.DIAMOND_PICKAXE);
 
-    public static ItemStack giveXp(ItemStack i, int amount) {
-        int currentXp = ItemUtils.hasMetadata(i, "XP") ?
-                Integer.parseInt((String) ItemUtils.getMetadata(i, "XP")) + amount : amount;
-        int lvl = ItemUtils.hasMetadata(i, "XPLevel")
-                ? Integer.parseInt((String) ItemUtils.getMetadata(i, "XPLevel")) : 1;
-        
-        ItemUtils.setMetadata(i, "XP", currentXp);
+    @SuppressWarnings("ConstantConditions")
+    private static ItemStack giveXp(ItemStack i, int amount) {
+        int currentXp = ItemMetadata.hasMeta(i, "XP") ?
+                Integer.parseInt(ItemMetadata.getMeta(i, "XP")) + amount : amount;
+        int totalXp = ItemMetadata.hasMeta(i, "TOTAL_XP") ?
+                Integer.parseInt(ItemMetadata.getMeta(i, "TOTAL_XP")) + amount : amount;
+        int lvl = ItemMetadata.hasMeta(i, "LEVEL")
+                ? Integer.parseInt(ItemMetadata.getMeta(i, "LEVEL")) : 1;
 
+        ItemMetadata.setMeta(i, "TOTAL_XP", totalXp);
         if (currentXp  >= xpToNextLevel(lvl)) {
-            ItemUtils.setMetadata(i, "XPLevel", ++lvl);
+            ItemMetadata.setMeta(i, "XP", 0);
+            ItemMetadata.setMeta(i, "LEVEL", ++lvl);
             return updateItem(i);
-        } else
+        } else {
+            ItemMetadata.setMeta(i, "XP", currentXp);
             return updateItem(i);
+        }
     }
 
     public static ItemStack giveXp(Player p, ItemStack i, int amount) {
@@ -33,18 +38,21 @@ public class ItemLevelling {
         return item;
     }
 
+    @SuppressWarnings("ConstantConditions")
     private static ItemStack updateItem(ItemStack i) {
-        int lvl = ItemUtils.hasMetadata(i, "XPLevel")
-                ? Integer.parseInt((String) ItemUtils.getMetadata(i, "XPLevel")) : 1;
-        int currentXp = ItemUtils.hasMetadata(i, "XP") ?
-                Integer.parseInt((String) ItemUtils.getMetadata(i, "XP")) : 0;
+        int lvl = ItemMetadata.hasMeta(i, "LEVEL")
+                ? Integer.parseInt(ItemMetadata.getMeta(i, "LEVEL")) : 1;
+        int currentXp = ItemMetadata.hasMeta(i, "XP") ?
+                Integer.parseInt(ItemMetadata.getMeta(i, "XP")) : 0;
         String name = TextUtils.capitalizeFully(i.getType().toString());
-        if (ItemUtils.hasMetadata(i, "CustomName"))
-            name = (String) ItemUtils.getMetadata(i, "CustomName");
+        if (ItemMetadata.hasMeta(i, "CUSTOM_NAME"))
+            name = ItemMetadata.getMeta(i, "CUSTOM_NAME");
+        String meta = i.getItemMeta().getLore().get(ItemMetadata.getMetaLine(i));
 
         return new ItemBuilder(i).name("&r" + name + " &5&l" + lvl)
                 .clearLore()
-                .lore("&bXP: " + currentXp + "/" + xpToNextLevel(lvl)).build();
+                .lore(meta)
+                .lore("&7XP: &b" + currentXp + "/" + xpToNextLevel(lvl)).build();
     }
 
     private static int xpToNextLevel(int lvl) {

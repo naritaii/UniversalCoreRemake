@@ -19,13 +19,13 @@ import java.util.HashMap;
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class BlockMetadataManger {
     private final String folderPath = UniversalCoreRemake.getInstance().getDataFolder().toString();
-    private final String dataPath = folderPath + File.separator + "block_metadata.yml";
+    private final String dataPath = folderPath  + File.separator + "data" + File.separator + "block_metadata.yml";
 
     private final HashMap<Location, HashMap<String, String>> blocksMetas = new HashMap<>();
 
     // Won't save value to file if value = null
     // Will save b to file if all b's values are null but won't load and therefore be deleted on next save
-    public void setMetadata(Block b, String metadata, String value) {
+    public void setMeta(Block b, String metadata, String value) {
         Location loc = b.getLocation();
         if (blocksMetas.containsKey(loc)) {
             HashMap<String, String> metaDataMap = blocksMetas.get(loc);
@@ -40,7 +40,7 @@ public class BlockMetadataManger {
         }
     }
 
-    boolean hasMetadata(Block b, String metadata) {
+    boolean hasMeta(Block b, String metadata) {
         Location loc = b.getLocation();
         if (blocksMetas.containsKey(loc)) {
             HashMap<String, String> metaDataMap = blocksMetas.get(loc);
@@ -49,7 +49,7 @@ public class BlockMetadataManger {
             return false;
     }
 
-    public String getMetadata(Block b, String metadata) {
+    public String getMeta(Block b, String metadata) {
         Location loc = b.getLocation();
         if (blocksMetas.containsKey(loc)) {
             HashMap<String, String> metaDataMap = blocksMetas.get(loc);
@@ -58,12 +58,12 @@ public class BlockMetadataManger {
             return null;
     }
 
-    public HashMap<String, String> getAllMetadata(Block b) {
+    public HashMap<String, String> getMeta(Block b) {
         Location loc = b.getLocation();
         return blocksMetas.getOrDefault(loc, null);
     }
 
-    public void deleteAllMetadata(Block b) {
+    public void removeAllMeta(Block b) {
         blocksMetas.remove(b.getLocation());
     }
 

@@ -9,13 +9,13 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 class OpenFoodTrader {
     private final SmartInventory foodTraderGui;
 
     OpenFoodTrader() {
-        foodTraderGui = Buy.getInventory("Food Trader", Arrays.asList(
+        foodTraderGui = Buy.getInventory("Food Trader", Collections.singletonList(
                 new SellItem(Material.ROTTEN_FLESH, 3.50)));
     }
 
