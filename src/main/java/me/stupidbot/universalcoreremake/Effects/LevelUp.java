@@ -1,10 +1,14 @@
 package me.stupidbot.universalcoreremake.Effects;
 
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.EffectType;
 import de.slikey.effectlib.util.ParticleEffect;
+import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.Utilities.TextUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -15,6 +19,8 @@ public class LevelUp extends Effect {
     private int hue = 0;
     private int initAnim = 0;
     private Player p = null;
+    private int lvl = 1;
+    private Hologram hologram = null;
 
     public LevelUp(EffectManager effectManager) {
         super(effectManager);
@@ -27,6 +33,17 @@ public class LevelUp extends Effect {
         type = EffectType.REPEATING;
         iterations = 360;
         this.p = p;
+    }
+
+    public LevelUp(EffectManager effectManager, Player p, int lvl) {
+        super(effectManager);
+        type = EffectType.REPEATING;
+        iterations = 360;
+        this.p = p;
+        hologram = HologramsAPI.createHologram(UniversalCoreRemake.getInstance(),
+                p.getLocation().add(0.0, 3.1, 0.0));
+        hologram.appendTextLine(ChatColor.translateAlternateColorCodes(
+                '&', "&6&l&nLEVEL " + lvl));
     }
 
     @Override
@@ -62,7 +79,11 @@ public class LevelUp extends Effect {
             step = 0;
 
 
-        if (p != null && initAnim < 64) {
+        if (p != null && p.isOnline()) {
+            if (hologram != null)
+                hologram.teleport(p.getLocation().add(0.0,
+                        3.1 + 0.3 * Math.sin(Math.PI / 16 * step), 0.0));
+
             if (initAnim == 0)
                 TextUtils.sendTitle(p, "&6&lLEVEL UP", 5, 80, 0);
             else if (initAnim == 30)
@@ -88,5 +109,11 @@ public class LevelUp extends Effect {
 
             initAnim++;
         }
+    }
+
+    @Override
+    public void onDone() {
+        if (hologram != null)
+            hologram.delete();
     }
 }

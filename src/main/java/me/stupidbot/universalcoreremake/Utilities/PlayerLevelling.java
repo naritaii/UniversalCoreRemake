@@ -46,7 +46,7 @@ public class PlayerLevelling implements Listener {
             } else
                 break;
         }
-        Effect lvlAnim = new LevelUp(UniversalCoreRemake.getEffectManager(), p);
+        Effect lvlAnim = new LevelUp(UniversalCoreRemake.getEffectManager(), p, lvl);
         lvlAnim.setDynamicOrigin(new DynamicLocation(p));
         lvlAnim.start();
         TextUtils.sendSubtitle(p, "&a" + TextUtils.toRoman(oldLvl) + " &e\u27A2 &a" + TextUtils.toRoman(lvl),

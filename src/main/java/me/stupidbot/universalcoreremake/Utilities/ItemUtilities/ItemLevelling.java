@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class ItemLevelling {
     private static final List<Material> pickaxes =  Arrays.asList(Material.WOOD_PICKAXE, Material.STONE_PICKAXE,
@@ -14,16 +15,15 @@ public class ItemLevelling {
 
     @SuppressWarnings("ConstantConditions")
     private static ItemStack giveXp(ItemStack i, int amount) {
-        int currentXp = ItemMetadata.hasMeta(i, "XP") ?
-                Integer.parseInt(ItemMetadata.getMeta(i, "XP")) + amount : amount;
-        int totalXp = ItemMetadata.hasMeta(i, "TOTAL_XP") ?
-                Integer.parseInt(ItemMetadata.getMeta(i, "TOTAL_XP")) + amount : amount;
-        int lvl = ItemMetadata.hasMeta(i, "LEVEL")
-                ? Integer.parseInt(ItemMetadata.getMeta(i, "LEVEL")) : 1;
+        Map<String, String> meta = ItemMetadata.getMeta(i);
+        int currentXp = Integer.parseInt(meta.getOrDefault("XP", "0")) + amount;
+        int totalXp = Integer.parseInt(meta.getOrDefault("TOTAL_XP", "0")) + amount;
+        int lvl = Integer.parseInt(meta.getOrDefault("LEVEL", "1"));
+        int neededXp = xpToNextLevel(lvl);
 
         ItemMetadata.setMeta(i, "TOTAL_XP", totalXp);
-        if (currentXp  >= xpToNextLevel(lvl)) {
-            ItemMetadata.setMeta(i, "XP", 0);
+        if (currentXp  >= neededXp) { // TODO Account for multiple level ups
+            ItemMetadata.setMeta(i, "XP", currentXp - neededXp);
             ItemMetadata.setMeta(i, "LEVEL", ++lvl);
             return updateItem(i);
         } else {
@@ -40,18 +40,15 @@ public class ItemLevelling {
 
     @SuppressWarnings("ConstantConditions")
     private static ItemStack updateItem(ItemStack i) {
-        int lvl = ItemMetadata.hasMeta(i, "LEVEL")
-                ? Integer.parseInt(ItemMetadata.getMeta(i, "LEVEL")) : 1;
-        int currentXp = ItemMetadata.hasMeta(i, "XP") ?
-                Integer.parseInt(ItemMetadata.getMeta(i, "XP")) : 0;
-        String name = TextUtils.capitalizeFully(i.getType().toString());
-        if (ItemMetadata.hasMeta(i, "CUSTOM_NAME"))
-            name = ItemMetadata.getMeta(i, "CUSTOM_NAME");
-        String meta = i.getItemMeta().getLore().get(ItemMetadata.getMetaLine(i));
+        Map<String, String> meta = ItemMetadata.getMeta(i);
+        int lvl = Integer.parseInt(meta.getOrDefault("LEVEL", "1"));
+        int currentXp = Integer.parseInt(meta.getOrDefault("XP", "0"));
+        String name = meta.getOrDefault("CUSTOM_NAME", TextUtils.capitalizeFully(i.getType().toString()));
+        String metaStr = i.getItemMeta().getLore().get(ItemMetadata.getMetaLine(i));
 
         return new ItemBuilder(i).name("&r" + name + " &5&l" + lvl)
                 .clearLore()
-                .lore(meta)
+                .lore(metaStr, false)
                 .lore("&7XP: &b" + currentXp + "/" + xpToNextLevel(lvl)).build();
     }
 
