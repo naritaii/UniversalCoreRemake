@@ -39,7 +39,7 @@ public class ItemLevelling {
     }
 
     @SuppressWarnings("ConstantConditions")
-    private static ItemStack updateItem(ItemStack i) {
+    public static ItemStack updateItem(ItemStack i) {
         Map<String, String> meta = ItemMetadata.getMeta(i);
         int lvl = Integer.parseInt(meta.getOrDefault("LEVEL", "1"));
         int currentXp = Integer.parseInt(meta.getOrDefault("XP", "0"));

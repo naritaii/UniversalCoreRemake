@@ -101,9 +101,9 @@ public class PlayerLevelling implements Listener {
         if (lvl < 5)
             s = "&7[" + lvl + "\u2605]";
         else if (lvl < 10)
-            s = "&f[" + lvl + "\u2605]";
+            s = "&6[" + lvl + "\u2605]";
         else if (lvl < 25)
-            s = "&f[" + lvl + "\u2B50]";
+            s = "&6[" + lvl + "\u2B50]";
         else
             s = "&f[" + lvl + "\u269D]";
         return ChatColor.translateAlternateColorCodes('&', s);

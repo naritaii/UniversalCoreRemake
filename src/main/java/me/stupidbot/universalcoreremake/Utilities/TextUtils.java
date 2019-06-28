@@ -27,9 +27,13 @@ public class TextUtils {
     }
 
     public static String getChatColor(OfflinePlayer p) {
-        return ChatColor.translateAlternateColorCodes('&',
-                UniversalCoreRemake.getPermissions().playerHas("world", p,
-                        "universalcoreremake.chatcolor.white") ? "&f" : "&7");
+        if (p.getUniqueId().toString().equals("e8584196-baf0-4b9d-8146-2d438cafa99a")) // HaydenPlus' chat color
+                return ChatColor.GREEN.toString();
+            else if (!UniversalCoreRemake.getPermissions().playerHas(
+                    null, p, "chatformat.white"))
+                return ChatColor.GRAY.toString();
+            else
+                return ChatColor.WHITE.toString();
     }
 
     public static void sendTitle(Player p, String msg, int fadeIn, int stayTime, int fadeOut) {
@@ -288,7 +292,7 @@ public class TextUtils {
 
         Emoji(String placeholder, String emoji) {
             this.placeholder = placeholder;
-            this.emoji = ChatColor.translateAlternateColorCodes('&', emoji + "&f");
+            this.emoji = ChatColor.translateAlternateColorCodes('&', emoji);
         }
 
         public String getPlaceholder() {

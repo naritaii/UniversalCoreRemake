@@ -5,8 +5,8 @@ import com.comphenix.protocol.ProtocolManager;
 import de.slikey.effectlib.EffectManager;
 import fr.minuskube.inv.InventoryManager;
 import me.stupidbot.universalcoreremake.Commands.CommandExecutor;
-import me.stupidbot.universalcoreremake.Listeners.AsyncPlayerChatListener;
 import me.stupidbot.universalcoreremake.Managers.BlockMetadataManger;
+import me.stupidbot.universalcoreremake.Managers.ChatManager;
 import me.stupidbot.universalcoreremake.Managers.MOTDManager;
 import me.stupidbot.universalcoreremake.Managers.MiningManager;
 import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayerManager;
@@ -58,12 +58,13 @@ public class UniversalCoreRemake extends JavaPlugin {
         blockMetadataManager.initialize();
         inventoryManager.init();
         motdManager.reload();
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
+            new UniversalCoreExpansion().register();
 
         registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager, new Stamina(),
-                new AsyncPlayerChatListener(), motdManager, new ItemMetadata());
+                new ChatManager(), motdManager, new ItemMetadata());
         registerCommands(executor, "reloadmotd", "exp", "setblockmeta", "readblockmeta", "setitemmeta",
                 "readitemmeta", "emoji", "openmineraltrader", "openfoodtrader");
-
 
         System.out.println(getName() + " is now enabled!");
     }
