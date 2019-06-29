@@ -243,9 +243,9 @@ public class MiningManager implements Listener {
         regen.put(b, i);
     }
 
-    private void removeRegenningBlock(Block b) {
-        regen.remove(b);
-    }
+//    private void removeRegenningBlock(Block b) {
+//        regen.remove(b);
+//    }
 
     private float getItemMultiplier(Material m) {
         float diamondPickMultiplier = 0.75f;

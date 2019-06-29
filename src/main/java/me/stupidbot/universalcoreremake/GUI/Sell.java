@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.UUID;
 
-public class Sell implements InventoryProvider { // TODO Replace temp fix
+public class Sell implements InventoryProvider {
     private final List<SellItem> items;
 
     private Sell(List<SellItem> items) {
@@ -44,9 +44,8 @@ public class Sell implements InventoryProvider { // TODO Replace temp fix
             double cost = si.getSellCost();
             Material m = si.getType();
             String mName = TextUtils.capitalizeFully(m.toString());
-            ItemStack icon = new ItemBuilder(si.getItem())
+            ItemStack icon = new ItemBuilder(si.getDisplayItem())
                     .name("&a" + mName)
-                    .clearLore()
                     .lore("")
                     .lore("&7Sell Price:")
                     .lore("&6$" + TextUtils.addCommas(cost))

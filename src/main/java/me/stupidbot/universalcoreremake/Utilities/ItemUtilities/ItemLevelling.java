@@ -38,18 +38,20 @@ public class ItemLevelling {
         return item;
     }
 
-    @SuppressWarnings("ConstantConditions")
     public static ItemStack updateItem(ItemStack i) {
         Map<String, String> meta = ItemMetadata.getMeta(i);
-        int lvl = Integer.parseInt(meta.getOrDefault("LEVEL", "1"));
-        int currentXp = Integer.parseInt(meta.getOrDefault("XP", "0"));
-        String name = meta.getOrDefault("CUSTOM_NAME", TextUtils.capitalizeFully(i.getType().toString()));
-        String metaStr = i.getItemMeta().getLore().get(ItemMetadata.getMetaLine(i));
+        if (meta != null) {
+            int lvl = Integer.parseInt(meta.getOrDefault("LEVEL", "1"));
+            int currentXp = Integer.parseInt(meta.getOrDefault("XP", "0"));
+            String name = meta.getOrDefault("CUSTOM_NAME", TextUtils.capitalizeFully(i.getType().toString()));
+            String metaStr = i.getItemMeta().getLore().get(ItemMetadata.getMetaLine(i));
 
-        return new ItemBuilder(i).name("&r" + name + " &5&l" + lvl)
-                .clearLore()
-                .lore(metaStr, false)
-                .lore("&7XP: &b" + currentXp + "/" + xpToNextLevel(lvl)).build();
+            return new ItemBuilder(i).name("&r" + name + " &5&l" + lvl)
+                    .clearLore()
+                    .lore(metaStr, false)
+                    .lore("&7XP: &b" + currentXp + "/" + xpToNextLevel(lvl)).build();
+        } else
+            return i;
     }
 
     private static int xpToNextLevel(int lvl) {
