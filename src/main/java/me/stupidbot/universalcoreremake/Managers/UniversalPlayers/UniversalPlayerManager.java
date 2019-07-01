@@ -52,12 +52,12 @@ public class UniversalPlayerManager implements Listener {
         up.setDataNameColor(prefix.substring(0, 2));
 
         if (up.firstJoin()) {
-            up.setDataFirstPlayed(up.getSimpleDateFormat().format(new Date()));
+            up.setDataFirstPlayed(UniversalPlayer.getSimpleDateFormat().format(new Date()));
             up.setDataLevel(1);
             up.setDataStamina(Stamina.getMaxStamina(1));
         } else // Editing UniversalPlayers in PlayerJoinEvent is glitchy so we handle it here if needed.
             try {
-                if (new Date().getTime() - up.getSimpleDateFormat().parse(up.getDataLastPlayed())
+                if (new Date().getTime() - UniversalPlayer.getSimpleDateFormat().parse(up.getDataLastPlayed())
                         .getTime() >= 6.48e+7) { // 18 hours
                     up.setDataStamina(Stamina.getMaxStamina(up.getDataLevel()));
                     p.setFoodLevel(20);
@@ -176,7 +176,7 @@ public class UniversalPlayerManager implements Listener {
 
     public void disable() {
         getAllUniversalPlayers().forEach((UniversalPlayer up) -> {
-            up.setDataLastPlayed(up.getSimpleDateFormat().format(new Date()));
+            up.setDataLastPlayed(UniversalPlayer.getSimpleDateFormat().format(new Date()));
             up.savePlayerDataFile();
         });
     }
@@ -193,7 +193,7 @@ public class UniversalPlayerManager implements Listener {
         Player p = e.getPlayer();
         UniversalPlayer up = getUniversalPlayer(p);
 
-        up.setDataLastPlayed(up.getSimpleDateFormat().format(new Date()));
+        up.setDataLastPlayed(UniversalPlayer.getSimpleDateFormat().format(new Date()));
 
 
         up.savePlayerDataFile();

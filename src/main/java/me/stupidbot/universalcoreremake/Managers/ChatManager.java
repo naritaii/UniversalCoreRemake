@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ChatManager implements Listener {
-    private Map<UUID, Long> chatCooldowns = new HashMap<>();
+    private final Map<UUID, Long> chatCooldowns = new HashMap<>();
     @EventHandler
     public void onAsyncPlayerChat(AsyncPlayerChatEvent e) {
         Player p = e.getPlayer();

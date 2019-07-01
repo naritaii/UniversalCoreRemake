@@ -17,7 +17,7 @@ import org.bukkit.OfflinePlayer;
  * register it manually in your plugins {@code onEnable()} by using
  * {@code new YourExpansionClass().register();}
  */
-public class UniversalCoreExpansion extends PlaceholderExpansion {
+class UniversalCoreExpansion extends PlaceholderExpansion {
     /**
      * This method should always return true unless we
      * have a dependency we need to make sure is on the server
@@ -78,7 +78,7 @@ public class UniversalCoreExpansion extends PlaceholderExpansion {
      *
      * @return Possibly-null String of the requested identifier.
      */
-    UniversalPlayerManager upm = UniversalCoreRemake.getUniversalPlayerManager();
+    private final UniversalPlayerManager upm = UniversalCoreRemake.getUniversalPlayerManager();
     @Override
     public String onRequest(OfflinePlayer p, String identifier) {
         switch (identifier) {

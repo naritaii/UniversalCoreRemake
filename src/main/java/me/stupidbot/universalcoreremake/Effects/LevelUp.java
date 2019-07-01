@@ -19,21 +19,20 @@ public class LevelUp extends Effect {
     private int hue = 0;
     private int initAnim = 0;
     private Player p = null;
-    private int lvl = 1;
     private Hologram hologram = null;
 
-    public LevelUp(EffectManager effectManager) {
-        super(effectManager);
-        type = EffectType.REPEATING;
-        iterations = 360;
-    }
-
-    public LevelUp(EffectManager effectManager, Player p) {
-        super(effectManager);
-        type = EffectType.REPEATING;
-        iterations = 360;
-        this.p = p;
-    }
+//    public LevelUp(EffectManager effectManager) {
+//        super(effectManager);
+//        type = EffectType.REPEATING;
+//        iterations = 360;
+//    }
+//
+//    public LevelUp(EffectManager effectManager, Player p) {
+//        super(effectManager);
+//        type = EffectType.REPEATING;
+//        iterations = 360;
+//        this.p = p;
+//    }
 
     public LevelUp(EffectManager effectManager, Player p, int lvl) {
         super(effectManager);
@@ -41,7 +40,7 @@ public class LevelUp extends Effect {
         iterations = 360;
         this.p = p;
         hologram = HologramsAPI.createHologram(UniversalCoreRemake.getInstance(),
-                p.getLocation().add(0.0, 3.1, 0.0));
+                p.getLocation().add(0.0, 3.2, 0.0));
         hologram.appendTextLine(ChatColor.translateAlternateColorCodes(
                 '&', "&6&l&nLEVEL " + lvl));
     }
@@ -82,7 +81,7 @@ public class LevelUp extends Effect {
         if (p != null && p.isOnline()) {
             if (hologram != null)
                 hologram.teleport(p.getLocation().add(0.0,
-                        3.1 + 0.3 * Math.sin(Math.PI / 16 * step), 0.0));
+                        3.2 + 0.3 * Math.sin(Math.PI / 16 * step), 0.0));
 
             if (initAnim == 0)
                 TextUtils.sendTitle(p, "&6&lLEVEL UP", 5, 80, 0);

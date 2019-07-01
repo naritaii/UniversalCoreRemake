@@ -38,7 +38,7 @@ public class ItemLevelling {
         return item;
     }
 
-    public static ItemStack updateItem(ItemStack i) {
+    private static ItemStack updateItem(ItemStack i) {
         Map<String, String> meta = ItemMetadata.getMeta(i);
         if (meta != null) {
             int lvl = Integer.parseInt(meta.getOrDefault("LEVEL", "1"));

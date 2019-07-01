@@ -10,12 +10,11 @@ import java.text.SimpleDateFormat;
 public class UniversalPlayer {
     private final File pFileLoc;
     private final FileConfiguration pFile;
-    private final SimpleDateFormat simpleDateFormat;
+    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss");
 
     UniversalPlayer(File pFileLoc, FileConfiguration pFile) {
         this.pFileLoc = pFileLoc;
         this.pFile = pFile;
-        simpleDateFormat = new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss");
     }
 
     public File getPlayerDataFile() {
@@ -26,7 +25,7 @@ public class UniversalPlayer {
         return pFile;
     }
 
-    public SimpleDateFormat getSimpleDateFormat() {
+    public static SimpleDateFormat getSimpleDateFormat() {
         return simpleDateFormat;
     }
 

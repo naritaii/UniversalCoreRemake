@@ -4,6 +4,7 @@
       <w>adaptorinterface</w>
       <w>afrom</w>
       <w>chainable</w>
+      <w>chatformat</w>
       <w>codemc</w>
       <w>declipse</w>
       <w>dmulloy</w>
@@ -32,17 +33,21 @@
       <w>kryt</w>
       <w>krytk</w>
       <w>leve</w>
+      <w>levelbar</w>
+      <w>leveltag</w>
       <w>metadatas</w>
       <w>mineable</w>
       <w>minuskube</w>
       <w>mooshroom</w>
       <w>motd</w>
+      <w>namecolor</w>
       <w>nkqj</w>
       <w>openfoodtrader</w>
       <w>openmineraltrader</w>
       <w>pacakge</w>
       <w>pigman</w>
       <w>pinv</w>
+      <w>placeholderapi</w>
       <w>qroot</w>
       <w>readblockmeta</w>
       <w>readitemmeta</w>
