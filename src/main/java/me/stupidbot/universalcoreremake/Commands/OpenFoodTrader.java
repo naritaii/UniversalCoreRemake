@@ -2,6 +2,7 @@ package me.stupidbot.universalcoreremake.Commands;
 
 import fr.minuskube.inv.SmartInventory;
 import me.stupidbot.universalcoreremake.GUI.Buy;
+import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.ItemBuilder;
 import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.SellItem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,7 +17,7 @@ class OpenFoodTrader {
 
     OpenFoodTrader() {
         foodTraderGui = Buy.getInventory("Food Trader", Collections.singletonList(
-                new SellItem(Material.ROTTEN_FLESH, 3.50)));
+                new SellItem(new ItemBuilder(Material.ROTTEN_FLESH).name("Offal").build(), 3.50)));
     }
 
     @SuppressWarnings("SameReturnValue")

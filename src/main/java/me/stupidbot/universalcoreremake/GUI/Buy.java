@@ -46,7 +46,8 @@ public class Buy implements InventoryProvider {
             Material m = si.getType();
             String mName = TextUtils.capitalizeFully(m.toString());
             ItemStack icon = new ItemBuilder(si.getDisplayItem())
-                    .name("&a" + mName)
+                    .name("&a" + (si.getDisplayItem().getItemMeta().hasDisplayName() ?
+                            si.getDisplayItem().getItemMeta().getDisplayName() : mName))
                     .lore("")
                     .lore("&7Cost:")
                     .lore("&6$" + TextUtils.addCommas(cost))
