@@ -17,7 +17,8 @@ class OpenFoodTrader {
 
     OpenFoodTrader() {
         foodTraderGui = Buy.getInventory("Food Trader", Collections.singletonList(
-                new SellItem(new ItemBuilder(Material.ROTTEN_FLESH).name("Offal").build(), 3.50)));
+                new SellItem(new ItemBuilder(Material.ROTTEN_FLESH).name("&rOffal").build(), "Offal",
+                        3.50)));
     }
 
     @SuppressWarnings("SameReturnValue")

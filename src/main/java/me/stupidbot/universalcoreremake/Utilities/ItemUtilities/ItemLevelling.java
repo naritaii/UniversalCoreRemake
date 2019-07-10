@@ -45,11 +45,13 @@ public class ItemLevelling {
             int currentXp = Integer.parseInt(meta.getOrDefault("XP", "0"));
             String name = meta.getOrDefault("CUSTOM_NAME", TextUtils.capitalizeFully(i.getType().toString()));
             String metaStr = i.getItemMeta().getLore().get(ItemMetadata.getMetaLine(i));
-
-            return new ItemBuilder(i).name("&r" + name + " &5&l" + lvl)
+            ItemBuilder ib = new ItemBuilder(i).name("&r" + name + " &5&l" + lvl)
                     .clearLore()
                     .lore(metaStr, false)
-                    .lore("&7XP: &b" + currentXp + "/" + xpToNextLevel(lvl)).build();
+                    .lore("&7XP: &b" + currentXp + "/" + xpToNextLevel(lvl) + " &7[" + TextUtils.getProgressBar(currentXp,
+                            xpToNextLevel(lvl), 18, "|", "&a", "&8") + "&7]");
+
+            return ib.build();
         } else
             return i;
     }
