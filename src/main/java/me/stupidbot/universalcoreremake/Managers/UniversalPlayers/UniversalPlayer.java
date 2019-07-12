@@ -30,7 +30,7 @@ public class UniversalPlayer {
     }
 
     public boolean firstJoin() {
-        return getDataLastPlayed() == null;
+        return getLastPlayed() == null;
     }
 
     void savePlayerDataFile() {
@@ -42,72 +42,72 @@ public class UniversalPlayer {
     }
 
 
-    public int setDataLevel(int i) {
+    public int setLevel(int i) {
         pFile.set("XP.Level", i);
         return i;
     }
 
-    public int getDataLevel() {
+    public int getLevel() {
         int i;
         i = pFile.getInt("XP.Level");
         return i;
     }
 
-    public int setDataXp(int i) {
+    public int setXp(int i) {
         pFile.set("XP.XP", i);
         return i;
     }
 
-    public int getDataXp() {
+    public int getXp() {
         int i;
         i = pFile.getInt("XP.XP");
         return i;
     }
 
-    public int setDataTotalXp(int i) {
+    public int setTotalXp(int i) {
         pFile.set("XP.TotalXP", i);
         return i;
     }
 
-    public int getDataTotalXp() {
+    public int getTotalXp() {
         int i;
         i = pFile.getInt("XP.TotalXP");
         return i;
     }
 
-    String setDataName(String s) {
+    String setName(String s) {
         pFile.set("Name.Name", s);
         return s;
     }
 
-    public String getDataName() {
+    public String getName() {
         return pFile.getString("Name.Name");
     }
 
-    String setDataNameColor(String s) {
+    String setNameColor(String s) {
         pFile.set("Name.Color", s);
         return s;
     }
 
-    public String getDataNamColor() {
+    public String getNameColor() {
         return pFile.getString("Name.Color");
     }
 
-    String setDataPrefix(String s) {
+    String setPrefix(String s) {
         pFile.set("Name.Prefix", s);
         return s;
     }
 
-    public String getDataPrefix() {
+    public String getPrefix() {
         return pFile.getString("Name.Prefix");
     }
 
-    String setDataFirstPlayed(String s) {
+    String setFirstPlayed(String s) {
         pFile.set("Stats.FirstJoin", s);
         return s;
     }
 
-    String getDataFirstPlayed() {
+    String getFirstPlayed() {
         return pFile.getString("Stats.FirstJoin");
     }
 
@@ -116,41 +116,50 @@ public class UniversalPlayer {
         return s;
     }
 
-    public String getDataLastPlayed() {
+    public String getLastPlayed() {
         return pFile.getString("Stats.LastPlayed");
     }
 
-    public int getDataBlocksMined() {
+    public int getBlocksMined() {
         return pFile.getInt("Stats.BlocksMined");
     }
 
-    public int setDataBlocksMined(int i) {
+    public int setBlocksMined(int i) {
         pFile.set("Stats.BlocksMined", i);
         return i;
     }
 
 
-    private String setDataCosmeticIdTrail(String s) {
+    private String setCosmeticIdTrail(String s) {
         pFile.set("Cosmetic.TrailID", s);
         return s;
     }
 
-    public String getDataCosmeticIdTrail() {
+    public String getCosmeticIdTrail() {
         String s = pFile.getString("Cosmetic.TrailID");
 
         if (s == null)
-            s = setDataCosmeticIdTrail("none");
+            s = setCosmeticIdTrail("none");
 
         return s;
     }
 
 
-    public int getDataStamina() {
+    public int getStamina() {
         return pFile.getInt("Stamina");
     }
 
-    public int setDataStamina(int i) {
+    public int setStamina(int i) {
         pFile.set("Stamina", i);
         return i;
+    }
+
+    public String getQuestData(String id, String sub) {
+        return pFile.getString("Quest." + id + "." + sub);
+    }
+
+    public String setQuestData(String id, String sub, String data) {
+        pFile.set("Quest." + id + "." + data, data);
+        return data;
     }
 }

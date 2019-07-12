@@ -23,10 +23,10 @@ public class PlayerLevelling implements Listener {
     public static void giveXp(Player p, int amount) {
         UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
 
-        int currentXp = up.setDataXp(up.getDataXp() + amount);
-        up.setDataTotalXp(up.getDataTotalXp() + amount);
+        int currentXp = up.setXp(up.getXp() + amount);
+        up.setTotalXp(up.getTotalXp() + amount);
 
-        if (currentXp >= xpToNextLevel(up.getDataLevel()))
+        if (currentXp >= xpToNextLevel(up.getLevel()))
             levelUp(p);
         else
             updateUI(p);
@@ -34,8 +34,8 @@ public class PlayerLevelling implements Listener {
 
     private static void levelUp(Player p) {
         UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
-        int xp = up.getDataXp();
-        int lvl = up.getDataLevel();
+        int xp = up.getXp();
+        int lvl = up.getLevel();
         int oldLvl = lvl;
 
         while (true) {
@@ -56,8 +56,8 @@ public class PlayerLevelling implements Listener {
         sendLevelUpMessages(p, oldLvl, lvl);
 
 
-        up.setDataXp(xp);
-        up.setDataLevel(lvl);
+        up.setXp(xp);
+        up.setLevel(lvl);
         updateUI(p);
     }
 
@@ -86,10 +86,10 @@ public class PlayerLevelling implements Listener {
 
     private static void updateUI(Player p) {
         UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
-        int lvl = up.getDataLevel();
+        int lvl = up.getLevel();
 
         p.setLevel(lvl);
-        p.setExp((up.getDataXp() * 1f) / xpToNextLevel(lvl));
+        p.setExp((up.getXp() * 1f) / xpToNextLevel(lvl));
     }
 
     public static int xpToNextLevel(int lvl) {

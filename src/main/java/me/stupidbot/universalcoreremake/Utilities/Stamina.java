@@ -40,11 +40,11 @@ public class Stamina implements Listener {
     }
 
     public static int getStamina(Player p) {
-        return UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p).getDataStamina();
+        return UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p).getStamina();
     }
 
     private static void setStamina(Player p, int i) {
-        UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p).setDataStamina(i);
+        UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p).setStamina(i);
         updateStamina(p);
     }
 
@@ -53,7 +53,7 @@ public class Stamina implements Listener {
     }
 
     public static int getMaxStamina(Player p) {
-        return getMaxStamina(UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p).getDataLevel());
+        return getMaxStamina(UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p).getLevel());
     }
 
     public static int getMaxStamina(int i) {

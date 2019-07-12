@@ -46,20 +46,20 @@ public class UniversalPlayerManager implements Listener {
         UniversalPlayer up = new UniversalPlayer(pFileLoc, pFile);
 
 
-        up.setDataName(p.getName());
+        up.setName(p.getName());
         String prefix = UniversalCoreRemake.getChat().getPlayerPrefix(p);
-        up.setDataPrefix(prefix);
-        up.setDataNameColor(prefix.substring(0, 2));
+        up.setPrefix(prefix);
+        up.setNameColor(prefix.substring(0, 2));
 
         if (up.firstJoin()) {
-            up.setDataFirstPlayed(UniversalPlayer.getSimpleDateFormat().format(new Date()));
-            up.setDataLevel(1);
-            up.setDataStamina(Stamina.getMaxStamina(1));
+            up.setFirstPlayed(UniversalPlayer.getSimpleDateFormat().format(new Date()));
+            up.setLevel(1);
+            up.setStamina(Stamina.getMaxStamina(1));
         } else // Editing UniversalPlayers in PlayerJoinEvent is glitchy so we handle it here if needed.
             try {
-                if (new Date().getTime() - UniversalPlayer.getSimpleDateFormat().parse(up.getDataLastPlayed())
-                        .getTime() >= 6.48e+7) { // 18 hours
-                    up.setDataStamina(Stamina.getMaxStamina(up.getDataLevel()));
+                if (new Date().getTime() - UniversalPlayer.getSimpleDateFormat().parse(up.getLastPlayed())
+                        .getTime() >= 6.48e+7) { // 18 hours // TODO Move this
+                    up.setStamina(Stamina.getMaxStamina(up.getLevel()));
                     p.setFoodLevel(20);
                     p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             "&a&lALL STAMINA RECOVERED!&7&o All stamina is recovered when you've been " +
@@ -119,7 +119,8 @@ public class UniversalPlayerManager implements Listener {
     }
 
     private File getPlayerDataFile(Player p) {
-        File pFile = new File(dataFolderPath + File.separator + p.getUniqueId() + ".yml");
+        File pFile = new File(dataFolderPath + File.separator + p.getUniqueId() + File.separator
+                + "universal_player" + ".json");
         File pdf = new File(dataFolderPath);
 
         if (!pdf.exists())
@@ -136,7 +137,8 @@ public class UniversalPlayerManager implements Listener {
     }
 
     private File getPlayerDataFile(OfflinePlayer p) {
-        File pFile = new File(dataFolderPath + File.separator + p.getUniqueId() + ".yml");
+        File pFile = new File(dataFolderPath + File.separator + p.getUniqueId() + File.separator
+                + "universal_player" + ".json");
 
         if (!pFile.exists())
             return null;

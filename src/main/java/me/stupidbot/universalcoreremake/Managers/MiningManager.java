@@ -126,7 +126,7 @@ public class MiningManager implements Listener {
                         timer.put(id, d);
                     } else { // If Finished Mining
                         UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
-                        up.setDataBlocksMined(up.getDataBlocksMined() + 1);
+                        up.setBlocksMined(up.getBlocksMined() + 1);
 
                         int amt = 1;
                         ItemUtils.addItemSafe(p, new ItemStack(mb.getLoot(), amt));

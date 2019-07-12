@@ -37,7 +37,7 @@ class Exp {
                         UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
 
                         int xp = args[0].equalsIgnoreCase("levelup") ?
-                                PlayerLevelling.xpToNextLevel(up.getDataLevel()) - up.getDataXp()
+                                PlayerLevelling.xpToNextLevel(up.getLevel()) - up.getXp()
                                 : Integer.parseInt(args[0]);
 
                         PlayerLevelling.giveXp(p, xp);

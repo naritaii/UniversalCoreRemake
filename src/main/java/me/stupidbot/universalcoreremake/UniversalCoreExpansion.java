@@ -83,21 +83,21 @@ class UniversalCoreExpansion extends PlaceholderExpansion {
     public String onRequest(OfflinePlayer p, String identifier) {
         switch (identifier) {
             case "level": // %universalcore_level%
-                return upm.getUniversalPlayer(p).getDataLevel() + "";
+                return upm.getUniversalPlayer(p).getLevel() + "";
             case "leveltag": // %universalcore_leveltag%
-                return PlayerLevelling.levelTag(upm.getUniversalPlayer(p).getDataLevel());
+                return PlayerLevelling.levelTag(upm.getUniversalPlayer(p).getLevel());
             case "levelbar": // %universalcore_levelbar%
                 UniversalPlayer up = upm.getUniversalPlayer(p);
                 return ChatColor.translateAlternateColorCodes('7', "&7[" +
-                        TextUtils.getProgressBar(up.getDataXp(),
-                        PlayerLevelling.xpToNextLevel(up.getDataLevel()),
+                        TextUtils.getProgressBar(up.getXp(),
+                        PlayerLevelling.xpToNextLevel(up.getLevel()),
                         18,
                         "|",
                         "&a",
                         "&8"
                 ) + "&7]");
             case "namecolor": // %universalcore_namecolor%
-                return upm.getUniversalPlayer(p).getDataNamColor();
+                return upm.getUniversalPlayer(p).getNameColor();
             case "chatcolor":
                 return TextUtils.getChatColor(p);
             default:
