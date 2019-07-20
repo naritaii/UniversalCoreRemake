@@ -18,6 +18,10 @@ import java.util.HashMap;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class BlockMetadataManger {
+    public BlockMetadataManger() {
+        initialize();
+    }
+
     private final String folderPath = UniversalCoreRemake.getInstance().getDataFolder().toString();
     private final String dataPath = folderPath  + File.separator + "data" + File.separator + "block_metadata.yml";
 

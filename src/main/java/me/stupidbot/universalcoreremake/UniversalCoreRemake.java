@@ -28,8 +28,8 @@ public class UniversalCoreRemake extends JavaPlugin {
     private static EffectManager effectManager;
     private static ProtocolManager protocolManager;
     private static UniversalPlayerManager universalPlayerManager;
-    private static MiningManager miningManager;
     private static BlockMetadataManger blockMetadataManager;
+    private static MiningManager miningManager;
     private static Economy econ = null;
     private static Permission perms = null;
     private static Chat chat = null;
@@ -40,11 +40,11 @@ public class UniversalCoreRemake extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        effectManager = new EffectManager(this);
+        effectManager = new EffectManager(instance);
         protocolManager = ProtocolLibrary.getProtocolManager();
         universalPlayerManager = new UniversalPlayerManager();
-        miningManager = new MiningManager();
         blockMetadataManager = new BlockMetadataManger();
+        miningManager = new MiningManager();
         inventoryManager = new InventoryManager(instance);
         motdManager = new MOTDManager();
 
@@ -53,13 +53,11 @@ public class UniversalCoreRemake extends JavaPlugin {
         setupEconomy();
         setupChat();
         setupPermissions();
-        universalPlayerManager.initialize();
-        miningManager.initialize();
-        blockMetadataManager.initialize();
         inventoryManager.init();
-        motdManager.reload();
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
             new UniversalCoreExpansion().register();
+        else
+            System.out.println("PlaceholderAPI support disabled.");
 
         registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager, new Stamina(),
                 new ChatManager(), motdManager, new ItemMetadata());

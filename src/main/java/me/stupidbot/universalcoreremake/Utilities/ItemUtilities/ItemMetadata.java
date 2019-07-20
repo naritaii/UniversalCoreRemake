@@ -39,16 +39,18 @@ public class ItemMetadata implements Listener {
                         if (sm.getValues().get(j) != null) {
                             ItemStack item = sm.getValues().get(j);
                             if (item != null) {
-                                ItemMeta itemMeta = item.getItemMeta();
-                                if (itemMeta.hasLore()) {
-                                    List<String> lore = itemMeta.getLore();
-                                    for (String s : lore) {
-                                        if (s.startsWith(hiddenPl)) {
-                                            lore.remove(s);
+                                if (item.hasItemMeta()) {
+                                    ItemMeta itemMeta = item.getItemMeta();
+                                    if (itemMeta.hasLore()) {
+                                        List<String> newLore = new ArrayList<>();
+                                        for (String s : itemMeta.getLore()) {
+                                            if (!s.startsWith(hiddenPl)) {
+                                                newLore.add(s);
+                                            }
                                         }
+                                        itemMeta.setLore(newLore);
+                                        item.setItemMeta(itemMeta);
                                     }
-                                    itemMeta.setLore(lore);
-                                    item.setItemMeta(itemMeta);
                                 }
                             }
                         }
@@ -64,16 +66,18 @@ public class ItemMetadata implements Listener {
                             if (sm.getValues().get(j) != null) {
                                 for (ItemStack item : sm.getValues().get(j)) {
                                     if (item != null) {
-                                        ItemMeta itemMeta = item.getItemMeta();
-                                        if (itemMeta.hasLore()) {
-                                            List<String> lore = itemMeta.getLore();
-                                            for (String s : lore) {
-                                                if (s.startsWith(hiddenPl)) {
-                                                    lore.remove(s);
+                                        if (item.hasItemMeta()) {
+                                            ItemMeta itemMeta = item.getItemMeta();
+                                            if (itemMeta.hasLore()) {
+                                                List<String> newLore = new ArrayList<>();
+                                                for (String s : itemMeta.getLore()) {
+                                                    if (!s.startsWith(hiddenPl)) {
+                                                        newLore.add(s);
+                                                    }
                                                 }
+                                                itemMeta.setLore(newLore);
+                                                item.setItemMeta(itemMeta);
                                             }
-                                            itemMeta.setLore(lore);
-                                            item.setItemMeta(itemMeta);
                                         }
                                     }
                                 }
@@ -86,6 +90,7 @@ public class ItemMetadata implements Listener {
         });
     }
 
+    // TODO Add a system to save savedItems to file OnDisable
     private final Map<UUID, List<String>> savedItems = new HashMap<>();
     private void giveSavedItems(Player p) {
         List<String> items = savedItems.get(p.getUniqueId());

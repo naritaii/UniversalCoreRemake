@@ -40,6 +40,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class MiningManager implements Listener {
+    public MiningManager() {
+        initialize();
+    }
+
     private final Map<UUID, Block> miningPlayers = new HashMap<>();
     private final Map<Block, Integer> regen = new HashMap<>();
 
@@ -93,7 +97,7 @@ public class MiningManager implements Listener {
 
         Map<UUID, Integer> timer = new HashMap<>();
         // Main Runnable
-        Bukkit.getScheduler().runTaskTimerAsynchronously(UniversalCoreRemake.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskTimer(UniversalCoreRemake.getInstance(), () -> {
             // Cleanup timer
             timer.keySet().stream().filter(id -> !miningPlayers.containsKey(id)).collect(Collectors.toList())
                     .forEach(timer::remove);

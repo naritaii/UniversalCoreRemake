@@ -119,8 +119,7 @@ public class UniversalPlayerManager implements Listener {
     }
 
     private File getPlayerDataFile(Player p) {
-        File pFile = new File(dataFolderPath + File.separator + p.getUniqueId() + File.separator
-                + "universal_player" + ".json");
+        File pFile = new File(dataFolderPath + File.separator + p.getUniqueId() + ".yml");
         File pdf = new File(dataFolderPath);
 
         if (!pdf.exists())
@@ -137,8 +136,7 @@ public class UniversalPlayerManager implements Listener {
     }
 
     private File getPlayerDataFile(OfflinePlayer p) {
-        File pFile = new File(dataFolderPath + File.separator + p.getUniqueId() + File.separator
-                + "universal_player" + ".json");
+        File pFile = new File(dataFolderPath + File.separator + p.getUniqueId() + ".yml");
 
         if (!pFile.exists())
             return null;
@@ -172,7 +170,7 @@ public class UniversalPlayerManager implements Listener {
 
             Bukkit.broadcast(s, "universalcore.admin");
             System.out.println(s);
-    }, (Duration.between(LocalDateTime.now(), LocalDateTime.now().plusHours(1).truncatedTo(ChronoUnit.HOURS))
+        }, (Duration.between(LocalDateTime.now(), LocalDateTime.now().plusHours(1).truncatedTo(ChronoUnit.HOURS))
                 .toMillis() / 1000) * 20, (20 * 60) * 60); // Run every hour
     }
 
@@ -183,14 +181,14 @@ public class UniversalPlayerManager implements Listener {
         });
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void OnPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
 
         createUniversalPlayer(p);
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void OnPlayerQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
         UniversalPlayer up = getUniversalPlayer(p);

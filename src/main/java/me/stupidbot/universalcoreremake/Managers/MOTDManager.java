@@ -13,11 +13,15 @@ import java.io.File;
 import java.io.IOException;
 
 public class MOTDManager implements Listener {
+    public MOTDManager() {
+        reload();
+    }
+
     private final String folderPath = UniversalCoreRemake.getInstance().getDataFolder().toString();
     private final String dataPath = folderPath + File.separator + "motd.yml";
     private String motd;
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPing(ServerListPingEvent e) {
         e.setMotd(motd);
     }
