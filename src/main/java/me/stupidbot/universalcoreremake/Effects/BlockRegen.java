@@ -22,6 +22,6 @@ public class BlockRegen extends Effect {
     public void onRun() {
         Location loc = LocationUtils.center(getLocation());
         display(ParticleEffect.FLAME, loc, 0f, 20);
-        loc.getWorld().playSound(loc, Sound.DRINK, 0.5f, 2f);
+        loc.getWorld().playSound(loc, Sound.DRINK, 0.5f, 1.5f);
     }
 }

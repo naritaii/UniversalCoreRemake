@@ -5,10 +5,7 @@ import com.comphenix.protocol.ProtocolManager;
 import de.slikey.effectlib.EffectManager;
 import fr.minuskube.inv.InventoryManager;
 import me.stupidbot.universalcoreremake.Commands.CommandExecutor;
-import me.stupidbot.universalcoreremake.Managers.BlockMetadataManger;
-import me.stupidbot.universalcoreremake.Managers.ChatManager;
-import me.stupidbot.universalcoreremake.Managers.MOTDManager;
-import me.stupidbot.universalcoreremake.Managers.MiningManager;
+import me.stupidbot.universalcoreremake.Managers.*;
 import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayerManager;
 import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.ItemMetadata;
 import me.stupidbot.universalcoreremake.Utilities.PlayerLevelling;
@@ -35,6 +32,7 @@ public class UniversalCoreRemake extends JavaPlugin {
     private static Chat chat = null;
     private static InventoryManager inventoryManager = null;
     private static MOTDManager motdManager;
+    private static ScoreboardManager scoreboardManager;
 
     @Override
     public void onEnable() {
@@ -47,6 +45,7 @@ public class UniversalCoreRemake extends JavaPlugin {
         miningManager = new MiningManager();
         inventoryManager = new InventoryManager(instance);
         motdManager = new MOTDManager();
+        scoreboardManager = new ScoreboardManager();
 
         CommandExecutor executor = new CommandExecutor();
 
@@ -60,7 +59,7 @@ public class UniversalCoreRemake extends JavaPlugin {
             System.out.println("PlaceholderAPI support disabled.");
 
         registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager, new Stamina(),
-                new ChatManager(), motdManager, new ItemMetadata());
+                new ChatManager(), motdManager, new ItemMetadata(), scoreboardManager);
         registerCommands(executor, "reloadmotd", "exp", "setblockmeta", "readblockmeta", "setitemmeta",
                 "readitemmeta", "emoji", "openmineraltrader", "openfoodtrader");
 
@@ -123,6 +122,10 @@ public class UniversalCoreRemake extends JavaPlugin {
 
     public static MOTDManager getMotdManager() {
         return motdManager;
+    }
+
+    public static ScoreboardManager getScoreboardManager() {
+        return scoreboardManager;
     }
 
     private boolean setupEconomy() {

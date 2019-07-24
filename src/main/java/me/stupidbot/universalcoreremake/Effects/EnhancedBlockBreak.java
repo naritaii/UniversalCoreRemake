@@ -32,6 +32,6 @@ public class EnhancedBlockBreak extends Effect {
 
             display(ParticleEffect.REDSTONE, loc.clone().add(dx, dy, dz), 1f, 1);
         }
-        loc.getWorld().playSound(loc, Sound.FIREWORK_LAUNCH, 1f, 2f);
+        loc.getWorld().playSound(loc, Sound.FIREWORK_LAUNCH, 1f, 1.5f);
     }
 }
