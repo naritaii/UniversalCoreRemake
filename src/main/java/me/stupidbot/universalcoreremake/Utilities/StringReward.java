@@ -111,4 +111,44 @@ public class StringReward {
             }
         }
     }
+
+    public void giveNoMessage(Player p) {
+        for (String s : rewards) {
+            String[] split = s.split(" ");
+            String type = split[0].toUpperCase();
+            StringBuilder arg = new StringBuilder();
+            for (String args : Arrays.copyOfRange(split, 1, split.length))
+                arg.append(args);
+
+            switch (type) {
+                case "MONEY":
+                    try {
+                        double d = Double.valueOf(arg.toString());
+                        UniversalCoreRemake.getEconomy().depositPlayer(p, d);
+                    } catch (NumberFormatException e) {
+                        p.sendMessage((ChatColor.translateAlternateColorCodes('&',
+                                "&cCould not parse money " + arg.toString())));
+                    }
+                    break;
+
+                case "ITEM":
+                    ItemStack is = ItemUtils.deserializeItemStack(arg.toString());
+                    if (is != null)
+                        if (is.hasItemMeta()) {
+                            ItemUtils.addItemSafe(p, is);
+                        } else {
+                            ItemUtils.addItemSafe(p, is);
+                        }
+                    else
+                        p.sendMessage((ChatColor.translateAlternateColorCodes('&',
+                                "&cCould not parse item " + arg.toString())));
+                    break;
+
+                default:
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                            "&cCould not parse " + s));
+                    break;
+            }
+        }
+    }
 }

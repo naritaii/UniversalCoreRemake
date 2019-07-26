@@ -1,20 +1,20 @@
 package me.stupidbot.universalcoreremake.Managers.UniversalObjectives;
 
+import me.stupidbot.universalcoreremake.Utilities.StringReward;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
 import java.util.Map;
 
 public class UniversalObjective {
     private final Map<TaskType, String> tasks;
     private final String id;
     private final ItemStack displayItem;
-    private final List<String> rewards;
+    private final StringReward rewards;
     private final int cooldown;
     private final String permissionRequired;
     private final Catagory category;
 
-    public UniversalObjective(Map<TaskType, String> tasks, String id, ItemStack displayItem, List<String> rewards,
+    public UniversalObjective(Map<TaskType, String> tasks, String id, ItemStack displayItem, StringReward rewards,
                               String permissionRequired, Catagory catagory) {
         this.tasks = tasks;
         this.id = id;
@@ -37,7 +37,7 @@ public class UniversalObjective {
         return displayItem.clone();
     }
 
-    List<String> getRewards() {
+    StringReward getRewards() {
         return rewards;
     }
 
@@ -62,7 +62,7 @@ public class UniversalObjective {
     }
 
     public enum TaskType {
-        MINE_BLOCK;
+        MINE_BLOCK, TALK_TO_NPC;
     }
 
     public enum Catagory {

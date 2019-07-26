@@ -2,7 +2,6 @@ package me.stupidbot.universalcoreremake.Managers.UniversalPlayers;
 
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.Utilities.Stamina;
-import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -18,9 +17,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -158,20 +154,20 @@ public class UniversalPlayerManager implements Listener {
     public void initialize() {
         Bukkit.getOnlinePlayers().forEach((Consumer<Player>) this::createUniversalPlayer);
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(UniversalCoreRemake.getInstance(), () -> {
-            long startTime = System.nanoTime();
-
-            getAllUniversalPlayers().forEach(UniversalPlayer::savePlayerDataFile);
-
-            long endTime = System.nanoTime();
-            String s = ChatColor.translateAlternateColorCodes('&',
-                    "&c[&fDEBUG&c]: &cSaved all cached UniversalPlayer data to file &a(took " +
-                            TextUtils.addCommas((int) ((endTime - startTime) / 1000000)) + "ms)");
-
-            Bukkit.broadcast(s, "universalcore.admin");
-            System.out.println(s);
-        }, (Duration.between(LocalDateTime.now(), LocalDateTime.now().plusHours(1).truncatedTo(ChronoUnit.HOURS))
-                .toMillis() / 1000) * 20, (20 * 60) * 60); // Run every hour
+//        Bukkit.getScheduler().runTaskTimerAsynchronously(UniversalCoreRemake.getInstance(), () -> {
+//            long startTime = System.nanoTime();
+//
+//            getAllUniversalPlayers().forEach(UniversalPlayer::savePlayerDataFile);
+//
+//            long endTime = System.nanoTime();
+//            String s = ChatColor.translateAlternateColorCodes('&',
+//                    "&c[&fDEBUG&c]: &cSaved all cached UniversalPlayer data to file &a(took " +
+//                            TextUtils.addCommas((int) ((endTime - startTime) / 1000000)) + "ms)");
+//
+//            Bukkit.broadcast(s, "universalcore.admin");
+//            System.out.println(s);
+//        }, (Duration.between(LocalDateTime.now(), LocalDateTime.now().plusHours(1).truncatedTo(ChronoUnit.HOURS))
+//                .toMillis() / 1000) * 20, (20 * 60) * 60); // Run every hour
     }
 
     public void disable() {

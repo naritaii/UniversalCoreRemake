@@ -13,6 +13,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PlayerLevelling implements Listener {
     @EventHandler
     public void OnPlayerJoin(PlayerJoinEvent e) {
@@ -53,7 +56,7 @@ public class PlayerLevelling implements Listener {
                 5, 80, 0);
 
         p.playSound(p.getLocation(), Sound.ENDERDRAGON_GROWL, 1, 1.25f);
-        sendLevelUpMessages(p, oldLvl, lvl);
+        levelMilestones(p, oldLvl, lvl);
 
 
         up.setXp(xp);
@@ -61,15 +64,35 @@ public class PlayerLevelling implements Listener {
         updateUI(p);
     }
 
-    private static void sendLevelUpMessages(Player p, int oldLvl, int lvl) {
+    private static Map<Integer, StringReward> levelRewards = new HashMap<Integer, StringReward>() {
+        {
+            int i = 1;
+            put(++i, new StringReward("MONEY 5")); // 2
+            put(++i, new StringReward("MONEY 10"));
+            put(++i, new StringReward("MONEY 15"));
+            put(++i, new StringReward("MONEY 20")); // 5
+            put(++i, new StringReward("MONEY 50"));
+            put(++i, new StringReward("MONEY 55"));
+            put(++i, new StringReward("MONEY 60"));
+            put(++i, new StringReward("MONEY 65"));
+            put(++i, new StringReward("MONEY 100")); // 10
+            put(++i, new StringReward("MONEY 110"));
+            put(++i, new StringReward("MONEY 120"));
+            put(++i, new StringReward("MONEY 130"));
+            ++i;  // skip 14
+            put(++i, new StringReward("MONEY 150", "MONEY 150")); // 15
+        }
+    };
+
+    private static void levelMilestones(Player p, int oldLvl, int lvl) {
         p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                 "&8&l&m---------------------------------------------"));
         TextUtils.sendCenteredMessage(p, "&a&k3&6 LEVEL UP! &a&k3");
         p.sendMessage("");
         TextUtils.sendCenteredMessage(p, "&7You are now level &a" + levelTag(lvl));
 
-        for (int i = oldLvl; i <= lvl; i++)
-            if (i == 1) {
+        for (int i = ++oldLvl; i <= lvl; i++) {
+            if (i == 2) {
                 p.sendMessage("");
                 TextUtils.sendCenteredMessage(p,
                         "&7Level up to unlock features and raise stats like stamina!");
@@ -78,7 +101,26 @@ public class PlayerLevelling implements Listener {
                 TextUtils.sendCenteredMessage(p, "&7Hey, you're getting pretty good at this. I think");
                 TextUtils.sendCenteredMessage(p, "&aQuest Master &7might have some &ejobs for you&7,");
                 TextUtils.sendCenteredMessage(p, "&7type &c/spawn&7 to warp to spawn!");
+            } else if (i == 14) {
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "\n  &aReward:\n    " +
+                                "&8+&c&oi don't really feel like giving you a reward right now...\n    " +
+                                "&8+&c&othings have just been... tough... at home and...\n    " +
+                                "&8+&c&oplease don't hate me...\n    " +
+                                "&8+&c&o...\n    " +
+                                "&8+&c&oi-i promise i'll make it up to you!"));
             }
+
+            if (levelRewards.containsKey(i)) {
+                StringReward reward = levelRewards.get(i);
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "\n  &aReward:"));
+                for (String r : reward.asStrings())
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                            "    &8+" + r));
+                reward.giveNoMessage(p);
+            }
+        }
 
         p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                 "&8&l&m---------------------------------------------"));

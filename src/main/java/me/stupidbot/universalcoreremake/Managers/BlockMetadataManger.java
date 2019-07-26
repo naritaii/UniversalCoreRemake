@@ -1,9 +1,7 @@
 package me.stupidbot.universalcoreremake.Managers;
 
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
-import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -11,9 +9,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -116,20 +111,20 @@ public class BlockMetadataManger {
             }
         }
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(UniversalCoreRemake.getInstance(), () -> {
-            long startTime = System.nanoTime();
-
-            save();
-
-            long endTime = System.nanoTime();
-            String s = ChatColor.translateAlternateColorCodes('&',
-                    "&c[&fDEBUG&c]: &cSaved all custom block metadata data to file &a(took " +
-                            TextUtils.addCommas((int) ((endTime - startTime) / 1000000)) + "ms)");
-
-            Bukkit.broadcast(s, "universalcore.admin");
-            System.out.println(s);
-        }, (Duration.between(LocalDateTime.now(), LocalDateTime.now().plusHours(1).truncatedTo(ChronoUnit.HOURS))
-                .toMillis() / 1000) * 20, (20 * 60) * 60); // Run every hour
+//        Bukkit.getScheduler().runTaskTimerAsynchronously(UniversalCoreRemake.getInstance(), () -> {
+//            long startTime = System.nanoTime();
+//
+//            save();
+//
+//            long endTime = System.nanoTime();
+//            String s = ChatColor.translateAlternateColorCodes('&',
+//                    "&c[&fDEBUG&c]: &cSaved all custom block metadata data to file &a(took " +
+//                            TextUtils.addCommas((int) ((endTime - startTime) / 1000000)) + "ms)");
+//
+//            Bukkit.broadcast(s, "universalcore.admin");
+//            System.out.println(s);
+//        }, (Duration.between(LocalDateTime.now(), LocalDateTime.now().plusHours(1).truncatedTo(ChronoUnit.HOURS))
+//                .toMillis() / 1000) * 20, (20 * 60) * 60); // Run every hour
     }
 
     public void disable() {
