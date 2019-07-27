@@ -6,6 +6,7 @@ import de.slikey.effectlib.EffectManager;
 import fr.minuskube.inv.InventoryManager;
 import me.stupidbot.universalcoreremake.Commands.CommandExecutor;
 import me.stupidbot.universalcoreremake.Managers.*;
+import me.stupidbot.universalcoreremake.Managers.UniversalObjectives.UniversalObjectiveManager;
 import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayerManager;
 import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.ItemMetadata;
 import me.stupidbot.universalcoreremake.Utilities.PlayerLevelling;
@@ -33,6 +34,7 @@ public class UniversalCoreRemake extends JavaPlugin {
     private static InventoryManager inventoryManager = null;
     private static MOTDManager motdManager;
     private static ScoreboardManager scoreboardManager;
+    private static UniversalObjectiveManager universalObjectiveManager;
 
     @Override
     public void onEnable() {
@@ -46,6 +48,7 @@ public class UniversalCoreRemake extends JavaPlugin {
         inventoryManager = new InventoryManager(instance);
         motdManager = new MOTDManager();
         scoreboardManager = new ScoreboardManager();
+        universalObjectiveManager = new UniversalObjectiveManager();
 
         CommandExecutor executor = new CommandExecutor();
 
@@ -59,7 +62,7 @@ public class UniversalCoreRemake extends JavaPlugin {
             System.out.println("PlaceholderAPI support disabled.");
 
         registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager, new Stamina(),
-                new ChatManager(), motdManager, new ItemMetadata(), scoreboardManager);
+                new ChatManager(), motdManager, new ItemMetadata(), scoreboardManager, universalObjectiveManager);
         registerCommands(executor, "reloadmotd", "exp", "setblockmeta", "readblockmeta", "setitemmeta",
                 "readitemmeta", "emoji", "openmineraltrader", "openfoodtrader");
 
@@ -68,6 +71,7 @@ public class UniversalCoreRemake extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        universalObjectiveManager.disable();
         effectManager.dispose();
         universalPlayerManager.disable();
         miningManager.disable();
@@ -127,6 +131,8 @@ public class UniversalCoreRemake extends JavaPlugin {
     public static ScoreboardManager getScoreboardManager() {
         return scoreboardManager;
     }
+
+    public static UniversalObjectiveManager getUniversalObjectiveManager() { return universalObjectiveManager; }
 
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {

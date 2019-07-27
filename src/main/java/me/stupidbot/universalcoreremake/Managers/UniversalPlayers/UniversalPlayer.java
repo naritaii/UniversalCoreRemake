@@ -154,12 +154,12 @@ public class UniversalPlayer {
         return i;
     }
 
-    public String getQuestData(String id, String sub) {
-        return pFile.getString("Quest." + id + "." + sub);
+    public int getQuestData(String id, String sub) {
+        return pFile.getInt("Quest." + id + "." + sub);
     }
 
-    public String setQuestData(String id, String sub, String data) {
-        pFile.set("Quest." + id + "." + data, data);
+    public int setQuestData(String id, String sub, int data) {
+        pFile.set("Quest." + id + "." + data + "." + sub, data);
         return data;
     }
 }

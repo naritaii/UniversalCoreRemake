@@ -114,6 +114,10 @@ public class UniversalPlayerManager implements Listener {
         return up;
     }
 
+    public UniversalPlayer getUniversalPlayer(UUID id) {
+        return getUniversalPlayer(Bukkit.getOfflinePlayer(id));
+    }
+
     private File getPlayerDataFile(Player p) {
         File pFile = new File(dataFolderPath + File.separator + p.getUniqueId() + ".yml");
         File pdf = new File(dataFolderPath);
