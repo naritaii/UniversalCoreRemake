@@ -8,6 +8,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +34,12 @@ public class UniversalObjectiveManager implements Listener {
                 UniversalObjective.TaskType.TALK_TO_NPC,
                 new String[] {
                         "6594590a-d472-4f0f-bf7f-e4f42473522a", // Unique Objective ID, generated manually somehow
+                        "1", // Integer to get too to complete
                         "328d73d1-e671-4006-8438-aeb44077b54f"  // NPC UUID
                 },
                 "GettingStarted",
                 new ItemBuilder(Material.YELLOW_FLOWER).name("&6Getting Started").build(),
-                new StringReward(""),
+                new StringReward("MONEY 1"),
                 null,
                 UniversalObjective.Catagory.STORY_QUEST
         ));
@@ -51,15 +54,40 @@ public class UniversalObjectiveManager implements Listener {
      *           are equal to that of a {@link UniversalObjective} tracking {@param p}
      */
     private void increment(UniversalObjective.TaskType task, String taskInfo, Player p, int amt) {
-        for (UniversalObjective uo : registeredObjectives)
+        registeredObjectives.forEach((UniversalObjective uo) -> {
             if (uo.getTask() == task)
-                if (uo.getTaskInfo()[1].equals(taskInfo))
-                    uo.increment(p, amt);
+                if (uo.getTaskInfo()[2].equals(taskInfo)) {
+                    int progress = uo.increment(p, amt);
+                    if (progress >= Integer.parseInt(uo.getTaskInfo()[1]))
+                        reward(p, uo);
+                }
+        });
     }
 
 
-    private void reward(Player p, StringReward rewards) {
+    private void reward(Player p, UniversalObjective uo) {
+        StringReward rewards = uo.getRewards();
+        UniversalObjective.Catagory type = uo.getCategory();
 
+        uo.removePlayer(p);
+
+        switch (type) {
+            case STORY_QUEST:
+                break;
+
+            case ACHIEVEMENT:
+                break;
+        }
+    }
+
+    @EventHandler
+    public void OnPlayerJoin(PlayerJoinEvent e) {
+
+    }
+
+    @EventHandler
+    public void OnPlayerQuit(PlayerQuitEvent e) {
+        registeredObjectives.forEach((UniversalObjective uo) -> uo.removePlayer(e.getPlayer()));
     }
 
     @EventHandler

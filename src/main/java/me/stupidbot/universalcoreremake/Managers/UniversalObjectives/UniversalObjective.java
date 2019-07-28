@@ -92,8 +92,10 @@ public class UniversalObjective {
     }
 
     void removePlayer(Player p) {
-        savePlayerData(p);
-        playersToTrack.remove(p.getUniqueId());
+        if (playersToTrack.containsKey(p.getUniqueId())) {
+            savePlayerData(p);
+            playersToTrack.remove(p.getUniqueId());
+        }
     }
 
     void saveData() {
