@@ -1,9 +1,7 @@
 package me.stupidbot.universalcoreremake.Managers.UniversalPlayers;
 
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
-import me.stupidbot.universalcoreremake.Utilities.Stamina;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,7 +14,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -47,23 +44,8 @@ public class UniversalPlayerManager implements Listener {
         up.setPrefix(prefix);
         up.setNameColor(prefix.substring(0, 2));
 
-        if (up.firstJoin()) {
+        if (up.firstJoin())
             up.setFirstPlayed(UniversalPlayer.getSimpleDateFormat().format(new Date()));
-            up.setLevel(1);
-            up.setStamina(Stamina.getMaxStamina(1));
-        } else // Editing UniversalPlayers in PlayerJoinEvent is glitchy so we handle it here if needed.
-            try {
-                if (new Date().getTime() - UniversalPlayer.getSimpleDateFormat().parse(up.getLastPlayed())
-                        .getTime() >= 6.48e+7) { // 18 hours // TODO Move this
-                    up.setStamina(Stamina.getMaxStamina(up.getLevel()));
-                    p.setFoodLevel(20);
-                    p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            "&a&lALL STAMINA RECOVERED!&7&o All stamina is recovered when you've been " +
-                                    "offline for 18+ hours."));
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
 
 
         List<UniversalPlayer> ups = getAllUniversalPlayers();

@@ -1,5 +1,8 @@
 package me.stupidbot.universalcoreremake.Managers.UniversalObjectives;
 
+import me.stupidbot.universalcoreremake.Events.UniversalBlockBreakEvent;
+import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayer;
+import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.ItemBuilder;
 import me.stupidbot.universalcoreremake.Utilities.StringReward;
 import net.citizensnpcs.api.event.NPCClickEvent;
@@ -15,7 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UniversalObjectiveManager implements Listener {
-    private List<UniversalObjective> registeredObjectives;
+    private static List<UniversalObjective> registeredObjectives;
+    private static List<UniversalObjective> STORY_QUESTObjectives;
+    private static List<UniversalObjective> ACHIEVEMENTObjectives;
+    private static List<UniversalObjective> MINE_BLOCKObjectives;
+    private static List<UniversalObjective> TALK_TO_NPCObjectives;
 
     public UniversalObjectiveManager() {
         instantiate();
@@ -25,24 +32,52 @@ public class UniversalObjectiveManager implements Listener {
         registerObjectives();
     }
 
-    private void registerObjectives() {
-        if (registeredObjectives != null)
-            registeredObjectives.forEach((UniversalObjective::saveData));
-        registeredObjectives = new ArrayList<>();
-
-        registeredObjectives.add(new UniversalObjective(
+    private static UniversalObjective storyGettingStarted =
+        new UniversalObjective(
                 UniversalObjective.TaskType.TALK_TO_NPC,
                 new String[] {
-                        "6594590a-d472-4f0f-bf7f-e4f42473522a", // Unique Objective ID, generated manually somehow
+                        "6594590a-d472-4f0f-bf7f-e4f42473522a", // Unique section ID, generated manually somehow
                         "1", // Integer to get too to complete
                         "328d73d1-e671-4006-8438-aeb44077b54f"  // NPC UUID
                 },
-                "GettingStarted",
+                "GettingStarted", // Unique Objective ID
                 new ItemBuilder(Material.YELLOW_FLOWER).name("&6Getting Started").build(),
                 new StringReward("MONEY 1"),
                 null,
                 UniversalObjective.Catagory.STORY_QUEST
-        ));
+        );
+    private static void registerObjectives() {
+        registeredObjectives.forEach((UniversalObjective::saveData));
+        registeredObjectives = new ArrayList<>();
+
+        STORY_QUESTObjectives = new ArrayList<>();
+        ACHIEVEMENTObjectives = new ArrayList<>();
+
+        MINE_BLOCKObjectives = new ArrayList<>();
+        TALK_TO_NPCObjectives = new ArrayList<>();
+
+
+        registeredObjectives.add(storyGettingStarted);
+
+
+        registeredObjectives.forEach((uo) -> {
+            switch (uo.getCategory()) {
+            case STORY_QUEST:
+                STORY_QUESTObjectives.add(uo);
+                break;
+            case ACHIEVEMENT:
+                ACHIEVEMENTObjectives.add(uo);
+                break;
+            }
+            switch (uo.getTask()) {
+                case MINE_BLOCK:
+                    MINE_BLOCKObjectives.add(uo);
+                    break;
+                case TALK_TO_NPC:
+                    TALK_TO_NPCObjectives.add(uo);
+                    break;
+            }
+        });
     }
 
     public void disable() {
@@ -70,14 +105,15 @@ public class UniversalObjectiveManager implements Listener {
         UniversalObjective.Catagory type = uo.getCategory();
 
         uo.removePlayer(p);
+        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
+        up.addCompletedObjective(uo.getId());
+        up.removeObjectiveData(uo.getId()); // No longer needed data
 
-        switch (type) {
-            case STORY_QUEST:
-                break;
+        for (String s : rewards.asStrings()) {
 
-            case ACHIEVEMENT:
-                break;
         }
+
+        rewards.giveNoMessage(p);
     }
 
     @EventHandler
@@ -88,6 +124,15 @@ public class UniversalObjectiveManager implements Listener {
     @EventHandler
     public void OnPlayerQuit(PlayerQuitEvent e) {
         registeredObjectives.forEach((UniversalObjective uo) -> uo.removePlayer(e.getPlayer()));
+    }
+
+    // Objective listeners
+    @EventHandler
+    public void OnUniversalBlockBreak(UniversalBlockBreakEvent e) {
+        Player p = e.getPlayer();
+        int amt = e.getAmount();
+        String b = e.getBlock().toString();
+        increment(UniversalObjective.TaskType.MINE_BLOCK, b, p, amt);
     }
 
     @EventHandler

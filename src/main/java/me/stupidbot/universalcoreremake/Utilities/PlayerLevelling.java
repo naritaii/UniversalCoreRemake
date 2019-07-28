@@ -20,6 +20,10 @@ public class PlayerLevelling implements Listener {
     @EventHandler
     public void OnPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
+        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
+
+        if (up.firstJoin())
+            up.setLevel(1);
         PlayerLevelling.updateUI(p);
     }
 

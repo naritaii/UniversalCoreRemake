@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 @SuppressWarnings("SameParameterValue")
 public class UniversalPlayer {
@@ -154,12 +155,29 @@ public class UniversalPlayer {
         return i;
     }
 
-    public int getQuestData(String id, String sub) {
-        return pFile.getInt("Quest." + id + "." + sub);
+
+    public int getObjectiveData(String id, String sub) {
+        return pFile.getInt("Objective." + id + "." + sub);
     }
 
-    public int setQuestData(String id, String sub, int data) {
-        pFile.set("Quest." + id + "." + data + "." + sub, data);
+    public int setObjectiveData(String id, String sub, int data) {
+        pFile.set("Objective." + id + "." + sub, data);
         return data;
+    }
+
+    public String removeObjectiveData(String id) {
+        pFile.set("Objective." + id, null);
+        return id;
+    }
+
+    public List<String> getCompletedObjectives() {
+        return pFile.getStringList("Objective.Completed");
+    }
+
+    public List<String> addCompletedObjective(String id) {
+        List<String> completed = getCompletedObjectives();
+        completed.add(id);
+        pFile.set("Objective.Completed", completed);
+        return completed;
     }
 }

@@ -88,7 +88,7 @@ public class UniversalObjective {
 
     void addPlayer(Player p) {
         playersToTrack.put(p.getUniqueId(), UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p)
-                .getQuestData(getId(), getTaskFormatted()));
+                .getObjectiveData(getId(), getTaskFormatted()));
     }
 
     void removePlayer(Player p) {
@@ -103,7 +103,7 @@ public class UniversalObjective {
         for (Map.Entry<UUID, Integer> e : playersToTrack.entrySet()) {
             int progress = e.getValue();
             if (progress > 0)
-                upm.getUniversalPlayer(e.getKey()).setQuestData(getId(), getTaskFormatted(), progress);
+                upm.getUniversalPlayer(e.getKey()).setObjectiveData(getId(), getTaskFormatted(), progress);
         }
     }
 
@@ -112,7 +112,7 @@ public class UniversalObjective {
         int progress = playersToTrack.get(id);
         if (progress > 0)
             UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p)
-            .setQuestData(getId(), getTaskFormatted(), progress);
+            .setObjectiveData(getId(), getTaskFormatted(), progress);
     }
 
     private String getTaskFormatted() {
@@ -124,7 +124,7 @@ public class UniversalObjective {
     }
 
     public enum Catagory {
-        STORY_QUEST, // Completed one at a time, counter starting from 0 indicating player which quest player is on.
+        STORY_QUEST, // Completed one at a time
         ACHIEVEMENT; // All online players who haven't completed these are tracked
     }
 }

@@ -11,6 +11,7 @@ import de.slikey.effectlib.Effect;
 import me.stupidbot.universalcoreremake.Effects.BlockBreak;
 import me.stupidbot.universalcoreremake.Effects.BlockRegen;
 import me.stupidbot.universalcoreremake.Effects.EnhancedBlockBreak;
+import me.stupidbot.universalcoreremake.Events.UniversalBlockBreakEvent;
 import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayer;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.ItemLevelling;
@@ -102,7 +103,8 @@ public class MiningManager implements Listener {
             timer.keySet().stream().filter(id -> !miningPlayers.containsKey(id)).collect(Collectors.toList())
                     .forEach(timer::remove);
 
-            for (UUID id : miningPlayers.keySet()) { // Block being mined
+            // Block being mined
+            for (UUID id : miningPlayers.keySet()) {
                 // Setup Vars
                 Player p = Bukkit.getPlayer(id);
                 Block b = miningPlayers.get(id);
@@ -128,30 +130,41 @@ public class MiningManager implements Listener {
                         breakAnim(p, b, stage);
 
                         timer.put(id, d);
-                    } else { // If Finished Mining
+                    }
+                    // If Finished Mining
+                    else {
                         UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
+                        int amt = 1;
+                        int xp = mb.getBaseXp();
+                        UniversalBlockBreakEvent e = new UniversalBlockBreakEvent(p, b, amt, xp, stamina);
+                        Bukkit.getPluginManager().callEvent(e);
+                        amt = e.getAmount();
+                        xp = e.getXp();
+                        stamina = e.getStamina();
+
+
+                        // Handling player
                         up.setBlocksMined(up.getBlocksMined() + 1);
 
-                        int amt = 1;
                         ItemUtils.addItemSafe(p, new ItemStack(mb.getLoot(), amt));
-
-                        int xp = mb.getBaseXp();
                         PlayerLevelling.giveXp(p, xp);
                         if (usingItem)
                             itemInHand = ItemLevelling.giveXp(p, itemInHand, xp);
-
                         Stamina.removeStamina(p, stamina);
+
                         TextUtils.sendActionbar(p, "&2XP: &a+" + mb.getBaseXp() +
                                 " &e" + TextUtils.capitalizeFully(b.getType().toString()) + ": &a+1" +
                                 " &3Stamina: &c-" + stamina);
 
 
-                        if (Math.random() < mb.getEnhanceChance()) // Enhance Block?
+                        // Enhance Block?
+                        if (Math.random() < mb.getEnhanceChance())
                             UniversalCoreRemake.getBlockMetadataManager().setMeta(b, "MINEABLE",
                                     mb.getEnhanceBlock().toString());
 
 
-                        switch (mb.getOnBreak()) { // What To Do On Block Break?
+                        // What To Do On Block Break?
+                        switch (mb.getOnBreak()) {
                             case DEFAULT:
                                 Effect blockBreak = new BlockBreak(UniversalCoreRemake.getEffectManager());
                                 blockBreak.material = b.getType();
@@ -185,20 +198,21 @@ public class MiningManager implements Listener {
                 }
             }
 
-            Iterator<Map.Entry<Block, Integer>> iter = regen.entrySet().iterator(); // Use Iterator because of ConcurrentModificationException
-            while (iter.hasNext()) { // Block has been mined
+            Iterator<Map.Entry<Block, Integer>> iter = regen.entrySet().iterator();
+            // Block has been mined
+            while (iter.hasNext()) {
                 Map.Entry<Block, Integer> pair = iter.next();
                 Block b = pair.getKey();
                 int i = pair.getValue() - 1;
 
-                if (i < 1) { // Regen Block
+                // Regen Block
+                if (i < 1) {
                     b.setType(Material.valueOf(
                             UniversalCoreRemake.getBlockMetadataManager().getMeta(b, "MINEABLE")));
 
                     Effect eff = new BlockRegen(UniversalCoreRemake.getEffectManager());
                     eff.setLocation(b.getLocation());
                     eff.run();
-                    // removeRegenningBlock(b); Use Iterator because of ConcurrentModificationException
                     iter.remove();
                 } else
                     putRegenningBlock(b, i);
