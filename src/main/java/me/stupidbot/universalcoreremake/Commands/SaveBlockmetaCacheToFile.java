@@ -10,7 +10,7 @@ class SaveBlockmetaCacheToFile {
     boolean execute(CommandSender s) {
         if (s.hasPermission("universalcore.admin")) {
             BlockMetadataManger bmm = new BlockMetadataManger();
-            int blocksSaved = bmm.getBlocksMetas().size();
+            int blocksSaved = bmm.getBlocksMetas().keySet().size();
             long startTime = System.nanoTime();
 
             bmm.save();
