@@ -5,11 +5,13 @@ import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlaye
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.ItemBuilder;
 import me.stupidbot.universalcoreremake.Utilities.StringReward;
-import net.citizensnpcs.api.event.NPCClickEvent;
+import net.citizensnpcs.api.event.NPCLeftClickEvent;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -18,11 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UniversalObjectiveManager implements Listener {
-    private static List<UniversalObjective> registeredObjectives;
-    private static List<UniversalObjective> STORY_QUESTObjectives;
-    private static List<UniversalObjective> ACHIEVEMENTObjectives;
-    private static List<UniversalObjective> MINE_BLOCKObjectives;
-    private static List<UniversalObjective> TALK_TO_NPCObjectives;
+    private static List<UniversalObjective> registeredObjectives = new ArrayList<>();
+    private static List<UniversalObjective> STORY_QUESTObjectives = new ArrayList<>();
+    private static List<UniversalObjective> ACHIEVEMENTObjectives = new ArrayList<>();
+    private static List<UniversalObjective> MINE_BLOCKObjectives = new ArrayList<>();
+    private static List<UniversalObjective> TALK_TO_NPCObjectives = new ArrayList<>();
 
     public UniversalObjectiveManager() {
         instantiate();
@@ -32,7 +34,7 @@ public class UniversalObjectiveManager implements Listener {
         registerObjectives();
     }
 
-    private static UniversalObjective storyGettingStarted =
+    private static final UniversalObjective storyGettingStarted =
         new UniversalObjective(
                 UniversalObjective.TaskType.TALK_TO_NPC,
                 new String[] {
@@ -40,7 +42,7 @@ public class UniversalObjectiveManager implements Listener {
                         "1", // Integer to get too to complete
                         "328d73d1-e671-4006-8438-aeb44077b54f"  // NPC UUID
                 },
-                "GettingStarted", // Unique Objective ID
+                "getting_started", // Unique Objective ID
                 new ItemBuilder(Material.YELLOW_FLOWER).name("&6Getting Started").build(),
                 new StringReward("MONEY 1"),
                 null,
@@ -90,8 +92,9 @@ public class UniversalObjectiveManager implements Listener {
      */
     private void increment(UniversalObjective.TaskType task, String taskInfo, Player p, int amt) {
         registeredObjectives.forEach((UniversalObjective uo) -> {
-            if (uo.getTask() == task)
-                if (uo.getTaskInfo()[2].equals(taskInfo)) {
+                if (uo.getTask() == task &&
+                        uo.getPlayersTracking().contains(p.getUniqueId()) &&
+                        uo.getTaskInfo()[2].equals(taskInfo)) { // TODO Use a dictionary map instead
                     int progress = uo.increment(p, amt);
                     if (progress >= Integer.parseInt(uo.getTaskInfo()[1]))
                         reward(p, uo);
@@ -107,8 +110,10 @@ public class UniversalObjectiveManager implements Listener {
         uo.removePlayer(p);
         UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
         up.addCompletedObjective(uo.getId());
+        up.removeSelectedObjective(uo.getId()); // If objective was manually selected
         up.removeObjectiveData(uo.getId()); // No longer needed data
 
+        p.sendMessage("");
         for (String s : rewards.asStrings()) {
 
         }
@@ -116,9 +121,22 @@ public class UniversalObjectiveManager implements Listener {
         rewards.giveNoMessage(p);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void OnPlayerJoin(PlayerJoinEvent e) {
+        Player p = e.getPlayer();
+        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
+        List<String> completed = up.getCompletedObjectives();
+        if (up.firstJoin())
+            up.addSelectedObjective(storyGettingStarted.getId());
+        List<String> selected = up.getSelectedObjectives();
 
+        registeredObjectives.forEach((uo) -> {
+            if (uo.getCategory() == UniversalObjective.Catagory.ACHIEVEMENT) {
+                if (!completed.contains(uo.getId()))
+                    uo.addPlayer(p);
+            } else if (selected.contains(uo.getId()))
+                uo.addPlayer(p);
+        });
     }
 
     @EventHandler
@@ -136,7 +154,15 @@ public class UniversalObjectiveManager implements Listener {
     }
 
     @EventHandler
-    public void OnNPCClick(NPCClickEvent e) {
+    public void OnNPCClick(NPCLeftClickEvent e) {
+        Player p = e.getClicker();
+        NPC npc = e.getNPC();
+        String id = npc.getUniqueId().toString();
+        increment(UniversalObjective.TaskType.TALK_TO_NPC, id, p, 1);
+    }
+
+    @EventHandler
+    public void OnNPCClick(NPCRightClickEvent e) {
         Player p = e.getClicker();
         NPC npc = e.getNPC();
         String id = npc.getUniqueId().toString();

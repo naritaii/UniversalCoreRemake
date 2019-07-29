@@ -29,7 +29,7 @@ public class StringReward {
                 case "MONEY":
                     try {
                         r[i] = ChatColor.translateAlternateColorCodes('&',
-                                "&6$" + TextUtils.addCommas(Double.valueOf(arg.toString())));
+                                "&6$" + TextUtils.addCommas(Double.parseDouble(arg.toString())));
                     } catch (NumberFormatException e) {
                         r[i] = ChatColor.translateAlternateColorCodes('&',
                                 "&cCould not parse money " + arg.toString());
@@ -74,7 +74,7 @@ public class StringReward {
             switch (type) {
                 case "MONEY":
                     try {
-                        double d = Double.valueOf(arg.toString());
+                        double d = Double.parseDouble(arg.toString());
                         UniversalCoreRemake.getEconomy().depositPlayer(p, d);
                         p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                 "&6$" + TextUtils.addCommas(d) + "&a has been added to your account."));
@@ -123,7 +123,7 @@ public class StringReward {
             switch (type) {
                 case "MONEY":
                     try {
-                        double d = Double.valueOf(arg.toString());
+                        double d = Double.parseDouble(arg.toString());
                         UniversalCoreRemake.getEconomy().depositPlayer(p, d);
                     } catch (NumberFormatException e) {
                         p.sendMessage((ChatColor.translateAlternateColorCodes('&',

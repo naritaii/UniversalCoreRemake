@@ -24,11 +24,11 @@ public class UniversalPlayerManager implements Listener {
     private final List<UniversalPlayer> universalPlayers = new ArrayList<>();
     private final HashMap<UUID, Integer> universalPlayerDictionary = new HashMap<>();
 
-    private List<UniversalPlayer> getAllUniversalPlayers() {
+    public List<UniversalPlayer> getAllUniversalPlayers() {
         return universalPlayers;
     }
 
-    private HashMap<UUID, Integer> getUniversalPlayerDictionary() {
+    public HashMap<UUID, Integer> getUniversalPlayerDictionary() {
         return universalPlayerDictionary;
     }
 
@@ -148,7 +148,7 @@ public class UniversalPlayerManager implements Listener {
 //            long endTime = System.nanoTime();
 //            String s = ChatColor.translateAlternateColorCodes('&',
 //                    "&c[&fDEBUG&c]: &cSaved all cached UniversalPlayer data to file &a(took " +
-//                            TextUtils.addCommas((int) ((endTime - startTime) / 1000000)) + "ms)");
+////                            TextUtils.addCommas((int) ((endTime - startTime) / 1000000)) + "ms)");
 //
 //            Bukkit.broadcast(s, "universalcore.admin");
 //            System.out.println(s);
@@ -157,6 +157,10 @@ public class UniversalPlayerManager implements Listener {
     }
 
     public void disable() {
+        saveAll();
+    }
+
+    public void saveAll() {
         getAllUniversalPlayers().forEach((UniversalPlayer up) -> {
             up.setDataLastPlayed(UniversalPlayer.getSimpleDateFormat().format(new Date()));
             up.savePlayerDataFile();
@@ -166,8 +170,8 @@ public class UniversalPlayerManager implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void OnPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-
-        createUniversalPlayer(p);
+        if (!universalPlayerDictionary.containsKey(p.getUniqueId()))
+            createUniversalPlayer(p);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

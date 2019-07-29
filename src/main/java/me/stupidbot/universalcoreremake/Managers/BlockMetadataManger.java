@@ -66,7 +66,11 @@ public class BlockMetadataManger {
         blocksMetas.remove(b.getLocation());
     }
 
-    public void initialize() {
+    public HashMap<Location, HashMap<String, String>> getBlocksMetas() {
+        return blocksMetas;
+    }
+
+    private void initialize() {
         File path = new File(folderPath);
         File file = new File(dataPath);
 
@@ -131,7 +135,7 @@ public class BlockMetadataManger {
         save();
     }
 
-    private void save() {
+    public void save() {
         if (!blocksMetas.isEmpty()) {
             File path = new File(folderPath);
             File file = new File(dataPath);

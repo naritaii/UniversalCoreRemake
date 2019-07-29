@@ -180,4 +180,22 @@ public class UniversalPlayer {
         pFile.set("Objective.Completed", completed);
         return completed;
     }
+
+    public List<String> getSelectedObjectives() {
+        return pFile.getStringList("Objective.Selected");
+    }
+
+    public List<String> addSelectedObjective(String id) {
+        List<String> selected = getCompletedObjectives();
+        selected.add(id);
+        pFile.set("Objective.Selected", selected);
+        return selected;
+    }
+
+    public List<String> removeSelectedObjective(String id) {
+        List<String> selected = getCompletedObjectives();
+        selected.remove(id);
+        pFile.set("Objective.Selected", selected);
+        return selected;
+    }
 }

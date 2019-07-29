@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class UniversalObjective {
@@ -21,8 +22,9 @@ public class UniversalObjective {
     private final String permissionRequired;
     private final Catagory category;
 
-    private Map<UUID, Integer> playersToTrack;
+    private final Map<UUID, Integer> playersToTrack;
 
+    // TODO Add repeatable objectives
     public UniversalObjective(TaskType task, String[] taskInfo, String id, ItemStack displayItem, StringReward rewards,
                               String permissionRequired, Catagory catagory) {
         this.task = task;
@@ -60,7 +62,7 @@ public class UniversalObjective {
         return (getCooldown() > 0);
     }
 
-    int getCooldown() {
+    private int getCooldown() {
         return cooldown;
     }
 
@@ -76,13 +78,17 @@ public class UniversalObjective {
         return category;
     }
 
+    Set<UUID> getPlayersTracking() {
+        return playersToTrack.keySet();
+    }
+
     int increment(Player p, int amt) {
         int progress = getProgress(p) + amt;
         playersToTrack.put(p.getUniqueId(), progress);
         return progress;
     }
 
-    int getProgress(Player p) {
+    private int getProgress(Player p) {
         return playersToTrack.getOrDefault(p.getUniqueId(), 0);
     }
 
@@ -120,11 +126,11 @@ public class UniversalObjective {
     }
 
     public enum TaskType {
-        MINE_BLOCK, TALK_TO_NPC;
+        MINE_BLOCK, TALK_TO_NPC
     }
 
     public enum Catagory {
         STORY_QUEST, // Completed one at a time
-        ACHIEVEMENT; // All online players who haven't completed these are tracked
+        ACHIEVEMENT // All online players who haven't completed these are tracked
     }
 }

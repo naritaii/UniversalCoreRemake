@@ -37,7 +37,7 @@ public class Stamina implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void OnPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
@@ -84,7 +84,7 @@ public class Stamina implements Listener {
         return getMaxStamina(UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p).getLevel());
     }
 
-    public static int getMaxStamina(int i) {
+    private static int getMaxStamina(int i) {
         return (i * 5) + 50;
     }
 

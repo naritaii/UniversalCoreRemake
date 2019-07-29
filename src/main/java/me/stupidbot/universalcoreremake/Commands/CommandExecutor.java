@@ -13,6 +13,8 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private final Emoji emoji = new Emoji();
     private final OpenMineralTrader openMineralTrader = new OpenMineralTrader();
     private final OpenFoodTrader openFoodTrader = new OpenFoodTrader();
+    private final SaveUniversalPlayerCacheToFile saveUniversalPlayerCacheToFile = new SaveUniversalPlayerCacheToFile();
+    private final SaveBlockmetaCacheToFile saveBlockmetaCacheToFile = new SaveBlockmetaCacheToFile();
 
     @Override
     public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
@@ -34,6 +36,11 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
             return openMineralTrader.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("openfoodtrader"))
             return openFoodTrader.execute(s, label, args);
+        else if (cmd.getName().equalsIgnoreCase("saveuniversalplayercachetofile"))
+            return saveUniversalPlayerCacheToFile.execute(s);
+        else if (cmd.getName().equalsIgnoreCase("saveblockmetadatacachetofile"))
+            return saveBlockmetaCacheToFile.execute(s);
+
         else
             return false;
         }

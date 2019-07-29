@@ -32,7 +32,7 @@ public class UniversalBlockBreakEvent extends Event {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    private void setAmount(int amount) {
         this.amount = amount;
     }
 
@@ -40,7 +40,7 @@ public class UniversalBlockBreakEvent extends Event {
         return xp;
     }
 
-    public void setXp(int xp) {
+    private void setXp(int xp) {
         this.xp = xp;
     }
 
@@ -48,7 +48,7 @@ public class UniversalBlockBreakEvent extends Event {
         return stamina;
     }
 
-    public void setStamina(int stamina) {
+    private void setStamina(int stamina) {
         this.stamina = stamina;
     }
 

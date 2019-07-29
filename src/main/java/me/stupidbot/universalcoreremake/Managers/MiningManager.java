@@ -68,7 +68,7 @@ public class MiningManager implements Listener {
     }
 
     private final Material respawnBlock = Material.BEDROCK;
-    public void initialize() {
+    private void initialize() {
         // Click Listener
         UniversalCoreRemake.getProtocolManager().addPacketListener(new PacketAdapter(UniversalCoreRemake.getInstance(),
                 ListenerPriority.MONITOR, PacketType.Play.Client.BLOCK_DIG) {

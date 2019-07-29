@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -17,16 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PlayerLevelling implements Listener {
-    @EventHandler
-    public void OnPlayerJoin(PlayerJoinEvent e) {
-        Player p = e.getPlayer();
-        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
-
-        if (up.firstJoin())
-            up.setLevel(1);
-        PlayerLevelling.updateUI(p);
-    }
-
     public static void giveXp(Player p, int amount) {
         UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
 
@@ -68,7 +59,7 @@ public class PlayerLevelling implements Listener {
         updateUI(p);
     }
 
-    private static Map<Integer, StringReward> levelRewards = new HashMap<Integer, StringReward>() {
+    private static final Map<Integer, StringReward> levelRewards = new HashMap<Integer, StringReward>() {
         {
             int i = 1;
             put(++i, new StringReward("MONEY 5")); // 2
@@ -153,6 +144,17 @@ public class PlayerLevelling implements Listener {
         else
             s = "&f[" + lvl + "\u269D]";
         return ChatColor.translateAlternateColorCodes('&', s);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void OnPlayerJoin(PlayerJoinEvent e) {
+        Player p = e.getPlayer();
+        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
+
+        if (up.firstJoin())
+            up.setLevel(1);
+
+        PlayerLevelling.updateUI(p);
     }
 
     @EventHandler
