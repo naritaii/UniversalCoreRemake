@@ -13,10 +13,8 @@ Objectives:
       ItemMaterial: 'YELLOW_FLOWER'
       ItemData: 0
       DisplayName: '%id_formatted%' # getting_started -> Getting Started
-      Lore: [] # If empty a system will procedurally generate this.
-    StringRewards:
-      - 'MONEY 2.50' # Can be 'MONEY <amount>' or 'ITEM <serialized item>'.
-    PermissionRequired: null
+    StringRewards: # Optional argument. Can be 'MONEY <amount>' or 'ITEM <serialized item>'.
+      - 'MONEY 2.50'
     Catagory: 'STORY_QUEST' # Can be STORY_QUEST or ACHIEVEMENT
   ####################
   ### Achievements ###
@@ -28,12 +26,11 @@ Objectives:
       - 'xs826Z'
       - '1' # How many blocks to mine.
       - 'SANDSTONE,COAL_BLOCK' # What block(s) to mine.
+    Description: 'Mine an enhanced block.' # Optional argument, this is usually generated with code but can't always be. Accepts placeholders %progress% and %needed%.
     DisplayItem:
       ItemMaterial: 'STONE_PICKAXE'
       ItemData: 0
       DisplayName: '%id_formatted%' # witchcraft._which_craft?_minecraft! -> Witchcraft. Which craft? Minecraft!
-      Lore:
-        - 'Mine an enhanced block.'
-    StringRewards: []
-    PermissionRequired: null
+      Lore:  # Optional argument
+        - 'Enhanced blocks are Sandstone, and Coal Block.'
     Catagory: 'ACHIEVEMENT'

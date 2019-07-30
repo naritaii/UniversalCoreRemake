@@ -19,21 +19,21 @@ public class UniversalObjective {
     private final ItemStack displayItem;
     private final StringReward rewards;
     private final int cooldown;
-    private final String permissionRequired;
+    private final String description;
     private final Catagory category;
 
     private final Map<UUID, Integer> playersToTrack;
 
     // TODO Add repeatable objectives
     public UniversalObjective(TaskType task, String[] taskInfo, String id, ItemStack displayItem, StringReward rewards,
-                              String permissionRequired, Catagory catagory) {
+                              String description, Catagory catagory) {
         this.task = task;
         this.taskInfo = taskInfo;
         this.id = id;
         this.displayItem = displayItem;
         this.rewards = rewards;
         this.cooldown = 0; // Not repeatable
-        this.permissionRequired = permissionRequired; // null if no permission required
+        this.description = description; // if null we'll generate it through code // TODO generate if null
         this.category = catagory;
         playersToTrack = new HashMap<>();
     }
@@ -66,12 +66,8 @@ public class UniversalObjective {
         return cooldown;
     }
 
-    boolean hasPermissionRequired() {
-        return (permissionRequired != null);
-    }
-
-    String getPermissionRequired() {
-        return permissionRequired;
+    String getDescription() {
+        return description;
     }
 
     Catagory getCategory() {
@@ -126,7 +122,8 @@ public class UniversalObjective {
     }
 
     public enum TaskType {
-        MINE_BLOCK, TALK_TO_NPC
+        MINE_BLOCK,
+        TALK_TO_NPC
     }
 
     public enum Catagory {

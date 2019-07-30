@@ -43,21 +43,7 @@ public class UniversalObjectiveManager implements Listener {
         registerObjectives();
     }
 
-/*    private final UniversalObjective storyGettingStarted =
-        new UniversalObjective(
-                UniversalObjective.TaskType.TALK_TO_NPC,
-                new String[] {
-                        "iGD8Jw", // Unique section ID, generated manually somehow
-                        "1", // Integer to get too to complete
-                        "328d73d1-e671-4006-8438-aeb44077b54f"  // NPC UUID
-                },
-                "getting_started", // Unique Objective ID
-                new ItemBuilder(Material.YELLOW_FLOWER).name("&6Getting Started").build(),
-                new StringReward("MONEY 1"),
-                null,
-                UniversalObjective.Catagory.STORY_QUEST
-        );*/
-    private void registerObjectives() { // TODO Add a way to add quests from file
+    private void registerObjectives() {
         registeredObjectives.forEach((UniversalObjective::saveData));
         registeredObjectives = new ArrayList<>();
 
@@ -68,6 +54,7 @@ public class UniversalObjectiveManager implements Listener {
         TALK_TO_NPCObjectives = new ArrayList<>();*/
 
         // Register any hard coded objectives here too
+
         UniversalCoreRemake instance = UniversalCoreRemake.getInstance();
         File path = instance.getDataFolder();
         File file = new File(path.toString() + File.separator + "universal_objectives.yml");
@@ -81,13 +68,14 @@ public class UniversalObjectiveManager implements Listener {
 
         for (String o : c.getConfigurationSection("Objectives").getKeys(false)) {
             String p = "Objectives." + o + ".";
-            String permissionRequired = c.getString(p + "PermissionRequired");
             String id = c.getString(p + "ID");
             ItemBuilder item = new ItemBuilder(new ItemStack(
                     Material.valueOf(c.getString(p + "DisplayItem.ItemMaterial")),
                     (short) c.getInt(p + "DisplayItem.ItemData")))
                     .name(c.getString(p + "DisplayItem.DisplayName")
                             .replace("%id_formatted%", TextUtils.capitalizeFully(id)));
+            List<String> rewards =  c.getStringList(p + "StringRewards");
+            StringReward stringReward = rewards.isEmpty() ? null : new StringReward(rewards.toArray(new String[0]));
 
             List<String> lore = c.getStringList(p + "DisplayItem.Lore");
             if (!lore.isEmpty())
@@ -100,31 +88,11 @@ public class UniversalObjectiveManager implements Listener {
                     c.getStringList(p + "TaskInfo").toArray(new String[0]),
                     id,
                     item.build(),
-                    new StringReward(c.getStringList(p + "StringRewards").toArray(new String[0])),
-                    null, // TODO Actually use permissions
+                    stringReward,
+                    c.getString(p + "Description"),
                     UniversalObjective.Catagory.valueOf(c.getString(p + "Catagory"))
             ));
         }
-
-
-/*        registeredObjectives.forEach((uo) -> {
-            switch (uo.getCategory()) {
-            case STORY_QUEST:
-                STORY_QUESTObjectives.add(uo);
-                break;
-            case ACHIEVEMENT:
-                ACHIEVEMENTObjectives.add(uo);
-                break;
-            }
-            switch (uo.getTask()) {
-                case MINE_BLOCK:
-                    MINE_BLOCKObjectives.add(uo);
-                    break;
-                case TALK_TO_NPC:
-                    TALK_TO_NPCObjectives.add(uo);
-                    break;
-            }
-        });*/
     }
 
     private void copy(InputStream in, File file) {
