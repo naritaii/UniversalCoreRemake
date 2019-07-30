@@ -4,6 +4,7 @@
       <w>&amp;c\u</w>
       <w>adaptorinterface</w>
       <w>afrom</w>
+      <w>blockmeta</w>
       <w>chainable</w>
       <w>chatformat</w>
       <w>chrono</w>
@@ -59,6 +60,8 @@
       <w>realsmooth</w>
       <w>regenning</w>
       <w>reloadmotd</w>
+      <w>saveblockmetadatacachetofile</w>
+      <w>saveuniversalplayercachetofile</w>
       <w>setblockmeta</w>
       <w>setitemmeta</w>
       <w>slikey</w>

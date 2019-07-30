@@ -5,26 +5,35 @@ import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlaye
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.Utilities.ItemUtilities.ItemBuilder;
 import me.stupidbot.universalcoreremake.Utilities.StringReward;
+import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UniversalObjectiveManager implements Listener {
-    private static List<UniversalObjective> registeredObjectives = new ArrayList<>();
-    private static List<UniversalObjective> STORY_QUESTObjectives = new ArrayList<>();
-    private static List<UniversalObjective> ACHIEVEMENTObjectives = new ArrayList<>();
-    private static List<UniversalObjective> MINE_BLOCKObjectives = new ArrayList<>();
-    private static List<UniversalObjective> TALK_TO_NPCObjectives = new ArrayList<>();
+    private List<UniversalObjective> registeredObjectives = new ArrayList<>();
+/*    privateList<UniversalObjective> STORY_QUESTObjectives = new ArrayList<>();
+    private List<UniversalObjective> ACHIEVEMENTObjectives = new ArrayList<>();
+    private List<UniversalObjective> MINE_BLOCKObjectives = new ArrayList<>();
+    private List<UniversalObjective> TALK_TO_NPCObjectives = new ArrayList<>();*/
 
     public UniversalObjectiveManager() {
         instantiate();
@@ -34,11 +43,11 @@ public class UniversalObjectiveManager implements Listener {
         registerObjectives();
     }
 
-    private static final UniversalObjective storyGettingStarted =
+/*    private final UniversalObjective storyGettingStarted =
         new UniversalObjective(
                 UniversalObjective.TaskType.TALK_TO_NPC,
                 new String[] {
-                        "6594590a-d472-4f0f-bf7f-e4f42473522a", // Unique section ID, generated manually somehow
+                        "iGD8Jw", // Unique section ID, generated manually somehow
                         "1", // Integer to get too to complete
                         "328d73d1-e671-4006-8438-aeb44077b54f"  // NPC UUID
                 },
@@ -47,22 +56,58 @@ public class UniversalObjectiveManager implements Listener {
                 new StringReward("MONEY 1"),
                 null,
                 UniversalObjective.Catagory.STORY_QUEST
-        );
-    private static void registerObjectives() {
+        );*/
+    private void registerObjectives() { // TODO Add a way to add quests from file
         registeredObjectives.forEach((UniversalObjective::saveData));
         registeredObjectives = new ArrayList<>();
 
-        STORY_QUESTObjectives = new ArrayList<>();
+/*        STORY_QUESTObjectives = new ArrayList<>();
         ACHIEVEMENTObjectives = new ArrayList<>();
 
         MINE_BLOCKObjectives = new ArrayList<>();
-        TALK_TO_NPCObjectives = new ArrayList<>();
+        TALK_TO_NPCObjectives = new ArrayList<>();*/
+
+        // Register any hard coded objectives here too
+        UniversalCoreRemake instance = UniversalCoreRemake.getInstance();
+        File path = instance.getDataFolder();
+        File file = new File(path.toString() + File.separator + "universal_objectives.yml");
+
+        if (!path.exists())
+            path.mkdirs();
+        if (!file.exists())
+            copy(instance.getResource("universal_objectives.yml"), file);
+
+        FileConfiguration c = YamlConfiguration.loadConfiguration(file);
+
+        for (String o : c.getConfigurationSection("Objectives").getKeys(false)) {
+            String p = "Objectives." + o + ".";
+            String permissionRequired = c.getString(p + "PermissionRequired");
+            String id = c.getString(p + "ID");
+            ItemBuilder item = new ItemBuilder(new ItemStack(
+                    Material.valueOf(c.getString(p + "DisplayItem.ItemMaterial")),
+                    (short) c.getInt(p + "DisplayItem.ItemData")))
+                    .name(c.getString(p + "DisplayItem.DisplayName")
+                            .replace("%id_formatted%", TextUtils.capitalizeFully(id)));
+
+            List<String> lore = c.getStringList(p + "DisplayItem.Lore");
+            if (!lore.isEmpty())
+                for (String line : lore)
+                    item.lore(line);
 
 
-        registeredObjectives.add(storyGettingStarted);
+            registeredObjectives.add(new UniversalObjective(
+                    UniversalObjective.TaskType.valueOf(c.getString(p + "TaskType")),
+                    c.getStringList(p + "TaskInfo").toArray(new String[0]),
+                    id,
+                    item.build(),
+                    new StringReward(c.getStringList(p + "StringRewards").toArray(new String[0])),
+                    null, // TODO Actually use permissions
+                    UniversalObjective.Catagory.valueOf(c.getString(p + "Catagory"))
+            ));
+        }
 
 
-        registeredObjectives.forEach((uo) -> {
+/*        registeredObjectives.forEach((uo) -> {
             switch (uo.getCategory()) {
             case STORY_QUEST:
                 STORY_QUESTObjectives.add(uo);
@@ -79,7 +124,22 @@ public class UniversalObjectiveManager implements Listener {
                     TALK_TO_NPCObjectives.add(uo);
                     break;
             }
-        });
+        });*/
+    }
+
+    private void copy(InputStream in, File file) {
+        try {
+            OutputStream out = new FileOutputStream(file);
+            byte[] buf = new byte[1024];
+            int len;
+            while((len = in.read(buf)) > 0){
+                out.write(buf, 0, len);
+            }
+            out.close();
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void disable() {
@@ -91,14 +151,28 @@ public class UniversalObjectiveManager implements Listener {
      *           are equal to that of a {@link UniversalObjective} tracking {@param p}
      */
     private void increment(UniversalObjective.TaskType task, String taskInfo, Player p, int amt) {
-        registeredObjectives.forEach((UniversalObjective uo) -> {
-                if (uo.getTask() == task &&
-                        uo.getPlayersTracking().contains(p.getUniqueId()) &&
-                        uo.getTaskInfo()[2].equals(taskInfo)) { // TODO Use a dictionary map instead
-                    int progress = uo.increment(p, amt);
-                    if (progress >= Integer.parseInt(uo.getTaskInfo()[1]))
-                        reward(p, uo);
-                }
+        registeredObjectives.forEach((UniversalObjective uo) -> { // TODO Use a dictionary map instead if possible
+            switch (uo.getTask()) {
+                case MINE_BLOCK:
+                    if (uo.getPlayersTracking().contains(p.getUniqueId()))
+                        for (String i : uo.getTaskInfo()[2].split(","))
+                            if (i.equals(taskInfo)) {
+                                int progress = uo.increment(p, amt);
+                                if (progress >= Integer.parseInt(uo.getTaskInfo()[1]))
+                                    reward(p, uo);
+                                break;
+                            }
+                    break;
+
+                default:
+                    if (uo.getPlayersTracking().contains(p.getUniqueId()) &&
+                            uo.getTaskInfo()[2].equals(taskInfo)) {
+                        int progress = uo.increment(p, amt);
+                        if (progress >= Integer.parseInt(uo.getTaskInfo()[1]))
+                            reward(p, uo);
+                    }
+                    break;
+            }
         });
     }
 
@@ -113,12 +187,41 @@ public class UniversalObjectiveManager implements Listener {
         up.removeSelectedObjective(uo.getId()); // If objective was manually selected
         up.removeObjectiveData(uo.getId()); // No longer needed data
 
-        p.sendMessage("");
-        for (String s : rewards.asStrings()) {
+        switch (type) { // TODO Add hover text explaining what the objective was and add sound
+            case STORY_QUEST:
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&aStory Quest: &n" + TextUtils.capitalizeFully(uo.getId()) + "&a completed!"));
+                if (rewards != null) {
+                    for (String s : rewards.asStrings())
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "  &8+" + s));
+                    rewards.giveNoMessage(p);
+                }
+                break;
 
+            case ACHIEVEMENT:
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&e&k3&a>>  Achievement Get: &6&n"
+                                + TextUtils.capitalizeFully(uo.getId())
+                                + "&a  <<&e&k3"));
+                if (rewards != null) {
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aRewards:"));
+                    for (String s : rewards.asStrings())
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "  &8+" + s));
+                    rewards.giveNoMessage(p);
+                }
+                break;
+
+            default:
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&a" + TextUtils.capitalizeFully(type.toString()) + ": &n" +
+                        TextUtils.capitalizeFully(uo.getId()) + "&a completed!"));
+                if (rewards != null) {
+                    for (String s : rewards.asStrings())
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "  &8+" + s));
+                    rewards.giveNoMessage(p);
+                }
+                break;
         }
-
-        rewards.giveNoMessage(p);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -127,7 +230,7 @@ public class UniversalObjectiveManager implements Listener {
         UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
         List<String> completed = up.getCompletedObjectives();
         if (up.firstJoin())
-            up.addSelectedObjective(storyGettingStarted.getId());
+            up.addSelectedObjective("getting_started");
         List<String> selected = up.getSelectedObjectives();
 
         registeredObjectives.forEach((uo) -> {
@@ -149,7 +252,7 @@ public class UniversalObjectiveManager implements Listener {
     public void OnUniversalBlockBreak(UniversalBlockBreakEvent e) {
         Player p = e.getPlayer();
         int amt = e.getAmount();
-        String b = e.getBlock().toString();
+        String b = e.getBlock().getType().toString();
         increment(UniversalObjective.TaskType.MINE_BLOCK, b, p, amt);
     }
 

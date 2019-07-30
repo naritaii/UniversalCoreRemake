@@ -1,0 +1,39 @@
+Objectives:
+  ####################
+  ### Story Quests ###
+  ####################
+  GettingStarted:
+    ID: 'getting_started' # Unique name/ID  of objective.
+    TaskType: 'TALK_TO_NPC' # Can be MINE_BLOCK or TALK_TO_NPC.
+    TaskInfo:
+      - 'iGD8Jw' # Random ID for the task, can be anything as long as the ID isn't used elsewhere.
+      - '1' # How many times to talk to the NPC.
+      - '328d73d1-e671-4006-8438-aeb44077b54f' # What NPC to talk to. This UUID is Quest Master's.
+    DisplayItem: # Used for GUIs.
+      ItemMaterial: 'YELLOW_FLOWER'
+      ItemData: 0
+      DisplayName: '%id_formatted%' # getting_started -> Getting Started
+      Lore: [] # If empty a system will procedurally generate this.
+    StringRewards:
+      - 'MONEY 2.50' # Can be 'MONEY <amount>' or 'ITEM <serialized item>'.
+    PermissionRequired: null
+    Catagory: 'STORY_QUEST' # Can be STORY_QUEST or ACHIEVEMENT
+  ####################
+  ### Achievements ###
+  ####################
+  Witchcraft:
+    ID: 'witchcraft._which_craft?_minecraft!'
+    TaskType: 'MINE_BLOCK'
+    TaskInfo:
+      - 'xs826Z'
+      - '1' # How many blocks to mine.
+      - 'SANDSTONE,COAL_BLOCK' # What block(s) to mine.
+    DisplayItem:
+      ItemMaterial: 'STONE_PICKAXE'
+      ItemData: 0
+      DisplayName: '%id_formatted%' # witchcraft._which_craft?_minecraft! -> Witchcraft. Which craft? Minecraft!
+      Lore:
+        - 'Mine an enhanced block.'
+    StringRewards: []
+    PermissionRequired: null
+    Catagory: 'ACHIEVEMENT'

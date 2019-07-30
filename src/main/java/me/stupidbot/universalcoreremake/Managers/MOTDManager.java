@@ -19,7 +19,7 @@ public class MOTDManager implements Listener {
 
     private final String folderPath = UniversalCoreRemake.getInstance().getDataFolder().toString();
     private final String dataPath = folderPath + File.separator + "motd.yml";
-    private String motd;
+    public String motd;
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPing(ServerListPingEvent e) {

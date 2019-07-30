@@ -28,7 +28,7 @@ public class UniversalPlayerManager implements Listener {
         return universalPlayers;
     }
 
-    public HashMap<UUID, Integer> getUniversalPlayerDictionary() {
+    private HashMap<UUID, Integer> getUniversalPlayerDictionary() {
         return universalPlayerDictionary;
     }
 

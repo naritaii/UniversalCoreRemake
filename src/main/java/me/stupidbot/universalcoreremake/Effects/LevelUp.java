@@ -18,8 +18,8 @@ public class LevelUp extends Effect {
     private int step = 0;
     private int hue = 0;
     private int initAnim = 0;
-    private Player p;
-    private Hologram hologram;
+    private final Player p;
+    private final Hologram hologram;
 
 //    public LevelUp(EffectManager effectManager) {
 //        super(effectManager);
