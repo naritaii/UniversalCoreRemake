@@ -8,46 +8,50 @@ depend: [Vault, ProtocolLib, Citizens, HolographicDisplays]
 main: me.stupidbot.universalcoreremake.UniversalCoreRemake
 commands:
    reloadmotd:
-      aliases: motdreload
+      aliases: [motdreload, reloadserverlistmotd, serverlistmotdreload, reloadserverlist, serverlistreload]
       description: Reload serverlist MOTD
       usage: /<command>
-   exp:
-      aliases: [xp, giveexp, givexp]
-      description: Give exp
-      usage: /<command> <levelup|<amount>> [player]
-   setblockmeta:
-      alias: setblockmetadata
-      description: Set block meta
-      usage: /<command> <remove|<metadata> <value>>
-   readblockmeta:
-      aliases: [readblockmetadata, seeblockmeta, seeblockmetadata, getblockmeta, getblockmetadata]
-      description: Read block meta
+   reloaduniversalobjectives:
+      aliases: [universalobjectivesreload, questsreload, reloadquests, achievementssreload, reloadachievements, reloadobjectives, objectivesreload]
+      description: Reload Universal Objectives
       usage: /<command>
-   setitemmeta:
-      alias: setitemmetadata
-      description: Set item meta
-      usage: /<command> <remove|<metadata> <value>>
-   readitemmeta:
-      aliases: [readitemmetadata, seeitemmeta, seeitemmetadata, getitemmeta, getitemmetadata]
-      description: Read item meta
-      usage: /<command>
-   emoji:
-      aliases: emojis
-      description: List emojis
-      usage: /<command>
-   openmineraltrader:
-      aliases: mineraltrader
-      description: Open Miner Trader GUI
-      usage: /<command> [player]
-   openfoodtrader:
-      aliases: foodtrader
-      description: Open Food Trader GUI
-      usage: /<command> [player]
-   saveuniversalplayercachetofile:
-      aliases: [saveuniversalplayercache, saveuniversalplayerdatatofile, saveuniversalplayerdata, saveplayerdata, saveplayercache, saveplayercachetofile, saveplayerdatatofile]
-      description: Save Universal Player cache to file
-      usage: /<command>
-   saveblockmetadatacachetofile:
-      aliases: [saveblockmetadatacache, saveblockmetadatadatatofile, saveblockmetadatadata, saveblockmetacachetofile, saveblockmetacache, saveblockmetadatatofile, saveblockmetadata]
-      description: Save block metadata cache to file
-      usage: /<command>
+  exp:
+     aliases: [xp, giveexp, givexp]
+     description: Give exp
+     usage: /<command> <levelup|<amount>> [player]
+  setblockmeta:
+     alias: setblockmetadata
+     description: Set block meta
+     usage: /<command> <remove|<metadata> <value>>
+  readblockmeta:
+     aliases: [readblockmetadata, seeblockmeta, seeblockmetadata, getblockmeta, getblockmetadata]
+     description: Read block meta
+     usage: /<command>
+  setitemmeta:
+     alias: setitemmetadata
+     description: Set item meta
+     usage: /<command> <remove|<metadata> <value>>
+  readitemmeta:
+     aliases: [readitemmetadata, seeitemmeta, seeitemmetadata, getitemmeta, getitemmetadata]
+     description: Read item meta
+     usage: /<command>
+  emoji:
+     aliases: emojis
+     description: List emojis
+     usage: /<command>
+  openmineraltrader:
+     aliases: mineraltrader
+     description: Open Miner Trader GUI
+     usage: /<command> [player]
+  openfoodtrader:
+     aliases: foodtrader
+     description: Open Food Trader GUI
+     usage: /<command> [player]
+  saveuniversalplayercachetofile:
+     aliases: [saveuniversalplayercache, saveuniversalplayerdatatofile, saveuniversalplayerdata, saveplayerdata, saveplayercache, saveplayercachetofile, saveplayerdatatofile]
+     description: Save Universal Player cache to file
+     usage: /<command>
+  saveblockmetadatacachetofile:
+     aliases: [saveblockmetadatacache, saveblockmetadatadatatofile, saveblockmetadatadata, saveblockmetacachetofile, saveblockmetacache, saveblockmetadatatofile, saveblockmetadata]
+     description: Save block metadata cache to file
+     usage: /<command>

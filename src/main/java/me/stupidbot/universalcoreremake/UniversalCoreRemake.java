@@ -63,9 +63,9 @@ public class UniversalCoreRemake extends JavaPlugin {
 
         registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager, new Stamina(),
                 new ChatManager(), motdManager, new ItemMetadata(), scoreboardManager, universalObjectiveManager);
-        registerCommands(executor, "reloadmotd", "exp", "setblockmeta", "readblockmeta", "setitemmeta",
-                "readitemmeta", "emoji", "openmineraltrader", "openfoodtrader", "saveuniversalplayercachetofile",
-                "saveblockmetadatacachetofile");
+        registerCommands(executor, "reloadmotd", "reloaduniversalobjectives",
+                "exp", "setblockmeta", "readblockmeta", "setitemmeta", "readitemmeta", "emoji",
+                "openmineraltrader", "openfoodtrader", "saveuniversalplayercachetofile", "saveblockmetadatacachetofile");
 
         System.out.println(getName() + " is now enabled!");
     }

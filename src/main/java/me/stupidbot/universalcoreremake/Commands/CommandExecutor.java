@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 
 public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private final ReloadMOTD reloadMOTD = new ReloadMOTD();
+    private final ReloadUniversalObjectives reloadUniversalObjectives = new ReloadUniversalObjectives();
     private final Exp exp = new Exp();
     private final SetBlockMeta setBlockMeta = new SetBlockMeta();
     private final ReadBlockMeta readBlockMeta = new ReadBlockMeta();
@@ -20,6 +21,8 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("reloadmotd"))
             return reloadMOTD.execute(s);
+        else if (cmd.getName().equalsIgnoreCase("reloaduniversalobjectives"))
+            return reloadUniversalObjectives.execute(s);
         else if (cmd.getName().equalsIgnoreCase("exp"))
             return exp.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("setblockmeta"))

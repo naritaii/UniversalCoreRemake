@@ -9,8 +9,12 @@ import me.stupidbot.universalcoreremake.Utilities.TextUtils;
 import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -29,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UniversalObjectiveManager implements Listener {
-    private List<UniversalObjective> registeredObjectives = new ArrayList<>();
+    public List<UniversalObjective> registeredObjectives = new ArrayList<>();
 /*    privateList<UniversalObjective> STORY_QUESTObjectives = new ArrayList<>();
     private List<UniversalObjective> ACHIEVEMENTObjectives = new ArrayList<>();
     private List<UniversalObjective> MINE_BLOCKObjectives = new ArrayList<>();
@@ -43,7 +47,7 @@ public class UniversalObjectiveManager implements Listener {
         registerObjectives();
     }
 
-    private void registerObjectives() {
+    public void registerObjectives() {
         registeredObjectives.forEach((UniversalObjective::saveData));
         registeredObjectives = new ArrayList<>();
 
@@ -92,6 +96,8 @@ public class UniversalObjectiveManager implements Listener {
                     c.getString(p + "Description"),
                     UniversalObjective.Catagory.valueOf(c.getString(p + "Catagory"))
             ));
+
+            Bukkit.getOnlinePlayers().forEach(this::updateTracking);
         }
     }
 
@@ -155,10 +161,16 @@ public class UniversalObjectiveManager implements Listener {
         up.removeSelectedObjective(uo.getId()); // If objective was manually selected
         up.removeObjectiveData(uo.getId()); // No longer needed data
 
-        switch (type) { // TODO Add hover text explaining what the objective was and add sound
+        p.playSound(p.getLocation(), Sound.LEVEL_UP, 1f, 1f);
+        String hover = ChatColor.translateAlternateColorCodes('&',
+                "&c&l" + TextUtils.capitalizeFully(uo.getId()) + "\n\n&7&o" + uo.getDescription());
+        switch (type) {
             case STORY_QUEST:
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&aStory Quest: &n" + TextUtils.capitalizeFully(uo.getId()) + "&a completed!"));
+                String message = ChatColor.translateAlternateColorCodes('&',
+                        "&aStory Quest: &n" + TextUtils.capitalizeFully(uo.getId()) + "&a completed!");
+                p.spigot().sendMessage(new ComponentBuilder(message).event(
+                        new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hover).create())).create());
+
                 if (rewards != null) {
                     for (String s : rewards.asStrings())
                         p.sendMessage(ChatColor.translateAlternateColorCodes('&', "  &8+" + s));
@@ -167,10 +179,13 @@ public class UniversalObjectiveManager implements Listener {
                 break;
 
             case ACHIEVEMENT:
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&e&k3&a>>  Achievement Get: &6&n"
+                String messageA = ChatColor.translateAlternateColorCodes('&',
+                        "&e&k3&a\u2727>  Achievement Get: &6&n"
                                 + TextUtils.capitalizeFully(uo.getId())
-                                + "&a  <<&e&k3"));
+                                + "&a  <\u2727&e&k3");
+                p.spigot().sendMessage(new ComponentBuilder(messageA).event(
+                        new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hover).create())).create());
+
                 if (rewards != null) {
                     p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aRewards:"));
                     for (String s : rewards.asStrings())
@@ -180,9 +195,12 @@ public class UniversalObjectiveManager implements Listener {
                 break;
 
             default:
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                String messaged = ChatColor.translateAlternateColorCodes('&',
                         "&a" + TextUtils.capitalizeFully(type.toString()) + ": &n" +
-                        TextUtils.capitalizeFully(uo.getId()) + "&a completed!"));
+                                TextUtils.capitalizeFully(uo.getId()) + "&a completed!");
+                p.spigot().sendMessage(new ComponentBuilder(messaged).event(
+                        new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hover).create())).create());
+
                 if (rewards != null) {
                     for (String s : rewards.asStrings())
                         p.sendMessage(ChatColor.translateAlternateColorCodes('&', "  &8+" + s));
@@ -192,9 +210,7 @@ public class UniversalObjectiveManager implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void OnPlayerJoin(PlayerJoinEvent e) {
-        Player p = e.getPlayer();
+    private void updateTracking(Player p) {
         UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
         List<String> completed = up.getCompletedObjectives();
         if (up.firstJoin())
@@ -202,12 +218,19 @@ public class UniversalObjectiveManager implements Listener {
         List<String> selected = up.getSelectedObjectives();
 
         registeredObjectives.forEach((uo) -> {
+            uo.removePlayer(p);
             if (uo.getCategory() == UniversalObjective.Catagory.ACHIEVEMENT) {
                 if (!completed.contains(uo.getId()))
                     uo.addPlayer(p);
             } else if (selected.contains(uo.getId()))
                 uo.addPlayer(p);
         });
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void OnPlayerJoin(PlayerJoinEvent e) {
+        Player p = e.getPlayer();
+        updateTracking(p);
     }
 
     @EventHandler

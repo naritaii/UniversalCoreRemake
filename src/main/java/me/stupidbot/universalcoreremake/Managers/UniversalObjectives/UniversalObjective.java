@@ -24,7 +24,6 @@ public class UniversalObjective {
 
     private final Map<UUID, Integer> playersToTrack;
 
-    // TODO Add repeatable objectives
     public UniversalObjective(TaskType task, String[] taskInfo, String id, ItemStack displayItem, StringReward rewards,
                               String description, Catagory catagory) {
         this.task = task;
@@ -32,10 +31,18 @@ public class UniversalObjective {
         this.id = id;
         this.displayItem = displayItem;
         this.rewards = rewards;
-        this.cooldown = 0; // Not repeatable
-        this.description = description; // if null we'll generate it through code // TODO generate if null
+        this.cooldown = 0; // Not repeatable // TODO Add repeatable objectives
+        this.description = description != null ? description : generateDescription(); // if null we'll generate it through code
         this.category = catagory;
         playersToTrack = new HashMap<>();
+    }
+
+    private String generateDescription() {
+        switch(getCategory()) {
+
+        }
+
+        return "Unable to generate description for " + getId();
     }
 
     TaskType getTask() {
