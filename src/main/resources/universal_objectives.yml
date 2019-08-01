@@ -26,7 +26,7 @@ Objectives:
       - 'xs826Z'
       - '1' # How many blocks to mine.
       - 'SANDSTONE,COAL_BLOCK' # What block(s) to mine.
-    Description: 'Mine an enhanced block.' # Optional argument, this is usually generated with code but can't always be. Accepts placeholders %progress% and %needed%.
+    Description: 'Mine an enhanced block.' # Optional argument, this is usually generated with code but can't always be.
     DisplayItem:
       ItemMaterial: 'STONE_PICKAXE'
       ItemData: 0

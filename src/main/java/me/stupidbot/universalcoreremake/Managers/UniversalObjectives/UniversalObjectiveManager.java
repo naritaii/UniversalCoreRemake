@@ -179,10 +179,9 @@ public class UniversalObjectiveManager implements Listener {
                 break;
 
             case ACHIEVEMENT:
-                String messageA = ChatColor.translateAlternateColorCodes('&',
-                        "&e&k3&a\u2727>  Achievement Get: &6&n"
-                                + TextUtils.capitalizeFully(uo.getId())
-                                + "&a  <\u2727&e&k3");
+                String messageA = TextUtils.centerMessage("&e&k3&a\u2727>  Achievement Get: &6&n"
+                        + TextUtils.capitalizeFully(uo.getId())
+                        + "&a  <\u2727&e&k3", 154);
                 p.spigot().sendMessage(new ComponentBuilder(messageA).event(
                         new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hover).create())).create());
 

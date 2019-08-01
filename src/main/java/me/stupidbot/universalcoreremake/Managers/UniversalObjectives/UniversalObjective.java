@@ -1,5 +1,6 @@
 package me.stupidbot.universalcoreremake.Managers.UniversalObjectives;
 
+import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayer;
 import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayerManager;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.Utilities.StringReward;
@@ -32,8 +33,8 @@ public class UniversalObjective {
         this.displayItem = displayItem;
         this.rewards = rewards;
         this.cooldown = 0; // Not repeatable // TODO Add repeatable objectives
-        this.description = description != null ? description : generateDescription(); // if null we'll generate it through code
         this.category = catagory;
+        this.description = description != null ? description : generateDescription(); // if null we'll generate it through code
         playersToTrack = new HashMap<>();
     }
 
@@ -103,6 +104,8 @@ public class UniversalObjective {
     void removePlayer(Player p) {
         if (playersToTrack.containsKey(p.getUniqueId())) {
             savePlayerData(p);
+            UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
+            up.removeSelectedObjective(getId());
             playersToTrack.remove(p.getUniqueId());
         }
     }
