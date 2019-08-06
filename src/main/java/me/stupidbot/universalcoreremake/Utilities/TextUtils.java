@@ -15,7 +15,8 @@ import java.util.Locale;
 
 public class TextUtils {
     public static String capitalizeFully(String s) {
-        return WordUtils.capitalizeFully(s, new char[] { '_' } ).replaceAll("_", " ");
+        return WordUtils.capitalizeFully(s, new char[] { '_', '~' } ).replaceAll("_", " ")
+                .replaceAll("~", ""); // ~ to force capital, good for roman numerals etc
     }
 
     public static String addCommas(int i) {

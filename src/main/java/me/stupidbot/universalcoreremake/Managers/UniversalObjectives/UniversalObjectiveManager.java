@@ -163,7 +163,7 @@ public class UniversalObjectiveManager implements Listener {
 
         p.playSound(p.getLocation(), Sound.LEVEL_UP, 1f, 1f);
         String hover = ChatColor.translateAlternateColorCodes('&',
-                "&c&l" + TextUtils.capitalizeFully(uo.getId()) + "\n\n&7&o" + uo.getDescription());
+                "&d&l" + TextUtils.capitalizeFully(uo.getId()) + "\n&e" + uo.getDescription());
         switch (type) {
             case STORY_QUEST:
                 String message = ChatColor.translateAlternateColorCodes('&',
@@ -218,11 +218,11 @@ public class UniversalObjectiveManager implements Listener {
 
         registeredObjectives.forEach((uo) -> {
             uo.removePlayer(p);
-            if (uo.getCategory() == UniversalObjective.Catagory.ACHIEVEMENT) {
-                if (!completed.contains(uo.getId()))
+            if (!completed.contains(uo.getId()))
+                if (uo.getCategory() == UniversalObjective.Catagory.ACHIEVEMENT)
+                        uo.addPlayer(p);
+                else if (selected.contains(uo.getId()))
                     uo.addPlayer(p);
-            } else if (selected.contains(uo.getId()))
-                uo.addPlayer(p);
         });
     }
 

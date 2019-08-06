@@ -21,7 +21,7 @@ import java.util.function.Consumer;
 public class UniversalPlayerManager implements Listener {
     private final String dataFolderPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator +
             "data" + File.separator + "player_data";
-    private final List<UniversalPlayer> universalPlayers = new ArrayList<>();
+    private final List<UniversalPlayer> universalPlayers = Collections.synchronizedList(new ArrayList<>());
     private final HashMap<UUID, Integer> universalPlayerDictionary = new HashMap<>();
 
     public List<UniversalPlayer> getAllUniversalPlayers() {

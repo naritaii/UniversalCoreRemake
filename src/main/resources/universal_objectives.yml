@@ -9,6 +9,7 @@ Objectives:
       - 'iGD8Jw' # Random ID for the task, can be anything as long as the ID isn't used elsewhere.
       - '1' # How many times to talk to the NPC.
       - '328d73d1-e671-4006-8438-aeb44077b54f' # What NPC to talk to. This UUID is Quest Master's.
+    Description: 'Talk to &aQuest Master' # Optional argument, this is usually generated with code but can't always be.
     DisplayItem: # Used for GUIs.
       ItemMaterial: 'YELLOW_FLOWER'
       ItemData: 0
@@ -26,11 +27,12 @@ Objectives:
       - 'xs826Z'
       - '1' # How many blocks to mine.
       - 'SANDSTONE,COAL_BLOCK' # What block(s) to mine.
-    Description: 'Mine an enhanced block.' # Optional argument, this is usually generated with code but can't always be.
+    Description: 'Mine an enhanced block' # This could be left to be generated but I want to specify that these are 'enhanced' blocks
     DisplayItem:
       ItemMaterial: 'STONE_PICKAXE'
       ItemData: 0
       DisplayName: '%id_formatted%' # witchcraft._which_craft?_minecraft! -> Witchcraft. Which craft? Minecraft!
-      Lore:  # Optional argument
-        - 'Enhanced blocks are Sandstone, and Coal Block.'
+      Lore:  # Optional argument, defaults to the 'Description'
+        - '%description%'
+        - 'Enhanced blocks are Sandstone, and Coal Block'
     Catagory: 'ACHIEVEMENT'

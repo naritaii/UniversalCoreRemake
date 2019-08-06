@@ -53,6 +53,10 @@
                                     <pattern>fr.minuskube</pattern>
                                     <shadedPattern>me.stupidbot.universalcoreremake.minuskube</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>com.google</pattern>
+                                    <shadedPattern>me.stupidbot.universalcoreremake.google</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -166,6 +170,12 @@
             <artifactId>placeholderapi</artifactId>
             <version>2.10.2</version>
             <scope>provided</scope>
+        </dependency>
+        <!--Google Guava-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.0-jre</version>
         </dependency>
     </dependencies>
 </project>

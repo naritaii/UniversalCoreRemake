@@ -59,13 +59,19 @@ class SetItemMeta {
                 Material m = i.getType();
 
                 if (m != Material.AIR) {
-                    p.setItemInHand(ItemMetadata.setMeta(i, args[0], args[1]));
+                    StringBuilder value = new StringBuilder();
+                    for (int t = 1; t < args.length; t++) {
+                        if (t > 1)
+                            value.append(" ");
+                        value.append(args[t]);
+                    }
+                    p.setItemInHand(ItemMetadata.setMeta(i, args[0], value.toString()));
 
                     Map<String, String> metaMap = ItemMetadata.getMeta(i);
                     StringBuilder metas = new StringBuilder();
                     for (String meta : metaMap.keySet()) {
                         if (metas.length() != 0)
-                            metas.append(", ");
+                            metas.append("&r&e, ");
                         metas.append(meta)
                         .append(":")
                         .append(metaMap.get(meta));

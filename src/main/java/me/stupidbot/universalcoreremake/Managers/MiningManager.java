@@ -141,6 +141,8 @@ public class MiningManager implements Listener {
                         amt = e.getAmount();
                         xp = e.getXp();
                         stamina = e.getStamina();
+                        itemInHand = p.getItemInHand(); // Updating in case it's removed e.g. by an enchant
+                        usingItem = ItemLevelling.getPickaxes().contains(p.getItemInHand().getType());
 
 
                         // Handling player

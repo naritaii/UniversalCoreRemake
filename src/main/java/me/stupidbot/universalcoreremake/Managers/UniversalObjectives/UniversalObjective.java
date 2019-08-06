@@ -1,17 +1,16 @@
 package me.stupidbot.universalcoreremake.Managers.UniversalObjectives;
 
-import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayer;
+import com.google.common.base.Joiner;
 import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayerManager;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.Utilities.StringReward;
+import me.stupidbot.universalcoreremake.Utilities.TextUtils;
+import net.citizensnpcs.api.CitizensAPI;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class UniversalObjective {
     private final TaskType task;
@@ -39,10 +38,17 @@ public class UniversalObjective {
     }
 
     private String generateDescription() {
-        switch(getCategory()) {
-
+        switch(getTask()) {
+            case MINE_BLOCK:
+                List<String> originalList = Arrays.asList(getTaskInfo()[2].split(","));
+                originalList.forEach(TextUtils::capitalizeFully);
+                return "Mine " + TextUtils.addCommas(Integer.parseInt(getTaskInfo()[1])) + " "
+                        + Joiner.on(", ").join(originalList.subList(0, originalList.size() - 1))
+                        .concat(", or ").concat(originalList.get(originalList.size() - 1));
+            case TALK_TO_NPC:
+                return "Talk to " + CitizensAPI.getNPCRegistry()
+                        .getByUniqueIdGlobal(UUID.fromString(getTaskInfo()[2])).getFullName();
         }
-
         return "Unable to generate description for " + getId();
     }
 
@@ -104,8 +110,6 @@ public class UniversalObjective {
     void removePlayer(Player p) {
         if (playersToTrack.containsKey(p.getUniqueId())) {
             savePlayerData(p);
-            UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
-            up.removeSelectedObjective(getId());
             playersToTrack.remove(p.getUniqueId());
         }
     }

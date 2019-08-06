@@ -5,6 +5,7 @@ import com.comphenix.protocol.ProtocolManager;
 import de.slikey.effectlib.EffectManager;
 import fr.minuskube.inv.InventoryManager;
 import me.stupidbot.universalcoreremake.Commands.CommandExecutor;
+import me.stupidbot.universalcoreremake.Enchantments.UniversalEnchantment;
 import me.stupidbot.universalcoreremake.Managers.*;
 import me.stupidbot.universalcoreremake.Managers.UniversalObjectives.UniversalObjectiveManager;
 import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayerManager;
@@ -56,6 +57,7 @@ public class UniversalCoreRemake extends JavaPlugin {
         setupChat();
         setupPermissions();
         inventoryManager.init();
+        new UniversalEnchantment(instance);
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
             new UniversalCoreExpansion().register();
         else
@@ -133,7 +135,9 @@ public class UniversalCoreRemake extends JavaPlugin {
         return scoreboardManager;
     }
 
-    public static UniversalObjectiveManager getUniversalObjectiveManager() { return universalObjectiveManager; }
+    public static UniversalObjectiveManager getUniversalObjectiveManager() {
+        return universalObjectiveManager;
+    }
 
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {

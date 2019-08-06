@@ -28,7 +28,7 @@ class ReadItemMeta {
                         StringBuilder metas = new StringBuilder();
                         for (String meta : metaMap.keySet()) {
                             if (metas.length() != 0)
-                                metas.append(", ");
+                                metas.append("&r&e, ");
                             metas.append(meta)
                             .append(":")
                             .append(metaMap.get(meta));

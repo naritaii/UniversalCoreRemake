@@ -48,6 +48,10 @@
                   <pattern>fr.minuskube</pattern>
                   <shadedPattern>me.stupidbot.universalcoreremake.minuskube</shadedPattern>
                 </relocation>
+                <relocation>
+                  <pattern>com.google</pattern>
+                  <shadedPattern>me.stupidbot.universalcoreremake.google</shadedPattern>
+                </relocation>
               </relocations>
             </configuration>
           </execution>
@@ -103,10 +107,6 @@
         <exclusion>
           <artifactId>json-simple</artifactId>
           <groupId>com.googlecode.json-simple</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>guava</artifactId>
-          <groupId>com.google.guava</groupId>
         </exclusion>
         <exclusion>
           <artifactId>ebean</artifactId>
