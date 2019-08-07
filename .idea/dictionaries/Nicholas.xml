@@ -60,6 +60,7 @@
       <w>realsmooth</w>
       <w>regenning</w>
       <w>reloadmotd</w>
+      <w>reloaduniversalobjectives</w>
       <w>saveblockmetadatacachetofile</w>
       <w>saveuniversalplayercachetofile</w>
       <w>setblockmeta</w>

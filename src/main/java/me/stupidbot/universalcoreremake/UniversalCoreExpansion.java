@@ -1,10 +1,10 @@
 package me.stupidbot.universalcoreremake;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayer;
-import me.stupidbot.universalcoreremake.Managers.UniversalPlayers.UniversalPlayerManager;
-import me.stupidbot.universalcoreremake.Utilities.PlayerLevelling;
-import me.stupidbot.universalcoreremake.Utilities.TextUtils;
+import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
+import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayerManager;
+import me.stupidbot.universalcoreremake.utilities.PlayerLevelling;
+import me.stupidbot.universalcoreremake.utilities.TextUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 
