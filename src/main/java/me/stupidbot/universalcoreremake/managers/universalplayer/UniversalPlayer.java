@@ -9,7 +9,7 @@ import java.util.List;
 
 @SuppressWarnings({"SameParameterValue", "UnusedReturnValue"})
 public class UniversalPlayer {
-    private final File pFileLoc;
+    private final File pFileLoc; // TODO Don't store File objects, too expensive
     private final FileConfiguration pFile;
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss");
 
