@@ -52,7 +52,6 @@ public class UniversalBlockBreakEvent extends Event {
         this.stamina = stamina;
     }
 
-
     private static final HandlerList handlers = new HandlerList();
     @Override
     public HandlerList getHandlers() {

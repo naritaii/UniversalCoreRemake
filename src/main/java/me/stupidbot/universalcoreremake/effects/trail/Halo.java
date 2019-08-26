@@ -1,4 +1,4 @@
-package me.stupidbot.universalcoreremake.effects.Trails;
+package me.stupidbot.universalcoreremake.effects.trail;
 
 import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectManager;

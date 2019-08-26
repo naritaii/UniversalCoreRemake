@@ -5,10 +5,13 @@
       <w>adaptorinterface</w>
       <w>afrom</w>
       <w>blockmeta</w>
+      <w>bossbar</w>
       <w>chainable</w>
       <w>chatformat</w>
       <w>chrono</w>
       <w>codemc</w>
+      <w>corru</w>
+      <w>corrup</w>
       <w>declipse</w>
       <w>dmulloy</w>
       <w>doomph</w>
@@ -20,6 +23,7 @@
       <w>emojis</w>
       <w>enderman</w>
       <w>evel</w>
+      <w>ewww</w>
       <w>gitflow</w>
       <w>glitchy</w>
       <w>golem</w>
@@ -28,6 +32,7 @@
       <w>icbc</w>
       <w>inits</w>
       <w>invs</w>
+      <w>isons</w>
       <w>itemstack</w>
       <w>iter</w>
       <w>javaw</w>
@@ -44,16 +49,19 @@
       <w>mooshroom</w>
       <w>motd</w>
       <w>namecolor</w>
+      <w>netherboard</w>
       <w>nkqj</w>
       <w>npcs</w>
       <w>openfoodtrader</w>
       <w>openmineraltrader</w>
       <w>oplease</w>
+      <w>orrupt</w>
       <w>othings</w>
       <w>pacakge</w>
       <w>pigman</w>
       <w>pinv</w>
       <w>placeholderapi</w>
+      <w>priso</w>
       <w>qroot</w>
       <w>readblockmeta</w>
       <w>readitemmeta</w>
@@ -61,8 +69,12 @@
       <w>regenning</w>
       <w>reloadmotd</w>
       <w>reloaduniversalobjectives</w>
+      <w>risons</w>
+      <w>rrupt</w>
+      <w>rupt</w>
       <w>saveblockmetadatacachetofile</w>
       <w>saveuniversalplayercachetofile</w>
+      <w>selectobjective</w>
       <w>setblockmeta</w>
       <w>setitemmeta</w>
       <w>slikey</w>
@@ -72,6 +84,7 @@
       <w>subentry</w>
       <w>szvg</w>
       <w>tableflip</w>
+      <w>tigerhix</w>
       <w>tpnu</w>
       <w>universalcore</w>
       <w>universalcoreremake</w>

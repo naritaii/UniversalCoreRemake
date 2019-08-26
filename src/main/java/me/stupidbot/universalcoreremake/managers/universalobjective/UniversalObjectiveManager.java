@@ -1,16 +1,21 @@
 package me.stupidbot.universalcoreremake.managers.universalobjective;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableList;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.events.UniversalBlockBreakEvent;
+import me.stupidbot.universalcoreremake.events.universalobjective.UniversalObjectiveCompleteEvent;
+import me.stupidbot.universalcoreremake.events.universalobjective.UniversalObjectiveIncrementEvent;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
 import me.stupidbot.universalcoreremake.utilities.StringReward;
 import me.stupidbot.universalcoreremake.utilities.TextUtils;
 import me.stupidbot.universalcoreremake.utilities.item.ItemBuilder;
-import net.citizensnpcs.api.event.NPCLeftClickEvent;
+import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -29,15 +34,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static me.stupidbot.universalcoreremake.managers.universalobjective.UniversalObjective.TaskType.MINE_BLOCK;
+import static me.stupidbot.universalcoreremake.managers.universalobjective.UniversalObjective.TaskType.TALK_TO_NPC;
 
 public class UniversalObjectiveManager implements Listener {
     public List<UniversalObjective> registeredObjectives = new ArrayList<>();
-/*    privateList<UniversalObjective> STORY_QUESTObjectives = new ArrayList<>();
-    private List<UniversalObjective> ACHIEVEMENTObjectives = new ArrayList<>();
-    private List<UniversalObjective> MINE_BLOCKObjectives = new ArrayList<>();
-    private List<UniversalObjective> TALK_TO_NPCObjectives = new ArrayList<>();*/
+    public Map<String, Integer> registeredObjectivesDictionary;
+    public Map<UUID, List<UniversalObjective>> trackedObjectives;
 
     public UniversalObjectiveManager() {
         instantiate();
@@ -47,16 +53,12 @@ public class UniversalObjectiveManager implements Listener {
         registerObjectives();
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void registerObjectives() {
         registeredObjectives.forEach((UniversalObjective::saveData));
         registeredObjectives = new ArrayList<>();
-
-/*        STORY_QUESTObjectives = new ArrayList<>();
-        ACHIEVEMENTObjectives = new ArrayList<>();
-
-        MINE_BLOCKObjectives = new ArrayList<>();
-        TALK_TO_NPCObjectives = new ArrayList<>();*/
-
+        registeredObjectivesDictionary = new HashMap<>();
+        trackedObjectives = new ConcurrentHashMap<>();
         // Register any hard coded objectives here too
 
         UniversalCoreRemake instance = UniversalCoreRemake.getInstance();
@@ -72,28 +74,36 @@ public class UniversalObjectiveManager implements Listener {
 
         for (String o : c.getConfigurationSection("Objectives").getKeys(false)) {
             String p = "Objectives." + o + ".";
-            String id = c.getString(p + "ID");
+            String id = c.getString(p + "ID") == null ? o : c.getString(p + "ID");
+            String name = c.getString(p + "DisplayItem.DisplayName") == null ? TextUtils.capitalizeFully(id) :
+                    ChatColor.translateAlternateColorCodes('&', c.getString(p + "DisplayItem.DisplayName")
+                            .replace("%id_formatted%", TextUtils.capitalizeFully(id)));
             ItemBuilder item = new ItemBuilder(new ItemStack(
                     Material.valueOf(c.getString(p + "DisplayItem.ItemMaterial")),
-                    (short) c.getInt(p + "DisplayItem.ItemData")))
-                    .name(c.getString(p + "DisplayItem.DisplayName")
-                            .replace("%id_formatted%", TextUtils.capitalizeFully(id)));
-            List<String> rewards =  c.getStringList(p + "StringRewards");
+                    (short) c.getInt(p + "DisplayItem.ItemData"))).name(name);
+            List<String> rewards = c.getStringList(p + "StringRewards");
             StringReward stringReward = rewards.isEmpty() ? null : new StringReward(rewards.toArray(new String[0]));
+            UniversalObjective.TaskType task = UniversalObjective.TaskType.valueOf(c.getString(p + "TaskType"));
+            String[] taskInfo = c.getStringList(p + "TaskInfo").toArray(new String[0]);
+            String description = c.getString(p + "Description") == null ? generateDescription(task, taskInfo, id) :
+                    c.getString(p + "Description");
 
             List<String> lore = c.getStringList(p + "DisplayItem.Lore");
             if (!lore.isEmpty())
                 for (String line : lore)
-                    item.lore(line);
+                    item.lore(line.replace("%description%", description));
+            else
+                item.lore(description);
 
 
+            registeredObjectivesDictionary.put(id, registeredObjectivesDictionary.size());
             registeredObjectives.add(new UniversalObjective(
-                    UniversalObjective.TaskType.valueOf(c.getString(p + "TaskType")),
-                    c.getStringList(p + "TaskInfo").toArray(new String[0]),
+                    task,
+                    taskInfo,
                     id,
                     item.build(),
                     stringReward,
-                    c.getString(p + "Description"),
+                    description,
                     UniversalObjective.Catagory.valueOf(c.getString(p + "Catagory"))
             ));
 
@@ -101,12 +111,32 @@ public class UniversalObjectiveManager implements Listener {
         }
     }
 
+
+    private String generateDescription(UniversalObjective.TaskType task, String[] taskInfo, String id) {
+        switch (task) {
+            case MINE_BLOCK:
+                List<String> originalList = Arrays.asList(WordUtils.capitalizeFully(taskInfo[2], new char[] { '_', ',' } )
+                        .replace("_", " ").split(","));
+                if (originalList.size() == 2)
+                    return "Mine " + originalList.get(0) + " or " + originalList.get(1);
+                else if (originalList.size() == 1)
+                    return "Mine " + originalList.get(0);
+                else
+                    return "Mine " + Joiner.on(", ").join(originalList.subList(0, originalList.size() - 1))
+                            .concat(", or ").concat(originalList.get(originalList.size() - 1));
+            case TALK_TO_NPC:
+                return "Talk to " + CitizensAPI.getNPCRegistry()
+                        .getByUniqueIdGlobal(UUID.fromString(taskInfo[2])).getFullName();
+        }
+        return "Unable to generate description for " + id;
+    }
+
     private void copy(InputStream in, File file) {
         try {
             OutputStream out = new FileOutputStream(file);
             byte[] buf = new byte[1024];
             int len;
-            while((len = in.read(buf)) > 0){
+            while ((len = in.read(buf)) > 0) {
                 out.write(buf, 0, len);
             }
             out.close();
@@ -121,33 +151,42 @@ public class UniversalObjectiveManager implements Listener {
     }
 
     /**
-     *           Increments by {@param amt} if {@param task} and {@param targetInfo}
-     *           are equal to that of a {@link UniversalObjective} tracking {@param p}
+     * Increments by {@param amt} if {@param task} and {@param targetInfo}
+     * are equal to that of a {@link UniversalObjective} tracking {@param p}
      */
     private void increment(UniversalObjective.TaskType task, String taskInfo, Player p, int amt) {
-        registeredObjectives.forEach((UniversalObjective uo) -> { // TODO Use a dictionary map instead if possible
-            switch (uo.getTask()) {
+        ImmutableList.copyOf(trackedObjectives.getOrDefault(p.getUniqueId(), new ArrayList<>())).forEach((uo) -> {
+            switch (task) {
                 case MINE_BLOCK:
-                    if (uo.getPlayersTracking().contains(p.getUniqueId()))
+                    if (task == uo.getTask())
                         for (String i : uo.getTaskInfo()[2].split(","))
                             if (i.equals(taskInfo)) {
                                 int progress = uo.increment(p, amt);
-                                if (progress >= Integer.parseInt(uo.getTaskInfo()[1]))
+                                int needed = getNeeded(uo);
+                                UniversalObjectiveIncrementEvent event = new UniversalObjectiveIncrementEvent(p, uo, progress, progress - amt, needed);
+                                Bukkit.getServer().getPluginManager().callEvent(event);
+                                if (progress >= needed)
                                     reward(p, uo);
                                 break;
                             }
                     break;
 
                 default:
-                    if (uo.getPlayersTracking().contains(p.getUniqueId()) &&
-                            uo.getTaskInfo()[2].equals(taskInfo)) {
+                    if (task == uo.getTask() && uo.getTaskInfo()[2].equals(taskInfo)) {
                         int progress = uo.increment(p, amt);
-                        if (progress >= Integer.parseInt(uo.getTaskInfo()[1]))
+                        int needed = getNeeded(uo);
+                        UniversalObjectiveIncrementEvent event = new UniversalObjectiveIncrementEvent(p, uo, progress, progress - amt, needed);
+                        Bukkit.getServer().getPluginManager().callEvent(event);
+                        if (progress >= needed)
                             reward(p, uo);
                     }
                     break;
             }
         });
+    }
+
+    public int getNeeded(UniversalObjective uo) {
+        return Integer.parseInt(uo.getTaskInfo()[1]);
     }
 
 
@@ -157,9 +196,12 @@ public class UniversalObjectiveManager implements Listener {
 
         uo.removePlayer(p);
         UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
-        up.addCompletedObjective(uo.getId());
         up.removeSelectedObjective(uo.getId()); // If objective was manually selected
+        up.addCompletedObjective(uo.getId());
         up.removeObjectiveData(uo.getId()); // No longer needed data
+
+        UniversalObjectiveCompleteEvent event = new UniversalObjectiveCompleteEvent(p, uo);
+        Bukkit.getServer().getPluginManager().callEvent(event);
 
         p.playSound(p.getLocation(), Sound.LEVEL_UP, 1f, 1f);
         String hover = ChatColor.translateAlternateColorCodes('&',
@@ -213,20 +255,20 @@ public class UniversalObjectiveManager implements Listener {
         UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
         List<String> completed = up.getCompletedObjectives();
         if (up.firstJoin())
-            up.addSelectedObjective("getting_started");
+            up.addSelectedObjective("making_friends");
         List<String> selected = up.getSelectedObjectives();
 
         registeredObjectives.forEach((uo) -> {
             uo.removePlayer(p);
             if (!completed.contains(uo.getId()))
                 if (uo.getCategory() == UniversalObjective.Catagory.ACHIEVEMENT)
-                        uo.addPlayer(p);
+                    uo.addPlayer(p);
                 else if (selected.contains(uo.getId()))
                     uo.addPlayer(p);
         });
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOW)
     public void OnPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         updateTracking(p);
@@ -243,15 +285,7 @@ public class UniversalObjectiveManager implements Listener {
         Player p = e.getPlayer();
         int amt = e.getAmount();
         String b = e.getBlock().getType().toString();
-        increment(UniversalObjective.TaskType.MINE_BLOCK, b, p, amt);
-    }
-
-    @EventHandler
-    public void OnNPCClick(NPCLeftClickEvent e) {
-        Player p = e.getClicker();
-        NPC npc = e.getNPC();
-        String id = npc.getUniqueId().toString();
-        increment(UniversalObjective.TaskType.TALK_TO_NPC, id, p, 1);
+        increment(MINE_BLOCK, b, p, amt);
     }
 
     @EventHandler
@@ -259,6 +293,6 @@ public class UniversalObjectiveManager implements Listener {
         Player p = e.getClicker();
         NPC npc = e.getNPC();
         String id = npc.getUniqueId().toString();
-        increment(UniversalObjective.TaskType.TALK_TO_NPC, id, p, 1);
+        increment(TALK_TO_NPC, id, p, 1);
     }
 }

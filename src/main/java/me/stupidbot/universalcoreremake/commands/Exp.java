@@ -25,7 +25,7 @@ class Exp {
                 if (p == null)
                     s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             "&cPlayer " + args[1] + " could not be found, /" + label + " does not yet " +
-                                    "support offline players!"));
+                                    "support offline players!")); // TODO Support this.
                 } else if (s instanceof Player)
                     p = (Player) s;
                 else

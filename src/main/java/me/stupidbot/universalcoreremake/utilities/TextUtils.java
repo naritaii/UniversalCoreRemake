@@ -10,6 +10,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -25,6 +26,10 @@ public class TextUtils {
 
     public static String addCommas(double d) {
         return NumberFormat.getCurrencyInstance(Locale.US).format(d).substring(1);
+    }
+
+    public static String addCommas(BigDecimal bd) {
+        return NumberFormat.getCurrencyInstance(Locale.US).format(bd).substring(1);
     }
 
     public static String getChatColor(OfflinePlayer p) {

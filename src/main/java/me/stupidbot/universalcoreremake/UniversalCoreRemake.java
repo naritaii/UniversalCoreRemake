@@ -34,8 +34,8 @@ public class UniversalCoreRemake extends JavaPlugin {
     private static Chat chat = null;
     private static InventoryManager inventoryManager = null;
     private static MOTDManager motdManager;
-    private static ScoreboardManager scoreboardManager;
     private static UniversalObjectiveManager universalObjectiveManager;
+    private static ScoreboardManager scoreboardManager;
 
     @Override
     public void onEnable() {
@@ -48,8 +48,8 @@ public class UniversalCoreRemake extends JavaPlugin {
         miningManager = new MiningManager();
         inventoryManager = new InventoryManager(instance);
         motdManager = new MOTDManager();
-        scoreboardManager = new ScoreboardManager();
         universalObjectiveManager = new UniversalObjectiveManager();
+        scoreboardManager = new ScoreboardManager();
 
         CommandExecutor executor = new CommandExecutor();
 
@@ -67,7 +67,8 @@ public class UniversalCoreRemake extends JavaPlugin {
                 new ChatManager(), motdManager, new ItemMetadata(), scoreboardManager, universalObjectiveManager);
         registerCommands(executor, "reloadmotd", "reloaduniversalobjectives",
                 "exp", "setblockmeta", "readblockmeta", "setitemmeta", "readitemmeta", "emoji",
-                "openmineraltrader", "openfoodtrader", "saveuniversalplayercachetofile", "saveblockmetadatacachetofile");
+                "openmineraltrader", "openfoodtrader", "saveuniversalplayercachetofile", "saveblockmetadatacachetofile",
+                "selectobjective");
 
         System.out.println(getName() + " is now enabled!");
     }

@@ -17,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import java.text.ParseException;
 import java.util.Date;
 
-public class Stamina implements Listener {
+public class Stamina implements Listener { // TODO this is more of a manager  than util tbh
     @EventHandler(priority = EventPriority.MONITOR)
     public void onFoodLevelChange(FoodLevelChangeEvent e) {
         e.setCancelled(true);
@@ -91,7 +91,7 @@ public class Stamina implements Listener {
 
 
     enum BaseFoodStamina {
-        ROTTEN_FLESH(5);
+        ROTTEN_FLESH(5), APPLE(20);
 
         final int baseFoodStamina;
 

@@ -2,6 +2,7 @@ package me.stupidbot.universalcoreremake.effects;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import com.gmail.filoghost.holographicdisplays.api.VisibilityManager;
 import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.EffectType;
@@ -41,6 +42,8 @@ public class LevelUp extends Effect {
         this.p = p;
         hologram = HologramsAPI.createHologram(UniversalCoreRemake.getInstance(),
                 p.getLocation().add(0.0, 3.2, 0.0));
+        VisibilityManager visibilityManager = hologram.getVisibilityManager();
+        visibilityManager.hideTo(p);
         hologram.appendTextLine(ChatColor.translateAlternateColorCodes(
                 '&', "&6&l&nLEVEL " + lvl));
     }

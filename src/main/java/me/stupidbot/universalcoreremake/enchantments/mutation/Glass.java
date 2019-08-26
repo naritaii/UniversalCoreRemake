@@ -59,8 +59,8 @@ public class Glass extends Enchantment implements Listener {
         ItemStack i = p.getItemInHand();
         if (i.containsEnchantment(this)) {
 
-        }
+            Bukkit.broadcastMessage("glass listener works");
 
-        Bukkit.broadcastMessage("glass listener works");
+        }
     }
 }

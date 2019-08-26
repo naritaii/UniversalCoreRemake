@@ -19,7 +19,7 @@ public class ChatManager implements Listener {
 
         if (!p.hasPermission("universalcore.nochatcooldown"))
             if (chatCooldowns.containsKey(p.getUniqueId())) {
-                int diff = (int) Math.ceil(
+                @SuppressWarnings("IntegerDivisionInFloatingPointContext") int diff = (int) Math.ceil(
                         (System.nanoTime() - chatCooldowns.get(p.getUniqueId())) / 1000000000);
                 if (diff < 3) {
                     p.sendMessage(ChatColor.translateAlternateColorCodes('&',

@@ -2,29 +2,24 @@ package me.stupidbot.universalcoreremake.managers.universalplayer;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 @SuppressWarnings({"SameParameterValue", "UnusedReturnValue"})
 public class UniversalPlayer {
-    private final File pFileLoc; // TODO Don't store File objects, too expensive
-    private final FileConfiguration pFile;
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss");
+    private final FileConfiguration pFile;
+    private final String pFileLoc;
 
-    UniversalPlayer(File pFileLoc, FileConfiguration pFile) {
-        this.pFileLoc = pFileLoc;
+    UniversalPlayer(FileConfiguration pFile, String pFileLoc) {
         this.pFile = pFile;
+        this.pFileLoc = pFileLoc;
     }
 
-    public File getPlayerDataFile() {
-        return pFileLoc;
-    }
-
-    public FileConfiguration loadPlayerDataFile() {
+/*    public FileConfiguration loadPlayerDataFile() {
         return pFile;
-    }
+    }*/
 
     public static SimpleDateFormat getSimpleDateFormat() {
         return simpleDateFormat;
@@ -112,6 +107,15 @@ public class UniversalPlayer {
         return pFile.getString("Stats.FirstJoin");
     }
 
+    long setJoinNumber(long l) {
+        pFile.set("Stats.JoinNumber", l);
+        return l;
+    }
+
+    long getJoinNumber() {
+        return pFile.getLong("Stats.JoinNumber");
+    }
+
     String setDataLastPlayed(String s) {
         pFile.set("Stats.LastPlayed", s);
         return s;
@@ -181,19 +185,26 @@ public class UniversalPlayer {
         return completed;
     }
 
+    public List<String> removeCompletedObjective(String id) {
+        List<String> completed = getCompletedObjectives();
+        completed.remove(id);
+        pFile.set("Objective.Completed", completed);
+        return completed;
+    }
+
     public List<String> getSelectedObjectives() {
         return pFile.getStringList("Objective.Selected");
     }
 
     public List<String> addSelectedObjective(String id) {
-        List<String> selected = getCompletedObjectives();
+        List<String> selected = getSelectedObjectives();
         selected.add(id);
         pFile.set("Objective.Selected", selected);
         return selected;
     }
 
     public List<String> removeSelectedObjective(String id) {
-        List<String> selected = getCompletedObjectives();
+        List<String> selected = getSelectedObjectives();
         selected.remove(id);
         pFile.set("Objective.Selected", selected);
         return selected;

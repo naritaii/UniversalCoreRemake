@@ -14,21 +14,26 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class UniversalPlayerManager implements Listener {
     private final String dataFolderPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator +
             "data" + File.separator + "player_data";
     private final List<UniversalPlayer> universalPlayers = Collections.synchronizedList(new ArrayList<>());
-    private final HashMap<UUID, Integer> universalPlayerDictionary = new HashMap<>();
+    private final Map<UUID, Integer> universalPlayerDictionary = new ConcurrentHashMap<>();
 
     public List<UniversalPlayer> getAllUniversalPlayers() {
         return universalPlayers;
     }
 
-    private HashMap<UUID, Integer> getUniversalPlayerDictionary() {
+    private Map<UUID, Integer> getUniversalPlayerDictionary() {
         return universalPlayerDictionary;
     }
 
@@ -36,7 +41,7 @@ public class UniversalPlayerManager implements Listener {
         File pFileLoc = getPlayerDataFile(p);
         FileConfiguration pFile = loadPlayerDataFile(pFileLoc);
 
-        UniversalPlayer up = new UniversalPlayer(pFileLoc, pFile);
+        UniversalPlayer up = new UniversalPlayer(pFile, Objects.requireNonNull(pFileLoc).getPath());
 
 
         up.setName(p.getName());
@@ -44,8 +49,14 @@ public class UniversalPlayerManager implements Listener {
         up.setPrefix(prefix);
         up.setNameColor(prefix.substring(0, 2));
 
-        if (up.firstJoin())
+        if (up.firstJoin()) {
             up.setFirstPlayed(UniversalPlayer.getSimpleDateFormat().format(new Date()));
+            try (Stream<Path> files = Files.list(Paths.get(dataFolderPath))) {
+                up.setJoinNumber(files.count());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
 
         List<UniversalPlayer> ups = getAllUniversalPlayers();
@@ -61,7 +72,7 @@ public class UniversalPlayerManager implements Listener {
         if (pFileLoc != null) {
             FileConfiguration pFile = loadPlayerDataFile(pFileLoc);
 
-            UniversalPlayer up = new UniversalPlayer(pFileLoc, pFile);
+            UniversalPlayer up = new UniversalPlayer(pFile, pFileLoc.getPath());
 
             List<UniversalPlayer> ups = getAllUniversalPlayers();
             getUniversalPlayerDictionary().put(p.getUniqueId(), ups.size());

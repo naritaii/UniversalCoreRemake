@@ -1,4 +1,4 @@
-package me.stupidbot.universalcoreremake.managers.cosmetics;
+package me.stupidbot.universalcoreremake.cosmetics;
 
 import de.slikey.effectlib.Effect;
 import org.bukkit.entity.Player;

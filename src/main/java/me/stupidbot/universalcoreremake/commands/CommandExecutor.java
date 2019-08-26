@@ -8,6 +8,7 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private final ReloadUniversalObjectives reloadUniversalObjectives = new ReloadUniversalObjectives();
     private final Exp exp = new Exp();
     private final SetBlockMeta setBlockMeta = new SetBlockMeta();
+    private final SelectObjective selectObjective = new SelectObjective();
     private final ReadBlockMeta readBlockMeta = new ReadBlockMeta();
     private final SetItemMeta setItemMeta = new SetItemMeta();
     private final ReadItemMeta readItemMeta = new ReadItemMeta();
@@ -27,6 +28,8 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
             return exp.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("setblockmeta"))
             return setBlockMeta.execute(s, label, args);
+        else if (cmd.getName().equalsIgnoreCase("selectobjective"))
+            return selectObjective.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("readblockmeta"))
             return readBlockMeta.execute(s);
         else if (cmd.getName().equalsIgnoreCase("setitemmeta"))

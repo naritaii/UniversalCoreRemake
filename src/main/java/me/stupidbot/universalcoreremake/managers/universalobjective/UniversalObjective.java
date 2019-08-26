@@ -1,16 +1,14 @@
 package me.stupidbot.universalcoreremake.managers.universalobjective;
 
-import com.google.common.base.Joiner;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayerManager;
 import me.stupidbot.universalcoreremake.utilities.StringReward;
-import me.stupidbot.universalcoreremake.utilities.TextUtils;
-import net.citizensnpcs.api.CitizensAPI;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class UniversalObjective {
     private final TaskType task;
@@ -33,34 +31,19 @@ public class UniversalObjective {
         this.rewards = rewards;
         this.cooldown = 0; // Not repeatable // TODO Add repeatable objectives
         this.category = catagory;
-        this.description = description != null ? description : generateDescription(); // if null we'll generate it through code
-        playersToTrack = new HashMap<>();
-    }
-
-    private String generateDescription() {
-        switch(getTask()) {
-            case MINE_BLOCK:
-                List<String> originalList = Arrays.asList(getTaskInfo()[2].split(","));
-                originalList.forEach(TextUtils::capitalizeFully);
-                return "Mine " + TextUtils.addCommas(Integer.parseInt(getTaskInfo()[1])) + " "
-                        + Joiner.on(", ").join(originalList.subList(0, originalList.size() - 1))
-                        .concat(", or ").concat(originalList.get(originalList.size() - 1));
-            case TALK_TO_NPC:
-                return "Talk to " + CitizensAPI.getNPCRegistry()
-                        .getByUniqueIdGlobal(UUID.fromString(getTaskInfo()[2])).getFullName();
-        }
-        return "Unable to generate description for " + getId();
+        this.description = description;
+        playersToTrack = new ConcurrentHashMap<>();
     }
 
     TaskType getTask() {
         return task;
     }
 
-    String[] getTaskInfo() {
+    public String[] getTaskInfo() {
         return taskInfo;
     }
 
-    String getId() {
+    public String getId() {
         return id;
     }
 
@@ -80,15 +63,15 @@ public class UniversalObjective {
         return cooldown;
     }
 
-    String getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    Catagory getCategory() {
+    public Catagory getCategory() {
         return category;
     }
 
-    Set<UUID> getPlayersTracking() {
+    public Set<UUID> getPlayersTracking() {
         return playersToTrack.keySet();
     }
 
@@ -98,19 +81,29 @@ public class UniversalObjective {
         return progress;
     }
 
-    private int getProgress(Player p) {
+    public int getProgress(Player p) {
         return playersToTrack.getOrDefault(p.getUniqueId(), 0);
     }
 
-    void addPlayer(Player p) {
-        playersToTrack.put(p.getUniqueId(), UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p)
+    public void addPlayer(Player p) {
+        UUID id = p.getUniqueId();
+        playersToTrack.put(id, UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p)
                 .getObjectiveData(getId(), getTaskFormatted()));
+        UniversalObjectiveManager uom = UniversalCoreRemake.getUniversalObjectiveManager();
+        List<UniversalObjective> list = uom.trackedObjectives.getOrDefault(id, Collections.synchronizedList(new ArrayList<>()));
+        list.add(this);
+        uom.trackedObjectives.put(id, list);
     }
 
-    void removePlayer(Player p) {
-        if (playersToTrack.containsKey(p.getUniqueId())) {
+    public void removePlayer(Player p) {
+        UUID id = p.getUniqueId();
+        if (playersToTrack.containsKey(id)) {
             savePlayerData(p);
-            playersToTrack.remove(p.getUniqueId());
+            playersToTrack.remove(id);
+            UniversalObjectiveManager uom = UniversalCoreRemake.getUniversalObjectiveManager();
+            List<UniversalObjective> list = uom.trackedObjectives.get(id);
+            list.remove(this);
+            uom.trackedObjectives.put(id, list);
         }
     }
 
@@ -142,6 +135,7 @@ public class UniversalObjective {
 
     public enum Catagory {
         STORY_QUEST, // Completed one at a time
+        CONTEXTUAL_QUEST, // Quests given upon entering a region or talking to an NPC for example
         ACHIEVEMENT // All online players who haven't completed these are tracked
     }
 }
