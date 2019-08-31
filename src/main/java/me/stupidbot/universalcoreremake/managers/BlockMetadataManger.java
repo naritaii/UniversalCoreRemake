@@ -40,7 +40,7 @@ public class BlockMetadataManger {
         }
     }
 
-    boolean hasMeta(Block b, String metadata) {
+    public boolean hasMeta(Block b, String metadata) {
         Location loc = b.getLocation();
         if (blocksMetas.containsKey(loc)) {
             Map<String, String> metaDataMap = blocksMetas.get(loc);

@@ -1,5 +1,6 @@
 package me.stupidbot.universalcoreremake.managers.universalplayer;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.IOException;
@@ -188,6 +189,8 @@ public class UniversalPlayer {
     public List<String> removeCompletedObjective(String id) {
         List<String> completed = getCompletedObjectives();
         completed.remove(id);
+        if (completed.isEmpty())
+            completed = null;
         pFile.set("Objective.Completed", completed);
         return completed;
     }
@@ -206,7 +209,30 @@ public class UniversalPlayer {
     public List<String> removeSelectedObjective(String id) {
         List<String> selected = getSelectedObjectives();
         selected.remove(id);
+        if (selected.isEmpty())
+            selected = null;
         pFile.set("Objective.Selected", selected);
         return selected;
+    }
+
+    public List<String> getCollectedSlimes() {
+        return pFile.getStringList("Slimes.Collected");
+    }
+
+    public Location addCollectedSlime(Location loc) {
+        List<String> slimes = getCollectedSlimes();
+        slimes.add(loc.getWorld().getName() + "_" + loc.getBlockX() + "_" + loc.getBlockY() + "_"
+                + loc.getBlockZ());
+        pFile.set("Slimes.Collected", slimes);
+        return loc;
+    }
+
+    public boolean hasCollectedSlime(Location loc) {
+        return getCollectedSlimes().contains(loc.getWorld().getName() + "_" + loc.getBlockX() + "_" + loc.getBlockY() + "_"
+                + loc.getBlockZ());
+    }
+
+    public int getSlimesCollected() {
+        return getCollectedSlimes().size();
     }
 }

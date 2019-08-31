@@ -6,6 +6,7 @@ import de.slikey.effectlib.EffectManager;
 import fr.minuskube.inv.InventoryManager;
 import me.stupidbot.universalcoreremake.commands.CommandExecutor;
 import me.stupidbot.universalcoreremake.enchantments.UniversalEnchantment;
+import me.stupidbot.universalcoreremake.listeners.CollectibleSlimesListener;
 import me.stupidbot.universalcoreremake.managers.*;
 import me.stupidbot.universalcoreremake.managers.universalobjective.UniversalObjectiveManager;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayerManager;
@@ -64,7 +65,8 @@ public class UniversalCoreRemake extends JavaPlugin {
             System.out.println("PlaceholderAPI support disabled.");
 
         registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager, new Stamina(),
-                new ChatManager(), motdManager, new ItemMetadata(), scoreboardManager, universalObjectiveManager);
+                new ChatManager(), motdManager, new ItemMetadata(), scoreboardManager, universalObjectiveManager,
+                new CollectibleSlimesListener());
         registerCommands(executor, "reloadmotd", "reloaduniversalobjectives",
                 "exp", "setblockmeta", "readblockmeta", "setitemmeta", "readitemmeta", "emoji",
                 "openmineraltrader", "openfoodtrader", "saveuniversalplayercachetofile", "saveblockmetadatacachetofile",

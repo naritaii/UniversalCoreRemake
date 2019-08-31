@@ -160,7 +160,7 @@ public class UniversalObjectiveManager implements Listener {
                 case MINE_BLOCK:
                     if (task == uo.getTask())
                         for (String i : uo.getTaskInfo()[2].split(","))
-                            if (i.equals(taskInfo)) {
+                            if (i.equals(taskInfo) || i.equals("")) {
                                 int progress = uo.increment(p, amt);
                                 int needed = getNeeded(uo);
                                 UniversalObjectiveIncrementEvent event = new UniversalObjectiveIncrementEvent(p, uo, progress, progress - amt, needed);

@@ -1,7 +1,7 @@
 package me.stupidbot.universalcoreremake.commands;
 
 import fr.minuskube.inv.SmartInventory;
-import me.stupidbot.universalcoreremake.gui.Sell;
+import me.stupidbot.universalcoreremake.guis.Sell;
 import me.stupidbot.universalcoreremake.utilities.item.ItemBuilder;
 import me.stupidbot.universalcoreremake.utilities.item.SellItem;
 import org.bukkit.Bukkit;

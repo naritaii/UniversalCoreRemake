@@ -294,7 +294,13 @@ public class MiningManager implements Listener {
         RED_SANDSTONE(6.5f, 6.5f, Material.SANDSTONE, 0.075f, 1,
                 Material.RED_SANDSTONE, 1, BreakBehavior.DEFAULT),
         SANDSTONE(5.5f, 6.5f, Material.RED_SANDSTONE, 0.4f, 5,
-                Material.SANDSTONE, 3, BreakBehavior.INSTANT_RESPAWN);
+                Material.SANDSTONE, 3, BreakBehavior.INSTANT_RESPAWN),
+
+        // This is to prevent weird nullpointers.
+        AIR(Float.MAX_VALUE, 0f, Material.AIR, 0f, 0,
+                Material.AIR, 0, BreakBehavior.INSTANT_RESPAWN),
+        BEDROCK(Float.MAX_VALUE, 0f, Material.AIR, 0f, 0,
+                Material.BEDROCK, 0, BreakBehavior.INSTANT_RESPAWN);
 
         private final float durability;
         private final float regenerateTime;
