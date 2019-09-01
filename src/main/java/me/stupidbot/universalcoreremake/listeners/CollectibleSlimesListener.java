@@ -27,7 +27,7 @@ public class CollectibleSlimesListener implements Listener {
                 else
                     name = "Slime";
                 UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
-                if (up.hasCollectedSlime(b.getLocation())) {
+                if (!up.hasCollectedSlime(b.getLocation())) {
                     String firstDialogue;
                         if (bmm.hasMeta(b, "SLIME_NAME"))
                             firstDialogue = ChatColor.translateAlternateColorCodes('&', bmm.getMeta(b,

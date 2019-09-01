@@ -16,6 +16,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,44 +36,56 @@ public class Buy implements InventoryProvider {
                 .title(title).build();
     }
 
-
+    private int page = 1;
+    private List<ClickableItem> clickableItems = new ArrayList<>();
     private final int amt = 1;
+
     @Override
     public void init(Player p, InventoryContents contents) {
+        if (clickableItems.isEmpty())
+            for (SellItem si : items) {
+                double cost = si.getSellCost() * amt;
+                Material m = si.getType();
+                String mName = TextUtils.capitalizeFully(m.toString());
+                String dName = (si.getDisplayItem().getItemMeta().hasDisplayName() ?
+                        si.getDisplayItem().getItemMeta().getDisplayName() : mName);
+                ItemStack icon = new ItemBuilder(si.getDisplayItem())
+                        .amount(amt)
+                        .name("&a" + dName)
+                        .lore("")
+                        .lore("&7Cost:")
+                        .lore("&6$" + TextUtils.addCommas(cost))
+                        .lore("")
+                        .lore("&eClick to buy!").build();
+
+                clickableItems.add(ClickableItem.of(icon, e -> {
+                    Economy econ = UniversalCoreRemake.getEconomy();
+                    if (econ.getBalance(p) > cost) {
+                        UniversalCoreRemake.getEconomy().withdrawPlayer(p, cost);
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                "&aYou bought &3" + amt + "x&6 " + dName +
+                                        "&a for &c$" + TextUtils.addCommas(cost)));
+                        ItemUtils.addItemSafe(p, si.getItem());
+                        p.playSound(p.getLocation(), Sound.NOTE_PLING, 1f, 1f);
+                    } else {
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                "&cYou don't have enough money!"));
+                        p.playSound(p.getLocation(), Sound.CLICK, 1f, 1f);
+                    }
+                }));
+            }
+
+
         ItemStack border = new ItemBuilder(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15))
                 .name(" ").build();
-        contents.fillBorders(ClickableItem.empty(border));
+        contents.fillBorders(ClickableItem.empty(border)); // 28 items per page, 4 rows of 7
+        updateItems(contents);
+    }
 
-        for (SellItem si : items) {
-            double cost = si.getSellCost() * amt;
-            Material m = si.getType();
-            String mName = TextUtils.capitalizeFully(m.toString());
-            String dName = (si.getDisplayItem().getItemMeta().hasDisplayName() ?
-                    si.getDisplayItem().getItemMeta().getDisplayName() : mName);
-            ItemStack icon = new ItemBuilder(si.getDisplayItem())
-                    .amount(amt)
-                    .name("&a" + dName)
-                    .lore("")
-                    .lore("&7Cost:")
-                    .lore("&6$" + TextUtils.addCommas(cost))
-                    .lore("")
-                    .lore("&eClick to buy!").build();
-
-            contents.add(ClickableItem.of(icon, e -> {
-                Economy econ = UniversalCoreRemake.getEconomy();
-                if (econ.getBalance(p) > cost) {
-                    UniversalCoreRemake.getEconomy().withdrawPlayer(p, cost);
-                    p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            "&aYou bought &3" + amt + "x&6 " + dName +
-                                    "&a for &c$" + TextUtils.addCommas(cost)));
-                    ItemUtils.addItemSafe(p, si.getItem());
-                    p.playSound(p.getLocation(), Sound.NOTE_PLING, 1f, 1f);
-                } else
-                    p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            "&cYou don't have enough money!"));
-                // TODO add sound to this and Sell
-            }));
-        }
+    private void updateItems(InventoryContents contents) {
+        contents.fillRect(1, 1, 4, 7, null);
+        for (int i = (page - 1) * 28; i < Math.min(((page - 1) * 28) + 28, clickableItems.size()); i++)
+            contents.add(clickableItems.get(i));
     }
 
     @Override
