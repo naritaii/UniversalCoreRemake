@@ -197,7 +197,7 @@ public class ScoreboardManager implements Listener {
             ScoreboardFormat sf = getFormat(p);
             int walletLine = sf.getWalletLine();
             if (walletLine > -1)
-                board.set(formatLine("Wallet: &6$", p) + TextUtils.addCommas(e.getNewBalance()), walletLine);
+                board.set(formatLine("Wallet: &6$", p) + TextUtils.addCommas(e.getNewBalance().doubleValue()), walletLine);
         }
     }
 

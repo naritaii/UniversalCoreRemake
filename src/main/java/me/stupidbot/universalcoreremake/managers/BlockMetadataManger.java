@@ -16,12 +16,13 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class BlockMetadataManger {
+    // TODO Save as .json
     public BlockMetadataManger() {
         initialize();
     }
 
-    private final String folderPath = UniversalCoreRemake.getInstance().getDataFolder().toString();
-    private final String dataPath = folderPath + File.separator + "data" + File.separator + "block_metadata.yml";
+    private final String folderPath = UniversalCoreRemake.getInstance().getDataFolder().toString() + File.separator + "data";
+    private final String dataPath = folderPath + File.separator + "block_metadata.yml";
 
     private final Map<Location, Map<String, String>> blocksMetas = new ConcurrentHashMap<>();
 

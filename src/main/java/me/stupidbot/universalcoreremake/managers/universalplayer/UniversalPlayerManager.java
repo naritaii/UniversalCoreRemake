@@ -24,7 +24,8 @@ import java.util.stream.Stream;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class UniversalPlayerManager implements Listener {
-    private final String dataFolderPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator +
+    // TODO Save all registered UniversalPlayers and unload any no longer in use every four hours or so
+    public final String dataFolderPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator +
             "data" + File.separator + "player_data";
     private final List<UniversalPlayer> universalPlayers = Collections.synchronizedList(new ArrayList<>());
     private final Map<UUID, Integer> universalPlayerDictionary = new ConcurrentHashMap<>();

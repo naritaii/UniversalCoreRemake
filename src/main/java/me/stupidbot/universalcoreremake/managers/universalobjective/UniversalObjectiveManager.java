@@ -117,10 +117,12 @@ public class UniversalObjectiveManager implements Listener {
             case MINE_BLOCK:
                 List<String> originalList = Arrays.asList(WordUtils.capitalizeFully(taskInfo[2], new char[] { '_', ',' } )
                         .replace("_", " ").split(","));
-                if (originalList.size() == 2)
-                    return "Mine " + originalList.get(0) + " or " + originalList.get(1);
+                if (originalList.isEmpty())
+                    return "Mine blocks";
                 else if (originalList.size() == 1)
                     return "Mine " + originalList.get(0);
+                else if (originalList.size() == 2)
+                    return "Mine " + originalList.get(0) + " or " + originalList.get(1);
                 else
                     return "Mine " + Joiner.on(", ").join(originalList.subList(0, originalList.size() - 1))
                             .concat(", or ").concat(originalList.get(originalList.size() - 1));
@@ -160,7 +162,7 @@ public class UniversalObjectiveManager implements Listener {
                 case MINE_BLOCK:
                     if (task == uo.getTask())
                         for (String i : uo.getTaskInfo()[2].split(","))
-                            if (i.equals(taskInfo) || i.equals("")) {
+                            if (i.isEmpty() || i.equals(taskInfo)) {
                                 int progress = uo.increment(p, amt);
                                 int needed = getNeeded(uo);
                                 UniversalObjectiveIncrementEvent event = new UniversalObjectiveIncrementEvent(p, uo, progress, progress - amt, needed);

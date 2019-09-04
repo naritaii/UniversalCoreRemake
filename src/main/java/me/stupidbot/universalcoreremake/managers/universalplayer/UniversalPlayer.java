@@ -38,6 +38,15 @@ public class UniversalPlayer {
         }
     }
 
+    public double incrementTotalMoney(double d) {
+        d += getTotalMoney();
+        pFile.set("TotalMoney", d);
+        return d;
+    }
+
+    public double getTotalMoney() {
+        return pFile.getDouble("TotalMoney");
+    }
 
     public int setLevel(int i) {
         pFile.set("XP.Level", i);
@@ -45,9 +54,7 @@ public class UniversalPlayer {
     }
 
     public int getLevel() {
-        int i;
-        i = pFile.getInt("XP.Level");
-        return i;
+        return pFile.getInt("XP.Level");
     }
 
     public int setXp(int i) {
@@ -56,9 +63,7 @@ public class UniversalPlayer {
     }
 
     public int getXp() {
-        int i;
-        i = pFile.getInt("XP.XP");
-        return i;
+        return pFile.getInt("XP.XP");
     }
 
     public int setTotalXp(int i) {
@@ -67,9 +72,7 @@ public class UniversalPlayer {
     }
 
     public int getTotalXp() {
-        int i;
-        i = pFile.getInt("XP.TotalXP");
-        return i;
+        return pFile.getInt("XP.TotalXP");
     }
 
     String setName(String s) {
