@@ -37,6 +37,7 @@ public class UniversalCoreRemake extends JavaPlugin {
     private static MOTDManager motdManager;
     private static UniversalObjectiveManager universalObjectiveManager;
     private static ScoreboardManager scoreboardManager;
+    private static LeaderboardManager leaderboardManager;
 
     @Override
     public void onEnable() {
@@ -51,6 +52,7 @@ public class UniversalCoreRemake extends JavaPlugin {
         motdManager = new MOTDManager();
         universalObjectiveManager = new UniversalObjectiveManager();
         scoreboardManager = new ScoreboardManager();
+        leaderboardManager = new LeaderboardManager();
 
         CommandExecutor executor = new CommandExecutor();
 
@@ -65,8 +67,8 @@ public class UniversalCoreRemake extends JavaPlugin {
             System.out.println("PlaceholderAPI support disabled.");
 
         registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager, new Stamina(),
-                new ChatManager(), motdManager, new ItemMetadata(), scoreboardManager, universalObjectiveManager,
-                new CollectibleSlimesListener());
+                new ChatManager(), motdManager, new ItemMetadata(), universalObjectiveManager, scoreboardManager,
+                new CollectibleSlimesListener(), leaderboardManager);
         registerCommands(executor, "reloadmotd", "reloaduniversalobjectives",
                 "exp", "setblockmeta", "readblockmeta", "setitemmeta", "readitemmeta", "emoji",
                 "openmineraltrader", "openfoodtrader", "saveuniversalplayercachetofile", "saveblockmetadatacachetofile",
@@ -82,6 +84,7 @@ public class UniversalCoreRemake extends JavaPlugin {
         universalPlayerManager.disable();
         miningManager.disable();
         blockMetadataManager.disable();
+        leaderboardManager.disable();
 
         System.out.println(getName() + " is now disabled!");
     }
@@ -140,6 +143,10 @@ public class UniversalCoreRemake extends JavaPlugin {
 
     public static UniversalObjectiveManager getUniversalObjectiveManager() {
         return universalObjectiveManager;
+    }
+
+    public static LeaderboardManager getLeaderboardManager() {
+        return leaderboardManager;
     }
 
     private boolean setupEconomy() {
