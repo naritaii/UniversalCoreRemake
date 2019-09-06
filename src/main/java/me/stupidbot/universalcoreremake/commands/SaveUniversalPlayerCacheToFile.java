@@ -15,6 +15,7 @@ class SaveUniversalPlayerCacheToFile {
             long startTime = System.nanoTime();
 
             upm.saveAll();
+            upm.manuallyRefreshCache();
 
             long endTime = System.nanoTime();
             s.sendMessage(ChatColor.translateAlternateColorCodes('&',

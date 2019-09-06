@@ -24,11 +24,15 @@ import java.util.stream.Stream;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class UniversalPlayerManager implements Listener {
-    // TODO Save all registered UniversalPlayers and unload any no longer in use every four hours or so
     public final String dataFolderPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator +
             "data" + File.separator + "player_data";
     private final List<UniversalPlayer> universalPlayers = Collections.synchronizedList(new ArrayList<>());
     private final Map<UUID, Integer> universalPlayerDictionary = new ConcurrentHashMap<>();
+    private long lastRefresh = System.nanoTime();
+
+    public UniversalPlayerManager() {
+        initialize();
+    }
 
     public List<UniversalPlayer> getAllUniversalPlayers() {
         return universalPlayers;
@@ -38,7 +42,33 @@ public class UniversalPlayerManager implements Listener {
         return universalPlayerDictionary;
     }
 
+    private void lazilyRefreshCache() {
+        if (System.nanoTime() - lastRefresh > 1.8e+12) // 30 minutes, maybe can be longer
+            manuallyRefreshCache();
+    }
+
+    public void manuallyRefreshCache() {
+        lastRefresh = System.nanoTime();
+        List<UniversalPlayer> list = new ArrayList<>();
+        Map<UUID, Integer> dictionary = new HashMap<>();
+
+        universalPlayers.forEach((UniversalPlayer up) -> {
+            UUID id = up.getUuid();
+            if (Bukkit.getPlayer(id) != null) {
+                list.add(up);
+                dictionary.put(id, dictionary.size());
+            } else
+                up.savePlayerDataFile();
+        });
+
+        universalPlayers.clear();
+        universalPlayerDictionary.clear();
+        universalPlayers.addAll(list);
+        universalPlayerDictionary.putAll(dictionary);
+    }
+
     private UniversalPlayer createUniversalPlayer(Player p) {
+        lazilyRefreshCache();
         File pFileLoc = getPlayerDataFile(p);
         FileConfiguration pFile = loadPlayerDataFile(pFileLoc);
 
@@ -59,7 +89,6 @@ public class UniversalPlayerManager implements Listener {
             }
         }
 
-
         List<UniversalPlayer> ups = getAllUniversalPlayers();
         getUniversalPlayerDictionary().put(p.getUniqueId(), ups.size());
         ups.add(up);
@@ -68,6 +97,7 @@ public class UniversalPlayerManager implements Listener {
     }
 
     private UniversalPlayer createUniversalPlayer(OfflinePlayer p) {
+        lazilyRefreshCache();
         File pFileLoc = getPlayerDataFile(p);
 
         if (pFileLoc != null) {
@@ -149,7 +179,7 @@ public class UniversalPlayerManager implements Listener {
         return YamlConfiguration.loadConfiguration(f);
     }
 
-    public void initialize() {
+    private void initialize() {
         Bukkit.getOnlinePlayers().forEach((Consumer<Player>) this::createUniversalPlayer);
 
 //        Bukkit.getScheduler().runTaskTimerAsynchronously(UniversalCoreRemake.getInstance(), () -> {

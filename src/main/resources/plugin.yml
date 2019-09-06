@@ -53,7 +53,7 @@ commands:
     usage: /<command> [player]
   saveuniversalplayercachetofile:
     aliases: [saveuniversalplayercache, saveuniversalplayerdatatofile, saveuniversalplayerdata, saveplayerdata, saveplayercache, saveplayercachetofile, saveplayerdatatofile]
-    description: Save Universal Player cache to file
+    description: Save UniversalPlayer cache to file and refresh cache
     usage: /<command>
   saveblockmetadatacachetofile:
     aliases: [saveblockmetadatacache, saveblockmetadatadatatofile, saveblockmetadatadata, saveblockmetacachetofile, saveblockmetacache, saveblockmetadatatofile, saveblockmetadata]

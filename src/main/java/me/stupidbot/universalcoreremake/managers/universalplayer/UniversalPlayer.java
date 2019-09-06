@@ -1,11 +1,14 @@
 package me.stupidbot.universalcoreremake.managers.universalplayer;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.UUID;
 
 @SuppressWarnings({"SameParameterValue", "UnusedReturnValue"})
 public class UniversalPlayer {
@@ -28,6 +31,10 @@ public class UniversalPlayer {
 
     public boolean firstJoin() {
         return getLastPlayed() == null;
+    }
+
+    public UUID getUuid() {
+        return UUID.fromString(StringUtils.substringBetween(pFileLoc, File.separator, ".yml"));
     }
 
     void savePlayerDataFile() {

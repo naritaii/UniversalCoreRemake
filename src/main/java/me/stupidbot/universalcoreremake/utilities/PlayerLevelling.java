@@ -4,8 +4,10 @@ import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.util.DynamicLocation;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.effects.LevelUp;
+import me.stupidbot.universalcoreremake.events.LevelUpEvent;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
 import net.minecraft.server.v1_8_R3.PacketPlayInClientCommand;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -47,6 +49,8 @@ public class PlayerLevelling implements Listener {
             } else
                 break;
         }
+        Bukkit.getServer().getPluginManager().callEvent(new LevelUpEvent(p, lvl, xp));
+
         Effect lvlAnim = new LevelUp(UniversalCoreRemake.getEffectManager(), p, lvl);
         lvlAnim.setDynamicOrigin(new DynamicLocation(p));
         lvlAnim.start();
