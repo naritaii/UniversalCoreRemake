@@ -35,8 +35,8 @@ public class Sell implements InventoryProvider {
                 .title(title).build();
     }
 
-    private int page = 1;
-    private List<ClickableItem> clickableItems = new ArrayList<>();
+    private final int page = 1;
+    private final List<ClickableItem> clickableItems = new ArrayList<>();
     private int amt = 0;
 
     @Override

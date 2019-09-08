@@ -1,18 +1,26 @@
 package me.stupidbot.universalcoreremake.managers;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import com.gmail.filoghost.holographicdisplays.api.VisibilityManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.events.LevelUpEvent;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
+import me.stupidbot.universalcoreremake.utilities.TextUtils;
 import net.ess3.api.events.UserBalanceUpdateEvent;
 import org.apache.commons.io.FilenameUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,17 +35,20 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LeaderboardManager implements Listener {
     private final String folderPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator + "data";
     private final String dataPath = folderPath + File.separator + "leaderboard_data.json";
-    private Map<String, Map<UUID, Double>> sortedData = new ConcurrentHashMap<>();
+    private final Map<String, Map<UUID, Double>> sortedData = new ConcurrentHashMap<>();
+    private final Map<String, List<UUID>> sortedPositions = new HashMap<>();
 
     public LeaderboardManager() {
         File path = new File(folderPath);
         File file = new File(dataPath);
         if (!path.exists())
+            //noinspection ResultOfMethodCallIgnored
             path.mkdirs();
         if (!file.exists()) // Initialize data
             initializeData();
         else // Load data
             loadSortedData();
+
         instantiateHolograms();
         Bukkit.getOnlinePlayers().forEach(this::updateHolograms);
     }
@@ -61,13 +72,20 @@ public class LeaderboardManager implements Listener {
         sortedData.put(type, data);
         updateHolograms(Bukkit.getPlayer(id));
 
-        if (System.nanoTime() - lastSort > 6e+11) // 10 minutes, can maybe be shorter
+        if (System.nanoTime() - lastSort > 3e+11) // 5 minutes
             manuallySortData();
     }
 
     private void manuallySortData() {
         lastSort = System.nanoTime();
-        sortedData.forEach((String type, Map<UUID, Double> data) -> sortedData.put(type, sortByValues(data)));
+        sortedData.forEach((String type, Map<UUID, Double> data) -> {
+            Map<UUID, Double> sortedMap = sortByValues(data);
+            sortedData.put(type, sortedMap);
+
+            List<UUID> orderedList = new ArrayList<>(sortedMap.keySet()); // Creates list from set using iterator which can access position, so its stays sorted
+            sortedPositions.put(type, orderedList);
+        });
+        updateHolograms();
         Bukkit.getOnlinePlayers().forEach(this::updateHolograms);
     }
 
@@ -97,7 +115,13 @@ public class LeaderboardManager implements Listener {
             UniversalCoreRemake.getUniversalPlayerManager().manuallyRefreshCache();
 
             // Sort data
-            playersData.forEach((String type, Map<UUID, Double> data) -> sortedData.put(type, sortByValues(data)));
+            sortedData.forEach((String type, Map<UUID, Double> data) -> {
+                Map<UUID, Double> sortedMap = sortByValues(data);
+                sortedData.put(type, sortedMap);
+
+                List<UUID> orderedList = new ArrayList<>(sortedMap.keySet()); // Creates list from set using iterator which can access position, so its stays sorted
+                sortedPositions.put(type, orderedList);
+            });
             saveSortedData();
         } catch (IOException e) {
             e.printStackTrace();
@@ -112,13 +136,19 @@ public class LeaderboardManager implements Listener {
             Gson gson = new Gson();
             Map<String, Map<UUID, Double>> data = gson.fromJson(str, new TypeToken<Map<String, Map<UUID, Double>>>() {
             }.getType());
-            data.forEach((String dataType, Map<UUID, Double> dataMap) -> sortedData.put(dataType, sortByValues(dataMap)));
+            data.forEach((String dataType, Map<UUID, Double> dataMap) -> {
+                    Map<UUID, Double> sortedMap = sortByValues(dataMap);
+                    sortedData.put(dataType, sortedMap);
+
+                    List<UUID> orderedList = new ArrayList<>(sortedMap.keySet()); // Creates list from set using iterator which can access position, so its stays sorted
+                    sortedPositions.put(dataType, orderedList);
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void saveSortedData() {
+    private void saveSortedData() { // Isn't sorted on save but on load or initialize
         try {
             Gson gson = new Gson();
             String str = gson.toJson(sortedData, new TypeToken<Map<String, Map<UUID, Double>>>(){}.getType());
@@ -138,20 +168,134 @@ public class LeaderboardManager implements Listener {
         saveSortedData();
     }
 
-    private Map<UUID, Hologram> yourPosHolo = new HashMap<>();
-    private void updateHolograms(Player player) {
+    private final Map<String, Location> holoLocs = new HashMap<>();
+    private final Map<String, String> displayNames = new HashMap<>();
+    private final Map<String, String> formats = new HashMap<>();
+    private final Map<String, String> naformats = new HashMap<>();
+    private final String configPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator + "leaderboards.yml";
+    private void loadConfig() { // TODO Make reloadable
+        File path = UniversalCoreRemake.getInstance().getDataFolder();
+        File file = new File(configPath);
 
+        if (!path.exists())
+            //noinspection ResultOfMethodCallIgnored
+            path.mkdirs();
+        try {
+            //noinspection ResultOfMethodCallIgnored
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        FileConfiguration data = YamlConfiguration.loadConfiguration(file);
+        sortedData.keySet().forEach((String type) -> {
+            if (data.get(type + "." + "World") == null)
+                data.set(type + "." + "World", "world");
+            if (data.get(type + "." + "X") == null)
+                data.set(type + "." + "X", 15205.50);
+            if (data.get(type + "." + "Y") == null)
+                data.set(type + "." + "Y", 65.00);
+            if (data.get(type + "." + "Z") == null)
+                data.set(type + "." + "Z", 10103.50);
+            if (data.get(type + "." + "DisplayName") == null)
+                data.set(type + "." + "DisplayName", "&b&l" + type);
+            if (data.get(type + "." + "Format") == null)
+                data.set(type + "." + "Format", "&e%pos%. %player%&7 - &e%integer%"); // Can also be %double%
+            if (data.get(type + "." + "NotAvailable") == null)
+                data.set(type + "." + "NotAvailable", "%player%&7 - &cN/A");
+
+            holoLocs.put(type, new Location(Bukkit.getWorld(data.getString(type + "." + "World").trim()),
+                    data.getDouble(type + "." + "X"), data.getDouble(type + "." + "Y"),
+                    data.getDouble(type + "." + "Z")));
+            displayNames.put(type, data.getString(type + "." + "DisplayName"));
+            formats.put(type, data.getString(type + "." + "Format"));
+            naformats.put(type, data.getString(type + "." + "NotAvailable"));
+        });
+
+        try {
+            data.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    private final Map<String, Hologram> holos = new HashMap<>();
     private void instantiateHolograms() {
+        loadConfig();
+        sortedData.keySet().forEach((String type) ->
+                holos.put(type, HologramsAPI.createHologram(UniversalCoreRemake.getInstance(), holoLocs.get(type))));
+        updateHolograms();
+    }
+
+    private void updateHolograms() {
         sortedData.forEach((String type, Map<UUID, Double> data) -> {
-            
+            Hologram h = holos.get(type);
+            h.clearLines();
+            List<UUID> poss = sortedPositions.get(type);
+
+            for (int i = 0; i < 10; i++)
+                if (i < 1) { // i == 0
+                    h.appendTextLine(ChatColor.translateAlternateColorCodes('&', displayNames.get(type)));
+                    h.appendTextLine("");
+                } else if (!(poss.size() < i)) {
+                        int pos = i - 1;
+                        UUID id = poss.get(pos);
+                        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(id);
+                        h.appendTextLine(ChatColor.translateAlternateColorCodes('&', formats.get(type)
+                                .replace("%pos%", ++pos + "")
+                                .replace("%player%", up.getNameColor() + up.getName())
+                                .replace("%integer%", TextUtils.addCommas(data.get(id).intValue()))
+                                .replace("%double%", TextUtils.addCommas(data.get(id)))));
+                } else
+                    h.appendTextLine("");
+        });
+    }
+
+    private final Map<UUID, Map<String, Hologram>> yourPosHolos = new HashMap<>();
+    private void updateHolograms(Player p) {
+        UUID id = p.getUniqueId();
+        Map<String, Hologram> holos;
+        if (!yourPosHolos.containsKey(id)) {
+            holos = new HashMap<>();
+            sortedData.keySet().forEach((String type) -> {
+                Location loc = holoLocs.get(type).clone().add(0d, -3.2, 0d);
+                Hologram h = HologramsAPI.createHologram(UniversalCoreRemake.getInstance(), loc);
+                VisibilityManager vm = h.getVisibilityManager();
+                vm.showTo(p);
+                vm.setVisibleByDefault(false);
+
+                holos.put(type, h);
+            });
+            yourPosHolos.put(id, holos);
+        } else
+            holos = yourPosHolos.get(id);
+
+        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
+        sortedData.forEach((String type, Map<UUID, Double> data) -> {
+            Hologram h = holos.get(type);
+            h.clearLines();
+            if (data.containsKey(id)) {
+                h.appendTextLine(ChatColor.translateAlternateColorCodes('&', formats.get(type)
+                        .replace("%pos%", TextUtils.addCommas(sortedPositions.get(type).indexOf(id) + 1))
+                        .replace("%player%", up.getNameColor() + ChatColor.BOLD + up.getName())
+                        .replace("%integer%", TextUtils.addCommas(data.get(id).intValue()))
+                        .replace("%double%", TextUtils.addCommas(data.get(id)))));
+            } else
+                h.appendTextLine(ChatColor.translateAlternateColorCodes('&', naformats.get(type)
+                        .replace("%player%", up.getNameColor() + ChatColor.BOLD + up.getName())));
         });
     }
 
     @EventHandler
     public void OnPlayerJoin(PlayerJoinEvent e) {
+        updateHolograms(e.getPlayer());
+    }
 
+    @EventHandler
+    public void OnPlayerQuit (PlayerQuitEvent e) {
+        UUID id = e.getPlayer().getUniqueId();
+        yourPosHolos.get(id).values().forEach(Hologram::delete);
+        yourPosHolos.remove(id);
     }
 
     @EventHandler

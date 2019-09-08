@@ -36,8 +36,8 @@ public class Buy implements InventoryProvider {
                 .title(title).build();
     }
 
-    private int page = 1;
-    private List<ClickableItem> clickableItems = new ArrayList<>();
+    private final int page = 1;
+    private final List<ClickableItem> clickableItems = new ArrayList<>();
     private final int amt = 1;
 
     @Override

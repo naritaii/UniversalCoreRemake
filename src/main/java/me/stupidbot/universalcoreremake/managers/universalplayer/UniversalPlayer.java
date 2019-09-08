@@ -1,10 +1,9 @@
 package me.stupidbot.universalcoreremake.managers.universalplayer;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -34,7 +33,7 @@ public class UniversalPlayer {
     }
 
     public UUID getUuid() {
-        return UUID.fromString(StringUtils.substringBetween(pFileLoc, File.separator, ".yml"));
+        return UUID.fromString(FilenameUtils.removeExtension(pFileLoc).substring(pFileLoc.length() - 36));
     }
 
     void savePlayerDataFile() {
@@ -225,7 +224,7 @@ public class UniversalPlayer {
         return selected;
     }
 
-    public List<String> getCollectedSlimes() {
+    private List<String> getCollectedSlimes() {
         return pFile.getStringList("Slimes.Collected");
     }
 
