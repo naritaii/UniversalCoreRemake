@@ -21,8 +21,9 @@ class SaveUniversalPlayerCacheToFile {
             s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     "&eSaved " +
                             "&a" + TextUtils.addCommas(filesSaved) + "&e " +
-                            "cached UniversalPlayer file(s) to file " +
-                            "&a(took " + TextUtils.addCommas((int) ((endTime - startTime) / 1000000)) + "ms)"));
+                            "cached UniversalPlayer file(s) to file, currently caching &a"
+                            + TextUtils.addCommas(upm.getAllUniversalPlayers().size()) +
+                            "&e files(s) &a(took " + TextUtils.addCommas((int) ((endTime - startTime) / 1000000)) + "ms)"));
         } else
             s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     "&cYou don't have permission to use this command!"));

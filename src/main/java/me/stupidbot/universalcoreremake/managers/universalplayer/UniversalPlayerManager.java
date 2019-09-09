@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
-public class UniversalPlayerManager implements Listener {
+public class UniversalPlayerManager implements Listener { // TODO Save as .json instead
     public final String dataFolderPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator +
             "data" + File.separator + "player_data";
     private final List<UniversalPlayer> universalPlayers = Collections.synchronizedList(new ArrayList<>());

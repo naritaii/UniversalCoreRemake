@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.events.LevelUpEvent;
+import me.stupidbot.universalcoreremake.events.UniversalBlockBreakEvent;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
 import me.stupidbot.universalcoreremake.utilities.TextUtils;
 import net.ess3.api.events.UserBalanceUpdateEvent;
@@ -50,7 +51,6 @@ public class LeaderboardManager implements Listener {
             loadSortedData();
 
         instantiateHolograms();
-        Bukkit.getOnlinePlayers().forEach(this::updateHolograms);
     }
 
     private <K, V extends Comparable<? super V>> Map<K, V> sortByValues(Map<K, V> map) {
@@ -111,11 +111,18 @@ public class LeaderboardManager implements Listener {
                     data.put(id, level);
                     playersData.put("XP.Level", data);
                 }
+
+                Double blocksMined = (double) up.getBlocksMined();
+                if (blocksMined > 0) {
+                    Map<UUID, Double> data = playersData.getOrDefault("Stats.BlocksMined", new ConcurrentHashMap<>());
+                    data.put(id, blocksMined);
+                    playersData.put("Stats.BlocksMined", data);
+                }
             });
             UniversalCoreRemake.getUniversalPlayerManager().manuallyRefreshCache();
 
             // Sort data
-            sortedData.forEach((String type, Map<UUID, Double> data) -> {
+            playersData.forEach((String type, Map<UUID, Double> data) -> {
                 Map<UUID, Double> sortedMap = sortByValues(data);
                 sortedData.put(type, sortedMap);
 
@@ -225,6 +232,7 @@ public class LeaderboardManager implements Listener {
         sortedData.keySet().forEach((String type) ->
                 holos.put(type, HologramsAPI.createHologram(UniversalCoreRemake.getInstance(), holoLocs.get(type))));
         updateHolograms();
+        Bukkit.getOnlinePlayers().forEach(this::updateHolograms);
     }
 
     private void updateHolograms() {
@@ -233,7 +241,7 @@ public class LeaderboardManager implements Listener {
             h.clearLines();
             List<UUID> poss = sortedPositions.get(type);
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 11; i++)
                 if (i < 1) { // i == 0
                     h.appendTextLine(ChatColor.translateAlternateColorCodes('&', displayNames.get(type)));
                     h.appendTextLine("");
@@ -258,7 +266,7 @@ public class LeaderboardManager implements Listener {
         if (!yourPosHolos.containsKey(id)) {
             holos = new HashMap<>();
             sortedData.keySet().forEach((String type) -> {
-                Location loc = holoLocs.get(type).clone().add(0d, -3.2, 0d);
+                Location loc = holoLocs.get(type).clone().add(0d, -3.5, 0d);
                 Hologram h = HologramsAPI.createHologram(UniversalCoreRemake.getInstance(), loc);
                 VisibilityManager vm = h.getVisibilityManager();
                 vm.showTo(p);
@@ -313,5 +321,12 @@ public class LeaderboardManager implements Listener {
     @EventHandler
     public void OnLevelUp(LevelUpEvent e) {
         lazilyUpdateData("XP.Level", e.getPlayer().getUniqueId(), (double) e.getLevel());
+    }
+
+    @EventHandler
+    public void OnBlockMined(UniversalBlockBreakEvent e) {
+        UUID id = e.getPlayer().getUniqueId();
+        lazilyUpdateData("Stats.BlocksMined", id,
+                sortedData.get("Stats.BlocksMined").getOrDefault(id, 0d) + 1);
     }
 }

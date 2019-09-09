@@ -1,0 +1,45 @@
+Objectives:
+  ####################
+  ### Story Quests ###
+  ####################
+  getting_started:
+    ID: making_friends # Optional argument. Unique name/ID  of objective. Defaults to config section name. @Deprecated just use config section
+    TaskType: TALK_TO_NPC # Can be MINE_BLOCK or TALK_TO_NPC.
+    TaskInfo:
+      - iGD8Jw # Random ID for the task, can be anything as long as the ID isn't used elsewhere. This is for if there are multiple tasks to be tracked (not yet implemented).
+      - '1' # How many times to talk to the NPC.
+      - '328d73d1-e671-4006-8438-aeb44077b54f' # What NPC to talk to. This UUID is Quest Master's.
+    Description: 'Talk to &aQuest Master' # Optional argument, this is usually generated with code but can't always be.
+    DisplayItem: # Used for GUIs.
+      ItemMaterial: YELLOW_FLOWER
+      ItemData: 0 # Optional (redundant) argument. Defaults to 0.
+      DisplayName: '%id_formatted%' # Optional (redundant) argument. defaults to ID (formatted: getting_started -> Getting Started).
+    StringRewards: # Optional argument. Can be 'MONEY <amount>' or 'ITEM <serialized item>'.
+      - 'MONEY 2.50'
+    Catagory: STORY_QUEST # Can be STORY_QUEST, CONTEXTUAL_QUEST, or ACHIEVEMENT
+  slave_labour:
+    TaskType: MINE_BLOCK
+    TaskInfo:
+      - rcy8a7
+      - '8'
+      - 'RED_SANDSTONE,SANDSTONE'
+    Description: 'Mine &a(Red) Sandstone'
+    DisplayItem:
+      ItemMaterial: RED_SANDSTONE
+    Catagory: STORY_QUEST
+  ####################
+  ### Achievements ###
+  ####################
+  class_war:
+    TaskType: MINE_BLOCK
+    TaskInfo:
+      - xs826Z
+      - '1' # How many blocks to mine.
+      - 'SANDSTONE,COAL_BLOCK' # What block(s) to mine.
+    Description: Mine an enhanced block # This could be left to be generated but I want to specify that these are 'enhanced' blocks
+    DisplayItem:
+      ItemMaterial: STONE_PICKAXE
+      Lore:  # Optional argument, defaults to the 'Description'
+        - '%description%'
+        - '&e(Enhanced blocks are Sandstone and Coal Block)'
+    Catagory: ACHIEVEMENT
