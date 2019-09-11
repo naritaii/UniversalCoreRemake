@@ -6,6 +6,7 @@ import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.events.UniversalBlockBreakEvent;
 import me.stupidbot.universalcoreremake.events.universalobjective.UniversalObjectiveCompleteEvent;
 import me.stupidbot.universalcoreremake.events.universalobjective.UniversalObjectiveIncrementEvent;
+import me.stupidbot.universalcoreremake.events.universalobjective.UniversalObjectiveStartEvent;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
 import me.stupidbot.universalcoreremake.utilities.StringReward;
 import me.stupidbot.universalcoreremake.utilities.TextUtils;
@@ -55,60 +56,62 @@ public class UniversalObjectiveManager implements Listener {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void registerObjectives() {
-        registeredObjectives.forEach((UniversalObjective::saveData));
-        registeredObjectives = new ArrayList<>();
-        registeredObjectivesDictionary = new HashMap<>();
-        trackedObjectives = new ConcurrentHashMap<>();
-        // Register any hard coded objectives here too
+        Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () -> {
+            registeredObjectives.forEach((UniversalObjective::saveData));
+            registeredObjectives = new ArrayList<>();
+            registeredObjectivesDictionary = new HashMap<>();
+            trackedObjectives = new ConcurrentHashMap<>();
+            // Register any hard coded objectives here too
 
-        UniversalCoreRemake instance = UniversalCoreRemake.getInstance();
-        File path = instance.getDataFolder();
-        File file = new File(path.toString() + File.separator + "universal_objectives.yml");
+            UniversalCoreRemake instance = UniversalCoreRemake.getInstance();
+            File path = instance.getDataFolder();
+            File file = new File(path.toString() + File.separator + "universal_objectives.yml");
 
-        if (!path.exists())
-            path.mkdirs();
-        if (!file.exists())
-            copy(instance.getResource("universal_objectives.yml"), file);
+            if (!path.exists())
+                path.mkdirs();
+            if (!file.exists())
+                copy(instance.getResource("universal_objectives.yml"), file);
 
-        FileConfiguration c = YamlConfiguration.loadConfiguration(file);
+            FileConfiguration c = YamlConfiguration.loadConfiguration(file);
 
-        for (String o : c.getConfigurationSection("Objectives").getKeys(false)) {
-            String p = "Objectives." + o + ".";
-            String id = c.getString(p + "ID") == null ? o : c.getString(p + "ID");
-            String name = c.getString(p + "DisplayItem.DisplayName") == null ? TextUtils.capitalizeFully(id) :
-                    ChatColor.translateAlternateColorCodes('&', c.getString(p + "DisplayItem.DisplayName")
-                            .replace("%id_formatted%", TextUtils.capitalizeFully(id)));
-            ItemBuilder item = new ItemBuilder(new ItemStack(
-                    Material.valueOf(c.getString(p + "DisplayItem.ItemMaterial")),
-                    (short) c.getInt(p + "DisplayItem.ItemData"))).name(name);
-            List<String> rewards = c.getStringList(p + "StringRewards");
-            StringReward stringReward = rewards.isEmpty() ? null : new StringReward(rewards.toArray(new String[0]));
-            UniversalObjective.TaskType task = UniversalObjective.TaskType.valueOf(c.getString(p + "TaskType"));
-            String[] taskInfo = c.getStringList(p + "TaskInfo").toArray(new String[0]);
-            String description = c.getString(p + "Description") == null ? generateDescription(task, taskInfo, id) :
-                    c.getString(p + "Description");
+            for (String o : c.getConfigurationSection("Objectives").getKeys(false)) {
+                String p = "Objectives." + o + ".";
+                String id = c.getString(p + "ID") == null ? o : c.getString(p + "ID");
+                String name = c.getString(p + "DisplayItem.DisplayName") == null ? TextUtils.capitalizeFully(id) :
+                        ChatColor.translateAlternateColorCodes('&', c.getString(p + "DisplayItem.DisplayName")
+                                .replace("%id_formatted%", TextUtils.capitalizeFully(id)));
+                ItemBuilder item = new ItemBuilder(new ItemStack(
+                        Material.valueOf(c.getString(p + "DisplayItem.ItemMaterial")),
+                        (short) c.getInt(p + "DisplayItem.ItemData"))).name(name);
+                List<String> rewards = c.getStringList(p + "StringRewards");
+                StringReward stringReward = rewards.isEmpty() ? null : new StringReward(rewards.toArray(new String[0]));
+                UniversalObjective.TaskType task = UniversalObjective.TaskType.valueOf(c.getString(p + "TaskType"));
+                String[] taskInfo = c.getStringList(p + "TaskInfo").toArray(new String[0]);
+                String description = c.getString(p + "Description") == null ? generateDescription(task, taskInfo, id) :
+                        c.getString(p + "Description");
 
-            List<String> lore = c.getStringList(p + "DisplayItem.Lore");
-            if (!lore.isEmpty())
-                for (String line : lore)
-                    item.lore(line.replace("%description%", description));
-            else
-                item.lore(description);
+                List<String> lore = c.getStringList(p + "DisplayItem.Lore");
+                if (!lore.isEmpty())
+                    for (String line : lore)
+                        item.lore(line.replace("%description%", description));
+                else
+                    item.lore(description);
 
 
-            registeredObjectivesDictionary.put(id, registeredObjectivesDictionary.size());
-            registeredObjectives.add(new UniversalObjective(
-                    task,
-                    taskInfo,
-                    id,
-                    item.build(),
-                    stringReward,
-                    description,
-                    UniversalObjective.Catagory.valueOf(c.getString(p + "Catagory"))
-            ));
+                registeredObjectivesDictionary.put(id, registeredObjectivesDictionary.size());
+                registeredObjectives.add(new UniversalObjective(
+                        task,
+                        taskInfo,
+                        id,
+                        item.build(),
+                        stringReward,
+                        description,
+                        UniversalObjective.Catagory.valueOf(c.getString(p + "Catagory"))
+                ));
 
-            Bukkit.getOnlinePlayers().forEach(this::updateTracking);
-        }
+                Bukkit.getOnlinePlayers().forEach(this::updateTracking);
+            }
+        });
     }
 
 
@@ -157,7 +160,8 @@ public class UniversalObjectiveManager implements Listener {
      * are equal to that of a {@link UniversalObjective} tracking {@param p}
      */
     private void increment(UniversalObjective.TaskType task, String taskInfo, Player p, int amt) {
-        ImmutableList.copyOf(trackedObjectives.getOrDefault(p.getUniqueId(), new ArrayList<>())).forEach((uo) -> {
+        Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () ->
+                ImmutableList.copyOf(trackedObjectives.getOrDefault(p.getUniqueId(), new ArrayList<>())).forEach((uo) -> {
             switch (task) {
                 case MINE_BLOCK:
                     if (task == uo.getTask())
@@ -184,7 +188,7 @@ public class UniversalObjectiveManager implements Listener {
                     }
                     break;
             }
-        });
+        }));
     }
 
     public int getNeeded(UniversalObjective uo) {
@@ -217,7 +221,8 @@ public class UniversalObjectiveManager implements Listener {
 
                 if (rewards != null) {
                     for (String s : rewards.asStrings())
-                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "  &8+" + s));
+                        if (s != null)
+                            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "  &8+" + s));
                     rewards.giveNoMessage(p);
                 }
                 break;
@@ -232,7 +237,8 @@ public class UniversalObjectiveManager implements Listener {
                 if (rewards != null) {
                     p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aRewards:"));
                     for (String s : rewards.asStrings())
-                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "  &8+" + s));
+                        if (s != null)
+                            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "  &8+" + s));
                     rewards.giveNoMessage(p);
                 }
                 break;
@@ -246,7 +252,8 @@ public class UniversalObjectiveManager implements Listener {
 
                 if (rewards != null) {
                     for (String s : rewards.asStrings())
-                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "  &8+" + s));
+                        if (s != null)
+                            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "  &8+" + s));
                     rewards.giveNoMessage(p);
                 }
                 break;
@@ -260,14 +267,21 @@ public class UniversalObjectiveManager implements Listener {
             up.addSelectedObjective("making_friends");
         List<String> selected = up.getSelectedObjectives();
 
-        registeredObjectives.forEach((uo) -> {
-            uo.removePlayer(p);
-            if (!completed.contains(uo.getId()))
-                if (uo.getCategory() == UniversalObjective.Catagory.ACHIEVEMENT)
-                    uo.addPlayer(p);
-                else if (selected.contains(uo.getId()))
-                    uo.addPlayer(p);
-        });
+
+        Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () ->
+            registeredObjectives.forEach((uo) -> {
+                uo.removePlayer(p);
+                if (!completed.contains(uo.getId()))
+                    if (uo.getCategory() == UniversalObjective.Catagory.ACHIEVEMENT) {
+                        uo.addPlayer(p);
+                        UniversalObjectiveStartEvent event = new UniversalObjectiveStartEvent(p, uo, getNeeded(uo));
+                        Bukkit.getServer().getPluginManager().callEvent(event);
+                    } else if (selected.contains(uo.getId())) {
+                        uo.addPlayer(p);
+                        UniversalObjectiveStartEvent event = new UniversalObjectiveStartEvent(p, uo, getNeeded(uo));
+                        Bukkit.getServer().getPluginManager().callEvent(event);
+                    }
+            }));
     }
 
     @EventHandler(priority = EventPriority.LOW)

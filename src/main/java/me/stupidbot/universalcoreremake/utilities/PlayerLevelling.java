@@ -118,8 +118,9 @@ public class PlayerLevelling implements Listener {
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                         "\n  &aReward:"));
                 for (String r : reward.asStrings())
-                    p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            "    &8+" + r));
+                    if (r != null)
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                "    &8+" + r));
                 reward.giveNoMessage(p);
             }
         }

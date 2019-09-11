@@ -1,7 +1,9 @@
 package me.stupidbot.universalcoreremake.commands;
 
+import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.managers.BlockMetadataManger;
 import me.stupidbot.universalcoreremake.utilities.TextUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -13,7 +15,7 @@ class SaveBlockmetaCacheToFile {
             int blocksSaved = bmm.getBlocksMetas().keySet().size();
             long startTime = System.nanoTime();
 
-            bmm.save();
+            Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), bmm::save);
 
             long endTime = System.nanoTime();
             s.sendMessage(ChatColor.translateAlternateColorCodes('&',

@@ -105,7 +105,7 @@ public class ItemMetadata implements Listener {
     }
 
     @EventHandler
-    public void onPlayerGameModChange(PlayerGameModeChangeEvent e) {
+    public void onPlayerGameModeChange(PlayerGameModeChangeEvent e) {
         Player p = e.getPlayer();
         if (e.getNewGameMode() != GameMode.CREATIVE || savedItems.containsKey(p.getUniqueId()))
             if (savedItems.containsKey(p.getUniqueId()))

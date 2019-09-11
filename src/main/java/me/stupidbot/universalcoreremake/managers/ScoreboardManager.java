@@ -185,23 +185,23 @@ public class ScoreboardManager implements Listener {
                 if (frame == animationFrames.size())
                     frame = 0;
             }
-        }.runTaskTimer(UniversalCoreRemake.getInstance(), 0, 5);
+        }.runTaskTimerAsynchronously(UniversalCoreRemake.getInstance(), 0, 5);
     }
 
     private void setupBoard(Player p, ScoreboardFormat sf) {
-        BPlayerBoard board = Netherboard.instance().getBoard(p);
-        if (board != null) {
-            String name = board.getName();
-            board.delete();
-            board = Netherboard.instance().createBoard(p, name);
-        } else
-            board = Netherboard.instance().createBoard(p, "");
+            BPlayerBoard board = Netherboard.instance().getBoard(p);
+            if (board != null) {
+                String name = board.getName();
+                board.delete();
+                board = Netherboard.instance().createBoard(p, name);
+            } else
+                board = Netherboard.instance().createBoard(p, "");
 
-        List<String> format = sf.getFormat();
-        int score = format.size();
-        for (String s : format)
-            board.set(formatLine(s, p), --score);
-    }
+            List<String> format = sf.getFormat();
+            int score = format.size();
+            for (String s : format)
+                board.set(formatLine(s, p), --score);
+        }
 
     private void setupBoard(Player p) {
         setupBoard(p, getFormat(p));
@@ -283,21 +283,21 @@ public class ScoreboardManager implements Listener {
 
     @EventHandler
     public void OnObjectiveComplete(UniversalObjectiveCompleteEvent e) {
-        setupBoard(e.getPlayer());
+        Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () -> setupBoard(e.getPlayer()));
     }
 
     @EventHandler
     public void OnObjectiveStart(UniversalObjectiveStartEvent e) {
         if (e.getUniversalObjective().getCategory() == UniversalObjective.Catagory.STORY_QUEST ||
                 e.getUniversalObjective().getCategory() == UniversalObjective.Catagory.CONTEXTUAL_QUEST)
-            setupBoard(e.getPlayer());
+            Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () -> setupBoard(e.getPlayer()));
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void OnPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (Netherboard.instance().getBoard(p) == null)
-            setupBoard(p);
+            Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () -> setupBoard(p));
     }
 
     @EventHandler

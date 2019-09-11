@@ -51,6 +51,10 @@ public class StringReward {
                                 "&cCould not parse item " + arg.toString());
                     break;
 
+                    case "QUEST":
+                        r[i] = null;
+                        break;
+
                 default:
                     r[i] = ChatColor.translateAlternateColorCodes('&',
                             "&cCould not parse " + s);
@@ -104,6 +108,10 @@ public class StringReward {
                                 "&cCould not parse item " + arg.toString())));
                     break;
 
+                case "QUEST":
+                    // TODO
+                    break;
+
                 default:
                     p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             "&cCould not parse " + s));
@@ -142,6 +150,10 @@ public class StringReward {
                     else
                         p.sendMessage((ChatColor.translateAlternateColorCodes('&',
                                 "&cCould not parse item " + arg.toString())));
+                    break;
+
+                case "QUEST":
+                    // TODO
                     break;
 
                 default:

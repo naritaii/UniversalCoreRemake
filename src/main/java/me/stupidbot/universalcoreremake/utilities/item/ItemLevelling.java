@@ -23,7 +23,7 @@ public class ItemLevelling {
         int neededXp = xpToNextLevel(lvl);
 
         ItemMetadata.setMeta(i, "TOTAL_XP", totalXp);
-        if (currentXp  >= neededXp) { // TODO Account for multiple level ups and asynchronicity
+        if (currentXp  >= neededXp) { // TODO Account for multiple level ups
             ItemMetadata.setMeta(i, "XP", currentXp - neededXp);
             ItemMetadata.setMeta(i, "LEVEL", ++lvl);
             return updateItem(i);

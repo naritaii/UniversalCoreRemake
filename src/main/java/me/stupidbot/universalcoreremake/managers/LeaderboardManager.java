@@ -37,7 +37,7 @@ public class LeaderboardManager implements Listener {
     private final String folderPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator + "data";
     private final String dataPath = folderPath + File.separator + "leaderboard_data.json";
     private final Map<String, Map<UUID, Double>> sortedData = new ConcurrentHashMap<>();
-    private final Map<String, List<UUID>> sortedPositions = new HashMap<>();
+    private final Map<String, List<UUID>> sortedPositions = new ConcurrentHashMap<>();
 
     public LeaderboardManager() {
         File path = new File(folderPath);
@@ -66,62 +66,69 @@ public class LeaderboardManager implements Listener {
     }
 
     private long lastSort;
+
     private void lazilyUpdateData(String type, UUID id, Double d) {
         Map<UUID, Double> data = sortedData.get(type);
         data.put(id, d);
         sortedData.put(type, data);
-        updateHolograms(Bukkit.getPlayer(id));
 
         if (System.nanoTime() - lastSort > 3e+11) // 5 minutes
             manuallySortData();
+        else
+            updateHolograms(Bukkit.getPlayer(id));
     }
 
     private void manuallySortData() {
-        lastSort = System.nanoTime();
-        sortedData.forEach((String type, Map<UUID, Double> data) -> {
-            Map<UUID, Double> sortedMap = sortByValues(data);
-            sortedData.put(type, sortedMap);
+        Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () -> {
+            lastSort = System.nanoTime();
+            sortedData.forEach((String type, Map<UUID, Double> data) -> {
+                Map<UUID, Double> sortedMap = sortByValues(data);
+                sortedData.put(type, sortedMap);
 
-            List<UUID> orderedList = new ArrayList<>(sortedMap.keySet()); // Creates list from set using iterator which can access position, so its stays sorted
-            sortedPositions.put(type, orderedList);
+                List<UUID> orderedList = new ArrayList<>(sortedMap.keySet()); // Creates list from set using iterator which can access position, so its stays sorted
+                sortedPositions.put(type, orderedList);
+            });
         });
         updateHolograms();
         Bukkit.getOnlinePlayers().forEach(this::updateHolograms);
     }
 
     private void initializeData() {
-        try {
             lastSort = System.nanoTime();
             Map<String, Map<UUID, Double>> playersData = new HashMap<>();
+            try {
+                Files.list(new File(UniversalCoreRemake.getUniversalPlayerManager().dataFolderPath).toPath()).forEach(path -> {
+                    UUID id = UUID.fromString(FilenameUtils.removeExtension(path.getFileName().toString()));
+                    UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(id);
 
-            Files.list(new File(UniversalCoreRemake.getUniversalPlayerManager().dataFolderPath).toPath()).forEach(path -> {
-                UUID id = UUID.fromString(FilenameUtils.removeExtension(path.getFileName().toString()));
-                UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(id);
+                    Double money = up.getTotalMoney();
+                    if (money > 0) {
+                        Map<UUID, Double> data = playersData.getOrDefault("TotalMoney", new ConcurrentHashMap<>());
+                        data.put(id, money);
+                        playersData.put("TotalMoney", data);
+                    }
 
-                Double money = up.getTotalMoney();
-                if (money > 0) {
-                    Map<UUID, Double> data = playersData.getOrDefault("TotalMoney", new ConcurrentHashMap<>());
-                    data.put(id, money);
-                    playersData.put("TotalMoney", data);
-                }
+                    Double level = (double) up.getLevel();
+                    if (level > 1) {
+                        Map<UUID, Double> data = playersData.getOrDefault("XP.Level", new ConcurrentHashMap<>());
+                        data.put(id, level);
+                        playersData.put("XP.Level", data);
+                    }
 
-                Double level = (double) up.getLevel();
-                if (level > 1) {
-                    Map<UUID, Double> data = playersData.getOrDefault("XP.Level", new ConcurrentHashMap<>());
-                    data.put(id, level);
-                    playersData.put("XP.Level", data);
-                }
-
-                Double blocksMined = (double) up.getBlocksMined();
-                if (blocksMined > 0) {
-                    Map<UUID, Double> data = playersData.getOrDefault("Stats.BlocksMined", new ConcurrentHashMap<>());
-                    data.put(id, blocksMined);
-                    playersData.put("Stats.BlocksMined", data);
-                }
-            });
+                    Double blocksMined = (double) up.getBlocksMined();
+                    if (blocksMined > 0) {
+                        Map<UUID, Double> data = playersData.getOrDefault("Stats.BlocksMined", new ConcurrentHashMap<>());
+                        data.put(id, blocksMined);
+                        playersData.put("Stats.BlocksMined", data);
+                    }
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             UniversalCoreRemake.getUniversalPlayerManager().manuallyRefreshCache();
 
             // Sort data
+        Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () -> {
             playersData.forEach((String type, Map<UUID, Double> data) -> {
                 Map<UUID, Double> sortedMap = sortByValues(data);
                 sortedData.put(type, sortedMap);
@@ -130,42 +137,43 @@ public class LeaderboardManager implements Listener {
                 sortedPositions.put(type, orderedList);
             });
             saveSortedData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     private void loadSortedData() {
-        try {
-            lastSort = System.nanoTime();
-            Path dpath = Paths.get(dataPath);
-            String str = Files.readAllLines(dpath).get(0);
-            Gson gson = new Gson();
-            Map<String, Map<UUID, Double>> data = gson.fromJson(str, new TypeToken<Map<String, Map<UUID, Double>>>() {
-            }.getType());
-            data.forEach((String dataType, Map<UUID, Double> dataMap) -> {
+            try {
+                lastSort = System.nanoTime();
+                Path dpath = Paths.get(dataPath);
+                String str = Files.readAllLines(dpath).get(0);
+                Gson gson = new Gson();
+                Map<String, Map<UUID, Double>> data = gson.fromJson(str, new TypeToken<Map<String, Map<UUID, Double>>>() {
+                }.getType());
+                // Sort data
+                Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () ->
+                data.forEach((String dataType, Map<UUID, Double> dataMap) -> {
                     Map<UUID, Double> sortedMap = sortByValues(dataMap);
                     sortedData.put(dataType, sortedMap);
 
                     List<UUID> orderedList = new ArrayList<>(sortedMap.keySet()); // Creates list from set using iterator which can access position, so its stays sorted
                     sortedPositions.put(dataType, orderedList);
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                }));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
     }
 
-    private void saveSortedData() { // Isn't sorted on save but on load or initialize
+    private void saveSortedData() { // Isn't sorted on save but on load or initialize // TODO add command to manually save
         try {
             Gson gson = new Gson();
-            String str = gson.toJson(sortedData, new TypeToken<Map<String, Map<UUID, Double>>>(){}.getType());
+            String str = gson.toJson(sortedData, new TypeToken<Map<String, Map<UUID, Double>>>() {
+            }.getType());
             Path dpath = Paths.get(dataPath);
 
             if (Files.exists(dpath))
                 Files.delete(dpath);
             Files.write(dpath, str.getBytes(), StandardOpenOption.CREATE_NEW);
-/*            String read = Files.readAllLines(dpath).get(0);
-             assertEquals(str, read);*/
+/*                String read = Files.readAllLines(dpath).get(0);
+                Assert.assertEquals(str, read);*/
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -175,11 +183,12 @@ public class LeaderboardManager implements Listener {
         saveSortedData();
     }
 
-    private final Map<String, Location> holoLocs = new HashMap<>();
-    private final Map<String, String> displayNames = new HashMap<>();
-    private final Map<String, String> formats = new HashMap<>();
-    private final Map<String, String> naformats = new HashMap<>();
+    private final Map<String, Location> holoLocs = new ConcurrentHashMap<>();
+    private final Map<String, String> displayNames = new ConcurrentHashMap<>();
+    private final Map<String, String> formats = new ConcurrentHashMap<>();
+    private final Map<String, String> naformats = new ConcurrentHashMap<>();
     private final String configPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator + "leaderboards.yml";
+
     private void loadConfig() { // TODO Make reloadable
         File path = UniversalCoreRemake.getInstance().getDataFolder();
         File file = new File(configPath);
@@ -226,7 +235,8 @@ public class LeaderboardManager implements Listener {
         }
     }
 
-    private final Map<String, Hologram> holos = new HashMap<>();
+    private final Map<String, Hologram> holos = new ConcurrentHashMap<>();
+
     private void instantiateHolograms() {
         loadConfig();
         sortedData.keySet().forEach((String type) ->
@@ -246,20 +256,21 @@ public class LeaderboardManager implements Listener {
                     h.appendTextLine(ChatColor.translateAlternateColorCodes('&', displayNames.get(type)));
                     h.appendTextLine("");
                 } else if (!(poss.size() < i)) {
-                        int pos = i - 1;
-                        UUID id = poss.get(pos);
-                        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(id);
-                        h.appendTextLine(ChatColor.translateAlternateColorCodes('&', formats.get(type)
-                                .replace("%pos%", ++pos + "")
-                                .replace("%player%", up.getNameColor() + up.getName())
-                                .replace("%integer%", TextUtils.addCommas(data.get(id).intValue()))
-                                .replace("%double%", TextUtils.addCommas(data.get(id)))));
+                    int pos = i - 1;
+                    UUID id = poss.get(pos);
+                    UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(id);
+                    h.appendTextLine(ChatColor.translateAlternateColorCodes('&', formats.get(type)
+                            .replace("%pos%", ++pos + "")
+                            .replace("%player%", up.getNameColor() + up.getName())
+                            .replace("%integer%", TextUtils.addCommas(data.get(id).intValue()))
+                            .replace("%double%", TextUtils.addCommas(data.get(id)))));
                 } else
                     h.appendTextLine("");
         });
     }
 
-    private final Map<UUID, Map<String, Hologram>> yourPosHolos = new HashMap<>();
+    private final Map<UUID, Map<String, Hologram>> yourPosHolos = new ConcurrentHashMap<>();
+
     private void updateHolograms(Player p) {
         UUID id = p.getUniqueId();
         Map<String, Hologram> holos;
@@ -300,7 +311,7 @@ public class LeaderboardManager implements Listener {
     }
 
     @EventHandler
-    public void OnPlayerQuit (PlayerQuitEvent e) {
+    public void OnPlayerQuit(PlayerQuitEvent e) {
         UUID id = e.getPlayer().getUniqueId();
         yourPosHolos.get(id).values().forEach(Hologram::delete);
         yourPosHolos.remove(id);
