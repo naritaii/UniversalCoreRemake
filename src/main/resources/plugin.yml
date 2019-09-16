@@ -51,6 +51,9 @@ commands:
     aliases: [foodtrader]
     description: Open Food Trader GUI
     usage: /<command> [player]
+  openstats:
+    description: Open Stats GUI
+    usage: /<command> [player]
   saveuniversalplayercachetofile:
     aliases: [saveuniversalplayercache, saveuniversalplayerdatatofile, saveuniversalplayerdata, saveplayerdata, saveplayercache, saveplayercachetofile, saveplayerdatatofile]
     description: Save UniversalPlayer cache to file and refresh cache

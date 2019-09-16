@@ -45,6 +45,7 @@ public class UniversalObjectiveManager implements Listener {
     public List<UniversalObjective> registeredObjectives = new ArrayList<>();
     public Map<String, Integer> registeredObjectivesDictionary;
     public Map<UUID, List<UniversalObjective>> trackedObjectives;
+    public int totalAchievements;
 
     public UniversalObjectiveManager() {
         instantiate();
@@ -61,6 +62,7 @@ public class UniversalObjectiveManager implements Listener {
             registeredObjectives = new ArrayList<>();
             registeredObjectivesDictionary = new HashMap<>();
             trackedObjectives = new ConcurrentHashMap<>();
+            totalAchievements = 0;
             // Register any hard coded objectives here too
 
             UniversalCoreRemake instance = UniversalCoreRemake.getInstance();
@@ -89,6 +91,9 @@ public class UniversalObjectiveManager implements Listener {
                 String[] taskInfo = c.getStringList(p + "TaskInfo").toArray(new String[0]);
                 String description = c.getString(p + "Description") == null ? generateDescription(task, taskInfo, id) :
                         c.getString(p + "Description");
+                UniversalObjective.Catagory catagory = UniversalObjective.Catagory.valueOf(c.getString(p + "Catagory"));
+                if (catagory == UniversalObjective.Catagory.ACHIEVEMENT)
+                    totalAchievements++;
 
                 List<String> lore = c.getStringList(p + "DisplayItem.Lore");
                 if (!lore.isEmpty())
@@ -106,7 +111,7 @@ public class UniversalObjectiveManager implements Listener {
                         item.build(),
                         stringReward,
                         description,
-                        UniversalObjective.Catagory.valueOf(c.getString(p + "Catagory"))
+                        catagory
                 ));
 
                 Bukkit.getOnlinePlayers().forEach(this::updateTracking);
@@ -160,7 +165,6 @@ public class UniversalObjectiveManager implements Listener {
      * are equal to that of a {@link UniversalObjective} tracking {@param p}
      */
     private void increment(UniversalObjective.TaskType task, String taskInfo, Player p, int amt) {
-        Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () ->
                 ImmutableList.copyOf(trackedObjectives.getOrDefault(p.getUniqueId(), new ArrayList<>())).forEach((uo) -> {
             switch (task) {
                 case MINE_BLOCK:
@@ -188,7 +192,7 @@ public class UniversalObjectiveManager implements Listener {
                     }
                     break;
             }
-        }));
+        });
     }
 
     public int getNeeded(UniversalObjective uo) {
@@ -263,8 +267,12 @@ public class UniversalObjectiveManager implements Listener {
     private void updateTracking(Player p) {
         UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
         List<String> completed = up.getCompletedObjectives();
-        if (up.firstJoin())
+        if (up.firstJoin()) {
             up.addSelectedObjective("making_friends");
+            UniversalObjective uo = registeredObjectives.get(registeredObjectivesDictionary.get("making_friends"));
+            UniversalObjectiveStartEvent event = new UniversalObjectiveStartEvent(p, uo, getNeeded(uo));
+            Bukkit.getServer().getPluginManager().callEvent(event);
+        }
         List<String> selected = up.getSelectedObjectives();
 
 

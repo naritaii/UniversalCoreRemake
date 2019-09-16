@@ -152,12 +152,12 @@ public class ItemMetadata implements Listener {
             }
             return map;
         } else
-            return null;
+            return Collections.emptyMap();
     }
 
     public static boolean hasMeta(ItemStack i, String meta) {
         Map<String, String> metas = getMeta(i);
-        if (metas != null)
+        if (!metas.isEmpty())
             return metas.containsKey(meta);
         else
             return false;
@@ -165,7 +165,7 @@ public class ItemMetadata implements Listener {
 
     public static String getMeta(ItemStack i, String meta) {
         Map<String, String> metas = getMeta(i);
-        if (metas != null)
+        if (!metas.isEmpty())
             return metas.get(meta);
         else
             return null;
@@ -173,7 +173,7 @@ public class ItemMetadata implements Listener {
 
     public static ItemStack setMeta(ItemStack i, String meta, String value) {
         Map<String, String> metas = getMeta(i);
-        if (metas != null) {
+        if (!metas.isEmpty()) {
             int metaLine = getMetaLine(i);
             ItemMeta im = i.getItemMeta();
             List<String> lore = im.getLore();

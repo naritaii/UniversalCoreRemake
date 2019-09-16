@@ -14,8 +14,9 @@ Objectives:
       ItemMaterial: YELLOW_FLOWER
       ItemData: 0 # Optional (redundant) argument. Defaults to 0.
       DisplayName: '%id_formatted%' # Optional (redundant) argument. defaults to ID (formatted: getting_started -> Getting Started).
-    StringRewards: # Optional argument. Can be 'MONEY <amount>' or 'ITEM <serialized item>'.
+    StringRewards: # Optional argument. Can be 'MONEY <amount>', 'ITEM <serialized item>', or 'QUEST <id>'.
       - 'MONEY 2.50'
+      - 'QUEST slave_labour'
     Catagory: STORY_QUEST # Can be STORY_QUEST, CONTEXTUAL_QUEST, or ACHIEVEMENT
   slave_labour:
     TaskType: MINE_BLOCK

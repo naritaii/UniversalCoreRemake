@@ -1,7 +1,12 @@
 package me.stupidbot.universalcoreremake.utilities;
 
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
+import me.stupidbot.universalcoreremake.events.universalobjective.UniversalObjectiveStartEvent;
+import me.stupidbot.universalcoreremake.managers.universalobjective.UniversalObjective;
+import me.stupidbot.universalcoreremake.managers.universalobjective.UniversalObjectiveManager;
+import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
 import me.stupidbot.universalcoreremake.utilities.item.ItemUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -13,6 +18,10 @@ public class StringReward {
 
     public StringReward(String... rewards) {
         this.rewards = rewards;
+    }
+
+    public String[] getRewards() {
+        return this.rewards;
     }
 
     public String[] asStrings() {
@@ -109,7 +118,13 @@ public class StringReward {
                     break;
 
                 case "QUEST":
-                    // TODO
+                    UniversalObjectiveManager ubm = UniversalCoreRemake.getUniversalObjectiveManager();
+                    UniversalObjective uo = ubm.registeredObjectives.get(ubm.registeredObjectivesDictionary.get(arg.toString()));
+                    uo.addPlayer(p);
+                    UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
+                    up.addSelectedObjective(uo.getId());
+                    UniversalObjectiveStartEvent event = new UniversalObjectiveStartEvent(p, uo, UniversalCoreRemake.getUniversalObjectiveManager().getNeeded(uo));
+                    Bukkit.getServer().getPluginManager().callEvent(event); // TODO Error Handling and chat message
                     break;
 
                 default:
@@ -153,7 +168,13 @@ public class StringReward {
                     break;
 
                 case "QUEST":
-                    // TODO
+                    UniversalObjectiveManager ubm = UniversalCoreRemake.getUniversalObjectiveManager();
+                    UniversalObjective uo = ubm.registeredObjectives.get(ubm.registeredObjectivesDictionary.get(arg.toString()));
+                    uo.addPlayer(p);
+                    UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
+                    up.addSelectedObjective(uo.getId());
+                    UniversalObjectiveStartEvent event = new UniversalObjectiveStartEvent(p, uo, UniversalCoreRemake.getUniversalObjectiveManager().getNeeded(uo));
+                    Bukkit.getServer().getPluginManager().callEvent(event); // TODO Error Handling
                     break;
 
                 default:

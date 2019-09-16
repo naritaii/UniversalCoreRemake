@@ -15,7 +15,7 @@ import java.util.Locale;
 
 public class TextUtils {
     public static String capitalizeFully(String s) {
-        return WordUtils.capitalizeFully(s, new char[] { '_', '~' } ).replaceAll("_", " ")
+        return WordUtils.capitalizeFully(s, new char[] { '_' } ).replaceAll("_", " ")
                 .replaceAll("~", ""); // ~ to force capital, good for roman numerals etc
     }
 
@@ -35,6 +35,32 @@ public class TextUtils {
                 return ChatColor.GRAY.toString();
             else
                 return ChatColor.WHITE.toString();
+    }
+
+    public static String getDayNumberSuffix(int day) {
+        if (day >= 11 && day <= 13) {
+            return "th";
+        }
+        switch (day % 10) {
+            case 1:
+                return "st";
+            case 2:
+                return "nd";
+            case 3:
+                return "rd";
+            default:
+                return "th";
+        }
+    }
+
+    public static String secondsToString(long seconds) {
+        long p1 = seconds % 60;
+        long p2 = seconds / 60;
+        long p3 = p2 % 60;
+
+        p2 = p2 / 60;
+
+        return addCommas((int) p2) + "h, " + p3 + "m, " + p1 + "s";
     }
 
     public static void sendTitle(Player p, String msg, int fadeIn, int stayTime, int fadeOut) {

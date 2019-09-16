@@ -11,11 +11,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -168,13 +168,25 @@ public class PlayerLevelling implements Listener {
     @EventHandler
     public void OnPlayerDeath(PlayerDeathEvent e) {
         e.setKeepLevel(true);
-        Entity p = e.getEntity();
-        UniversalCoreRemake plugin = UniversalCoreRemake.getInstance();
+        e.setKeepInventory(true);
 
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            if (p.isDead())
-                ((CraftPlayer) p).getHandle().playerConnection.a(
-                        new PacketPlayInClientCommand(PacketPlayInClientCommand.EnumClientCommand.PERFORM_RESPAWN));
-        });
+        Player p = e.getEntity();
+            UniversalCoreRemake plugin = UniversalCoreRemake.getInstance();
+            UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p).incrementDeaths(1);
+
+
+
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                if (p.isDead())
+                    ((CraftPlayer) p).getHandle().playerConnection.a(
+                            new PacketPlayInClientCommand(PacketPlayInClientCommand.EnumClientCommand.PERFORM_RESPAWN));
+            });
+    }
+
+    @EventHandler
+    public void onDeath(EntityDeathEvent e) {
+        Player killer = e.getEntity().getKiller();
+        if (killer != null)
+            UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(killer).incrementKills(1);
     }
 }

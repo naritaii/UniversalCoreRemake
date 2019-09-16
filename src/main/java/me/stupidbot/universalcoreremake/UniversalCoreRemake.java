@@ -71,8 +71,8 @@ public class UniversalCoreRemake extends JavaPlugin {
                 new CollectibleSlimesListener(), leaderboardManager);
         registerCommands(executor, "reloadmotd", "reloaduniversalobjectives",
                 "exp", "setblockmeta", "readblockmeta", "setitemmeta", "readitemmeta", "emoji",
-                "openmineraltrader", "openfoodtrader", "saveuniversalplayercachetofile", "saveblockmetadatacachetofile",
-                "selectobjective");
+                "openmineraltrader", "openfoodtrader", "openstats", "saveuniversalplayercachetofile",
+                "saveblockmetadatacachetofile", "selectobjective");
 
         System.out.println(getName() + " is now enabled!");
     }

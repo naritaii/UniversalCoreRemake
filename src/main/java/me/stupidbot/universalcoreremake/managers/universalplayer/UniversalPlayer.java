@@ -32,7 +32,7 @@ public class UniversalPlayer {
         return getLastPlayed() == null;
     }
 
-    public UUID getUuid() {
+    public UUID getUniqueId() {
         return UUID.fromString(FilenameUtils.removeExtension(pFileLoc).substring(pFileLoc.length() - 36));
     }
 
@@ -113,17 +113,17 @@ public class UniversalPlayer {
         return s;
     }
 
-    String getFirstPlayed() {
+    public String getFirstPlayed() {
         return pFile.getString("Stats.FirstJoin");
     }
 
-    long setJoinNumber(long l) {
-        pFile.set("Stats.JoinNumber", l);
-        return l;
+    int setJoinNumber(int i) {
+        pFile.set("Stats.JoinNumber", i);
+        return i;
     }
 
-    long getJoinNumber() {
-        return pFile.getLong("Stats.JoinNumber");
+    public int getJoinNumber() {
+        return pFile.getInt("Stats.JoinNumber");
     }
 
     String setDataLastPlayed(String s) {
@@ -243,5 +243,45 @@ public class UniversalPlayer {
 
     public int getSlimesCollected() {
         return getCollectedSlimes().size();
+    }
+
+    public long getSecondsPlayed() {
+        return pFile.getLong("Stats.SecondsPlayed");
+    }
+
+    public long incrementSecondsPlayed(long l) {
+        l += getSecondsPlayed();
+        pFile.set("Stats.SecondsPlayed", l);
+        return l;
+    }
+
+    public int getItemsLevelled() {
+        return pFile.getInt("ItemsLevelled");
+    }
+
+    public int incrementItemsLevelled(int i) {
+        i += getItemsLevelled();
+        pFile.set("ItemsLevelled", i);
+        return i;
+    }
+
+    public int getKills() {
+        return pFile.getInt("Stats.Kills");
+    }
+
+    public int incrementKills(int i) {
+        i += getKills();
+        pFile.set("Stats.Kills", i);
+        return i;
+    }
+
+    public int getDeaths() {
+        return pFile.getInt("Stats.Deaths");
+    }
+
+    public int incrementDeaths(int i) {
+        i += getDeaths();
+        pFile.set("Stats.Deaths", i);
+        return i;
     }
 }

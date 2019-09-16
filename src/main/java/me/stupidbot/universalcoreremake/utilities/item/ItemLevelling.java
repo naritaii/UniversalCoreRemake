@@ -1,5 +1,6 @@
 package me.stupidbot.universalcoreremake.utilities.item;
 
+import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.enchantments.UniversalEnchantment;
 import me.stupidbot.universalcoreremake.utilities.TextUtils;
 import org.bukkit.Material;
@@ -17,9 +18,9 @@ public class ItemLevelling {
 
     private static ItemStack giveXp(ItemStack i, int amount) {
         Map<String, String> meta = ItemMetadata.getMeta(i);
-        int currentXp = meta == null ? 0 : Integer.parseInt(meta.getOrDefault("XP", "0")) + amount;
-        int totalXp = meta == null ? 0 : Integer.parseInt(meta.getOrDefault("TOTAL_XP", "0")) + amount;
-        int lvl = meta == null ? 1 : Integer.parseInt(meta.getOrDefault("LEVEL", "1"));
+        int currentXp = Integer.parseInt(meta.getOrDefault("XP", "0")) + amount;
+        int totalXp = Integer.parseInt(meta.getOrDefault("TOTAL_XP", "0")) + amount;
+        int lvl = Integer.parseInt(meta.getOrDefault("LEVEL", "1"));
         int neededXp = xpToNextLevel(lvl);
 
         ItemMetadata.setMeta(i, "TOTAL_XP", totalXp);
@@ -34,14 +35,18 @@ public class ItemLevelling {
     }
 
     public static ItemStack giveXp(Player p, ItemStack i, int amount) {
+        int oldLvl = Integer.parseInt(ItemMetadata.getMeta(i).getOrDefault("LEVEL", "1"));
         ItemStack item = giveXp(i, amount);
+        int newLvl = Integer.parseInt(ItemMetadata.getMeta(item).getOrDefault("LEVEL", "1"));
+        if (newLvl > oldLvl)
+            UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p).incrementItemsLevelled(newLvl - oldLvl);
         p.setItemInHand(item);
         return item;
     }
 
     private static ItemStack updateItem(ItemStack i) {
         Map<String, String> meta = ItemMetadata.getMeta(i);
-        if (meta != null) {
+        if (!meta.isEmpty()) {
             int lvl = Integer.parseInt(meta.getOrDefault("LEVEL", "1"));
             int currentXp = Integer.parseInt(meta.getOrDefault("XP", "0"));
             String name = meta.getOrDefault("CUSTOM_NAME", TextUtils.capitalizeFully(i.getType().toString()));

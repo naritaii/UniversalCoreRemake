@@ -19,7 +19,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -54,7 +53,7 @@ public class UniversalPlayerManager implements Listener { // TODO Save as .json 
             Map<UUID, Integer> dictionary = new HashMap<>();
 
             universalPlayers.forEach((UniversalPlayer up) -> {
-                UUID id = up.getUuid();
+                UUID id = up.getUniqueId();
                 if (Bukkit.getPlayer(id) != null) {
                     list.add(up);
                     dictionary.put(id, dictionary.size());
@@ -85,7 +84,7 @@ public class UniversalPlayerManager implements Listener { // TODO Save as .json 
         if (up.firstJoin()) {
             up.setFirstPlayed(UniversalPlayer.getSimpleDateFormat().format(new Date()));
             try (Stream<Path> files = Files.list(Paths.get(dataFolderPath))) {
-                up.setJoinNumber(files.count());
+                up.setJoinNumber((int) files.count());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -181,12 +180,15 @@ public class UniversalPlayerManager implements Listener { // TODO Save as .json 
     }
 
     private void initialize() {
-        Bukkit.getOnlinePlayers().forEach((Consumer<Player>) this::createUniversalPlayer);
+        Bukkit.getOnlinePlayers().forEach((p) -> {
+            createUniversalPlayer(p);
+            timePlayed.put(p.getUniqueId(), System.nanoTime());
+        });
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(UniversalCoreRemake.getInstance(), () -> {
             if (System.nanoTime() - lastRefresh > 1.8e+12) { // 30 minutes, maybe can be longer
                 lastRefresh = System.nanoTime();
-                manuallyRefreshCache();
+                lazilyRefreshCache();
             }
         }, 1200, 1200);
     }
@@ -194,6 +196,7 @@ public class UniversalPlayerManager implements Listener { // TODO Save as .json 
     public void disable() {
         getAllUniversalPlayers().forEach((UniversalPlayer up) -> {
             up.setDataLastPlayed(UniversalPlayer.getSimpleDateFormat().format(new Date()));
+            up.incrementSecondsPlayed((long) ((System.nanoTime() - timePlayed.get(up.getUniqueId())) / 1e+9));
             up.savePlayerDataFile();
         });
     }
@@ -206,9 +209,11 @@ public class UniversalPlayerManager implements Listener { // TODO Save as .json 
                 }));
     }
 
+    private Map<UUID, Long> timePlayed = new HashMap<>();
     @EventHandler(priority = EventPriority.HIGHEST)
     public void OnPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
+        timePlayed.put(p.getUniqueId(), System.nanoTime());
         if (!universalPlayerDictionary.containsKey(p.getUniqueId()))
             Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () -> createUniversalPlayer(p));
     }
@@ -219,6 +224,8 @@ public class UniversalPlayerManager implements Listener { // TODO Save as .json 
         UniversalPlayer up = getUniversalPlayer(p);
 
         up.setDataLastPlayed(UniversalPlayer.getSimpleDateFormat().format(new Date()));
+        up.incrementSecondsPlayed((long) ((System.nanoTime() - timePlayed.get(p.getUniqueId())) / 1e+9));
+        timePlayed.remove(p.getUniqueId());
 
         Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), up::savePlayerDataFile);
     }

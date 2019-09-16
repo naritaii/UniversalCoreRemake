@@ -9,6 +9,7 @@ import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.events.LevelUpEvent;
 import me.stupidbot.universalcoreremake.events.UniversalBlockBreakEvent;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
+import me.stupidbot.universalcoreremake.utilities.PlayerLevelling;
 import me.stupidbot.universalcoreremake.utilities.TextUtils;
 import net.ess3.api.events.UserBalanceUpdateEvent;
 import org.apache.commons.io.FilenameUtils;
@@ -128,7 +129,6 @@ public class LeaderboardManager implements Listener {
             UniversalCoreRemake.getUniversalPlayerManager().manuallyRefreshCache();
 
             // Sort data
-        Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () -> {
             playersData.forEach((String type, Map<UUID, Double> data) -> {
                 Map<UUID, Double> sortedMap = sortByValues(data);
                 sortedData.put(type, sortedMap);
@@ -137,7 +137,6 @@ public class LeaderboardManager implements Listener {
                 sortedPositions.put(type, orderedList);
             });
             saveSortedData();
-        });
     }
 
     private void loadSortedData() {
@@ -149,14 +148,13 @@ public class LeaderboardManager implements Listener {
                 Map<String, Map<UUID, Double>> data = gson.fromJson(str, new TypeToken<Map<String, Map<UUID, Double>>>() {
                 }.getType());
                 // Sort data
-                Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () ->
-                data.forEach((String dataType, Map<UUID, Double> dataMap) -> {
+                            data.forEach((String dataType, Map<UUID, Double> dataMap) -> {
                     Map<UUID, Double> sortedMap = sortByValues(dataMap);
                     sortedData.put(dataType, sortedMap);
 
                     List<UUID> orderedList = new ArrayList<>(sortedMap.keySet()); // Creates list from set using iterator which can access position, so its stays sorted
                     sortedPositions.put(dataType, orderedList);
-                }));
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -263,6 +261,7 @@ public class LeaderboardManager implements Listener {
                             .replace("%pos%", ++pos + "")
                             .replace("%player%", up.getNameColor() + up.getName())
                             .replace("%integer%", TextUtils.addCommas(data.get(id).intValue()))
+                            .replace("%leveltag%", PlayerLevelling.levelTag(data.get(id).intValue()))
                             .replace("%double%", TextUtils.addCommas(data.get(id)))));
                 } else
                     h.appendTextLine("");
@@ -298,6 +297,7 @@ public class LeaderboardManager implements Listener {
                         .replace("%pos%", TextUtils.addCommas(sortedPositions.get(type).indexOf(id) + 1))
                         .replace("%player%", up.getNameColor() + ChatColor.BOLD + up.getName())
                         .replace("%integer%", TextUtils.addCommas(data.get(id).intValue()))
+                        .replace("%leveltag%", PlayerLevelling.levelTag(data.get(id).intValue()))
                         .replace("%double%", TextUtils.addCommas(data.get(id)))));
             } else
                 h.appendTextLine(ChatColor.translateAlternateColorCodes('&', naformats.get(type)

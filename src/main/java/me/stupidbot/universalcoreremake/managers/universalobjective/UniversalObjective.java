@@ -51,7 +51,7 @@ public class UniversalObjective {
         return displayItem.clone();
     }
 
-    StringReward getRewards() {
+    public StringReward getRewards() {
         return rewards;
     }
 

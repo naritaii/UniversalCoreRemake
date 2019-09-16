@@ -283,7 +283,18 @@ public class ScoreboardManager implements Listener {
 
     @EventHandler
     public void OnObjectiveComplete(UniversalObjectiveCompleteEvent e) {
-        Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () -> setupBoard(e.getPlayer()));
+        boolean update = true;
+        UniversalObjective uo = e.getUniversalObjective();
+
+        if (uo != null && uo.getRewards() != null)
+            for (String s : uo.getRewards().getRewards())
+                if (s.toUpperCase().startsWith("QUEST")) {
+                    update = false;
+                    break;
+                }
+
+        if (update)
+            Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () -> setupBoard(e.getPlayer()));
     }
 
     @EventHandler
@@ -297,7 +308,7 @@ public class ScoreboardManager implements Listener {
     public void OnPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (Netherboard.instance().getBoard(p) == null)
-            Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () -> setupBoard(p));
+            setupBoard(p);
     }
 
     @EventHandler

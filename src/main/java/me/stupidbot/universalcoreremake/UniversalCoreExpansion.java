@@ -1,6 +1,7 @@
 package me.stupidbot.universalcoreremake;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import me.stupidbot.universalcoreremake.managers.universalobjective.UniversalObjective;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayerManager;
 import me.stupidbot.universalcoreremake.utilities.PlayerLevelling;
@@ -26,7 +27,7 @@ class UniversalCoreExpansion extends PlaceholderExpansion {
      * @return always true since we do not have any dependencies.
      */
     @Override
-    public boolean canRegister(){
+    public boolean canRegister() {
         return true;
     }
 
@@ -36,7 +37,7 @@ class UniversalCoreExpansion extends PlaceholderExpansion {
      * @return The name of the author as a String.
      */
     @Override
-    public String getAuthor(){
+    public String getAuthor() {
         return "CorruptedPrisonsDevTeam";
     }
 
@@ -50,7 +51,7 @@ class UniversalCoreExpansion extends PlaceholderExpansion {
      * @return The identifier in {@code %<identifier>_<value>%} as String.
      */
     @Override
-    public String getIdentifier(){
+    public String getIdentifier() {
         return "universalcore";
     }
 
@@ -61,8 +62,8 @@ class UniversalCoreExpansion extends PlaceholderExpansion {
      * @return The version as a String.
      */
     @Override
-    public String getVersion(){
-        return "1.0-SNAPSHOT";
+    public String getVersion() {
+        return "1.0";
     }
 
     /**
@@ -71,14 +72,14 @@ class UniversalCoreExpansion extends PlaceholderExpansion {
      * <br>We specify the value identifier in this method.
      * <br>Since version 2.9.1 can you use OfflinePlayers in your requests.
      *
-     * @param  player
-     *         A {@link org.bukkit.OfflinePlayer OfflinePlayer}.
-     * @param  identifier
-     *         A String containing the identifier/value.
-     *
+     * @param player
+     * A {@link org.bukkit.OfflinePlayer OfflinePlayer}.
+     * @param identifier
+     * A String containing the identifier/value.
      * @return Possibly-null String of the requested identifier.
      */
     private final UniversalPlayerManager upm = UniversalCoreRemake.getUniversalPlayerManager();
+
     @Override
     public String onRequest(OfflinePlayer p, String identifier) {
         switch (identifier) {
@@ -90,15 +91,29 @@ class UniversalCoreExpansion extends PlaceholderExpansion {
                 UniversalPlayer up = upm.getUniversalPlayer(p);
                 return ChatColor.translateAlternateColorCodes('7', "&7[" +
                         TextUtils.getProgressBar(up.getXp(),
-                        PlayerLevelling.xpToNextLevel(up.getLevel()),
-                        18,
-                        "|",
-                        "&a",
-                        "&8"
-                ) + "&7]");
+                                PlayerLevelling.xpToNextLevel(up.getLevel()),
+                                18,
+                                "|",
+                                "&a",/**/
+                                "&8"
+                        ) + "&7]");
+            case "currentxp": // %universalcore_currentxp%
+                return TextUtils.addCommas(upm.getUniversalPlayer(p).getXp());
+            case "neededxp": // %universalcore_neededxp%
+                return TextUtils.addCommas(PlayerLevelling.xpToNextLevel(upm.getUniversalPlayer(p).getLevel()));
+            case "levelpercent": // %universalcore_levelpercent%
+                UniversalPlayer up2 = upm.getUniversalPlayer(p);
+                return (100d * (up2.getXp() / PlayerLevelling.xpToNextLevel(up2.getLevel()))) + "%";
+            case "currentachievements": // %universalcore_currentachievements%
+                return upm.getUniversalPlayer(p).getCompletedObjectives().stream().filter((uo) ->
+                        UniversalCoreRemake.getUniversalObjectiveManager().registeredObjectives.get(
+                                UniversalCoreRemake.getUniversalObjectiveManager().registeredObjectivesDictionary.get(uo)).getCategory()
+                                == UniversalObjective.Catagory.ACHIEVEMENT).count() + "";
+            case "allachievements": // %universalcore_allachievements%
+                return TextUtils.addCommas(UniversalCoreRemake.getUniversalObjectiveManager().totalAchievements);
             case "namecolor": // %universalcore_namecolor%
                 return upm.getUniversalPlayer(p).getNameColor();
-            case "chatcolor":
+            case "chatcolor": // %universalcore_chatcolor%
                 return TextUtils.getChatColor(p);
             default:
                 return null;
