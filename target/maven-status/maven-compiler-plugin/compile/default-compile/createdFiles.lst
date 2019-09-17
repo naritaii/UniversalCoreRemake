@@ -11,7 +11,6 @@ me\stupidbot\universalcoreremake\utilities\item\ItemMetadata$1.class
 me\stupidbot\universalcoreremake\commands\SaveUniversalPlayerCacheToFile.class
 me\stupidbot\universalcoreremake\UniversalCoreExpansion.class
 me\stupidbot\universalcoreremake\commands\SetItemMeta.class
-me\stupidbot\universalcoreremake\listeners\StatsHologramListener.class
 me\stupidbot\universalcoreremake\managers\ChatManager.class
 me\stupidbot\universalcoreremake\utilities\TextUtils$DefaultFontInfo.class
 me\stupidbot\universalcoreremake\utilities\TextUtils.class
@@ -31,9 +30,11 @@ me\stupidbot\universalcoreremake\managers\MOTDManager.class
 me\stupidbot\universalcoreremake\events\universalobjective\UniversalObjectiveCompleteEvent.class
 me\stupidbot\universalcoreremake\managers\LeaderboardManager$2.class
 me\stupidbot\universalcoreremake\utilities\item\Reflections$MethodInvoker.class
+me\stupidbot\universalcoreremake\guis\QuestMaster.class
 me\stupidbot\universalcoreremake\guis\Stats.class
 me\stupidbot\universalcoreremake\utilities\item\Reflections$ConstructorInvoker.class
 me\stupidbot\universalcoreremake\commands\CommandExecutor.class
+me\stupidbot\universalcoreremake\effects\FindSlime.class
 me\stupidbot\universalcoreremake\utilities\item\ItemUtils.class
 me\stupidbot\universalcoreremake\managers\ScoreboardManager$1.class
 me\stupidbot\universalcoreremake\managers\universalobjective\UniversalObjectiveManager$1.class

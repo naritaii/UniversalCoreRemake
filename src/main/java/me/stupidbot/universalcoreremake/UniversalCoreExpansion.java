@@ -103,7 +103,7 @@ class UniversalCoreExpansion extends PlaceholderExpansion {
                 return TextUtils.addCommas(PlayerLevelling.xpToNextLevel(upm.getUniversalPlayer(p).getLevel()));
             case "levelpercent": // %universalcore_levelpercent%
                 UniversalPlayer up2 = upm.getUniversalPlayer(p);
-                return (100d * (up2.getXp() / PlayerLevelling.xpToNextLevel(up2.getLevel()))) + "%";
+                return (100d * ((double) up2.getXp() / (double) PlayerLevelling.xpToNextLevel(up2.getLevel()))) + "%";
             case "currentachievements": // %universalcore_currentachievements%
                 return upm.getUniversalPlayer(p).getCompletedObjectives().stream().filter((uo) ->
                         UniversalCoreRemake.getUniversalObjectiveManager().registeredObjectives.get(

@@ -1,9 +1,12 @@
 package me.stupidbot.universalcoreremake.listeners;
 
+import de.slikey.effectlib.Effect;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
+import me.stupidbot.universalcoreremake.effects.FindSlime;
 import me.stupidbot.universalcoreremake.managers.BlockMetadataManger;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,10 +37,18 @@ public class CollectibleSlimesListener implements Listener {
                                     "SLIME_FIRST_DIALOGUE"));
                         else
                             firstDialogue = "You found me!";
-                        // TODO Sound and particle
+
                     p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             "&e[NPC] " + name + "&f: " + firstDialogue));
                     up.addCollectedSlime(b.getLocation());
+
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                            "&bSlimes collected: &d" + up.getSlimesCollected()));
+                    Effect eff = new FindSlime(UniversalCoreRemake.getEffectManager());
+                    eff.material = Material.SLIME_BALL;
+                    eff.targetPlayer = p;
+                    eff.setLocation(b.getLocation());
+                    eff.run();
                 } else {
                     String secondDialogue;
                     if (bmm.hasMeta(b, "SLIME_RECURRING_DIALOGUE"))

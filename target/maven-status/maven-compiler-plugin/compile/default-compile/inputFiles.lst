@@ -20,6 +20,7 @@ C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stu
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\guis\Stats.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\managers\LeaderboardManager.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\SelectObjective.java
+C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\guis\QuestMaster.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\utilities\PlayerLevelling.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\utilities\item\Reflections.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\managers\universalplayer\UniversalPlayer.java
@@ -45,12 +46,12 @@ C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stu
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\effects\trail\Halo.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\SetItemMeta.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\ReloadMOTD.java
-C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\listeners\StatsHologramListener.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\OpenFoodTrader.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\guis\Sell.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\managers\SkillManager.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\enchantments\mutation\Glass.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\utilities\Stamina.java
+C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\effects\FindSlime.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\managers\MOTDManager.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\ReadItemMeta.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\effects\LevelUp.java

@@ -38,18 +38,17 @@ public class TextUtils {
     }
 
     public static String getDayNumberSuffix(int day) {
-        if (day >= 11 && day <= 13) {
-            return "th";
-        }
+        if (day >= 11 && day <= 13)
+            return addCommas(day) + "th";
         switch (day % 10) {
             case 1:
-                return "st";
+                return addCommas(day) + "st";
             case 2:
-                return "nd";
+                return addCommas(day) + "nd";
             case 3:
-                return "rd";
+                return addCommas(day) + "rd";
             default:
-                return "th";
+                return addCommas(day) + "th";
         }
     }
 

@@ -6,6 +6,7 @@ import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.effects.LevelUp;
 import me.stupidbot.universalcoreremake.events.LevelUpEvent;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
+import net.milkbowl.vault.economy.Economy;
 import net.minecraft.server.v1_8_R3.PacketPlayInClientCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -171,20 +172,25 @@ public class PlayerLevelling implements Listener {
         e.setKeepInventory(true);
 
         Player p = e.getEntity();
-            UniversalCoreRemake plugin = UniversalCoreRemake.getInstance();
-            UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p).incrementDeaths(1);
+        UniversalCoreRemake plugin = UniversalCoreRemake.getInstance();
+        UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p).incrementDeaths(1);
 
+        Economy ecc = UniversalCoreRemake.getEconomy();
+        double money = ecc.getBalance(p) / 2d;
+        ecc.withdrawPlayer(p, money);
 
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            if (p.isDead())
+                ((CraftPlayer) p).getHandle().playerConnection.a(
+                        new PacketPlayInClientCommand(PacketPlayInClientCommand.EnumClientCommand.PERFORM_RESPAWN));
 
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-                if (p.isDead())
-                    ((CraftPlayer) p).getHandle().playerConnection.a(
-                            new PacketPlayInClientCommand(PacketPlayInClientCommand.EnumClientCommand.PERFORM_RESPAWN));
-            });
+            p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    "&cYou lost &6$" + TextUtils.addCommas(money) + "&a for dying."));
+        });
     }
 
     @EventHandler
-    public void onDeath(EntityDeathEvent e) {
+    public void OnDeath(EntityDeathEvent e) {
         Player killer = e.getEntity().getKiller();
         if (killer != null)
             UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(killer).incrementKills(1);
