@@ -130,7 +130,7 @@ public class UniversalObjective {
 
     public enum TaskType {
         MINE_BLOCK,
-        TALK_TO_NPC
+        TALK_TO_NPC,
     }
 
     public enum Catagory {
