@@ -64,6 +64,9 @@ public class StringReward {
                         r[i] = null;
                         break;
 
+                case "MESSAGE":
+                    r[i] = ChatColor.translateAlternateColorCodes('&', arg.toString());
+
                 default:
                     r[i] = ChatColor.translateAlternateColorCodes('&',
                             "&cCould not parse " + s);
@@ -127,6 +130,10 @@ public class StringReward {
                     Bukkit.getServer().getPluginManager().callEvent(event); // TODO Error Handling and chat message
                     break;
 
+                case "MESSAGE":
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', arg.toString()));
+                    break;
+
                 default:
                     p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             "&cCould not parse " + s));
@@ -175,6 +182,9 @@ public class StringReward {
                     up.addSelectedObjective(uo.getId());
                     UniversalObjectiveStartEvent event = new UniversalObjectiveStartEvent(p, uo, UniversalCoreRemake.getUniversalObjectiveManager().getNeeded(uo));
                     Bukkit.getServer().getPluginManager().callEvent(event); // TODO Error Handling
+                    break;
+
+                case "MESSAGE":
                     break;
 
                 default:

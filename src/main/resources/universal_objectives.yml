@@ -14,10 +14,11 @@ Objectives:
       ItemMaterial: YELLOW_FLOWER
       ItemData: 0 # Optional (redundant) argument. Defaults to 0.
       DisplayName: '%id_formatted%' # Optional (redundant) argument. defaults to ID (formatted: getting_started -> Getting Started).
-    StringRewards: # Optional argument. Can be 'MONEY <amount>', 'ITEM <serialized item>', or 'QUEST <id>'.
+    StringRewards: # Optional argument. Can be 'MONEY <amount>', 'ITEM <serialized item>', 'QUEST <id>', or 'MESSAGE <msg>'.
       - 'MONEY 2.50'
       - 'QUEST slave_labour'
     Catagory: STORY_QUEST # Can be STORY_QUEST, CONTEXTUAL_QUEST, or ACHIEVEMENT
+
   slave_labour:
     TaskType: MINE_BLOCK
     TaskInfo:
@@ -27,6 +28,52 @@ Objectives:
     Description: 'Mine &a(Red) Sandstone'
     DisplayItem:
       ItemMaterial: RED_SANDSTONE
+    StringRewards:
+      - 'MONEY 1.00'
+      - 'QUEST making_bank'
+    Catagory: STORY_QUEST
+
+  making_bank:
+    TaskType: TALK_TO_NPC
+    TaskInfo:
+      - ifg32J
+      - '1'
+      - 'b8c36ea9-f8e1-4a26-919b-e4698d675c28'
+    Description: 'Sell to &aMineral Trader'
+    DisplayItem:
+      ItemMaterial: GOLD_NUGGET
+    StringRewards:
+      - 'MONEY 0'
+      - 'MESSAGE &c&oWhat? Did you really expect me to pay you for this quest?'
+      - 'QUEST gluttony'
+    Catagory: STORY_QUEST
+
+  gluttony:
+    TaskType: TALK_TO_NPC
+    TaskInfo:
+      - Gtr4w5
+      - '1'
+      - 'd0193a46-b263-484a-972a-6a41c76d3ea8'
+    Description: 'Buy from &aFood Trader'
+    DisplayItem:
+      ItemMaterial: BREAD
+    StringRewards:
+      - 'MONEY 3.50'
+      - 'QUEST i_have_many_ideas_for_quests'
+    Catagory: STORY_QUEST
+
+  i_have_many_ideas_for_quests:
+    TaskType: MINE_BLOCK
+    TaskInfo:
+      - t3aGyt
+      - '516'
+      - '' # Mine any block
+    Description: 'Mine blocks'
+    DisplayItem:
+      ItemMaterial: WOOD_PICKAXE
+    StringRewards:
+      - 'MONEY 75.00'
+      - 'QUEST picky'
     Catagory: STORY_QUEST
   ####################
   ### Achievements ###
