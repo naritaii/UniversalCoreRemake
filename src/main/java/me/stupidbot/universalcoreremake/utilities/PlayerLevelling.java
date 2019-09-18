@@ -82,7 +82,11 @@ public class PlayerLevelling implements Listener {
             put(++i, new StringReward("MONEY 110"));
             put(++i, new StringReward("MONEY 120"));
             put(++i, new StringReward("MONEY 130"));
-            ++i;  // skip 14
+            put(++i, new StringReward("&c&oi don't really feel like giving you a reward right now...\n    " +
+                    "&8+&c&othings have just been... tough... at home and...\n    " +
+                    "&8+&c&oplease don't hate me...\n    " +
+                    "&8+&c&o...\n    " +
+                    "&8+&c&oi-i promise i'll make it up to you!"));
             put(++i, new StringReward("MONEY 150", "MONEY 150")); // 15
         }
     };
@@ -104,14 +108,6 @@ public class PlayerLevelling implements Listener {
                 TextUtils.sendCenteredMessage(p, "&7Hey, you're getting pretty good at this. I think");
                 TextUtils.sendCenteredMessage(p, "&aQuest Master &7might have some &ejobs for you&7,");
                 TextUtils.sendCenteredMessage(p, "&7type &c/spawn&7 to warp to spawn!");
-            } else if (i == 14) {
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "\n  &aReward:\n    " +
-                                "&8+&c&oi don't really feel like giving you a reward right now...\n    " +
-                                "&8+&c&othings have just been... tough... at home and...\n    " +
-                                "&8+&c&oplease don't hate me...\n    " +
-                                "&8+&c&o...\n    " +
-                                "&8+&c&oi-i promise i'll make it up to you!"));
             }
 
             if (levelRewards.containsKey(i)) {
