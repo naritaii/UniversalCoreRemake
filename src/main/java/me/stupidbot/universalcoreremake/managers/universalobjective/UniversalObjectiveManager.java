@@ -3,7 +3,6 @@ package me.stupidbot.universalcoreremake.managers.universalobjective;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
-import me.stupidbot.universalcoreremake.events.LevelUpEvent;
 import me.stupidbot.universalcoreremake.events.UniversalBlockBreakEvent;
 import me.stupidbot.universalcoreremake.events.universalobjective.UniversalObjectiveCompleteEvent;
 import me.stupidbot.universalcoreremake.events.universalobjective.UniversalObjectiveIncrementEvent;
@@ -320,5 +319,4 @@ public class UniversalObjectiveManager implements Listener {
         String id = npc.getUniqueId().toString();
         increment(TALK_TO_NPC, id, p, 1);
     }
-
 }

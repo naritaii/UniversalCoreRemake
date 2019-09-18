@@ -28,36 +28,6 @@ Objectives:
     DisplayItem:
       ItemMaterial: RED_SANDSTONE
     Catagory: STORY_QUEST
-  making_cash:
-      TaskType: TALK_TO_NPC # Can be MINE_BLOCK or TALK_TO_NPC.
-      TaskInfo:
-        - kR829d # Random ID for the task, can be anything as long as the ID isn't used elsewhere. This is for if there are multiple tasks to be tracked (not yet implemented).
-        - '1' # How many times to talk to the NPC.
-        - '2005c324-e4af-43ca-8634-e34cb90888eb' # What NPC to talk to. This UUID is Quest Master's.
-      Description: 'Talk to &aMineral Trader' # Optional argument, this is usually generated with code but can't always be.
-      DisplayItem: # Used for GUIs.
-        ItemMaterial: COAL
-        ItemData: 0 # Optional (redundant) argument. Defaults to 0.
-        DisplayName: '%id_formatted%' # Optional (redundant) argument. defaults to ID (formatted: getting_started -> Getting Started).
-      StringRewards: # Optional argument. Can be 'MONEY <amount>', 'ITEM <serialized item>', or 'QUEST <id>'.
-        - 'MONEY 0.25'
-        - 'QUEST buying_food'
-      Catagory: STORY_QUEST # Can be STORY_QUEST, CONTEXTUAL_QUEST, or ACHIEVEMENT
-  buying_food:
-    TaskType: TALK_TO_NPC # Can be MINE_BLOCK or TALK_TO_NPC.
-    TaskInfo:
-      - dhf83d # Random ID for the task, can be anything as long as the ID isn't used elsewhere. This is for if there are multiple tasks to be tracked (not yet implemented).
-      - '1' # How many times to talk to the NPC.
-      - 'd0193a46-b263-484a-972a-6a41c76d3ea8' # What NPC to talk to. This UUID is Quest Master's.
-    Description: 'Talk to &aMineral Trader' # Optional argument, this is usually generated with code but can't always be.
-    DisplayItem: # Used for GUIs.
-      ItemMaterial: BREAD
-      ItemData: 0 # Optional (redundant) argument. Defaults to 0.
-      DisplayName: '%id_formatted%' # Optional (redundant) argument. defaults to ID (formatted: getting_started -> Getting Started).
-    StringRewards: # Optional argument. Can be 'MONEY <amount>', 'ITEM <serialized item>', or 'QUEST <id>'.
-      - 'MONEY 0.25'
-      - 'QUEST '
-    Catagory: STORY_QUEST # Can be STORY_QUEST, CONTEXTUAL_QUEST, or ACHIEVEMENT
   ####################
   ### Achievements ###
   ####################
