@@ -47,10 +47,10 @@ public class PlayerLevelling implements Listener {
             if (xp >= xpNeeded) {
                 xp -= xpNeeded;
                 lvl++;
+                Bukkit.getServer().getPluginManager().callEvent(new LevelUpEvent(p, lvl, xp));
             } else
                 break;
         }
-        Bukkit.getServer().getPluginManager().callEvent(new LevelUpEvent(p, lvl, xp));
 
         Effect lvlAnim = new LevelUp(UniversalCoreRemake.getEffectManager(), p, lvl);
         lvlAnim.setDynamicOrigin(new DynamicLocation(p));
