@@ -131,6 +131,7 @@ public class StringReward {
                     break;
 
                 case "MESSAGE":
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', arg.toString()));
                     break;
 
                 default:
@@ -184,7 +185,6 @@ public class StringReward {
                     break;
 
                 case "MESSAGE":
-                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', arg.toString()));
                     break;
 
                 default:
