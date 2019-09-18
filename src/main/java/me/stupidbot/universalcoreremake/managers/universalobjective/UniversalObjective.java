@@ -121,7 +121,7 @@ public class UniversalObjective {
         int progress = playersToTrack.get(id);
         if (progress > 0)
             UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p)
-                    .setObjectiveData(getId(), getTaskFormatted(), progress);
+            .setObjectiveData(getId(), getTaskFormatted(), progress);
     }
 
     private String getTaskFormatted() {
@@ -130,7 +130,7 @@ public class UniversalObjective {
 
     public enum TaskType {
         MINE_BLOCK,
-        TALK_TO_NPC
+        TALK_TO_NPC,
     }
 
     public enum Catagory {

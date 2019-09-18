@@ -3,6 +3,7 @@ package me.stupidbot.universalcoreremake.managers.universalobjective;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
+import me.stupidbot.universalcoreremake.events.LevelUpEvent;
 import me.stupidbot.universalcoreremake.events.UniversalBlockBreakEvent;
 import me.stupidbot.universalcoreremake.events.universalobjective.UniversalObjectiveCompleteEvent;
 import me.stupidbot.universalcoreremake.events.universalobjective.UniversalObjectiveIncrementEvent;
@@ -181,6 +182,16 @@ public class UniversalObjectiveManager implements Listener {
                             }
                     break;
 
+                default:
+                    if (task == uo.getTask() && uo.getTaskInfo()[2].equals(taskInfo)) {
+                        int progress = uo.increment(p, amt);
+                        int needed = getNeeded(uo);
+                        UniversalObjectiveIncrementEvent event = new UniversalObjectiveIncrementEvent(p, uo, progress, progress - amt, needed);
+                        Bukkit.getServer().getPluginManager().callEvent(event);
+                        if (progress >= needed)
+                            reward(p, uo);
+                    }
+                    break;
             }
         });
     }
