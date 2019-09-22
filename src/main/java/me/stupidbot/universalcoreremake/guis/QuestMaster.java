@@ -11,7 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class QuestMaster implements InventoryProvider {
+class QuestMaster implements InventoryProvider {
     private final Player p;
 
     private QuestMaster(Player p) {

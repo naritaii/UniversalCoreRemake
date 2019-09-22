@@ -24,7 +24,7 @@ class ReadItemMeta {
 
                 if (m != Material.AIR) {
                     Map<String, String> metaMap = ItemMetadata.getMeta(i);
-                    if (metaMap != null) {
+                    if (!metaMap.isEmpty()) {
                         StringBuilder metas = new StringBuilder();
                         for (String meta : metaMap.keySet()) {
                             if (metas.length() != 0)

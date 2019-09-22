@@ -4,6 +4,7 @@
       <w>&amp;c\u</w>
       <w>adaptorinterface</w>
       <w>afrom</w>
+      <w>allachievements</w>
       <w>blockmeta</w>
       <w>bossbar</w>
       <w>chainable</w>
@@ -12,6 +13,8 @@
       <w>codemc</w>
       <w>corru</w>
       <w>corrup</w>
+      <w>currentachievements</w>
+      <w>currentxp</w>
       <w>declipse</w>
       <w>dmulloy</w>
       <w>doomph</w>
@@ -45,6 +48,7 @@
       <w>krytk</w>
       <w>leve</w>
       <w>levelbar</w>
+      <w>levelpercent</w>
       <w>leveltag</w>
       <w>locs</w>
       <w>metadatas</w>
@@ -54,12 +58,14 @@
       <w>motd</w>
       <w>naformats</w>
       <w>namecolor</w>
+      <w>neededxp</w>
       <w>netherboard</w>
       <w>nkqj</w>
       <w>npcs</w>
       <w>nullpointers</w>
       <w>openfoodtrader</w>
       <w>openmineraltrader</w>
+      <w>openstats</w>
       <w>oplease</w>
       <w>orrupt</w>
       <w>othings</w>
@@ -69,6 +75,7 @@
       <w>placeholderapi</w>
       <w>priso</w>
       <w>qroot</w>
+      <w>questmaster</w>
       <w>readblockmeta</w>
       <w>readitemmeta</w>
       <w>realsmooth</w>

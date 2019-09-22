@@ -90,7 +90,7 @@ public class Sell implements InventoryProvider {
 
     private void updateItems(InventoryContents contents) {
         contents.fillRect(1, 1, 4, 7, null);
-        for (int i = (page - 1) * 28; i < Math.min(((page - 1) * 28) + 28, clickableItems.size()); i++)
+        for (int i = 0; i < Math.min(28, clickableItems.size()); i++)
             contents.add(clickableItems.get(i));
     }
 
