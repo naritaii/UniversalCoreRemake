@@ -172,16 +172,16 @@ public class PlayerLevelling implements Listener {
         UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p).incrementDeaths(1);
 
         Economy ecc = UniversalCoreRemake.getEconomy();
-        double money = ecc.getBalance(p) / 2d;
+        double money = Math.floor((ecc.getBalance(p) / 2d) * 100d) / 100d;
         ecc.withdrawPlayer(p, money);
 
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             if (p.isDead())
                 ((CraftPlayer) p).getHandle().playerConnection.a(
                         new PacketPlayInClientCommand(PacketPlayInClientCommand.EnumClientCommand.PERFORM_RESPAWN));
-
-            p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&cYou lost &6$" + TextUtils.addCommas(money) + "&a for dying."));
+            if (money > 0)
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&cYou lost &6$" + TextUtils.addCommas(money) + "&c for dying."));
         });
     }
 

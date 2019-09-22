@@ -38,7 +38,7 @@ public class Stats implements InventoryProvider {
         contents.set(1, 4, ClickableItem.empty(new ItemBuilder(Skull.getPlayerSkull(p.getName()))
                 .name("&aOverall Statistics")
                 .lore("&7You were the &a" + TextUtils.getDayNumberSuffix(up.getJoinNumber()) +
-                        "&7 to log into Corrupt Prisons!")
+                        "&7 player to log into Corrupt Prisons!")
                 .lore("&7First Login: &a" + up.getFirstPlayed())
                 .lore("&7Time Played: &a" + TextUtils.secondsToString(up.getSecondsPlayed()))
                 .lore("&7Total XP Gained: &a" + TextUtils.addCommas(up.getTotalXp()))

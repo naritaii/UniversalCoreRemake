@@ -1,6 +1,5 @@
 package me.stupidbot.universalcoreremake.commands;
 
-import fr.minuskube.inv.SmartInventory;
 import me.stupidbot.universalcoreremake.guis.Buy;
 import me.stupidbot.universalcoreremake.utilities.item.ItemBuilder;
 import me.stupidbot.universalcoreremake.utilities.item.SellItem;
@@ -11,16 +10,19 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.List;
 
 class OpenFoodTrader {
-    private final SmartInventory foodTraderGui;
+    private final List<SellItem> array;
 
     OpenFoodTrader() {
-        foodTraderGui = Buy.getInventory("Food Trader", Arrays.asList(
+        array = Arrays.asList(
                 new SellItem(new ItemBuilder(Material.ROTTEN_FLESH).name("&rOffal").lore("&3Stamina &a+5").build(), "Offal",
                         3.50),
                 new SellItem(new ItemBuilder(Material.APPLE).name("&rPanacea").lore("&3Stamina &a+20").build(), "Panacea",
-                        14.25)));
+                        14.25),
+                new SellItem(new ItemBuilder(Material.BREAD).name("&rJunie Cakes").lore("&3Stamina &a+50").build(), "Junie Cakes",
+                        40));
     }
 
     @SuppressWarnings("SameReturnValue")
@@ -28,16 +30,15 @@ class OpenFoodTrader {
         if (s.hasPermission("universalcore.admin"))
             if (s instanceof Player)
                 if (args.length == 0)
-                    foodTraderGui.open((Player) s);
+                    Buy.getInventory("Food Trader", array).open((Player) s);
                 else
-                    foodTraderGui.open(Bukkit.getPlayer(args[0]));
+                    Buy.getInventory("Food Trader", array).open(Bukkit.getPlayer(args[0]));
+            else if (args.length == 0)
+                s.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&cInvalid usage! /" + label + " <player>"));
             else
-                if (args.length == 0)
-                    s.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            "&cInvalid usage! /" + label + " <player>"));
-                else
-                    foodTraderGui.open(Bukkit.getPlayer(args[0]));
-            else
+                Buy.getInventory("Food Trader", array).open(Bukkit.getPlayer(args[0]));
+        else
             s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     "&cYou don't have permission to use this command!"));
         return true;

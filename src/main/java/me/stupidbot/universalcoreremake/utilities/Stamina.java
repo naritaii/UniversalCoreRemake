@@ -59,6 +59,13 @@ public class Stamina implements Listener { // TODO this is more of a manager  th
             }
     }
 
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e) {
+        Player p = e.getPlayer();
+        UniversalCoreRemake plugin = UniversalCoreRemake.getInstance();
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> updateStamina(p));
+    }
+
     private static void addStamina(Player p, int i) {
         setStamina(p, Math.min(getStamina(p) + i, getMaxStamina(p)));
     }
@@ -91,7 +98,7 @@ public class Stamina implements Listener { // TODO this is more of a manager  th
 
 
     enum BaseFoodStamina {
-        ROTTEN_FLESH(5), APPLE(20);
+        ROTTEN_FLESH(5), APPLE(20), BREAD(50);
 
         final int baseFoodStamina;
 

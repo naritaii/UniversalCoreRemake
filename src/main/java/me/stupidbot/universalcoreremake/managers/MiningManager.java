@@ -51,8 +51,10 @@ public class MiningManager implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) { // Stop player from breaking blocks so we can handle block breaking
         Player p = e.getPlayer();
-        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, Integer.MAX_VALUE, 255,
-                true, false), true);
+        UniversalCoreRemake plugin = UniversalCoreRemake.getInstance();
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
+                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, Integer.MAX_VALUE, 255,
+                true, false), true));
     }
 
     @EventHandler

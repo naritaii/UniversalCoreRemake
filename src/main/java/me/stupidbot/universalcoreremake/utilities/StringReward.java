@@ -60,9 +60,9 @@ public class StringReward {
                                 "&cCould not parse item " + arg.toString());
                     break;
 
-                    case "QUEST":
-                        r[i] = null;
-                        break;
+                case "QUEST":
+                    r[i] = null;
+                    break;
 
                 case "MESSAGE":
                     r[i] = ChatColor.translateAlternateColorCodes('&', arg.toString());

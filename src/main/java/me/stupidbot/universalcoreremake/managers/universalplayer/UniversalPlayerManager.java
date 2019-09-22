@@ -209,7 +209,7 @@ public class UniversalPlayerManager implements Listener { // TODO Save as .json 
                 }));
     }
 
-    private Map<UUID, Long> timePlayed = new HashMap<>();
+    private final Map<UUID, Long> timePlayed = new HashMap<>();
     @EventHandler(priority = EventPriority.HIGHEST)
     public void OnPlayerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
