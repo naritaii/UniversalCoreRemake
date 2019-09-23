@@ -62,3 +62,7 @@ commands:
     aliases: [saveblockmetadatacache, saveblockmetadatadatatofile, saveblockmetadatadata, saveblockmetacachetofile, saveblockmetacache, saveblockmetadatatofile, saveblockmetadata]
     description: Save block metadata cache to file
     usage: /<command>
+  mutate:
+    aliases: [cenchant, customenchant]
+    description: Add custom enchant/mutation
+    usage: /<command> <enchant> [level]

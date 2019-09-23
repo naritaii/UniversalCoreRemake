@@ -18,6 +18,7 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private final OpenStats openStats = new OpenStats();
     private final SaveUniversalPlayerCacheToFile saveUniversalPlayerCacheToFile = new SaveUniversalPlayerCacheToFile();
     private final SaveBlockmetaCacheToFile saveBlockmetaCacheToFile = new SaveBlockmetaCacheToFile();
+    private final Mutate mutate = new Mutate();
 
     @Override
     public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
@@ -49,6 +50,8 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
             return saveUniversalPlayerCacheToFile.execute(s);
         else if (cmd.getName().equalsIgnoreCase("saveblockmetadatacachetofile"))
             return saveBlockmetaCacheToFile.execute(s);
+        else if (cmd.getName().equalsIgnoreCase("mutate"))
+            return mutate.execute(s, label, args);
 
         else
             return false;

@@ -72,7 +72,7 @@ public class UniversalCoreRemake extends JavaPlugin {
         registerCommands(executor, "reloadmotd", "reloaduniversalobjectives",
                 "exp", "setblockmeta", "readblockmeta", "setitemmeta", "readitemmeta", "emoji",
                 "openmineraltrader", "openfoodtrader", "openstats", "saveuniversalplayercachetofile",
-                "saveblockmetadatacachetofile", "selectobjective");
+                "saveblockmetadatacachetofile", "selectobjective", "mutate");
 
         System.out.println(getName() + " is now enabled!");
     }

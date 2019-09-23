@@ -1,6 +1,7 @@
 package me.stupidbot.universalcoreremake.enchantments;
 
 import me.stupidbot.universalcoreremake.enchantments.mutation.Glass;
+import me.stupidbot.universalcoreremake.enchantments.mutation.SpeedBoost;
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.Listener;
@@ -14,10 +15,11 @@ import java.util.Set;
 
 public class UniversalEnchantment {
     private static final Enchantment GLASS = new Glass(255);
+    private static final Enchantment SPEED_BOOST = new SpeedBoost(254);
 
-    private static final Set<Enchantment> ENCHANTMENTS = new HashSet<>(Arrays.asList(GLASS));
+    public static final Set<Enchantment> ENCHANTMENTS = new HashSet<>(Arrays.asList(GLASS, SPEED_BOOST));
 
-    public static final Set<Enchantment> MUTATIONS = new HashSet<>(Arrays.asList(GLASS));
+    public static final Set<Enchantment> MUTATIONS = new HashSet<>(Arrays.asList(GLASS, SPEED_BOOST));
 
     public UniversalEnchantment(JavaPlugin plugin) {
         registerEnchantments();
