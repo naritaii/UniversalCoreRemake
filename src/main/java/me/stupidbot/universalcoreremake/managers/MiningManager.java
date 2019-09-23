@@ -297,6 +297,14 @@ public class MiningManager implements Listener {
                 Material.RED_SANDSTONE, 1, BreakBehavior.DEFAULT),
         SANDSTONE(5.5f, 6.5f, Material.RED_SANDSTONE, 0.4f, 5,
                 Material.SANDSTONE, 3, BreakBehavior.INSTANT_RESPAWN),
+        COAL_ORE(11.1f, 6.5f, Material.COAL_BLOCK, 0.071f, 7,
+                Material.COAL_ORE, 5, BreakBehavior.DEFAULT),
+        COAL_BLOCK(13.1f, 6.5f, Material.COAL_ORE, 0.55f, 10,
+                Material.COAL_BLOCK, 7, BreakBehavior.INSTANT_RESPAWN),
+        IRON_ORE(12.9f, 6.5f, Material.IRON_BLOCK, 0.055f, 9,
+                Material.IRON_ORE, 5, BreakBehavior.DEFAULT),
+        IRON_BLOCK(14.8f, 6.5f, Material.IRON_ORE, 0.38f, 14,
+                Material.IRON_BLOCK, 7, BreakBehavior.INSTANT_RESPAWN),
 
         // This is to prevent weird nullpointers.
         AIR(Float.MAX_VALUE, 0f, Material.AIR, 0f, 0,
