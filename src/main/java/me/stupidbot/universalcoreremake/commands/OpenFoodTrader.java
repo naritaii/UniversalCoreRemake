@@ -21,7 +21,7 @@ class OpenFoodTrader {
                         3.50),
                 new SellItem(new ItemBuilder(Material.APPLE).name("&rPanacea").lore("&3Stamina &a+20").build(), "Panacea",
                         14.25),
-                new SellItem(new ItemBuilder(Material.BREAD).name("&rJunie Cakes").lore("&3Stamina &a+50").build(), "Junie Cakes",
+                new SellItem(new ItemBuilder(Material.BREAD).name("&rJunie Cake").lore("&3Stamina &a+50").build(), "Junie Cake",
                         40));
     }
 

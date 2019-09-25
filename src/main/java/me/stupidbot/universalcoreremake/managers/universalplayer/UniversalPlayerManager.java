@@ -188,17 +188,19 @@ public class UniversalPlayerManager implements Listener { // TODO Save as .json 
         Bukkit.getScheduler().runTaskTimerAsynchronously(UniversalCoreRemake.getInstance(), () -> {
             if (System.nanoTime() - lastRefresh > 1.8e+12) { // 30 minutes, maybe can be longer
                 lastRefresh = System.nanoTime();
-                lazilyRefreshCache();
+                manuallyRefreshCache();
             }
         }, 1200, 1200);
     }
 
     public void disable() {
-        getAllUniversalPlayers().forEach((UniversalPlayer up) -> {
-            up.setDataLastPlayed(UniversalPlayer.getSimpleDateFormat().format(new Date()));
-            up.incrementSecondsPlayed((long) ((System.nanoTime() - timePlayed.get(up.getUniqueId())) / 1e+9));
-            up.savePlayerDataFile();
-        });
+        if (getAllUniversalPlayers() != null)
+            if (!getAllUniversalPlayers().isEmpty())
+                getAllUniversalPlayers().forEach((UniversalPlayer up) -> {
+                    up.setDataLastPlayed(UniversalPlayer.getSimpleDateFormat().format(new Date()));
+                    up.incrementSecondsPlayed((long) ((System.nanoTime() - timePlayed.get(up.getUniqueId())) / 1e+9));
+                    up.savePlayerDataFile();
+                });
     }
 
     public void saveAll() {

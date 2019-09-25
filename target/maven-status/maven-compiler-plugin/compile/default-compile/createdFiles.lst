@@ -32,10 +32,12 @@ me\stupidbot\universalcoreremake\managers\LeaderboardManager$2.class
 me\stupidbot\universalcoreremake\utilities\item\Reflections$MethodInvoker.class
 me\stupidbot\universalcoreremake\guis\QuestMaster.class
 me\stupidbot\universalcoreremake\guis\Stats.class
+me\stupidbot\universalcoreremake\commands\Mutate.class
 me\stupidbot\universalcoreremake\utilities\item\Reflections$ConstructorInvoker.class
 me\stupidbot\universalcoreremake\commands\CommandExecutor.class
 me\stupidbot\universalcoreremake\effects\FindSlime.class
 me\stupidbot\universalcoreremake\utilities\item\ItemUtils.class
+me\stupidbot\universalcoreremake\enchantments\mutation\SpeedBoost.class
 me\stupidbot\universalcoreremake\managers\ScoreboardManager$1.class
 me\stupidbot\universalcoreremake\managers\universalobjective\UniversalObjectiveManager$1.class
 me\stupidbot\universalcoreremake\commands\Exp.class

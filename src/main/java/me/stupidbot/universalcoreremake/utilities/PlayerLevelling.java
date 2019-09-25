@@ -82,7 +82,7 @@ public class PlayerLevelling implements Listener {
             put(++i, new StringReward("MONEY 110"));
             put(++i, new StringReward("MONEY 120"));
             put(++i, new StringReward("MONEY 130"));
-            put(++i, new StringReward("&c&oi don't really feel like giving you a reward right now...\n    " +
+            put(++i, new StringReward("MESSAGE &c&oi don't really feel like giving you a reward right now...\n    " +
                     "&8+&c&othings have just been... tough... at home and...\n    " +
                     "&8+&c&oplease don't hate me...\n    " +
                     "&8+&c&o...\n    " +

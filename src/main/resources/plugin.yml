@@ -3,7 +3,7 @@ version: ${project.version}
 author: ${project.groupId}
 website: ${project.url}
 api-version: "1.8"
-softdepend: [PlaceholderAPI]
+softdepend: [PlaceholderAPI, WorldGuard]
 depend: [Vault, ProtocolLib, Citizens, HolographicDisplays, Essentials]
 main: me.stupidbot.universalcoreremake.UniversalCoreRemake
 commands:

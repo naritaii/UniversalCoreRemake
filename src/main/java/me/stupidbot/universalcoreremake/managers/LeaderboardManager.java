@@ -52,6 +52,13 @@ public class LeaderboardManager implements Listener {
             loadSortedData();
 
         instantiateHolograms();
+
+        Bukkit.getScheduler().runTaskTimerAsynchronously(UniversalCoreRemake.getInstance(), () -> {
+            if (System.nanoTime() - lastSort > 9e+11) { // 15 minutes
+                lastSort = System.nanoTime();
+                manuallySortData();
+            }
+        }, 1200, 1200);
     }
 
     private <K, V extends Comparable<? super V>> Map<K, V> sortByValues(Map<K, V> map) {
@@ -95,72 +102,72 @@ public class LeaderboardManager implements Listener {
     }
 
     private void initializeData() {
-            lastSort = System.nanoTime();
-            Map<String, Map<UUID, Double>> playersData = new HashMap<>();
-            try {
-                Files.list(new File(UniversalCoreRemake.getUniversalPlayerManager().dataFolderPath).toPath()).forEach(path -> {
-                    UUID id = UUID.fromString(FilenameUtils.removeExtension(path.getFileName().toString()));
-                    UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(id);
+        lastSort = System.nanoTime();
+        Map<String, Map<UUID, Double>> playersData = new HashMap<>();
+        try {
+            Files.list(new File(UniversalCoreRemake.getUniversalPlayerManager().dataFolderPath).toPath()).forEach(path -> {
+                UUID id = UUID.fromString(FilenameUtils.removeExtension(path.getFileName().toString()));
+                UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(id);
 
-                    Double money = up.getTotalMoney();
-                    if (money > 0) {
-                        Map<UUID, Double> data = playersData.getOrDefault("TotalMoney", new ConcurrentHashMap<>());
-                        data.put(id, money);
-                        playersData.put("TotalMoney", data);
-                    }
+                Double money = up.getTotalMoney();
+                if (money > 0) {
+                    Map<UUID, Double> data = playersData.getOrDefault("TotalMoney", new ConcurrentHashMap<>());
+                    data.put(id, money);
+                    playersData.put("TotalMoney", data);
+                }
 
-                    Double level = (double) up.getLevel();
-                    if (level > 1) {
-                        Map<UUID, Double> data = playersData.getOrDefault("XP.Level", new ConcurrentHashMap<>());
-                        data.put(id, level);
-                        playersData.put("XP.Level", data);
-                    }
+                Double level = (double) up.getLevel();
+                if (level > 1) {
+                    Map<UUID, Double> data = playersData.getOrDefault("XP.Level", new ConcurrentHashMap<>());
+                    data.put(id, level);
+                    playersData.put("XP.Level", data);
+                }
 
-                    Double blocksMined = (double) up.getBlocksMined();
-                    if (blocksMined > 0) {
-                        Map<UUID, Double> data = playersData.getOrDefault("Stats.BlocksMined", new ConcurrentHashMap<>());
-                        data.put(id, blocksMined);
-                        playersData.put("Stats.BlocksMined", data);
-                    }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            UniversalCoreRemake.getUniversalPlayerManager().manuallyRefreshCache();
-
-            // Sort data
-            playersData.forEach((String type, Map<UUID, Double> data) -> {
-                Map<UUID, Double> sortedMap = sortByValues(data);
-                sortedData.put(type, sortedMap);
-
-                List<UUID> orderedList = new ArrayList<>(sortedMap.keySet()); // Creates list from set using iterator which can access position, so its stays sorted
-                sortedPositions.put(type, orderedList);
+                Double blocksMined = (double) up.getBlocksMined();
+                if (blocksMined > 0) {
+                    Map<UUID, Double> data = playersData.getOrDefault("Stats.BlocksMined", new ConcurrentHashMap<>());
+                    data.put(id, blocksMined);
+                    playersData.put("Stats.BlocksMined", data);
+                }
             });
-            saveSortedData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        UniversalCoreRemake.getUniversalPlayerManager().manuallyRefreshCache();
+
+        // Sort data
+        playersData.forEach((String type, Map<UUID, Double> data) -> {
+            Map<UUID, Double> sortedMap = sortByValues(data);
+            sortedData.put(type, sortedMap);
+
+            List<UUID> orderedList = new ArrayList<>(sortedMap.keySet()); // Creates list from set using iterator which can access position, so its stays sorted
+            sortedPositions.put(type, orderedList);
+        });
+        saveSortedData();
     }
 
     private void loadSortedData() {
-            try {
-                lastSort = System.nanoTime();
-                Path dpath = Paths.get(dataPath);
-                String str = Files.readAllLines(dpath).get(0);
-                Gson gson = new Gson();
-                Map<String, Map<UUID, Double>> data = gson.fromJson(str, new TypeToken<Map<String, Map<UUID, Double>>>() {
-                }.getType());
-                // Sort data
-                            data.forEach((String dataType, Map<UUID, Double> dataMap) -> {
-                    Map<UUID, Double> sortedMap = sortByValues(dataMap);
-                    sortedData.put(dataType, sortedMap);
+        try {
+            lastSort = System.nanoTime();
+            Path dpath = Paths.get(dataPath);
+            String str = Files.readAllLines(dpath).get(0);
+            Gson gson = new Gson();
+            Map<String, Map<UUID, Double>> data = gson.fromJson(str, new TypeToken<Map<String, Map<UUID, Double>>>() {
+            }.getType());
+            // Sort data
+            data.forEach((String dataType, Map<UUID, Double> dataMap) -> {
+                Map<UUID, Double> sortedMap = sortByValues(dataMap);
+                sortedData.put(dataType, sortedMap);
 
-                    List<UUID> orderedList = new ArrayList<>(sortedMap.keySet()); // Creates list from set using iterator which can access position, so its stays sorted
-                    sortedPositions.put(dataType, orderedList);
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                List<UUID> orderedList = new ArrayList<>(sortedMap.keySet()); // Creates list from set using iterator which can access position, so its stays sorted
+                sortedPositions.put(dataType, orderedList);
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void saveSortedData() { // Isn't sorted on save but on load or initialize // TODO add command to manually save
+    private void saveSortedData() { // TODO add command to manually save
         try {
             Gson gson = new Gson();
             String str = gson.toJson(sortedData, new TypeToken<Map<String, Map<UUID, Double>>>() {

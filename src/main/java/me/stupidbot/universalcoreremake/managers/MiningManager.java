@@ -7,6 +7,8 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.BlockPosition;
 import com.comphenix.protocol.wrappers.EnumWrappers;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.slikey.effectlib.Effect;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.effects.BlockBreak;
@@ -34,10 +36,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MiningManager implements Listener {
@@ -54,14 +53,15 @@ public class MiningManager implements Listener {
         UniversalCoreRemake plugin = UniversalCoreRemake.getInstance();
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () ->
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, Integer.MAX_VALUE, 255,
-                true, false), true));
+                        true, false), true));
     }
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent e) { // Stop player from breaking blocks so we can handle block breaking
         Player p = e.getPlayer();
-        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, Integer.MAX_VALUE, 255,
-                true, false), true);
+        Bukkit.getScheduler().runTaskLater(UniversalCoreRemake.getInstance(), () ->
+                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, Integer.MAX_VALUE, 255,
+                        true, false), true), 1);
     }
 
     @EventHandler
@@ -70,6 +70,7 @@ public class MiningManager implements Listener {
     }
 
     private final Material respawnBlock = Material.BEDROCK;
+
     private void initialize() {
         // Click Listener
         UniversalCoreRemake.getProtocolManager().addPacketListener(new PacketAdapter(UniversalCoreRemake.getInstance(),
@@ -86,9 +87,26 @@ public class MiningManager implements Listener {
                         Block b = packet.getBlockPositionModifier().read(0).toLocation(p.getWorld())
                                 .getBlock();
 
-                        if (b.getType() != respawnBlock &&
-                                UniversalCoreRemake.getBlockMetadataManager().hasMeta(b, "MINEABLE"))
-                            putMiningPlayer(p, b);
+                        if (b.getType() != respawnBlock)
+                            if (UniversalCoreRemake.getBlockMetadataManager().hasMeta(b, "MINEABLE"))
+                                putMiningPlayer(p, b);
+                            else if (UniversalCoreRemake.UNIVERSAL_MINE != null) { // WorldGuard flag support
+                                ApplicableRegionSet regions = UniversalCoreRemake.getWorldGuardPlugin().getRegionManager(b.getWorld())
+                                        .getApplicableRegions(b.getLocation());
+                                for (ProtectedRegion region : regions) {
+                                    @SuppressWarnings("unchecked")
+                                    Set<String> s = region.getFlag(UniversalCoreRemake.UNIVERSAL_MINE);
+
+                                    if (s != null && (!s.isEmpty())) {
+                                        s = s.stream().map((n) -> n.trim().toUpperCase()).collect(Collectors.toSet());
+                                        if (s.contains(b.getType().toString())) {
+                                            UniversalCoreRemake.getBlockMetadataManager().setMeta(b,
+                                                    "MINEABLE", b.getType().toString());
+                                            putMiningPlayer(p, b);
+                                        }
+                                    }
+                                }
+                            }
 
                     } else if (c == EnumWrappers.PlayerDigType.ABORT_DESTROY_BLOCK ||
                             c == EnumWrappers.PlayerDigType.DROP_ALL_ITEMS ||
@@ -210,7 +228,7 @@ public class MiningManager implements Listener {
                 int i = pair.getValue() - 1;
 
                 // Regen Block
-                if (i < 1) {
+                if (i < 1 && UniversalCoreRemake.getBlockMetadataManager().hasMeta(b, "MINEABLE")) {
                     b.setType(Material.valueOf(
                             UniversalCoreRemake.getBlockMetadataManager().getMeta(b, "MINEABLE")));
 
@@ -275,7 +293,7 @@ public class MiningManager implements Listener {
         float ironPickMultiplier = 0.5f;
         float stonePickMultiplier = 0.4f;
         float woodPickMultiplier = 0.2f;
-        switch(m) {
+        switch (m) {
             case WOOD_PICKAXE:
                 return woodPickMultiplier;
             case STONE_PICKAXE:
@@ -322,14 +340,14 @@ public class MiningManager implements Listener {
         private final BreakBehavior onBreak;
 
         /**
-         * @param durability Time in seconds block takes to mine with hand and no "modifiers".
-         * @param regenerateTime Time in seconds block takes to regenerate.
-         * @param enhanceBlock Block to turn into when enhanced.
-         * @param enhanceChance Chance of turning block into enhanceBlock.
-         * @param baseXp XP given without any multipliers.
-         * @param loot Item dropped.
+         * @param durability       Time in seconds block takes to mine with hand and no "modifiers".
+         * @param regenerateTime   Time in seconds block takes to regenerate.
+         * @param enhanceBlock     Block to turn into when enhanced.
+         * @param enhanceChance    Chance of turning block into enhanceBlock.
+         * @param baseXp           XP given without any multipliers.
+         * @param loot             Item dropped.
          * @param staminaBaseUsage Stamina taken without any multipliers.
-         * @param onBreak What to do when (@link MineableBlock) is broken.
+         * @param onBreak          What to do when (@link MineableBlock) is broken.
          */
         MineableBlock(float durability, float regenerateTime, Material enhanceBlock, float enhanceChance,
                       int baseXp, Material loot, int staminaBaseUsage, BreakBehavior onBreak) {
@@ -371,7 +389,9 @@ public class MiningManager implements Listener {
             return onBreak;
         }
 
-        int getBaseStaminaUsage() { return staminaBaseUsage; }
+        int getBaseStaminaUsage() {
+            return staminaBaseUsage;
+        }
     }
 
     enum BreakBehavior {

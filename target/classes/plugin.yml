@@ -3,7 +3,7 @@ version: 0.1-SNAPSHOT
 author: CorruptedPrisonsDevTeam
 website: https://github.com/StupidBot/UniversalCoreRemake
 api-version: "1.8"
-softdepend: [PlaceholderAPI]
+softdepend: [PlaceholderAPI, WorldGuard]
 depend: [Vault, ProtocolLib, Citizens, HolographicDisplays, Essentials]
 main: me.stupidbot.universalcoreremake.UniversalCoreRemake
 commands:
@@ -62,3 +62,7 @@ commands:
     aliases: [saveblockmetadatacache, saveblockmetadatadatatofile, saveblockmetadatadata, saveblockmetacachetofile, saveblockmetacache, saveblockmetadatatofile, saveblockmetadata]
     description: Save block metadata cache to file
     usage: /<command>
+  mutate:
+    aliases: [cenchant, customenchant]
+    description: Add custom enchant/mutation
+    usage: /<command> <enchant> [level]
