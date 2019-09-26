@@ -101,7 +101,7 @@ public class MiningManager implements Listener {
                                         s = s.stream().map((n) -> n.trim().toUpperCase()).collect(Collectors.toSet());
                                         if (s.contains(b.getType().toString())) {
                                             UniversalCoreRemake.getBlockMetadataManager().setMeta(b,
-                                                    "MINEABLE", b.getType().toString());
+                                                    "MINEABLE", b.getType().toString().toUpperCase());
                                             putMiningPlayer(p, b);
                                         }
                                     }
