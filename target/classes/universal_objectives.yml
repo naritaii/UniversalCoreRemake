@@ -38,7 +38,7 @@ Objectives:
     TaskInfo:
       - ifg32J
       - '1'
-      - 'b8c36ea9-f8e1-4a26-919b-e4698d675c28'
+      - '2005c324-e4af-43ca-8634-e34cb90888eb'
     Description: 'Sell to &aMineral Trader'
     DisplayItem:
       ItemMaterial: GOLD_NUGGET
@@ -56,24 +56,77 @@ Objectives:
       - 'd0193a46-b263-484a-972a-6a41c76d3ea8'
     Description: 'Buy from &aFood Trader'
     DisplayItem:
-      ItemMaterial: BREAD
+      ItemMaterial: ROTTEN_FLESH
     StringRewards:
       - 'MONEY 3.50'
-      - 'QUEST i_have_many_ideas_for_quests'
+      - 'QUEST alice_in_aoba'
     Catagory: STORY_QUEST
 
-  i_have_many_ideas_for_quests:
-    TaskType: MINE_BLOCK
+  alice_in_aoba:
+    TaskType: TALK_TO_NPC
+    TaskInfo:
+      - Gtr4w5
+      - '1'
+      - '' # Create Alice and Put her NPC ID Here.
+    Description: 'Talk to &aAlice'
+    DisplayItem:
+      ItemMaterial: RED_FLOWER
+      ItemData: 1
+    StringRewards:
+      - 'MONEY 3.50'
+      - 'QUEST find_the_missing_poppy'
+    Catagory: STORY_QUEST
+
+  find_the_missing_poppy:
+    TaskType: GIVE_TO_NPC
     TaskInfo:
       - t3aGyt
-      - '516'
-      - '' # Mine any block
-    Description: 'Mine blocks'
+      - '1'
+      - '' # Create Alice and Put her NPC ID Here.
+      - 'RED_FLOWER:1' # Find the missing blue orchid # this a blue flower now because Aoba is a type of blue flower
+    Description: 'Find &aAlice''s Blue Orchid'
     DisplayItem:
-      ItemMaterial: WOOD_PICKAXE
+      ItemMaterial: RED_FLOWER
+      ItemData: 1
+      Amount: 2
     StringRewards:
       - 'MONEY 75.00'
-      - 'QUEST picky'
+      - 'QUEST help_alice_create_a_pickaxe'
+    Catagory: STORY_QUEST
+
+  help_alice_create_a_pickaxe:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - t3aGyt
+      - '128'
+      - '' # Create Alice and Put her NPC ID Here.
+      - 'RED_SANDSTONE'
+    Description: 'Give  &aAlice Red Sandstone'
+    DisplayItem:
+      ItemMaterial: RED_FLOWER
+      ItemData: 1
+      Amount: 3
+    StringRewards:
+      - 'MONEY 75.00'
+      - 'MESSAGE &dEvil Thoughts' # +sInFuL Thoughts lol
+      - 'QUEST steal_pickaxe'
+
+   steal_pickaxe:
+    TaskType: TALK_TO_NPC
+    TaskInfo:
+      - t3aGyt
+      - '1'
+      - '' # Create Alice and Put her NPC ID Here.
+    Description: 'Steal Alice''s pickaxe...'
+    DisplayItem:
+      ItemMaterial: RED_FLOWER
+      ItemData: 1
+      Amount: 4 # Optional argument, defaults to 1
+    StringRewards:
+      - 'ITEM' # Give a "Red stone Pickaxe" which is really just a Wood Pickaxe Renamed, maybe some mutation on it
+      - 'MESSAGE &dGuilt' # +Guilt
+      - 'MESSAGE Alice''s rage' # +Alice's rage I think would look pretty funny
+      - 'SCRIPT alicerage' # make script where she says "WHAT THE FUCK.... GIVE MY PICKAXE BACK.... I WILL FIND YOU" or something (ok maybe remove the 'FUCK')
     Catagory: STORY_QUEST
   ####################
   ### Achievements ###
@@ -89,5 +142,16 @@ Objectives:
       ItemMaterial: STONE_PICKAXE
       Lore:  # Optional argument, defaults to the 'Description'
         - '%description%'
-        - '&e(Enhanced blocks are Sandstone and Coal Block)'
+        - '&e(Enhanced blocks are Sandstone, Coal Block, and Iron Block)'
+    Catagory: ACHIEVEMENT
+
+  shameless_plug:
+    TaskType: TALK_TO_NPC
+    TaskInfo:
+      - haJ1m3
+      - '1'
+      - '4df58c75-41bc-4aa5-abcc-6675045f9770'
+    Description: 'Talk to &aSalesman'
+    DisplayItem:
+      ItemMaterial: CHEST
     Catagory: ACHIEVEMENT
