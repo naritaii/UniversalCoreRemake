@@ -91,7 +91,7 @@ public class ItemMetadata implements Listener {
         });
     }
 
-    // TODO Add a system to save savedItems to file OnDisable
+    // TODO Add a system to save savedItems to file OnDisable and add PlayerPickupItemEvent listener
     private final Map<UUID, List<String>> savedItems = new HashMap<>();
     private void giveSavedItems(Player p) {
         List<String> items = savedItems.get(p.getUniqueId());

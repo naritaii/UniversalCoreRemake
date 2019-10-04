@@ -82,8 +82,7 @@ Objectives:
     TaskInfo:
       - t3aGyt
       - '1'
-      - '' # Create Alice and Put her NPC ID Here.
-      - 'RED_FLOWER:1' # Find the missing blue orchid # this a blue flower now because Aoba is a type of blue flower
+      - 'f59c4fb2-4317-4f7f-9405-cb7b0c659a74,RED_FLOWER,1' # Find the missing blue orchid this a blue flower now because Aoba is a type of blue flower
     Description: 'Find &aAlice''s Blue Orchid'
     DisplayItem:
       ItemMaterial: RED_FLOWER
@@ -99,9 +98,8 @@ Objectives:
     TaskInfo:
       - t3aGyt
       - '128'
-      - '' # Create Alice and Put her NPC ID Here.
-      - 'RED_SANDSTONE'
-    Description: 'Give  &aAlice Red Sandstone'
+      - 'f59c4fb2-4317-4f7f-9405-cb7b0c659a74,RED_SANDSTONE,0'
+    Description: 'Give &aAlice Red Sandstone'
     DisplayItem:
       ItemMaterial: RED_FLOWER
       ItemData: 1
@@ -111,23 +109,23 @@ Objectives:
       - 'MESSAGE &dEvil Thoughts' # +sInFuL Thoughts lol
       - 'QUEST steal_pickaxe'
 
-   steal_pickaxe:
-    TaskType: TALK_TO_NPC
-    TaskInfo:
-      - t3aGyt
-      - '1'
-      - '' # Create Alice and Put her NPC ID Here.
-    Description: 'Steal Alice''s pickaxe...'
-    DisplayItem:
-      ItemMaterial: RED_FLOWER
-      ItemData: 1
-      Amount: 4 # Optional argument, defaults to 1
-    StringRewards:
-      - 'ITEM' # Give a "Red stone Pickaxe" which is really just a Wood Pickaxe Renamed, maybe some mutation on it
-      - 'MESSAGE &dGuilt' # +Guilt
-      - 'MESSAGE Alice''s rage' # +Alice's rage I think would look pretty funny
-      - 'SCRIPT alicerage' # make script where she says "WHAT THE FUCK.... GIVE MY PICKAXE BACK.... I WILL FIND YOU" or something (ok maybe remove the 'FUCK')
-    Catagory: STORY_QUEST
+    steal_pickaxe:
+      TaskType: TALK_TO_NPC
+      TaskInfo:
+        - t3aGyt
+        - '1'
+        - '' # Create Alice and Put her NPC ID Here.
+      Description: 'Steal Alice''s pickaxe...'
+      DisplayItem:
+        ItemMaterial: RED_FLOWER
+        ItemData: 1
+        Amount: 4 # Optional argument, defaults to 1
+      StringRewards:
+        - 'ITEM' # Give a "Red stone Pickaxe" which is really just a Wood Pickaxe Renamed, maybe some mutation on it
+        - 'MESSAGE &dGuilt' # +Guilt
+        - 'MESSAGE Alice''s rage' # +Alice's rage I think would look pretty funny
+        - 'SCRIPT alicerage' # make script where she says "WHAT THE FUCK.... GIVE MY PICKAXE BACK.... I WILL FIND YOU" or something (ok maybe remove the 'FUCK')
+      Catagory: STORY_QUEST
   ####################
   ### Achievements ###
   ####################

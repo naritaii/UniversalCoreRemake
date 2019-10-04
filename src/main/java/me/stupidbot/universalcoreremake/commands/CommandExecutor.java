@@ -16,9 +16,12 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private final OpenMineralTrader openMineralTrader = new OpenMineralTrader();
     private final OpenFoodTrader openFoodTrader = new OpenFoodTrader();
     private final OpenStats openStats = new OpenStats();
+    private final OpenQuestMaster openQuestMaster = new OpenQuestMaster();
+    private final OpenSpawnPortal openSpawnPortal = new OpenSpawnPortal();
     private final SaveUniversalPlayerCacheToFile saveUniversalPlayerCacheToFile = new SaveUniversalPlayerCacheToFile();
     private final SaveBlockmetaCacheToFile saveBlockmetaCacheToFile = new SaveBlockmetaCacheToFile();
     private final Mutate mutate = new Mutate();
+    private final Serialize serialize = new Serialize();
 
     @Override
     public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
@@ -46,13 +49,18 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
             return openFoodTrader.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("openstats"))
             return openStats.execute(s, label, args);
+        else if (cmd.getName().equalsIgnoreCase("openquestmaster"))
+            return openQuestMaster.execute(s, label, args);
+        else if (cmd.getName().equalsIgnoreCase("openspawnportal"))
+            return openSpawnPortal.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("saveuniversalplayercachetofile"))
             return saveUniversalPlayerCacheToFile.execute(s);
         else if (cmd.getName().equalsIgnoreCase("saveblockmetadatacachetofile"))
             return saveBlockmetaCacheToFile.execute(s);
         else if (cmd.getName().equalsIgnoreCase("mutate"))
             return mutate.execute(s, label, args);
-
+        else if (cmd.getName().equalsIgnoreCase("serialize"))
+            return serialize.execute(s);
         else
             return false;
         }

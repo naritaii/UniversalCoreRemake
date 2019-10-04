@@ -29,10 +29,10 @@ public class StringReward {
         int i = 0;
         for (String s : rewards) {
             String[] split = s.split(" ");
-            String type = split[0].toUpperCase();
+            String type = split[0].toUpperCase().trim();
             StringBuilder arg = new StringBuilder();
             for (String args : Arrays.copyOfRange(split, 1, split.length))
-                arg.append(args);
+                arg.append(" ").append(args);
 
             switch (type) {
                 case "MONEY":
@@ -67,6 +67,10 @@ public class StringReward {
                 case "MESSAGE":
                     r[i] = ChatColor.translateAlternateColorCodes('&', arg.toString());
 
+                case "SCRIPT":
+                    r[i] = null;
+                    break;
+
                 default:
                     r[i] = ChatColor.translateAlternateColorCodes('&',
                             "&cCould not parse " + s);
@@ -82,10 +86,10 @@ public class StringReward {
     public void give(Player p) {
         for (String s : rewards) {
             String[] split = s.split(" ");
-            String type = split[0].toUpperCase();
+            String type = split[0].toUpperCase().trim();
             StringBuilder arg = new StringBuilder();
             for (String args : Arrays.copyOfRange(split, 1, split.length))
-                arg.append(args);
+                arg.append(" ").append(args);
 
             switch (type) {
                 case "MONEY":
@@ -123,8 +127,10 @@ public class StringReward {
                 case "QUEST":
                     UniversalObjectiveManager ubm = UniversalCoreRemake.getUniversalObjectiveManager();
                     UniversalObjective uo = ubm.registeredObjectives.get(ubm.registeredObjectivesDictionary.get(arg.toString()));
-                    uo.addPlayer(p);
                     UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
+                    up.removeCompletedObjective(uo.getId());
+                    up.removeObjectiveData(uo.getId());
+                    uo.addPlayer(p);
                     up.addSelectedObjective(uo.getId());
                     UniversalObjectiveStartEvent event = new UniversalObjectiveStartEvent(p, uo, UniversalCoreRemake.getUniversalObjectiveManager().getNeeded(uo));
                     Bukkit.getServer().getPluginManager().callEvent(event); // TODO Error Handling and chat message
@@ -132,6 +138,10 @@ public class StringReward {
 
                 case "MESSAGE":
                     p.sendMessage(ChatColor.translateAlternateColorCodes('&', arg.toString()));
+                    break;
+
+                case "SCRIPT":
+                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "ex run " + arg.toString() + " player:p@" + p.getName());
                     break;
 
                 default:
@@ -145,10 +155,10 @@ public class StringReward {
     public void giveNoMessage(Player p) {
         for (String s : rewards) {
             String[] split = s.split(" ");
-            String type = split[0].toUpperCase();
+            String type = split[0].toUpperCase().trim();
             StringBuilder arg = new StringBuilder();
             for (String args : Arrays.copyOfRange(split, 1, split.length))
-                arg.append(args);
+                arg.append(" ").append(args);
 
             switch (type) {
                 case "MONEY":
@@ -177,14 +187,20 @@ public class StringReward {
                 case "QUEST":
                     UniversalObjectiveManager ubm = UniversalCoreRemake.getUniversalObjectiveManager();
                     UniversalObjective uo = ubm.registeredObjectives.get(ubm.registeredObjectivesDictionary.get(arg.toString()));
-                    uo.addPlayer(p);
                     UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
+                    up.removeCompletedObjective(uo.getId());
+                    up.removeObjectiveData(uo.getId());
+                    uo.addPlayer(p);
                     up.addSelectedObjective(uo.getId());
                     UniversalObjectiveStartEvent event = new UniversalObjectiveStartEvent(p, uo, UniversalCoreRemake.getUniversalObjectiveManager().getNeeded(uo));
                     Bukkit.getServer().getPluginManager().callEvent(event); // TODO Error Handling
                     break;
 
                 case "MESSAGE":
+                    break;
+
+                case "SCRIPT":
+                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "ex run " + arg.toString() + " player:p@" + p.getName());
                     break;
 
                 default:

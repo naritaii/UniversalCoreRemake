@@ -47,7 +47,7 @@ public class UniversalObjective {
         return id;
     }
 
-    ItemStack getDisplayItem() {
+    public ItemStack getDisplayItem() {
         return displayItem.clone();
     }
 
@@ -130,12 +130,14 @@ public class UniversalObjective {
 
     public enum TaskType {
         MINE_BLOCK,
-        TALK_TO_NPC
+        TALK_TO_NPC,
+        GIVE_TO_NPC
     }
 
     public enum Catagory {
         STORY_QUEST, // Completed one at a time
         CONTEXTUAL_QUEST, // Quests given upon entering a region or talking to an NPC for example
-        ACHIEVEMENT // All online players who haven't completed these are tracked
+        ACHIEVEMENT, // All online players who haven't completed these are tracked
+        TRIGGER // Like achievements but aren't visible to the player
     }
 }

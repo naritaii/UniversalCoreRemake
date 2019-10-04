@@ -13,6 +13,8 @@ import fr.minuskube.inv.InventoryManager;
 import me.stupidbot.universalcoreremake.commands.CommandExecutor;
 import me.stupidbot.universalcoreremake.enchantments.UniversalEnchantment;
 import me.stupidbot.universalcoreremake.listeners.CollectibleSlimesListener;
+import me.stupidbot.universalcoreremake.listeners.EnderchestListener;
+import me.stupidbot.universalcoreremake.listeners.SpawnPortalListener;
 import me.stupidbot.universalcoreremake.managers.*;
 import me.stupidbot.universalcoreremake.managers.universalobjective.UniversalObjectiveManager;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayerManager;
@@ -75,11 +77,12 @@ public class UniversalCoreRemake extends JavaPlugin {
 
         registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager, new Stamina(),
                 new ChatManager(), motdManager, new ItemMetadata(), universalObjectiveManager, scoreboardManager,
-                new CollectibleSlimesListener(), leaderboardManager);
+                new CollectibleSlimesListener(), leaderboardManager, new EnderchestListener(), new SpawnPortalListener());
         registerCommands(executor, "reloadmotd", "reloaduniversalobjectives",
                 "exp", "setblockmeta", "readblockmeta", "setitemmeta", "readitemmeta", "emoji",
-                "openmineraltrader", "openfoodtrader", "openstats", "saveuniversalplayercachetofile",
-                "saveblockmetadatacachetofile", "selectobjective", "mutate");
+                "openmineraltrader", "openfoodtrader", "openstats", "openspawnportal", "openquestmaster",
+                "saveuniversalplayercachetofile", "saveblockmetadatacachetofile", "selectobjective", "mutate",
+                "serialize");
 
         System.out.println(getName() + " is now enabled!");
     }

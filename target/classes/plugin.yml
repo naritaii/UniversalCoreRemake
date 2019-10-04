@@ -54,6 +54,12 @@ commands:
   openstats:
     description: Open Stats GUI
     usage: /<command> [player]
+  openquestmaster:
+    description: Open Quest Master GUI
+    usage: /<command> [player]
+  openspawnportal:
+    description: Open spawn portal GUI
+    usage: /<command> [player]
   saveuniversalplayercachetofile:
     aliases: [saveuniversalplayercache, saveuniversalplayerdatatofile, saveuniversalplayerdata, saveplayerdata, saveplayercache, saveplayercachetofile, saveplayerdatatofile]
     description: Save UniversalPlayer cache to file and refresh cache
@@ -66,3 +72,6 @@ commands:
     aliases: [cenchant, customenchant]
     description: Add custom enchant/mutation
     usage: /<command> <enchant> [level]
+  serialize:
+    description: Serialize an ItemStack to a String
+    usage: /<command>

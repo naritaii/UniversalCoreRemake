@@ -14,23 +14,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class Stats implements InventoryProvider {
-    private final Player p;
-
-    private Stats(Player p) {
-        this.p = p;
-    }
 
     public static SmartInventory getInventory(Player p) {
         return SmartInventory.builder()
                 .id("stats-" + p.getUniqueId().toString())
-                .provider(new Stats(p))
+                .provider(new Stats())
                 .manager(UniversalCoreRemake.getInventoryManager())
                 .size(3, 9)
                 .title(p.getName() + "'s Prisons Statistics").build();
     }
 
     @Override
-    public void init(Player player, InventoryContents contents) {
+    public void init(Player p, InventoryContents contents) {
         contents.fill(ClickableItem.empty(new ItemBuilder(new ItemStack(
                 Material.STAINED_GLASS_PANE, 1, (short) 15)).name(" ").build()));
 

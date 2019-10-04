@@ -18,7 +18,9 @@ import java.util.UUID;
  * @author xigsag, SBPrime
  */
 public enum Skull {
-    SLIME_SANS("http://textures.minecraft.net/texture/1e72f5f653ed99b5be593094bb510b6395c51b35d70d00a0f9ba38082ca91d20");
+    SLIME_SANS("http://textures.minecraft.net/texture/1e72f5f653ed99b5be593094bb510b6395c51b35d70d00a0f9ba38082ca91d20"),
+    DISCORD("http://textures.minecraft.net/texture/7873c12bffb5251a0b88d5ae75c7247cb39a75ff1a81cbe4c8a39b311ddeda"),
+    TWITTER("http://textures.minecraft.net/texture/3685a0be743e9067de95cd8c6d1ba21ab21d37371b3d597211bb75e43279");
 
     /*ARROW_LEFT("MHF_ArrowLeft"),
     ARROW_RIGHT("MHF_ArrowRight"),

@@ -17,7 +17,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class Sell implements InventoryProvider {
     private final List<SellItem> items;
@@ -28,7 +27,7 @@ public class Sell implements InventoryProvider {
 
     public static SmartInventory getInventory(String title, List<SellItem> items) {
         return SmartInventory.builder()
-                .id(UUID.randomUUID().toString())
+                .id(title.toLowerCase().replaceAll("\\s",""))
                 .provider(new Sell(items))
                 .manager(UniversalCoreRemake.getInventoryManager())
                 .size(6, 9)
@@ -63,7 +62,7 @@ public class Sell implements InventoryProvider {
                     if (pinv.contains(m)) {
                         int amt = 0;
                         for (ItemStack item : pinv.getContents())
-                            if ((item != null) && (item.getType() == m))
+                            if (item != null && item.getType() == m)
                                 amt += item.getAmount();
 
                         pinv.remove(m);

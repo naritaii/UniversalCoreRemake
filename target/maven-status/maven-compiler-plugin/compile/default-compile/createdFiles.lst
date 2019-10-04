@@ -6,6 +6,7 @@ me\stupidbot\universalcoreremake\effects\trail\Halo.class
 me\stupidbot\universalcoreremake\utilities\item\SellItem.class
 me\stupidbot\universalcoreremake\commands\OpenFoodTrader.class
 me\stupidbot\universalcoreremake\utilities\item\Reflections$1.class
+me\stupidbot\universalcoreremake\commands\OpenQuestMaster.class
 me\stupidbot\universalcoreremake\managers\BlockMetadataManger.class
 me\stupidbot\universalcoreremake\utilities\item\ItemMetadata$1.class
 me\stupidbot\universalcoreremake\commands\SaveUniversalPlayerCacheToFile.class
@@ -17,6 +18,7 @@ me\stupidbot\universalcoreremake\utilities\TextUtils.class
 me\stupidbot\universalcoreremake\events\universalobjective\UniversalObjectiveIncrementEvent.class
 me\stupidbot\universalcoreremake\enchantments\UniversalEnchantment.class
 me\stupidbot\universalcoreremake\commands\SetBlockMeta.class
+me\stupidbot\universalcoreremake\guis\SpawnPortal.class
 me\stupidbot\universalcoreremake\utilities\item\ItemBuilder.class
 me\stupidbot\universalcoreremake\managers\universalplayer\UniversalPlayer.class
 me\stupidbot\universalcoreremake\guis\Buy.class
@@ -36,6 +38,8 @@ me\stupidbot\universalcoreremake\commands\Mutate.class
 me\stupidbot\universalcoreremake\utilities\item\Reflections$ConstructorInvoker.class
 me\stupidbot\universalcoreremake\commands\CommandExecutor.class
 me\stupidbot\universalcoreremake\effects\FindSlime.class
+me\stupidbot\universalcoreremake\commands\Serialize.class
+me\stupidbot\universalcoreremake\commands\OpenSpawnPortal.class
 me\stupidbot\universalcoreremake\utilities\item\ItemUtils.class
 me\stupidbot\universalcoreremake\enchantments\mutation\SpeedBoost.class
 me\stupidbot\universalcoreremake\managers\ScoreboardManager$1.class
@@ -43,6 +47,7 @@ me\stupidbot\universalcoreremake\managers\universalobjective\UniversalObjectiveM
 me\stupidbot\universalcoreremake\commands\Exp.class
 me\stupidbot\universalcoreremake\effects\BlockRegen.class
 me\stupidbot\universalcoreremake\utilities\PlayerLevelling.class
+me\stupidbot\universalcoreremake\listeners\EnderchestListener.class
 me\stupidbot\universalcoreremake\managers\MiningManager$MineableBlock.class
 me\stupidbot\universalcoreremake\commands\ReloadMOTD.class
 me\stupidbot\universalcoreremake\utilities\PlayerLevelling$1.class
@@ -55,6 +60,7 @@ me\stupidbot\universalcoreremake\utilities\Stamina$BaseFoodStamina.class
 me\stupidbot\universalcoreremake\managers\universalplayer\UniversalPlayerManager.class
 me\stupidbot\universalcoreremake\commands\ReadItemMeta.class
 me\stupidbot\universalcoreremake\effects\LevelUp.class
+me\stupidbot\universalcoreremake\guis\SpawnPortal$1.class
 me\stupidbot\universalcoreremake\enchantments\mutation\Glass.class
 me\stupidbot\universalcoreremake\managers\LeaderboardManager.class
 me\stupidbot\universalcoreremake\utilities\Stamina.class

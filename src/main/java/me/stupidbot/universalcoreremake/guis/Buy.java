@@ -18,7 +18,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class Buy implements InventoryProvider {
     private final List<SellItem> items;
@@ -29,7 +28,7 @@ public class Buy implements InventoryProvider {
 
     public static SmartInventory getInventory(String title, List<SellItem> items) {
         return SmartInventory.builder()
-                .id(UUID.randomUUID().toString())
+                .id(title.toLowerCase().replaceAll("\\s",""))
                 .provider(new Buy(items))
                 .manager(UniversalCoreRemake.getInventoryManager())
                 .size(6, 9)

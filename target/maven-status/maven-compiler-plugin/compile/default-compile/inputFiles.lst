@@ -17,7 +17,9 @@ C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stu
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\events\universalobjective\UniversalObjectiveStartEvent.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\managers\MiningManager.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\managers\ChatManager.java
+C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\OpenSpawnPortal.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\enchantments\mutation\SpeedBoost.java
+C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\Serialize.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\guis\Stats.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\Mutate.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\managers\LeaderboardManager.java
@@ -26,7 +28,10 @@ C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stu
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\utilities\PlayerLevelling.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\utilities\item\Reflections.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\managers\universalplayer\UniversalPlayer.java
+C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\guis\SpawnPortal.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\listeners\CollectibleSlimesListener.java
+C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\OpenQuestMaster.java
+C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\listeners\EnderchestListener.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\Exp.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\UniversalCoreRemake.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\ReloadUniversalObjectives.java
