@@ -105,16 +105,27 @@ class UniversalCoreExpansion extends PlaceholderExpansion {
                 UniversalPlayer up2 = upm.getUniversalPlayer(p);
                 return TextUtils.addCommas(100d * ((double) up2.getXp() / (double) PlayerLevelling.xpToNextLevel(up2.getLevel()))) + "%";
             case "currentachievements": // %universalcore_currentachievements%
-                return upm.getUniversalPlayer(p).getCompletedObjectives().stream().filter((uo) ->
-                        UniversalCoreRemake.getUniversalObjectiveManager().registeredObjectives.get(
-                                UniversalCoreRemake.getUniversalObjectiveManager().registeredObjectivesDictionary.get(uo)).getCategory()
-                                == UniversalObjective.Catagory.ACHIEVEMENT).count() + "";
+                long amt = upm.getUniversalPlayer(p).getCompletedObjectives().stream().filter((uo) ->
+                        UniversalCoreRemake.getUniversalObjectiveManager().registeredObjectivesDictionary.containsKey(uo) &&
+                                UniversalCoreRemake.getUniversalObjectiveManager().registeredObjectives.get(
+                                        UniversalCoreRemake.getUniversalObjectiveManager().registeredObjectivesDictionary.get(uo)).getCategory()
+                                        == UniversalObjective.Catagory.ACHIEVEMENT).count();
+                return  (amt >= UniversalCoreRemake.getUniversalObjectiveManager().totalAchievements ? ChatColor.AQUA :
+                        ChatColor.GREEN) + (amt + "");
             case "allachievements": // %universalcore_allachievements%
                 return TextUtils.addCommas(UniversalCoreRemake.getUniversalObjectiveManager().totalAchievements);
             case "namecolor": // %universalcore_namecolor%
                 return upm.getUniversalPlayer(p).getNameColor();
             case "chatcolor": // %universalcore_chatcolor%
                 return TextUtils.getChatColor(p);
+            case "reward": // %universalcore_reward%
+                return ""; // TODO
+            case "spawnportal": // %universalcore_spawnportal%
+                return ""; // TODO
+            case "dj": // %universalcore_dj%
+                return UniversalCoreRemake.getPermissions().playerHas("world", p, "universalcore.dj") ?
+                        "(Fake)" :
+                        "";
             default:
                 return null;
         }

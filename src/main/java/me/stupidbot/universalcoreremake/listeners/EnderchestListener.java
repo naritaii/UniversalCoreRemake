@@ -17,6 +17,7 @@ public class EnderchestListener implements Listener {
             if (e.getClickedBlock().getType() == Material.ENDER_CHEST) {
                 p.playSound(e.getClickedBlock().getLocation(), Sound.CHEST_OPEN, 1, 1);
                 QuestMaster.getInventory(p).open(p);
+                e.setCancelled(true);
             }
     }
 }

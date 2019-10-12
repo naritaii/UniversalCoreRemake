@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>CorruptedPrisonsDevTeam</groupId>
     <artifactId>UniversalCoreRemake</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1</version>
     <packaging>jar</packaging>
     <url>https://github.com/StupidBot/UniversalCoreRemake</url>
     <build>
@@ -17,9 +17,11 @@
                 <filtering>true</filtering>
                 <directory>${basedir}/src/main/resources/</directory>
                 <includes>
-                    <include>**/*.yml</include>
+                    <include>**/*.*</include>
                     <include>de.slikey</include>
                     <include>fr.minuskube</include>
+                    <include>com.google</include>
+                    <include>xyz.upperlevel</include>
                 </includes>
             </resource>
         </resources>
@@ -56,6 +58,10 @@
                                 <relocation>
                                     <pattern>com.google</pattern>
                                     <shadedPattern>me.stupidbot.universalcoreremake.google</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>xyz.upperlevel</pattern>
+                                    <shadedPattern>me.stupidbot.universalcoreremake.upperlevel</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -228,6 +234,13 @@
             <artifactId>worldguard-legacy</artifactId>
             <version>6.2</version>
             <scope>provided</scope>
+        </dependency>
+        <!--Book API-->
+        <dependency>
+            <groupId>xyz.upperlevel.spigot.book</groupId>
+            <artifactId>spigot-book-api</artifactId>
+            <version>1.3</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

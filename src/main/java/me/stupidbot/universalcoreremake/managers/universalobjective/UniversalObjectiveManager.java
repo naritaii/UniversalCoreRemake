@@ -58,7 +58,7 @@ public class UniversalObjectiveManager implements Listener {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void registerObjectives() {
         Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () -> {
-            registeredObjectives.forEach((UniversalObjective::saveData));
+            registeredObjectives.forEach(UniversalObjective::saveData);
             registeredObjectives = new ArrayList<>();
             registeredObjectivesDictionary = new HashMap<>();
             trackedObjectives = new ConcurrentHashMap<>();

@@ -27,7 +27,7 @@ public class SpawnPortal implements InventoryProvider {
                 .title("Fast-Travel").build();
     }
 
-    Map<String, Location> warps  = new HashMap<String, Location>() {{ // TODO this is temporary, please make this good and add an effect
+    private final Map<String, Location> warps  = new HashMap<String, Location>() {{ // TODO this is temporary, please make this good and add an effect
         put("Aoba", new Location(Bukkit.getWorld("world"), -92.5d, 48d, -69d, -120f, -10f));
     }};
 
@@ -58,10 +58,10 @@ public class SpawnPortal implements InventoryProvider {
         int perPage = 7;
         pagination.setItemsPerPage(perPage);
         pagination.addToIterator(contents.newIterator(SlotIterator.Type.HORIZONTAL, 1, 1));
-        int pages = (pagination.getPageItems().length + perPage - 1) / perPage; // Rounds up num / divisor
+        int pages = Math.floorDiv(warps.size(), perPage);
 
 
-        if (pagination.getPage() > 1)
+        if (!pagination.isFirst())
              contents.set(1, 0, ClickableItem.of(new ItemBuilder(Material.ARROW).name("&ePrevious Page").build(),
                 e -> getInventory(p).open(p, pagination.previous().getPage())));
         if (pagination.getPage() < pages)

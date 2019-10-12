@@ -154,15 +154,6 @@ public class ScoreboardManager implements Listener {
     );
 
     private void initialize() {
-/*      breaks npcs, need to find workaround
-
-        Scoreboard s = Bukkit.getScoreboardManager().getMainScoreboard();
-        if (s.getObjective("health") != null)
-            s.getObjective("health").unregister(); // Unregistering to clear cache
-        Objective o = s.registerNewObjective("health", "health");
-        o.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c\u2764"));
-        o.setDisplaySlot(DisplaySlot.BELOW_NAME);*/
-
         for (Player p : Bukkit.getOnlinePlayers())
             setupBoard(p);
 
@@ -275,7 +266,7 @@ public class ScoreboardManager implements Listener {
                     board.set(formatLine("&e" + uo.getDescription(), p), descLine);
                 int countLine = sf.getObjectiveProgressLine();
                 if (countLine > -1)
-                    board.set(formatLine("&8(&b" + TextUtils.addCommas(e.getNewProgress()) + "&7/&b" +
+                    board.set(formatLine("&8(&a" + TextUtils.addCommas(e.getNewProgress()) + "&7/&b" +
                             TextUtils.addCommas(e.getNeeded()) + "&8)", p), countLine);
             }
         }
@@ -329,7 +320,7 @@ public class ScoreboardManager implements Listener {
                 "&0",  // Can't have duplicate lines so invisible color codes
                 "Objective:",
                 "&e%objective_description%",
-                "&8(&b%objective_progress%&7/&b%objective_needed%&8)",
+                "&8(&a%objective_progress%&7/&b%objective_needed%&8)",
                 "",
                 "&ewww.corruptprisons.com"
         ), 6, 3, 2),

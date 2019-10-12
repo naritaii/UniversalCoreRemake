@@ -53,7 +53,7 @@ public class LeaderboardManager implements Listener {
 
         instantiateHolograms();
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(UniversalCoreRemake.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskTimer(UniversalCoreRemake.getInstance(), () -> { // Synchronous because itd break manuallySortData();
             if (System.nanoTime() - lastSort > 9e+11) { // 15 minutes
                 lastSort = System.nanoTime();
                 manuallySortData();
@@ -101,7 +101,7 @@ public class LeaderboardManager implements Listener {
         Bukkit.getOnlinePlayers().forEach(this::updateHolograms);
     }
 
-    private void initializeData() {
+    private void initializeData() { // TODO add reinitialize command
         lastSort = System.nanoTime();
         Map<String, Map<UUID, Double>> playersData = new HashMap<>();
         try {
@@ -228,9 +228,9 @@ public class LeaderboardManager implements Listener {
             holoLocs.put(type, new Location(Bukkit.getWorld(data.getString(type + "." + "World").trim()),
                     data.getDouble(type + "." + "X"), data.getDouble(type + "." + "Y"),
                     data.getDouble(type + "." + "Z")));
-            displayNames.put(type, data.getString(type + "." + "DisplayName"));
-            formats.put(type, data.getString(type + "." + "Format"));
-            naformats.put(type, data.getString(type + "." + "NotAvailable"));
+            displayNames.put(type, data.getString(type + "." + "DisplayName").trim());
+            formats.put(type, data.getString(type + "." + "Format").trim());
+            naformats.put(type, data.getString(type + "." + "NotAvailable").trim());
         });
 
         try {

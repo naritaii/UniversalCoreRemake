@@ -82,13 +82,13 @@ public class UniversalCoreRemake extends JavaPlugin {
                 "exp", "setblockmeta", "readblockmeta", "setitemmeta", "readitemmeta", "emoji",
                 "openmineraltrader", "openfoodtrader", "openstats", "openspawnportal", "openquestmaster",
                 "saveuniversalplayercachetofile", "saveblockmetadatacachetofile", "selectobjective", "mutate",
-                "serialize");
+                "serialize", "stringreward");
 
         System.out.println(getName() + " is now enabled!");
     }
 
     // declare your flag as a field accessible to other parts of your code (so you can use this to check it)
-// note: if you want to use a different type of flag, make sure you change StateFlag here and below to that type
+    // note: if you want to use a different type of flag, make sure you change StateFlag here and below to that type
     public static SetFlag UNIVERSAL_MINE;
 
     @Override

@@ -1,5 +1,6 @@
 package me.stupidbot.universalcoreremake.enchantments.mutation;
 
+import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.events.UniversalBlockBreakEvent;
 import me.stupidbot.universalcoreremake.utilities.TextUtils;
 import me.stupidbot.universalcoreremake.utilities.item.ItemUtils;
@@ -60,6 +61,7 @@ public class Glass extends Enchantment implements Listener {
 
 
     private final Random r = new Random();
+
     @EventHandler
     public void OnUniversalBlockBreak(UniversalBlockBreakEvent e) {
         Player p = e.getPlayer();
@@ -67,16 +69,18 @@ public class Glass extends Enchantment implements Listener {
 
         if (i.containsEnchantment(this)) {
             int level = i.getEnchantmentLevel(this);
-            float  breakChance = level * 0.06f;
+            float breakChance = level * 0.05f;
 
             if (r.nextFloat() <= breakChance) {
-                ItemUtils.removeItem(i, 1);
+                UniversalCoreRemake.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(UniversalCoreRemake.getInstance(), () -> {
+                    ItemUtils.removeItem(i, 1);
 
-                p.playSound(p.getLocation(), Sound.GLASS, 1f, 1f);
-                String  name = i.getItemMeta().hasDisplayName() ? i.getItemMeta().getDisplayName() : TextUtils.capitalizeFully(i.getType().toString());
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&cYour &e" + name + "&c broke because of its " + getName() + " " +
-                                (level > 1 ? TextUtils.toRoman(level) + " " : "") + "mutation!"));
+                    p.playSound(p.getLocation(), Sound.GLASS, 1f, 1f);
+                    String name = i.getItemMeta().hasDisplayName() ? i.getItemMeta().getDisplayName() : TextUtils.capitalizeFully(i.getType().toString());
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                            "&cYour &e" + name + "&c broke because of its " + getName() + " " +
+                                    (level > 1 ? TextUtils.toRoman(level) + " " : "") + "mutation!"));
+                });
             }
         }
     }

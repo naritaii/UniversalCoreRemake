@@ -14,6 +14,7 @@ import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.effects.BlockBreak;
 import me.stupidbot.universalcoreremake.effects.BlockRegen;
 import me.stupidbot.universalcoreremake.effects.EnhancedBlockBreak;
+import me.stupidbot.universalcoreremake.enchantments.UniversalEnchantment;
 import me.stupidbot.universalcoreremake.events.UniversalBlockBreakEvent;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
 import me.stupidbot.universalcoreremake.utilities.LocationUtils;
@@ -21,10 +22,14 @@ import me.stupidbot.universalcoreremake.utilities.PlayerLevelling;
 import me.stupidbot.universalcoreremake.utilities.Stamina;
 import me.stupidbot.universalcoreremake.utilities.TextUtils;
 import me.stupidbot.universalcoreremake.utilities.item.ItemLevelling;
+import me.stupidbot.universalcoreremake.utilities.item.ItemMetadata;
 import me.stupidbot.universalcoreremake.utilities.item.ItemUtils;
+import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -142,13 +147,23 @@ public class MiningManager implements Listener {
                     int d = timer.getOrDefault(id, 0) + 1;
                     boolean usingItem = ItemLevelling.getPickaxes().contains(p.getItemInHand().getType());
                     ItemStack itemInHand = p.getItemInHand();
-                    float durabilityMod = mb.getDurability() * getItemMultiplier(itemInHand.getType());
+                    float speedMod = getItemMultiplier(itemInHand.getType());
+                    if (usingItem) {
+                        if (itemInHand.containsEnchantment(UniversalEnchantment.SANDSTONE_LOVER))
+                            if (mb == MineableBlock.RED_SANDSTONE || mb == MineableBlock.SANDSTONE)
+                                speedMod += 0.05f;
+                        if (itemInHand.containsEnchantment(Enchantment.DIG_SPEED))
+                            speedMod += 0.2f + (itemInHand.getEnchantmentLevel(Enchantment.DIG_SPEED) * 0.05f);
+                    }
+
+                    float durabilityMod = mb.getDurability() * speedMod;
                     int finishedInt = (int) ((mb.getDurability() - durabilityMod) * 20);
 
                     if (d < finishedInt) { // If Still Mining
-                        int stage = (int) Math.floor((d * 10f) / finishedInt);
-                        breakAnim(p, b, stage);
-
+                        if (d % 4 == 0) { // Animate lazily
+                            int stage = (int) Math.floor((d * 10f) / finishedInt);
+                            breakAnim(p, b, stage);
+                        }
                         timer.put(id, d);
                     }
                     // If Finished Mining
@@ -170,8 +185,15 @@ public class MiningManager implements Listener {
 
                         ItemUtils.addItemSafe(p, new ItemStack(mb.getLoot(), amt));
                         PlayerLevelling.giveXp(p, xp);
-                        if (usingItem)
-                            itemInHand = ItemLevelling.giveXp(p, itemInHand, xp);
+                        if (usingItem) {
+                            Map<String, String> meta = ItemMetadata.getMeta(itemInHand);
+                            int mined = 0;
+                            if (meta.containsKey("BLOCKS_MINED"))
+                                mined = Integer.parseInt(meta.get("BLOCKS_MINED"));
+                            ItemMetadata.setMeta(itemInHand, "BLOCKS_MINED", ++mined);
+                            ItemLevelling.giveXp(p, itemInHand, xp);
+
+                        }
                         Stamina.removeStamina(p, stamina);
 
                         TextUtils.sendActionbar(p, "&2XP: &a+" + mb.getBaseXp() +
@@ -180,7 +202,11 @@ public class MiningManager implements Listener {
 
 
                         // Enhance Block?
-                        if (Math.random() < mb.getEnhanceChance())
+                        float enhanceChance = mb.getEnhanceChance();
+                        if (usingItem)
+                            if (itemInHand.containsEnchantment(UniversalEnchantment.SANDSTONE_LOVER))
+                                enhanceChance += 0.05f;
+                        if (Math.random() < enhanceChance)
                             UniversalCoreRemake.getBlockMetadataManager().setMeta(b, "MINEABLE",
                                     mb.getEnhanceBlock().toString());
 
@@ -268,12 +294,21 @@ public class MiningManager implements Listener {
     private void breakAnim(Player p, Block b, int stage) {
         PacketContainer breakAnim = UniversalCoreRemake.getProtocolManager().createPacket(
                 PacketType.Play.Server.BLOCK_BREAK_ANIMATION);
+        PacketPlayOutAnimation punchAnim = new PacketPlayOutAnimation(((CraftPlayer) p).getHandle(), 0); // I don't know the protocollib id
+
         breakAnim.getBlockPositionModifier().write(0, new BlockPosition(b.getX(), b.getY(),
                 b.getZ()));
         breakAnim.getIntegers().write(0, LocationUtils.getBlockEntityId(b));
         breakAnim.getIntegers().write(1, stage);
         try {
             UniversalCoreRemake.getProtocolManager().sendServerPacket(p, breakAnim);
+
+            for (Player other : Bukkit.getOnlinePlayers()) {
+                if (other != p && other.getLocation().distanceSquared(p.getLocation()) <= 11.3137085) { // 128 blocks squared
+                    UniversalCoreRemake.getProtocolManager().sendServerPacket(other, breakAnim);
+                    ((CraftPlayer) other).getHandle().playerConnection.sendPacket(punchAnim);
+                }
+            }
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }

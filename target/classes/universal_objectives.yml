@@ -60,6 +60,7 @@ Objectives:
     StringRewards:
       - 'MONEY 3.50'
       - 'QUEST alice_in_aoba'
+      - 'SCRIPT startaliceinaoba'
     Catagory: STORY_QUEST
 
   alice_in_aoba:
@@ -67,10 +68,10 @@ Objectives:
     TaskInfo:
       - Gtr4w5
       - '1'
-      - '' # Create Alice and Put her NPC ID Here.
+      - 'f59c4fb2-4317-4f7f-9405-cb7b0c659a74'
     Description: 'Talk to &aAlice'
     DisplayItem:
-      ItemMaterial: RED_FLOWER
+      ItemMaterial: RED_ROSE
       ItemData: 1
     StringRewards:
       - 'MONEY 3.50'
@@ -85,7 +86,7 @@ Objectives:
       - 'f59c4fb2-4317-4f7f-9405-cb7b0c659a74,RED_FLOWER,1' # Find the missing blue orchid this a blue flower now because Aoba is a type of blue flower
     Description: 'Find &aAlice''s Blue Orchid'
     DisplayItem:
-      ItemMaterial: RED_FLOWER
+      ItemMaterial: RED_ROSE
       ItemData: 1
       Amount: 2
     StringRewards:
@@ -101,13 +102,14 @@ Objectives:
       - 'f59c4fb2-4317-4f7f-9405-cb7b0c659a74,RED_SANDSTONE,0'
     Description: 'Give &aAlice Red Sandstone'
     DisplayItem:
-      ItemMaterial: RED_FLOWER
+      ItemMaterial: RED_ROSE
       ItemData: 1
       Amount: 3
     StringRewards:
       - 'MONEY 75.00'
       - 'MESSAGE &dEvil Thoughts' # +sInFuL Thoughts lol
       - 'QUEST steal_pickaxe'
+    Catagory: STORY_QUEST
 
     steal_pickaxe:
       TaskType: TALK_TO_NPC
@@ -117,11 +119,11 @@ Objectives:
         - '' # Create Alice and Put her NPC ID Here.
       Description: 'Steal Alice''s pickaxe...'
       DisplayItem:
-        ItemMaterial: RED_FLOWER
+        ItemMaterial: RED_ROSE
         ItemData: 1
         Amount: 4 # Optional argument, defaults to 1
       StringRewards:
-        - 'ITEM' # Give a "Red stone Pickaxe" which is really just a Wood Pickaxe Renamed, maybe some mutation on it
+        - 'ITEM H4sIAAAAAAAAAGWQ7UrDMBSGzz7U2Svwn0FQFAdu4Nzov7oWHPZjsA6EMUpIs63YJSPtpoL3k/vIfQmeokxh5895c/Lw5j2xAFpQz1I4W2eCM0UXpf0mZcpFssnYK33nNTgayq0oaxY0Sro8hSYXbGUBQK0OjXyXV71y+AILTtKs2OT0AylfKt5C6hgiozuzp5HreuF8FnixM3/0o+HzJAlGoefa3fbL2O60h9NJHAVJ6ASefcUmVKRFKQUn458Y7TiKHT+pULg3uo+CGE07KO+wD/DQn6EwevB5UHg3h6oujGZG58E0duJRFNpGP5C/p3y54wpSdLntXRL8kEwsSbHhPCVSkGvF0xtS7Gk0RU1+abaignGykIog9w8rJSm3SpBMoNqPW9AM6ZrDudEKMx2si7Y9DNoFqMOxS9d0yTH+NxkbahGuAQAA' # Do /serialize to serialize an item, this is a regular wooden pick called sandstone pickaxe
         - 'MESSAGE &dGuilt' # +Guilt
         - 'MESSAGE Alice''s rage' # +Alice's rage I think would look pretty funny
         - 'SCRIPT alicerage' # make script where she says "WHAT THE FUCK.... GIVE MY PICKAXE BACK.... I WILL FIND YOU" or something (ok maybe remove the 'FUCK')

@@ -75,3 +75,6 @@ commands:
   serialize:
     description: Serialize an ItemStack to a String
     usage: /<command>
+  stringreward:
+    description: Test a StringReward
+    usage: /<command> <string_reward>

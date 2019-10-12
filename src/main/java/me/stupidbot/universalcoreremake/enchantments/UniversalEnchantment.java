@@ -1,6 +1,7 @@
 package me.stupidbot.universalcoreremake.enchantments;
 
 import me.stupidbot.universalcoreremake.enchantments.mutation.Glass;
+import me.stupidbot.universalcoreremake.enchantments.mutation.SandstoneLover;
 import me.stupidbot.universalcoreremake.enchantments.mutation.SpeedBoost;
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
@@ -16,10 +17,11 @@ import java.util.Set;
 public class UniversalEnchantment {
     private static final Enchantment GLASS = new Glass(255);
     private static final Enchantment SPEED_BOOST = new SpeedBoost(254);
+    public static final Enchantment SANDSTONE_LOVER = new SandstoneLover(253);
 
-    public static final Set<Enchantment> ENCHANTMENTS = new HashSet<>(Arrays.asList(GLASS, SPEED_BOOST));
+    public static final Set<Enchantment> ENCHANTMENTS = new HashSet<>(Arrays.asList(GLASS, SPEED_BOOST, SANDSTONE_LOVER));
 
-    public static final Set<Enchantment> MUTATIONS = new HashSet<>(Arrays.asList(GLASS, SPEED_BOOST));
+    public static final Set<Enchantment> MUTATIONS = new HashSet<>(Arrays.asList(GLASS, SPEED_BOOST, SANDSTONE_LOVER));
 
     public UniversalEnchantment(JavaPlugin plugin) {
         registerEnchantments();
@@ -68,5 +70,17 @@ public class UniversalEnchantment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static String getDescription(Enchantment e) {
+        if (e == GLASS)
+            return "&7Chance item may break when used";
+        else if (e == SPEED_BOOST)
+            return "&7Right click for +20% speed for 30 seconds (costs 25 stamina)";
+        else if (e == SANDSTONE_LOVER)
+            return "&75% mining speed on (red) sandstone and\n&7+5% chance for red sandstone to turn into sandstone";
+        else if (e == Enchantment.DIG_SPEED)
+            return "&7Mine all blocks +25% faster and 5% for subsequent level";
+        return null;
     }
 }

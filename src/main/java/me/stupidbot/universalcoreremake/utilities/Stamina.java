@@ -92,7 +92,7 @@ public class Stamina implements Listener { // TODO this is more of a manager  th
     }
 
     private static int getMaxStamina(int i) {
-        return (i * 5) + 50;
+        return (i * 5) + 20;
     }
 
 

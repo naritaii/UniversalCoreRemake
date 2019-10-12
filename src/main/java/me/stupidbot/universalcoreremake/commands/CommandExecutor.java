@@ -22,6 +22,7 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private final SaveBlockmetaCacheToFile saveBlockmetaCacheToFile = new SaveBlockmetaCacheToFile();
     private final Mutate mutate = new Mutate();
     private final Serialize serialize = new Serialize();
+    private final StringReward stringReward = new StringReward();
 
     @Override
     public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
@@ -61,7 +62,8 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
             return mutate.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("serialize"))
             return serialize.execute(s);
-        else
-            return false;
+        else if (cmd.getName().equalsIgnoreCase("stringreward"))
+            return stringReward.execute(s, label, args);
+        return false;
         }
 }

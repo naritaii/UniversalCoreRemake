@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Mutate {
+class Mutate {
     @SuppressWarnings("SameReturnValue")
     boolean execute(CommandSender s, String label, String[] args) {
         if (s.hasPermission("universalcore.admin"))

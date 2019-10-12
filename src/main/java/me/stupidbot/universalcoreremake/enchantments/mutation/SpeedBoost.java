@@ -58,13 +58,13 @@ public class SpeedBoost extends Enchantment implements Listener {
     }
 
 
-    private final int staminaCost = 25;
     @EventHandler
     public void OnPlayerInteract(PlayerInteractEvent e) {
         if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             Player p = e.getPlayer();
             ItemStack i = p.getItemInHand();
 
+            int staminaCost = 25;
             if (i.containsEnchantment(this))
                 if (Stamina.getStamina(p) >= staminaCost) {
                     Stamina.removeStamina(p, staminaCost);

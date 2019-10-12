@@ -38,15 +38,15 @@ public class StringReward {
                 case "MONEY":
                     try {
                         r[i] = ChatColor.translateAlternateColorCodes('&',
-                                "&6$" + TextUtils.addCommas(Double.parseDouble(arg.toString())));
+                                "&6$" + TextUtils.addCommas(Double.parseDouble(arg.toString().trim())));
                     } catch (NumberFormatException e) {
                         r[i] = ChatColor.translateAlternateColorCodes('&',
-                                "&cCould not parse money " + arg.toString());
+                                "&cCould not parse money " + arg.toString().trim());
                     }
                     break;
 
                 case "ITEM":
-                    ItemStack is = ItemUtils.deserializeItemStack(arg.toString());
+                    ItemStack is = ItemUtils.deserializeItemStack(arg.toString().trim());
                     if (is != null)
                         if (is.hasItemMeta())
                             r[i] = ChatColor.translateAlternateColorCodes('&',
@@ -57,7 +57,7 @@ public class StringReward {
                             r[i] = TextUtils.capitalizeFully(is.getType().toString());
                     else
                         r[i] = ChatColor.translateAlternateColorCodes('&',
-                                "&cCould not parse item " + arg.toString());
+                                "&cCould not parse item " + arg.toString().trim());
                     break;
 
                 case "QUEST":
@@ -65,7 +65,7 @@ public class StringReward {
                     break;
 
                 case "MESSAGE":
-                    r[i] = ChatColor.translateAlternateColorCodes('&', arg.toString());
+                    r[i] = ChatColor.translateAlternateColorCodes('&', arg.toString().trim());
 
                 case "SCRIPT":
                     r[i] = null;
@@ -90,22 +90,23 @@ public class StringReward {
             StringBuilder arg = new StringBuilder();
             for (String args : Arrays.copyOfRange(split, 1, split.length))
                 arg.append(" ").append(args);
+            arg.trimToSize();
 
             switch (type) {
                 case "MONEY":
                     try {
-                        double d = Double.parseDouble(arg.toString());
+                        double d = Double.parseDouble(arg.toString().trim());
                         UniversalCoreRemake.getEconomy().depositPlayer(p, d);
                         p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                 "&6$" + TextUtils.addCommas(d) + "&a has been added to your account."));
                     } catch (NumberFormatException e) {
                         p.sendMessage((ChatColor.translateAlternateColorCodes('&',
-                                "&cCould not parse money " + arg.toString())));
+                                "&cCould not parse money " + arg.toString().trim())));
                     }
                     break;
 
                 case "ITEM":
-                    ItemStack is = ItemUtils.deserializeItemStack(arg.toString());
+                    ItemStack is = ItemUtils.deserializeItemStack(arg.toString().trim());
                     if (is != null)
                         if (is.hasItemMeta()) {
                             p.sendMessage(ChatColor.translateAlternateColorCodes('&',
@@ -121,27 +122,36 @@ public class StringReward {
                         }
                     else
                         p.sendMessage((ChatColor.translateAlternateColorCodes('&',
-                                "&cCould not parse item " + arg.toString())));
+                                "&cCould not parse item " + arg.toString().trim())));
                     break;
 
                 case "QUEST":
                     UniversalObjectiveManager ubm = UniversalCoreRemake.getUniversalObjectiveManager();
-                    UniversalObjective uo = ubm.registeredObjectives.get(ubm.registeredObjectivesDictionary.get(arg.toString()));
-                    UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
-                    up.removeCompletedObjective(uo.getId());
-                    up.removeObjectiveData(uo.getId());
-                    uo.addPlayer(p);
-                    up.addSelectedObjective(uo.getId());
-                    UniversalObjectiveStartEvent event = new UniversalObjectiveStartEvent(p, uo, UniversalCoreRemake.getUniversalObjectiveManager().getNeeded(uo));
-                    Bukkit.getServer().getPluginManager().callEvent(event); // TODO Error Handling and chat message
+                    if (ubm.registeredObjectivesDictionary.containsKey(arg.toString().trim())) {
+                        UniversalObjective uo = ubm.registeredObjectives.get(ubm.registeredObjectivesDictionary.get(arg.toString().trim()));
+                        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
+                        if (up.getCompletedObjectives().contains(uo.getId()))
+                            up.removeCompletedObjective(uo.getId());
+                        else if (up.getSelectedObjectives().contains(uo.getId())) {
+                            up.removeSelectedObjective(uo.getId());
+                            up.removeObjectiveData(uo.getId());
+                        }
+                        up.addSelectedObjective(uo.getId());
+                        uo.addPlayer(p);
+                        UniversalObjectiveStartEvent event = new UniversalObjectiveStartEvent(p, uo, UniversalCoreRemake.getUniversalObjectiveManager().getNeeded(uo));
+                        Bukkit.getServer().getPluginManager().callEvent(event);
+                    } else {
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                "&cCould not parse quest " + arg.toString().trim()));
+                    }
                     break;
 
                 case "MESSAGE":
-                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', arg.toString()));
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', arg.toString().trim()));
                     break;
 
                 case "SCRIPT":
-                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "ex run " + arg.toString() + " player:p@" + p.getName());
+                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "ex run " + arg.toString().trim() + " player:p@" + p.getName());
                     break;
 
                 default:
@@ -163,44 +173,49 @@ public class StringReward {
             switch (type) {
                 case "MONEY":
                     try {
-                        double d = Double.parseDouble(arg.toString());
+                        double d = Double.parseDouble(arg.toString().trim());
                         UniversalCoreRemake.getEconomy().depositPlayer(p, d);
                     } catch (NumberFormatException e) {
                         p.sendMessage((ChatColor.translateAlternateColorCodes('&',
-                                "&cCould not parse money " + arg.toString())));
+                                "&cCould not parse money " + arg.toString().trim())));
                     }
                     break;
 
                 case "ITEM":
-                    ItemStack is = ItemUtils.deserializeItemStack(arg.toString());
+                    ItemStack is = ItemUtils.deserializeItemStack(arg.toString().trim());
                     if (is != null)
-                        if (is.hasItemMeta()) {
-                            ItemUtils.addItemSafe(p, is);
-                        } else {
-                            ItemUtils.addItemSafe(p, is);
-                        }
+                        ItemUtils.addItemSafe(p, is);
                     else
                         p.sendMessage((ChatColor.translateAlternateColorCodes('&',
-                                "&cCould not parse item " + arg.toString())));
+                                "&cCould not parse item " + arg.toString().trim())));
                     break;
 
                 case "QUEST":
                     UniversalObjectiveManager ubm = UniversalCoreRemake.getUniversalObjectiveManager();
-                    UniversalObjective uo = ubm.registeredObjectives.get(ubm.registeredObjectivesDictionary.get(arg.toString()));
-                    UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
-                    up.removeCompletedObjective(uo.getId());
-                    up.removeObjectiveData(uo.getId());
-                    uo.addPlayer(p);
-                    up.addSelectedObjective(uo.getId());
-                    UniversalObjectiveStartEvent event = new UniversalObjectiveStartEvent(p, uo, UniversalCoreRemake.getUniversalObjectiveManager().getNeeded(uo));
-                    Bukkit.getServer().getPluginManager().callEvent(event); // TODO Error Handling
+                    if (ubm.registeredObjectivesDictionary.containsKey(arg.toString().trim())) {
+                        UniversalObjective uo = ubm.registeredObjectives.get(ubm.registeredObjectivesDictionary.get(arg.toString().trim()));
+                        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
+                        if (up.getCompletedObjectives().contains(uo.getId()))
+                            up.removeCompletedObjective(uo.getId());
+                        else if (up.getSelectedObjectives().contains(uo.getId())) {
+                            up.removeSelectedObjective(uo.getId());
+                            up.removeObjectiveData(uo.getId());
+                        }
+                        up.addSelectedObjective(uo.getId());
+                        uo.addPlayer(p);
+                        UniversalObjectiveStartEvent event = new UniversalObjectiveStartEvent(p, uo, UniversalCoreRemake.getUniversalObjectiveManager().getNeeded(uo));
+                        Bukkit.getServer().getPluginManager().callEvent(event);
+                    } else {
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                "&cCould not parse quest " + arg.toString().trim()));
+                    }
                     break;
 
                 case "MESSAGE":
                     break;
 
                 case "SCRIPT":
-                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "ex run " + arg.toString() + " player:p@" + p.getName());
+                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "ex run " + arg.toString().trim() + " player:p@" + p.getName());
                     break;
 
                 default:

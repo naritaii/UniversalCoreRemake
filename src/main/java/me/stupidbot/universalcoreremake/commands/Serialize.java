@@ -2,6 +2,7 @@ package me.stupidbot.universalcoreremake.commands;
 
 import me.stupidbot.universalcoreremake.utilities.item.ItemUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,10 +18,10 @@ class Serialize {
                 Player p = (Player) s;
                 ItemStack i = p.getItemInHand();
 
-                if (i != null) {
+                if (i.getType() != Material.AIR) {
                     String asString = ItemUtils.serializeItemStack(i);
                     s.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            "&a" + " Item serialized! Copy-paste from console.\n&e" + asString));
+                            "&aItem serialized! Copy-paste from console.\n&e" + asString));
                     System.out.println("Serialized item:\n" + asString);
                 } else
                     s.sendMessage(ChatColor.translateAlternateColorCodes('&',
