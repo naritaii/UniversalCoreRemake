@@ -1,8 +1,7 @@
 package me.stupidbot.universalcoreremake.listeners;
 
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import me.stupidbot.universalcoreremake.utilities.Warp;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,11 +13,12 @@ public class SpawnPortalListener implements Listener {
  @EventHandler
     public void OnPlayerInteract(PlayerPortalEvent e) {
         Player p = e.getPlayer();
-        if (e.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) { // TODO this is temporary, please make this good and add an effect
-            p.teleport(new Location(Bukkit.getWorld("world"), -92.5d, 48d, -69d, -120f, -10f));
+        if (e.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
+            Warp warp = Warp.getWarpFromId(UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p).getSelectedWarpId());
+            warp.warp(p);
 
             UniversalCoreRemake.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(UniversalCoreRemake.getInstance(), () ->
-                    p.setVelocity(new Vector(0, 0, 0))); // Stop fall damage
+                    p.setVelocity(new Vector(p.getVelocity().getX(), 0.2, p.getVelocity().getZ()))); // Stop fall damage and looks cool
             e.setCancelled(true);
         }
     }

@@ -6,6 +6,7 @@ import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayerManager;
 import me.stupidbot.universalcoreremake.utilities.PlayerLevelling;
 import me.stupidbot.universalcoreremake.utilities.TextUtils;
+import me.stupidbot.universalcoreremake.utilities.Warp;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 
@@ -121,7 +122,7 @@ class UniversalCoreExpansion extends PlaceholderExpansion {
             case "reward": // %universalcore_reward%
                 return ""; // TODO
             case "spawnportal": // %universalcore_spawnportal%
-                return ""; // TODO
+                return Warp.getWarpFromId(upm.getUniversalPlayer(p).getSelectedWarpId()).getName();
             case "dj": // %universalcore_dj%
                 return UniversalCoreRemake.getPermissions().playerHas("world", p, "universalcore.dj") ?
                         "(Fake)" :

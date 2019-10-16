@@ -1,5 +1,7 @@
 package me.stupidbot.universalcoreremake.guis;
 
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import fr.minuskube.inv.ClickableItem;
 import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.InventoryContents;
@@ -10,10 +12,13 @@ import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.managers.universalobjective.UniversalObjective;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
 import me.stupidbot.universalcoreremake.utilities.TextUtils;
+import me.stupidbot.universalcoreremake.utilities.Warp;
 import me.stupidbot.universalcoreremake.utilities.item.ItemBuilder;
 import me.stupidbot.universalcoreremake.utilities.item.Skull;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -36,9 +41,28 @@ public class QuestMaster implements InventoryProvider {
     @Override
     public void init(Player p, InventoryContents contents) {
         contents.fill(ClickableItem.empty(new ItemBuilder(new ItemStack(
-                Material.STAINED_GLASS_PANE, 1, (short) 15)).name(" ").build())); // TODO Daily rewards + enderchests
-        
-        contents.set(5, 0, ClickableItem.of(new ItemBuilder(Skull.getCustomSkull(Skull.DISCORD.getId()))
+                Material.STAINED_GLASS_PANE, 1, (short) 15)).name(" ").build())); // TODO Daily rewards
+
+        contents.set(5, 4, ClickableItem.of(new ItemBuilder(Material.BARRIER).name("&cClose").build(),
+                e -> p.closeInventory()));
+
+        contents.set(5, 2, ClickableItem.of(new ItemBuilder(Material.ENDER_CHEST).name("&aEnder Chest")
+        .lore("").lore("&eClick to store items!").build(), e -> p.openInventory(p.getEnderChest())));
+
+        boolean isInSpawn = false;
+        ApplicableRegionSet regions = UniversalCoreRemake.getWorldGuardPlugin().getRegionManager(p.getWorld())
+                .getApplicableRegions(p.getLocation());
+        for (ProtectedRegion region : regions)
+            if (region.getId().equalsIgnoreCase("spawn")) {
+                isInSpawn = true;
+                break;
+            }
+        Warp warp = isInSpawn ? Warp.getWarpFromId(UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p).getSelectedWarpId()) :
+                new Warp(new Location(Bukkit.getWorld("world"), 15214.5, 65, 10152.5, -180, 0), "hub", "Hub");
+        contents.set(5, 3, ClickableItem.of(new ItemBuilder(Skull.getCustomSkull(Skull.NETHER_PORTAL.getId()))
+        .name("&bWarp to: &e").lore("").lore("&eClick to warp!").build(), e -> warp.warp(p)));
+
+        contents.set(5, 5, ClickableItem.of(new ItemBuilder(Skull.getCustomSkull(Skull.DISCORD.getId()))
                 .name("&5Discord").lore("&eJoin our Discord server for updates and giveaways.\n" +
                         "&eThis is a great place to talk to the community and admins directly!\n" +
                         "&eType &d/sync&e to sync your Minecraft and Discord accounts.").build(), e ->
@@ -66,7 +90,7 @@ public class QuestMaster implements InventoryProvider {
                         )
                         .build())));
 
-        contents.set(5, 1, ClickableItem.of(new ItemBuilder(Skull.getCustomSkull(Skull.TWITTER.getId()))
+        contents.set(5, 6, ClickableItem.of(new ItemBuilder(Skull.getCustomSkull(Skull.TWITTER.getId()))
                 .name("&bTwitter").lore("&eFollow our Twitter for updates and giveaways.").build(), e ->
                 BookUtil.openPlayer(p, BookUtil.writtenBook()
                 .author("Corrupt Prisons")

@@ -284,4 +284,13 @@ public class UniversalPlayer {
         pFile.set("Stats.Deaths", i);
         return i;
     }
+
+    public String setSelectedWarpId(String s) {
+        pFile.set("SelectedWarp", s);
+        return s;
+    }
+
+    public String getSelectedWarpId() {
+        return pFile.getString("SelectedWarp");
+    }
 }

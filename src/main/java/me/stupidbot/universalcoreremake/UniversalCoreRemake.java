@@ -90,6 +90,7 @@ public class UniversalCoreRemake extends JavaPlugin {
     // declare your flag as a field accessible to other parts of your code (so you can use this to check it)
     // note: if you want to use a different type of flag, make sure you change StateFlag here and below to that type
     public static SetFlag UNIVERSAL_MINE;
+    public static StringFlag UNIVERSAL_REGION_NAME;
 
     @Override
     public void onLoad() {
@@ -97,6 +98,7 @@ public class UniversalCoreRemake extends JavaPlugin {
         if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
             worldGuardPlugin = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
             FlagRegistry registry = worldGuardPlugin.getFlagRegistry();
+
             try {
                 // create a flag with the name "my-custom-flag", defaulting to true
                 SetFlag flag = new SetFlag<>("universal-mine", new StringFlag(null));
@@ -106,13 +108,24 @@ public class UniversalCoreRemake extends JavaPlugin {
                 // some other plugin registered a flag by the same name already.
                 // you can use the existing flag, but this may cause conflicts - be sure to check type
                 Flag<?> existing = registry.get("universal-mine");
-                if (existing instanceof SetFlag) {
+                if (existing instanceof SetFlag)
                     UNIVERSAL_MINE = (SetFlag) existing;
-                } else {
+                else
                     // types don't match - this is bad news! some other plugin conflicts with you
                     // hopefully this never actually happens
-                    System.out.println("WorldGuard support disabled.");
-                }
+                    System.out.println("Could not initialize universal-mine WorldGuard flag.");
+            }
+
+            try {
+                StringFlag flag = new StringFlag("universal-region-name");
+                registry.register(flag);
+                UNIVERSAL_REGION_NAME = flag;
+            } catch (FlagConflictException e) {
+                Flag<?> existing = registry.get("universal-region-name");
+                if (existing instanceof StringFlag)
+                    UNIVERSAL_REGION_NAME = (StringFlag) existing;
+                else
+                    System.out.println("Could not initialize universal-region-name WorldGuard flag.");
             }
         } else
             System.out.println("WorldGuard support disabled.");

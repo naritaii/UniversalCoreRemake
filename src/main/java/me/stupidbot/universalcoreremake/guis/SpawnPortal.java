@@ -7,15 +7,14 @@ import fr.minuskube.inv.content.InventoryProvider;
 import fr.minuskube.inv.content.Pagination;
 import fr.minuskube.inv.content.SlotIterator;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
+import me.stupidbot.universalcoreremake.utilities.Warp;
 import me.stupidbot.universalcoreremake.utilities.item.ItemBuilder;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class SpawnPortal implements InventoryProvider {
     public static SmartInventory getInventory(Player p) {
@@ -27,10 +26,6 @@ public class SpawnPortal implements InventoryProvider {
                 .title("Fast-Travel").build();
     }
 
-    private final Map<String, Location> warps  = new HashMap<String, Location>() {{ // TODO this is temporary, please make this good and add an effect
-        put("Aoba", new Location(Bukkit.getWorld("world"), -92.5d, 48d, -69d, -120f, -10f));
-    }};
-
     @Override
     public void init(Player p, InventoryContents contents) {
         contents.fill(ClickableItem.empty(new ItemBuilder(new ItemStack(
@@ -39,17 +34,28 @@ public class SpawnPortal implements InventoryProvider {
 
 
         Pagination pagination = contents.pagination();
+        List<Warp> warps = Warp.getWarps();
         ClickableItem[] items = new ClickableItem[warps.size()];
         int i = 0;
-        for (Map.Entry<String, Location> e : warps.entrySet()) {
-            String id = e.getKey().trim();
-            Location loc = e.getValue();
-            boolean canWarp = p.hasPermission("universalcore.warp." + id.toLowerCase());
-            ItemBuilder di = new ItemBuilder(canWarp ? Material.DIAMOND : Material.COAL).name("&a" + id);
+        for (Warp w : warps) {
+            String name = w.getName();
+            String id = w.getId();
+            boolean canWarp = p.hasPermission("universalcore.warp." + id);
+            ItemBuilder di = new ItemBuilder(canWarp ? Material.EYE_OF_ENDER : Material.FIREWORK_CHARGE)
+                    .name("&bSet portal to &a" + name)
+                    .lore("")
+                    .lore(canWarp ? "&eClick to change the portal warp location then jump in!" :
+                            "&cYou have not unlocked this location.");
 
-            items[i] = ClickableItem.of(di.build(), ev -> {
-                if (canWarp)
-                    p.teleport(loc);
+            items[i] = ClickableItem.of(di.build(), e -> {
+                if (canWarp) {
+                    UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p).setSelectedWarpId(id);
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                            "&aWarp changed! Jump into the portal to teleport to &e" + name));
+                } else
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&cYou do not have this location unlocked."));
+                p.closeInventory();
             });
             i++;
         }

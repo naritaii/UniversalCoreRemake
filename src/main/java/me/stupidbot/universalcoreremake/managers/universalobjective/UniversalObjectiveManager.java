@@ -83,7 +83,7 @@ public class UniversalObjectiveManager implements Listener {
                         ChatColor.translateAlternateColorCodes('&', c.getString(p + "DisplayItem.DisplayName")
                                 .replace("%id_formatted%", TextUtils.capitalizeFully(id)));
                 ItemBuilder item = new ItemBuilder(new ItemStack(
-                        Material.valueOf(c.getString(p + "DisplayItem.ItemMaterial")),
+                        Material.matchMaterial(c.getString(p + "DisplayItem.ItemMaterial")),
                         Math.max(1, c.getInt(p + "DisplayItem.Amount")),
                         (short) c.getInt(p + "DisplayItem.ItemData"))).name("&a" + name);
                 List<String> rewards = c.getStringList(p + "StringRewards");
@@ -187,10 +187,11 @@ public class UniversalObjectiveManager implements Listener {
                     if (uo.getTask() == task) {
                         String[] data = uo.getTaskInfo()[2].split(",");
                         if (data[0].equals(taskInfo)) { // Is the right NPC clicked? Yes? Then do item checks
-                            ItemStack i = new ItemStack(Material.valueOf(data[1]), Short.parseShort(data[2]));
+                            ItemStack i = new ItemStack(Material.matchMaterial(data[1]), Short.parseShort(data[2]));
                             int amti = 0;
                             for (ItemStack item : p.getInventory().getContents())
-                                if (item != null && item.getType() == i.getType() && item.getData() == i.getData()) {
+                                if (item != null &&
+                                        item.getType() == i.getType() && item.getData() == i.getData()) {
                                     int remove = Math.min(item.getAmount(), getNeeded(uo) - uo.getProgress(p));
                                     ItemUtils.removeItem(item, remove);
                                     amti += remove;
