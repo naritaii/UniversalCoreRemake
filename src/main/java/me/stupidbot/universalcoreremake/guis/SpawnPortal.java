@@ -64,7 +64,7 @@ public class SpawnPortal implements InventoryProvider {
         int perPage = 7;
         pagination.setItemsPerPage(perPage);
         pagination.addToIterator(contents.newIterator(SlotIterator.Type.HORIZONTAL, 1, 1));
-        int pages = Math.floorDiv(warps.size(), perPage);
+        int pages = Math.floorDiv(warps.size() - 1, perPage);
 
 
         if (!pagination.isFirst())

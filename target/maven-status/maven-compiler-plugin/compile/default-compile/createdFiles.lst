@@ -52,6 +52,7 @@ me\stupidbot\universalcoreremake\listeners\EnderchestListener.class
 me\stupidbot\universalcoreremake\managers\MiningManager$MineableBlock.class
 me\stupidbot\universalcoreremake\commands\ReloadMOTD.class
 me\stupidbot\universalcoreremake\utilities\PlayerLevelling$1.class
+me\stupidbot\universalcoreremake\utilities\Warp.class
 me\stupidbot\universalcoreremake\managers\universalobjective\UniversalObjective$TaskType.class
 me\stupidbot\universalcoreremake\utilities\TextUtils$Emoji.class
 me\stupidbot\universalcoreremake\managers\MiningManager.class
@@ -61,7 +62,6 @@ me\stupidbot\universalcoreremake\utilities\Stamina$BaseFoodStamina.class
 me\stupidbot\universalcoreremake\managers\universalplayer\UniversalPlayerManager.class
 me\stupidbot\universalcoreremake\commands\ReadItemMeta.class
 me\stupidbot\universalcoreremake\effects\LevelUp.class
-me\stupidbot\universalcoreremake\guis\SpawnPortal$1.class
 me\stupidbot\universalcoreremake\enchantments\mutation\Glass.class
 me\stupidbot\universalcoreremake\managers\LeaderboardManager.class
 me\stupidbot\universalcoreremake\utilities\Stamina.class

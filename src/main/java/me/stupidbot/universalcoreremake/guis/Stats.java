@@ -46,6 +46,9 @@ public class Stats implements InventoryProvider {
                         (double) up.getKills() / (double) up.getDeaths()) :
                         TextUtils.addCommas((double) up.getKills())))
                 .build()));
+
+        contents.set(0, 8, ClickableItem.of(new ItemBuilder(Material.DIAMOND).name("&bAchievements").build(),
+                e -> Achievements.getInventory(p).open(p)));
     }
 
     @Override

@@ -46,6 +46,7 @@ public class UniversalObjectiveManager implements Listener {
     public Map<String, Integer> registeredObjectivesDictionary;
     public Map<UUID, List<UniversalObjective>> trackedObjectives;
     public int totalAchievements;
+    public List<UniversalObjective> achievements;
 
     public UniversalObjectiveManager() {
         instantiate();
@@ -63,6 +64,7 @@ public class UniversalObjectiveManager implements Listener {
             registeredObjectivesDictionary = new HashMap<>();
             trackedObjectives = new ConcurrentHashMap<>();
             totalAchievements = 0;
+            achievements = new ArrayList<>();
             // Register any hard coded objectives here too
 
             UniversalCoreRemake instance = UniversalCoreRemake.getInstance();
@@ -83,7 +85,9 @@ public class UniversalObjectiveManager implements Listener {
                         ChatColor.translateAlternateColorCodes('&', c.getString(p + "DisplayItem.DisplayName")
                                 .replace("%id_formatted%", TextUtils.capitalizeFully(id)));
                 ItemBuilder item = new ItemBuilder(new ItemStack(
-                        Material.matchMaterial(c.getString(p + "DisplayItem.ItemMaterial")),
+                       (c.getString(p + "DisplayItem.ItemMaterial") != null ?
+                               Material.matchMaterial(c.getString(p + "DisplayItem.ItemMaterial")) :
+                               Material.GLASS),
                         Math.max(1, c.getInt(p + "DisplayItem.Amount")),
                         (short) c.getInt(p + "DisplayItem.ItemData"))).name("&a" + name);
                 List<String> rewards = c.getStringList(p + "StringRewards");
@@ -93,8 +97,6 @@ public class UniversalObjectiveManager implements Listener {
                 String description = c.getString(p + "Description") == null ? generateDescription(task, taskInfo, id) :
                         c.getString(p + "Description");
                 UniversalObjective.Catagory catagory = UniversalObjective.Catagory.valueOf(c.getString(p + "Catagory"));
-                if (catagory == UniversalObjective.Catagory.ACHIEVEMENT)
-                    totalAchievements++;
 
                 List<String> lore = c.getStringList(p + "DisplayItem.Lore");
                 if (!lore.isEmpty())
@@ -105,7 +107,7 @@ public class UniversalObjectiveManager implements Listener {
 
 
                 registeredObjectivesDictionary.put(id, registeredObjectivesDictionary.size());
-                registeredObjectives.add(new UniversalObjective(
+                UniversalObjective uo = new UniversalObjective(
                         task,
                         taskInfo,
                         id,
@@ -113,7 +115,13 @@ public class UniversalObjectiveManager implements Listener {
                         stringReward,
                         description,
                         catagory
-                ));
+                );
+                registeredObjectives.add(uo);
+
+                if (catagory == UniversalObjective.Catagory.ACHIEVEMENT) {
+                    totalAchievements++;
+                    achievements.add(uo);
+                }
 
                 Bukkit.getOnlinePlayers().forEach(this::updateTracking);
             }
@@ -121,6 +129,7 @@ public class UniversalObjectiveManager implements Listener {
     }
 
 
+    @Deprecated
     private String generateDescription(UniversalObjective.TaskType task, String[] taskInfo, String id) {
         switch (task) {
             case MINE_BLOCK:
@@ -135,6 +144,7 @@ public class UniversalObjectiveManager implements Listener {
                 else
                     return "Mine " + Joiner.on(", ").join(originalList.subList(0, originalList.size() - 1))
                             .concat(", or ").concat(originalList.get(originalList.size() - 1));
+
             case TALK_TO_NPC:
                 return "Talk to " + CitizensAPI.getNPCRegistry()
                         .getByUniqueIdGlobal(UUID.fromString(taskInfo[2])).getFullName();
@@ -187,15 +197,20 @@ public class UniversalObjectiveManager implements Listener {
                     if (uo.getTask() == task) {
                         String[] data = uo.getTaskInfo()[2].split(",");
                         if (data[0].equals(taskInfo)) { // Is the right NPC clicked? Yes? Then do item checks
-                            ItemStack i = new ItemStack(Material.matchMaterial(data[1]), Short.parseShort(data[2]));
+                            Material m = Material.matchMaterial(data[1]);
+                            short itemData = Short.parseShort(data[2]);
+                            int progress = uo.getProgress(p);
+
                             int amti = 0;
                             for (ItemStack item : p.getInventory().getContents())
                                 if (item != null &&
-                                        item.getType() == i.getType() && item.getData() == i.getData()) {
-                                    int remove = Math.min(item.getAmount(), getNeeded(uo) - uo.getProgress(p));
-                                    ItemUtils.removeItem(item, remove);
+                                        item.getType() == m &&
+                                        item.getData().getData() == itemData) {
+                                    int remove = Math.min(item.getAmount(), getNeeded(uo) - (progress + amti));
                                     amti += remove;
-                                    if (amti == getNeeded(uo) - uo.getProgress(p)) {
+
+                                    ItemUtils.removeItem(item, remove);
+                                    if (amti + progress >= getNeeded(uo)) {
                                         UniversalObjectiveIncrementEvent event = new UniversalObjectiveIncrementEvent(p, uo, uo.getProgress(p), uo.getProgress(p) - amti, getNeeded(uo));
                                         Bukkit.getServer().getPluginManager().callEvent(event);
                                         uo.increment(p, amti);

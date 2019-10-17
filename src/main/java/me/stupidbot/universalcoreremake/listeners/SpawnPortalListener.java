@@ -18,7 +18,7 @@ public class SpawnPortalListener implements Listener {
             warp.warp(p);
 
             UniversalCoreRemake.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(UniversalCoreRemake.getInstance(), () ->
-                    p.setVelocity(new Vector(p.getVelocity().getX(), 0.2, p.getVelocity().getZ()))); // Stop fall damage and looks cool
+                    p.setVelocity(new Vector(p.getVelocity().getX(), 0, p.getVelocity().getZ()))); // Stop fall damage
             e.setCancelled(true);
         }
     }

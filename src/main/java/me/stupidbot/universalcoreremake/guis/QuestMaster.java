@@ -60,12 +60,12 @@ public class QuestMaster implements InventoryProvider {
         Warp warp = isInSpawn ? Warp.getWarpFromId(UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p).getSelectedWarpId()) :
                 new Warp(new Location(Bukkit.getWorld("world"), 15214.5, 65, 10152.5, -180, 0), "hub", "Hub");
         contents.set(5, 3, ClickableItem.of(new ItemBuilder(Skull.getCustomSkull(Skull.NETHER_PORTAL.getId()))
-        .name("&bWarp to: &e").lore("").lore("&eClick to warp!").build(), e -> warp.warp(p)));
+        .name("&bWarp to: &e" + warp.getName()).lore("").lore("&eClick to warp!").build(), e -> warp.warp(p)));
 
         contents.set(5, 5, ClickableItem.of(new ItemBuilder(Skull.getCustomSkull(Skull.DISCORD.getId()))
-                .name("&5Discord").lore("&eJoin our Discord server for updates and giveaways.\n" +
-                        "&eThis is a great place to talk to the community and admins directly!\n" +
-                        "&eType &d/sync&e to sync your Minecraft and Discord accounts.").build(), e ->
+                .name("&5Discord").lore("&eJoin our Discord for updates, giveaways, and a way to\n" +
+                        "&edirectly give feedback to admins and the community!!\n\n" +
+                        "&bType &d/sync&b to sync your Minecraft and Discord accounts.").build(), e ->
                 BookUtil.openPlayer(p, BookUtil.writtenBook()
                         .author("Corrupt Prisons")
                         .title("Discord")
@@ -86,6 +86,15 @@ public class QuestMaster implements InventoryProvider {
                                                 .color(ChatColor.YELLOW)
                                                 .build()))
                                         .build())
+                                    .newLine()
+                                    .newLine()
+                                    .add(BookUtil.TextBuilder.of(TextUtils.centerMessage("&d&l&nSYNC ACCOUNT", 56))
+                                            .onClick(BookUtil.ClickAction.runCommand("/sync"))
+                                            .onHover(BookUtil.HoverAction.showText(
+                                                    BookUtil.TextBuilder.of("Click to run /sync to link your Minecraft and Discord accounts!")
+                                                            .color(ChatColor.YELLOW)
+                                                            .build()))
+                                            .build())
                                     .build()
                         )
                         .build())));
@@ -142,8 +151,8 @@ public class QuestMaster implements InventoryProvider {
             if (i >= ids.size() - completed.size())
                 if (i == ids.size() - completed.size()) {
                     quests[slot++] = ClickableItem.empty(new ItemBuilder(new ItemStack(
-                            Material.STAINED_GLASS_PANE, 1, (short) 15)).name("&2\u2b45 &aIn progress")
-                            .lore("&aCompleted &2\u2b46").build());
+                            Material.STAINED_GLASS_PANE, 1, (short) 5)).name("&2<- &aIn progress")
+                            .lore("&aCompleted &2->").build());
                 } else
                     slot++;
 
@@ -171,7 +180,7 @@ public class QuestMaster implements InventoryProvider {
         pagination.setItemsPerPage(perPage);
         pagination.addToIterator(contents.newIterator(SlotIterator.Type.HORIZONTAL, 1, 1));
         // int pages = (pagination.getPageItems().length + (perPage - 1)) / perPage; // Rounds up num / divisor
-        int pages = Math.floorDiv(quests.length, perPage); // Rounds down
+        int pages = Math.floorDiv(quests.length - 1, perPage); // Rounds down
 
 
         if (!pagination.isFirst())
