@@ -202,14 +202,16 @@ public class UniversalObjectiveManager implements Listener {
                             int progress = uo.getProgress(p);
 
                             int amti = 0;
-                            for (ItemStack item : p.getInventory().getContents())
+                            for (int i = 0; i < p.getInventory().getSize(); i++) {
+                                ItemStack item = p.getInventory().getItem(i);
                                 if (item != null &&
                                         item.getType() == m &&
                                         item.getData().getData() == itemData) {
                                     int remove = Math.min(item.getAmount(), getNeeded(uo) - (progress + amti));
                                     amti += remove;
 
-                                    ItemUtils.removeItem(item, remove);
+                                    p.getInventory().setItem(i, ItemUtils.removeItem(item, remove));
+
                                     if (amti + progress >= getNeeded(uo)) {
                                         UniversalObjectiveIncrementEvent event = new UniversalObjectiveIncrementEvent(p, uo, uo.getProgress(p), uo.getProgress(p) - amti, getNeeded(uo));
                                         Bukkit.getServer().getPluginManager().callEvent(event);
@@ -218,6 +220,7 @@ public class UniversalObjectiveManager implements Listener {
                                         break;
                                     }
                                 }
+                            }
                             if (uo.getPlayersTracking().contains(p.getUniqueId())) {
                                 UniversalObjectiveIncrementEvent event = new UniversalObjectiveIncrementEvent(p, uo, uo.getProgress(p), uo.getProgress(p) - amti, getNeeded(uo));
                                 Bukkit.getServer().getPluginManager().callEvent(event);

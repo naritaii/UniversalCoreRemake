@@ -7,6 +7,7 @@ me\stupidbot\universalcoreremake\utilities\item\SellItem.class
 me\stupidbot\universalcoreremake\commands\OpenFoodTrader.class
 me\stupidbot\universalcoreremake\utilities\item\Reflections$1.class
 me\stupidbot\universalcoreremake\commands\OpenQuestMaster.class
+me\stupidbot\universalcoreremake\guis\Achievements.class
 me\stupidbot\universalcoreremake\managers\BlockMetadataManger.class
 me\stupidbot\universalcoreremake\utilities\item\ItemMetadata$1.class
 me\stupidbot\universalcoreremake\commands\SaveUniversalPlayerCacheToFile.class

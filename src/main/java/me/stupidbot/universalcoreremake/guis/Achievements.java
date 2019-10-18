@@ -49,6 +49,8 @@ public class Achievements implements InventoryProvider {
             if (completed.contains(o.getId())) {
                 ItemBuilder di = new ItemBuilder(Material.DIAMOND);
                 di.name(o.getDisplayItem().getItemMeta().getDisplayName() + " &c&lCOMPLETED");
+                for (String l : o.getDisplayItem().getItemMeta().getLore())
+                    di.lore(l);
 
                 if (needed > 1)
                     if (completed.contains(o.getId()))
@@ -60,6 +62,8 @@ public class Achievements implements InventoryProvider {
             } else {
                 ItemBuilder di = new ItemBuilder(Material.COAL);
                 di.name(o.getDisplayItem().getItemMeta().getDisplayName());
+                for (String l : o.getDisplayItem().getItemMeta().getLore())
+                    di.lore(l);
 
                 if (needed > 1)
                     if (completed.contains(o.getId()))

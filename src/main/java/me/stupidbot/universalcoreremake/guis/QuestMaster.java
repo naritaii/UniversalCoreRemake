@@ -64,8 +64,8 @@ public class QuestMaster implements InventoryProvider {
 
         contents.set(5, 5, ClickableItem.of(new ItemBuilder(Skull.getCustomSkull(Skull.DISCORD.getId()))
                 .name("&5Discord").lore("&eJoin our Discord for updates, giveaways, and a way to\n" +
-                        "&edirectly give feedback to admins and the community!!\n\n" +
-                        "&bType &d/sync&b to sync your Minecraft and Discord accounts.").build(), e ->
+                        "&edirectly give feedback to admins and the community!\n\n" +
+                        "&bType &d/sync Discord&b to sync your Minecraft and Discord accounts.").build(), e ->
                 BookUtil.openPlayer(p, BookUtil.writtenBook()
                         .author("Corrupt Prisons")
                         .title("Discord")
@@ -89,9 +89,9 @@ public class QuestMaster implements InventoryProvider {
                                     .newLine()
                                     .newLine()
                                     .add(BookUtil.TextBuilder.of(TextUtils.centerMessage("&d&l&nSYNC ACCOUNT", 56))
-                                            .onClick(BookUtil.ClickAction.runCommand("/sync"))
+                                            .onClick(BookUtil.ClickAction.runCommand("/sync Discord"))
                                             .onHover(BookUtil.HoverAction.showText(
-                                                    BookUtil.TextBuilder.of("Click to run /sync to link your Minecraft and Discord accounts!")
+                                                    BookUtil.TextBuilder.of("Click to run /sync Discord to link your Minecraft and Discord accounts!")
                                                             .color(ChatColor.YELLOW)
                                                             .build()))
                                             .build())
@@ -116,7 +116,7 @@ public class QuestMaster implements InventoryProvider {
                         .newLine()
                         .newLine()
                         .newLine()
-                        .add(BookUtil.TextBuilder.of(TextUtils.centerMessage("&3&l&nCLICK HERE", 56))
+                        .add(BookUtil.TextBuilder.of(TextUtils.centerMessage("&8&l&nCLICK HERE", 56))
                             .onClick(BookUtil.ClickAction.openUrl("https://twitter.com/CorruptPrisons"))
                             .onHover(BookUtil.HoverAction.showText(
                                 BookUtil.TextBuilder.of("Click to visit our Twitter page!")
