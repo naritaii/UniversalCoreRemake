@@ -63,7 +63,7 @@ public class QuestMaster implements InventoryProvider {
         .name("&bWarp to: &e" + warp.getName()).lore("").lore("&eClick to warp!").build(), e -> warp.warp(p)));
 
         contents.set(5, 5, ClickableItem.of(new ItemBuilder(Skull.getCustomSkull(Skull.DISCORD.getId()))
-                .name("&5Discord").lore("&eJoin our Discord for updates, giveaways, and a way to\n" +
+                .name("&5Discord").lore("&eJoin our Discord for updates, giveaways, and to\n" +
                         "&edirectly give feedback to admins and the community!\n\n" +
                         "&bType &d/sync Discord&b to sync your Minecraft and Discord accounts.").build(), e ->
                 BookUtil.openPlayer(p, BookUtil.writtenBook()
@@ -74,7 +74,7 @@ public class QuestMaster implements InventoryProvider {
                                 .add(new TextComponent(TextUtils.centerMessage("&5&lDISCORD", 56)))
                                 .newLine()
                                 .newLine()
-                                .add(new TextComponent("Join our Discord for updates, giveaways, and a way to " +
+                                .add(new TextComponent("Join our Discord for updates, giveaways, and to " +
                                         "directly give feedback to admins and the community!"))
                                 .newLine()
                                 .newLine()

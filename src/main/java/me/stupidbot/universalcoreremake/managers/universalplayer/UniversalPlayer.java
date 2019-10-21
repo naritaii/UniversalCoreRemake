@@ -293,4 +293,38 @@ public class UniversalPlayer {
     public String getSelectedWarpId() {
         return pFile.getString("SelectedWarp");
     }
+
+    public String setRewardTimestamp(String id, String timestamp) {
+        pFile.set("Reward." + id + ".Timestamp", timestamp);
+        return id;
+    }
+
+    public String getRewardTimestamp(String id) {
+        return pFile.getString("Reward." + id + ".Timestamp");
+    }
+
+    public int getStreak(String id) {
+        return pFile.getInt("Reward." + id + ".Streak");
+    }
+
+    public int incrementStreak(String id) {
+        int streak = getStreak(id) + 1;
+        pFile.set("Reward." + id + ".Streak", streak);
+        return streak;
+    }
+
+    public String resetStreak(String id) {
+        pFile.set("Reward." + id + ".Streak", null);
+        return id;
+    }
+
+    public int getTimesRewarded(String id) {
+        return pFile.getInt("Reward." + id + ".TimesRewarded");
+    }
+
+    public int incrementTimesRewarded(String id) {
+        int rewarded = getTimesRewarded(id) + 1;
+        pFile.set("Reward." + id + ".TimesRewarded", rewarded);
+        return rewarded;
+    }
 }

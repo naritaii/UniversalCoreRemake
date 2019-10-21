@@ -79,7 +79,17 @@ public class StringReward {
             i++;
         }
 
-        return r;
+        boolean allNull = true;
+        for (String sr : r)
+            if (sr != null) {
+                allNull = false;
+                break;
+            }
+
+        if (!allNull)
+            return r;
+        else
+            return null;
     }
 
     public void give(Player p) {

@@ -111,14 +111,18 @@ public class PlayerLevelling implements Listener {
             }
 
             if (levelRewards.containsKey(i)) {
-                StringReward reward = levelRewards.get(i);
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "\n  &aReward:"));
-                for (String r : reward.asStrings())
-                    if (r != null)
+                StringReward rewards = levelRewards.get(i);
+                if (rewards != null) {
+                    String[] asStrings = rewards.asStrings();
+                    if (asStrings != null) {
                         p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                                "    &8+" + r));
-                reward.giveNoMessage(p);
+                                "\n  &aReward:"));
+                        for (String s : asStrings)
+                            if (s != null)
+                                p.sendMessage(ChatColor.translateAlternateColorCodes('&', "  &8+" + s));
+                        rewards.giveNoMessage(p);
+                    }
+                }
             }
         }
 

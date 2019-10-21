@@ -85,9 +85,9 @@ public class UniversalObjectiveManager implements Listener {
                         ChatColor.translateAlternateColorCodes('&', c.getString(p + "DisplayItem.DisplayName")
                                 .replace("%id_formatted%", TextUtils.capitalizeFully(id)));
                 ItemBuilder item = new ItemBuilder(new ItemStack(
-                       (c.getString(p + "DisplayItem.ItemMaterial") != null ?
-                               Material.matchMaterial(c.getString(p + "DisplayItem.ItemMaterial")) :
-                               Material.GLASS),
+                        (c.getString(p + "DisplayItem.ItemMaterial") != null ?
+                                Material.matchMaterial(c.getString(p + "DisplayItem.ItemMaterial")) :
+                                Material.GLASS),
                         Math.max(1, c.getInt(p + "DisplayItem.Amount")),
                         (short) c.getInt(p + "DisplayItem.ItemData"))).name("&a" + name);
                 List<String> rewards = c.getStringList(p + "StringRewards");
@@ -101,7 +101,7 @@ public class UniversalObjectiveManager implements Listener {
                 List<String> lore = c.getStringList(p + "DisplayItem.Lore");
                 if (!lore.isEmpty())
                     for (String line : lore)
-                        item.lore(line.replace("%description%", description));
+                        item.lore("&e" + line.replace("%description%", description));
                 else
                     item.lore("&e" + description);
 
@@ -129,11 +129,13 @@ public class UniversalObjectiveManager implements Listener {
     }
 
 
-    @Deprecated
+    /**
+     * @deprecated
+     */
     private String generateDescription(UniversalObjective.TaskType task, String[] taskInfo, String id) {
         switch (task) {
             case MINE_BLOCK:
-                List<String> originalList = Arrays.asList(WordUtils.capitalizeFully(taskInfo[2], new char[] { '_', ',' } )
+                List<String> originalList = Arrays.asList(WordUtils.capitalizeFully(taskInfo[2], new char[]{'_', ','})
                         .replace("_", " ").split(","));
                 if (originalList.isEmpty())
                     return "Mine blocks";
@@ -176,7 +178,7 @@ public class UniversalObjectiveManager implements Listener {
      * are equal to that of a {@link UniversalObjective} tracking {@param p}
      */
     private void increment(UniversalObjective.TaskType task, String taskInfo, Player p, int amt) {
-                ImmutableList.copyOf(trackedObjectives.getOrDefault(p.getUniqueId(), new ArrayList<>())).forEach((uo) -> {
+        ImmutableList.copyOf(trackedObjectives.getOrDefault(p.getUniqueId(), new ArrayList<>())).forEach((uo) -> {
             switch (task) {
                 case MINE_BLOCK:
                     if (uo.getTask() == task) {
@@ -213,8 +215,6 @@ public class UniversalObjectiveManager implements Listener {
                                     p.getInventory().setItem(i, ItemUtils.removeItem(item, remove));
 
                                     if (amti + progress >= getNeeded(uo)) {
-                                        UniversalObjectiveIncrementEvent event = new UniversalObjectiveIncrementEvent(p, uo, uo.getProgress(p), uo.getProgress(p) - amti, getNeeded(uo));
-                                        Bukkit.getServer().getPluginManager().callEvent(event);
                                         uo.increment(p, amti);
                                         reward(p, uo);
                                         break;
@@ -222,9 +222,9 @@ public class UniversalObjectiveManager implements Listener {
                                 }
                             }
                             if (uo.getPlayersTracking().contains(p.getUniqueId())) {
+                                uo.increment(p, amti);
                                 UniversalObjectiveIncrementEvent event = new UniversalObjectiveIncrementEvent(p, uo, uo.getProgress(p), uo.getProgress(p) - amti, getNeeded(uo));
                                 Bukkit.getServer().getPluginManager().callEvent(event);
-                                uo.increment(p, amti);
                             }
                         }
                     }
@@ -273,10 +273,15 @@ public class UniversalObjectiveManager implements Listener {
                         new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hover).create())).create());
 
                 if (rewards != null) {
-                    for (String s : rewards.asStrings())
-                        if (s != null)
-                            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "  &8+" + s));
-                    rewards.giveNoMessage(p);
+                    String[] asStrings = rewards.asStrings();
+                    if (asStrings != null) {
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                "&aReward:"));
+                        for (String s : asStrings)
+                            if (s != null)
+                                p.sendMessage(ChatColor.translateAlternateColorCodes('&', "  &8+" + s));
+                        rewards.giveNoMessage(p);
+                    }
                 }
                 break;
 
@@ -288,11 +293,15 @@ public class UniversalObjectiveManager implements Listener {
                         new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hover).create())).create());
 
                 if (rewards != null) {
-                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aRewards:"));
-                    for (String s : rewards.asStrings())
-                        if (s != null)
-                            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "  &8+" + s));
-                    rewards.giveNoMessage(p);
+                    String[] asStrings = rewards.asStrings();
+                    if (asStrings != null) {
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                "&aReward:"));
+                        for (String s : asStrings)
+                            if (s != null)
+                                p.sendMessage(ChatColor.translateAlternateColorCodes('&', "  &8+" + s));
+                        rewards.giveNoMessage(p);
+                    }
                 }
                 break;
 
@@ -309,10 +318,15 @@ public class UniversalObjectiveManager implements Listener {
                         new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hover).create())).create());
 
                 if (rewards != null) {
-                    for (String s : rewards.asStrings())
-                        if (s != null)
-                            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "  &8+" + s));
-                    rewards.giveNoMessage(p);
+                    String[] asStrings = rewards.asStrings();
+                    if (asStrings != null) {
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                "&aReward:"));
+                        for (String s : asStrings)
+                            if (s != null)
+                                p.sendMessage(ChatColor.translateAlternateColorCodes('&', "  &8+" + s));
+                        rewards.giveNoMessage(p);
+                    }
                 }
                 break;
         }
@@ -331,20 +345,20 @@ public class UniversalObjectiveManager implements Listener {
 
 
         Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () ->
-            registeredObjectives.forEach((uo) -> {
-                uo.removePlayer(p);
-                if (!completed.contains(uo.getId()))
-                    if (uo.getCategory() == UniversalObjective.Catagory.ACHIEVEMENT ||
-                            uo.getCategory() == UniversalObjective.Catagory.TRIGGER) {
-                        uo.addPlayer(p);
-                        UniversalObjectiveStartEvent event = new UniversalObjectiveStartEvent(p, uo, getNeeded(uo));
-                        Bukkit.getServer().getPluginManager().callEvent(event);
-                    } else if (selected.contains(uo.getId())) {
-                        uo.addPlayer(p);
-                        UniversalObjectiveStartEvent event = new UniversalObjectiveStartEvent(p, uo, getNeeded(uo));
-                        Bukkit.getServer().getPluginManager().callEvent(event);
-                    }
-            }));
+                registeredObjectives.forEach((uo) -> {
+                    uo.removePlayer(p);
+                    if (!completed.contains(uo.getId()))
+                        if (uo.getCategory() == UniversalObjective.Catagory.ACHIEVEMENT ||
+                                uo.getCategory() == UniversalObjective.Catagory.TRIGGER) {
+                            uo.addPlayer(p);
+                            UniversalObjectiveStartEvent event = new UniversalObjectiveStartEvent(p, uo, getNeeded(uo));
+                            Bukkit.getServer().getPluginManager().callEvent(event);
+                        } else if (selected.contains(uo.getId())) {
+                            uo.addPlayer(p);
+                            UniversalObjectiveStartEvent event = new UniversalObjectiveStartEvent(p, uo, getNeeded(uo));
+                            Bukkit.getServer().getPluginManager().callEvent(event);
+                        }
+                }));
     }
 
     @EventHandler(priority = EventPriority.LOW)

@@ -3,6 +3,7 @@ me\stupidbot\universalcoreremake\managers\universalobjective\UniversalObjective$
 me\stupidbot\universalcoreremake\commands\SaveBlockmetaCacheToFile.class
 me\stupidbot\universalcoreremake\cosmetics\Tag.class
 me\stupidbot\universalcoreremake\effects\trail\Halo.class
+me\stupidbot\universalcoreremake\managers\RewardManager.class
 me\stupidbot\universalcoreremake\utilities\item\SellItem.class
 me\stupidbot\universalcoreremake\commands\OpenFoodTrader.class
 me\stupidbot\universalcoreremake\utilities\item\Reflections$1.class

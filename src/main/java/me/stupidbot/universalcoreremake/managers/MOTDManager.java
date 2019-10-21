@@ -19,11 +19,26 @@ public class MOTDManager implements Listener {
 
     private final String folderPath = UniversalCoreRemake.getInstance().getDataFolder().toString();
     private final String dataPath = folderPath + File.separator + "motd.yml";
+    private String cachedMotd = null;
     public String motd;
+    public boolean setMotd;
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPing(ServerListPingEvent e) {
-        e.setMotd(motd);
+        if (!setMotd)
+            if (cachedMotd == null || !e.getMotd().equals(cachedMotd) || this.motd == null) { // this.motd should never == null if both of the others are true but just in case
+                cachedMotd = e.getMotd();
+                String[] motd = cachedMotd.split("\n");
+
+                if (motd.length > 1)
+                    this.motd = TextUtils.centerMessage(motd[0], 127) +
+                            "\n" +
+                            TextUtils.centerMessage(motd[1], 127);
+                else
+                    this.motd = TextUtils.centerMessage(motd[0], 127);
+            }
+
+        e.setMotd(this.motd);
     }
 
     public void reload() {
@@ -41,15 +56,20 @@ public class MOTDManager implements Listener {
         }
 
         FileConfiguration data = YamlConfiguration.loadConfiguration(file);
-        StringBuilder motd = new StringBuilder();
         if (data.get("MOTD.FirstLine") == null)
             data.set("MOTD.FirstLine", "&d&lCORRUPT PRISONS&5 1.8-1.14.2");
         if (data.get("MOTD.SecondLine") == null)
             data.set("MOTD.SecondLine", "&e&kt&f GRAND OPENING &e&kt");
+        if (data.get("MOTD.Set") == null)
+            data.set("MOTD.Set", false);
 
-        motd.append(TextUtils.centerMessage(data.getString("MOTD.FirstLine"), 127))
-        .append("\n")
-        .append(TextUtils.centerMessage(data.getString("MOTD.SecondLine"), 127));
+        setMotd = data.getBoolean("MOTD.Set");
+        String motd = null;
+        if (setMotd)
+            motd = TextUtils.centerMessage(data.getString("MOTD.FirstLine"), 127) +
+                    "\n" +
+                    TextUtils.centerMessage(data.getString("MOTD.SecondLine"), 127);
+        // Else we wait for another plugin to try and set it.
 
         try {
             data.save(file);
@@ -57,6 +77,6 @@ public class MOTDManager implements Listener {
             e.printStackTrace();
         }
 
-        this.motd = motd.toString();
+        this.motd = motd;
     }
 }

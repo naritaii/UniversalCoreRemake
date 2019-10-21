@@ -4,7 +4,7 @@ author: ${project.groupId}
 website: ${project.url}
 api-version: "1.8"
 softdepend: [PlaceholderAPI, WorldGuard]
-depend: [Vault, ProtocolLib, Citizens, HolographicDisplays, Essentials]
+depend: [Vault, ProtocolLib, Citizens, HolographicDisplays, Essentials, Votifier]
 main: me.stupidbot.universalcoreremake.UniversalCoreRemake
 commands:
   reloadmotd:
