@@ -46,6 +46,7 @@ public class UniversalCoreRemake extends JavaPlugin {
     private static UniversalObjectiveManager universalObjectiveManager;
     private static ScoreboardManager scoreboardManager;
     private static LeaderboardManager leaderboardManager;
+    private static RewardManager rewardManager;
     private static WorldGuardPlugin worldGuardPlugin;
 
     @Override
@@ -62,6 +63,7 @@ public class UniversalCoreRemake extends JavaPlugin {
         universalObjectiveManager = new UniversalObjectiveManager();
         scoreboardManager = new ScoreboardManager();
         leaderboardManager = new LeaderboardManager();
+        rewardManager = new RewardManager();
 
         CommandExecutor executor = new CommandExecutor();
 
@@ -77,7 +79,8 @@ public class UniversalCoreRemake extends JavaPlugin {
 
         registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager, new Stamina(),
                 new ChatManager(), motdManager, new ItemMetadata(), universalObjectiveManager, scoreboardManager,
-                new CollectibleSlimesListener(), leaderboardManager, new EnderchestListener(), new SpawnPortalListener());
+                new CollectibleSlimesListener(), leaderboardManager, new EnderchestListener(), new SpawnPortalListener(),
+                rewardManager);
         registerCommands(executor, "reloadmotd", "reloaduniversalobjectives",
                 "exp", "setblockmeta", "readblockmeta", "setitemmeta", "readitemmeta", "emoji",
                 "openmineraltrader", "openfoodtrader", "openstats", "openspawnportal", "openquestmaster",
@@ -201,6 +204,10 @@ public class UniversalCoreRemake extends JavaPlugin {
 
     public static LeaderboardManager getLeaderboardManager() {
         return leaderboardManager;
+    }
+
+    public static RewardManager getRewardManager() {
+        return rewardManager;
     }
 
     public static WorldGuardPlugin getWorldGuardPlugin() {

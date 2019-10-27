@@ -67,7 +67,7 @@ public class PlayerLevelling implements Listener {
         updateUI(p);
     }
 
-    private static final Map<Integer, StringReward> levelRewards = new HashMap<Integer, StringReward>() {
+    private static final Map<Integer, StringReward> levelRewards = new HashMap<Integer, StringReward>() { // TODO Move this to a YAML file
         {
             int i = 1;
             put(++i, new StringReward("MONEY 5")); // 2

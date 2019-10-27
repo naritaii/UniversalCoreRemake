@@ -1,0 +1,24 @@
+Rewards:
+  Voting: # Uses StringReward format
+    Streak: # You can add more less days by simply removing/adding sections
+      Day1:
+        - 'MONEY 1'
+      Day2:
+        - 'MONEY 2'
+      Day3:
+        - 'MONEY 3'
+      Day4:
+        - 'MONEY 4'
+      Day5:
+        - 'MONEY 5'
+      Day6:
+        - 'MONEY 6'
+      Day7:
+        - 'MONEY 9'
+        - 'MONEY 10'
+    Links:
+      VotingSite1: 'https://www.votinglink.moe/1'
+      VotingSite2: 'https://www.votinglink.moe/2'
+      DemocracyIsGreatHuh: 'https://www.stupidbot.me'
+      EpicSiteDotOrg: 'https://vote.vote.vote'
+      189764: 'https://nhentai.net/g/191390'

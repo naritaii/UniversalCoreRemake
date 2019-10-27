@@ -15,7 +15,7 @@ import java.util.Locale;
 
 public class TextUtils {
     public static String capitalizeFully(String s) {
-        return WordUtils.capitalizeFully(s, new char[] { '_' } ).replaceAll("_", " ")
+        return WordUtils.capitalizeFully(s, new char[]{'_'}).replaceAll("_", " ")
                 .replaceAll("~", ""); // ~ to force capital, good for roman numerals etc
     }
 
@@ -29,12 +29,64 @@ public class TextUtils {
 
     public static String getChatColor(OfflinePlayer p) {
         if (p.getUniqueId().toString().equals("e8584196-baf0-4b9d-8146-2d438cafa99a")) // HaydenPlus' chat color
-                return ChatColor.GREEN.toString();
-            else if (!UniversalCoreRemake.getPermissions().playerHas(
-                    null, p, "chatformat.white"))
-                return ChatColor.GRAY.toString();
-            else
-                return ChatColor.WHITE.toString();
+            return ChatColor.GREEN.toString();
+        else if (!UniversalCoreRemake.getPermissions().playerHas(
+                null, p, "chatformat.white"))
+            return ChatColor.GRAY.toString();
+        else
+            return ChatColor.WHITE.toString();
+    }
+
+    public static String toBallNumbers(String s) {
+        StringBuilder sb = new StringBuilder();
+        boolean skipNext = false;
+        for (char c : s.toCharArray())
+            if (!skipNext)
+                switch (c) { // There's no supported unicode for 0 in a ball afaik so this only works for 1-9
+                    default:
+                        sb.append(c);
+                        break;
+                    case ChatColor.COLOR_CHAR:
+                        skipNext = true;
+                        break;
+                    case '1':
+                        sb.append('\u2776');
+                        break;
+                    case '2':
+                        sb.append('\u2777');
+                        break;
+                    case '3':
+                        sb.append('\u2778');
+                        break;
+                    case '4':
+                        sb.append('\u2779');
+                        break;
+                    case '5':
+                        sb.append('\u277a');
+                        break;
+                    case '6':
+                        sb.append('\u277b');
+                        break;
+                    case '7':
+                        sb.append('\u277c');
+                        break;
+                    case '8':
+                        sb.append('\u277d');
+                        break;
+                    case '9':
+                        sb.append('\u277e');
+                        break;
+                }
+            else {
+                sb.append(c);
+                skipNext = false;
+            }
+
+        return sb.toString();
+    }
+
+    public static String toBallNumber(int i) {
+        return toBallNumbers(i + "");
     }
 
     public static String getDayNumberSuffix(int day) {
@@ -82,14 +134,14 @@ public class TextUtils {
 
     public static void sendActionbar(Player p, String message) {
         IChatBaseComponent icbc = IChatBaseComponent.ChatSerializer.a(
-                ChatColor.translateAlternateColorCodes('&',"{\"text\":\"" + message + "\"}"));
+                ChatColor.translateAlternateColorCodes('&', "{\"text\":\"" + message + "\"}"));
         PacketPlayOutChat packet = new PacketPlayOutChat(icbc, (byte) 2);
         ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
     }
 
     public static String toRoman(int mInt) {
-        String[] rnChars = { "M", "CM", "D", "C", "XC", "L", "X", "IX", "V", "I" };
-        int[] rnVals = { 1000, 900, 500, 100, 90, 50, 10, 9, 5, 1 };
+        String[] rnChars = {"M", "CM", "D", "C", "XC", "L", "X", "IX", "V", "I"};
+        int[] rnVals = {1000, 900, 500, 100, 90, 50, 10, 9, 5, 1};
         StringBuilder retVal = new StringBuilder();
         for (int i = 0; i < rnVals.length; i++) {
             int numberInPlace = mInt / rnVals[i];
@@ -103,7 +155,7 @@ public class TextUtils {
     }
 
     public static String getProgressBar(int current, int max, int totalBars, String symbol, String completedColor,
-                                 String notCompletedColor) {
+                                        String notCompletedColor) {
         float percent = (float) current / max;
 
         int progressBars = (int) (totalBars * percent);
@@ -134,7 +186,7 @@ public class TextUtils {
         for (char c : message.toCharArray()) {
             if (c == '\u00a7') {
                 previousCode = true;
-            } else if( previousCode) {
+            } else if (previousCode) {
                 previousCode = false;
                 isBold = c == 'l' || c == 'L';
             } else {
@@ -148,7 +200,7 @@ public class TextUtils {
         int spaceLength = DefaultFontInfo.SPACE.getLength() + 1;
         int compensated = 0;
         StringBuilder sb = new StringBuilder();
-        while(compensated < toCompensate) {
+        while (compensated < toCompensate) {
             sb.append(" ");
             compensated += spaceLength;
         }
@@ -265,11 +317,11 @@ public class TextUtils {
             this.length = length;
         }
 
-        char getCharacter(){
+        char getCharacter() {
             return this.character;
         }
 
-        int getLength(){
+        int getLength() {
             return this.length;
         }
 
@@ -279,7 +331,7 @@ public class TextUtils {
         }
 
         static DefaultFontInfo getDefaultFontInfo(char c) {
-            for( DefaultFontInfo dFI : DefaultFontInfo.values()){
+            for (DefaultFontInfo dFI : DefaultFontInfo.values()) {
                 if (dFI.getCharacter() == c) return dFI;
             }
             return DefaultFontInfo.DEFAULT;

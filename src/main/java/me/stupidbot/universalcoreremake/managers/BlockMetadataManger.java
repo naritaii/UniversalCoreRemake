@@ -31,13 +31,23 @@ public class BlockMetadataManger {
         if (blocksMetas.containsKey(loc)) {
             Map<String, String> metaDataMap = blocksMetas.get(loc);
 
-            metaDataMap.put(metadata, value);
-            blocksMetas.put(loc, metaDataMap);
+            if (value != null)
+                metaDataMap.put(metadata, value);
+            else
+                metaDataMap.remove(metadata);
+
+            if (!metaDataMap.isEmpty())
+                 blocksMetas.put(loc, metaDataMap);
+            else
+                blocksMetas.remove(loc);
         } else {
             HashMap<String, String> metaDataMap = new HashMap<>();
 
-            metaDataMap.put(metadata, value);
-            blocksMetas.put(loc, metaDataMap);
+            if (value != null)
+                metaDataMap.put(metadata, value);
+
+            if (!metaDataMap.isEmpty())
+                blocksMetas.put(loc, metaDataMap);
         }
     }
 

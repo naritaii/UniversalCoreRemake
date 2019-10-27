@@ -107,6 +107,8 @@ public class MiningManager implements Listener {
                                         if (s.contains(b.getType().toString())) {
                                             UniversalCoreRemake.getBlockMetadataManager().setMeta(b,
                                                     "MINEABLE", b.getType().toString().toUpperCase());
+                                            UniversalCoreRemake.getBlockMetadataManager().setMeta(b,
+                                                    "IN_UNIVERSAL_MINE_REGION", "1");
                                             putMiningPlayer(p, b);
                                         }
                                     }
@@ -255,8 +257,13 @@ public class MiningManager implements Listener {
 
                 // Regen Block
                 if (i < 1 && UniversalCoreRemake.getBlockMetadataManager().hasMeta(b, "MINEABLE")) {
-                    b.setType(Material.valueOf(
+                         b.setType(Material.valueOf(
                             UniversalCoreRemake.getBlockMetadataManager().getMeta(b, "MINEABLE")));
+
+                    if (UniversalCoreRemake.getBlockMetadataManager().hasMeta(b, "IN_UNIVERSAL_MINE_REGION")) { // If it's in a mining region we don't need to store that its mineable
+                        UniversalCoreRemake.getBlockMetadataManager().setMeta(b, "IN_UNIVERSAL_MINE_REGION", null);
+                        UniversalCoreRemake.getBlockMetadataManager().setMeta(b, "MINEABLE", null);
+                    }
 
                     Effect eff = new BlockRegen(UniversalCoreRemake.getEffectManager());
                     eff.setLocation(b.getLocation());
@@ -274,6 +281,10 @@ public class MiningManager implements Listener {
             b.getChunk().load();
             b.setType(Material.valueOf(
                     UniversalCoreRemake.getBlockMetadataManager().getMeta(b, "MINEABLE")));
+            if (UniversalCoreRemake.getBlockMetadataManager().hasMeta(b, "IN_UNIVERSAL_MINE_REGION")) { // If it's in a mining region we don't need to store that its mineable
+                UniversalCoreRemake.getBlockMetadataManager().setMeta(b, "IN_UNIVERSAL_MINE_REGION", null);
+                UniversalCoreRemake.getBlockMetadataManager().setMeta(b, "MINEABLE", null);
+            }
             regen.remove(b);
         });
     }

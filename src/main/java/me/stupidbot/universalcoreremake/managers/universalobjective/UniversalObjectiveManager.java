@@ -8,6 +8,7 @@ import me.stupidbot.universalcoreremake.events.universalobjective.UniversalObjec
 import me.stupidbot.universalcoreremake.events.universalobjective.UniversalObjectiveIncrementEvent;
 import me.stupidbot.universalcoreremake.events.universalobjective.UniversalObjectiveStartEvent;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
+import me.stupidbot.universalcoreremake.utilities.FileUtils;
 import me.stupidbot.universalcoreremake.utilities.StringReward;
 import me.stupidbot.universalcoreremake.utilities.TextUtils;
 import me.stupidbot.universalcoreremake.utilities.item.ItemBuilder;
@@ -33,9 +34,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -74,7 +72,7 @@ public class UniversalObjectiveManager implements Listener {
             if (!path.exists())
                 path.mkdirs();
             if (!file.exists())
-                copy(instance.getResource("universal_objectives.yml"), file);
+                FileUtils.copy(instance.getResource("universal_objectives.yml"), file);
 
             FileConfiguration c = YamlConfiguration.loadConfiguration(file);
 
@@ -152,21 +150,6 @@ public class UniversalObjectiveManager implements Listener {
                         .getByUniqueIdGlobal(UUID.fromString(taskInfo[2])).getFullName();
         }
         return "Unable to generate description for " + id;
-    }
-
-    private void copy(InputStream in, File file) {
-        try {
-            OutputStream out = new FileOutputStream(file);
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = in.read(buf)) > 0) {
-                out.write(buf, 0, len);
-            }
-            out.close();
-            in.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void disable() {

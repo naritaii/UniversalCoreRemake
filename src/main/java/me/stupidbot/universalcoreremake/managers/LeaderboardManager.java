@@ -299,7 +299,7 @@ public class LeaderboardManager implements Listener {
         sortedData.forEach((String type, Map<UUID, Double> data) -> {
             Hologram h = holos.get(type);
             h.clearLines();
-            if (data.containsKey(id)) {
+            if (data.containsKey(id) && sortedPositions.get(type).contains(id)) {
                 h.appendTextLine(ChatColor.translateAlternateColorCodes('&', formats.get(type)
                         .replace("%pos%", TextUtils.addCommas(sortedPositions.get(type).indexOf(id) + 1))
                         .replace("%player%", up.getNameColor() + ChatColor.BOLD + up.getName())

@@ -67,6 +67,8 @@ public class StringReward {
 
                 case "QUEST":
                 case "SCRIPT":
+                case "NONE":
+                case "NULL":
                     r[i] = null;
                     break;
 
@@ -163,6 +165,10 @@ public class StringReward {
                     Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "ex run " + arg.toString().trim() + " player:p@" + p.getName());
                     break;
 
+                case "NONE":
+                case "NULL":
+                    break;
+
                 default:
                     p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             "&cCould not parse " + s));
@@ -220,11 +226,13 @@ public class StringReward {
                     }
                     break;
 
-                case "MESSAGE":
-                    break;
-
                 case "SCRIPT":
                     Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "ex run " + arg.toString().trim() + " player:p@" + p.getName());
+                    break;
+
+                case "MESSAGE":
+                case "NONE":
+                case "NULL":
                     break;
 
                 default:

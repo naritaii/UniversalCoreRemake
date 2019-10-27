@@ -4,18 +4,56 @@ import com.vexsoftware.votifier.model.Vote;
 import com.vexsoftware.votifier.model.VotifierEvent;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
+import me.stupidbot.universalcoreremake.utilities.FileUtils;
+import me.stupidbot.universalcoreremake.utilities.StringReward;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class RewardManager implements Listener {
+    public List<StringReward> votingRewards;
+    public List<String> voteSiteDictionary;
+    public Map<String, String> voteSite;
+
+    public RewardManager() {
+        reload();
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public void reload() { // TODO Make file reloadable with command
+        votingRewards = new ArrayList<>();
+        voteSiteDictionary = new ArrayList<>();
+        voteSite = new HashMap<>();
+        UniversalCoreRemake instance = UniversalCoreRemake.getInstance();
+        File path = instance.getDataFolder();
+        File file = new File(path.toString() + File.separator + "rewards.yml");
+
+        if (!path.exists())
+            path.mkdirs();
+        if (!file.exists())
+            FileUtils.copy(instance.getResource("rewards.yml"), file);
+
+        FileConfiguration c = YamlConfiguration.loadConfiguration(file);
+
+        for (String s : c.getConfigurationSection("Rewards.Voting.Streak").getKeys(false))
+            votingRewards.add(new StringReward(c.getStringList("Rewards.Voting.Streak." + s).toArray(new String[0])));
+
+        for (String s : c.getConfigurationSection("Rewards.Voting.Links").getKeys(false)) {
+            voteSite.put(s, c.getString("Rewards.Voting.Links." + s));
+            voteSiteDictionary.add(s);
+        }
+    }
+
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd");
 
     public static SimpleDateFormat getSimpleDateFormat() {
@@ -33,17 +71,19 @@ public class RewardManager implements Listener {
             String timestamp = simpleDateFormat.format(new Date());
 
             try {
-                up.incrementTimesRewarded("Vote"); // More like "times voted" not "times rewarded"
                 if (oldTimestamp == null || checkDaysBetween(oldTimestamp, timestamp) > 0) {
-                    up.setRewardTimestamp("Vote", timestamp);
-                    rewardVote(p);
-                    if (checkDaysBetween(oldTimestamp, timestamp) > 2)
+                    if (oldTimestamp == null || checkDaysBetween(oldTimestamp, timestamp) > 2)
                         up.incrementStreak("Vote");
-                    else
+                    else {
                         up.resetStreak("Vote");
+                        up.incrementStreak("Vote");
+                    }
+                    up.setRewardTimestamp("Vote", timestamp);
+                    up.incrementTimesRewarded("Vote");
+                    rewardVote(p);
                 } else
                     p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aThank you " +
-                            "for voting! However, we can only reward you for 1 vote per day, we appreciate it though :)!"));
+                            "for voting! We can only reward you for 1 vote per day but we appreciate it :)!"));
             } catch (ParseException ex) { // this wont happen unless someone fucks something up. if you do fuck something up, just know you're now responsible for the implosion of the universe
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                         "&cThere was an error processing your vote, if this message ever appears then just " +
@@ -56,10 +96,27 @@ public class RewardManager implements Listener {
     }
 
     private void rewardVote(Player p) {
-
+        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
+        int streak = up.getStreak("Vote");
+        while (streak > votingRewards.size())
+            streak -= votingRewards.size();
+        StringReward rewards = votingRewards.get(streak - 1);
+        if (rewards != null) {
+            String[] asStrings = rewards.asStrings();
+            if (asStrings != null) {
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aThank you " +
+                        "for voting! Here are your rewards:"));
+                for (String s : asStrings)
+                    if (s != null)
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "  &8+" + s));
+                rewards.giveNoMessage(p);
+            } else
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aThank you " +
+                        "for voting!"));
+        }
     }
 
-    private long checkDaysBetween(String oldTimestamp, String newTimestamp) throws ParseException {
+    public long checkDaysBetween(String oldTimestamp, String newTimestamp) throws ParseException {
         Date old = simpleDateFormat.parse(oldTimestamp);
         Date newd = simpleDateFormat.parse(newTimestamp);
         long diff = old.getTime() - newd.getTime();
