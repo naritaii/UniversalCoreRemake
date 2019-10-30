@@ -77,6 +77,8 @@ public class RewardManager implements Listener {
                     else {
                         up.resetStreak("Vote");
                         up.incrementStreak("Vote");
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eVoting" +
+                                " streak reset! Vote every day to increase it!"));
                     }
                     up.setRewardTimestamp("Vote", timestamp);
                     up.incrementTimesRewarded("Vote");

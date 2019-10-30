@@ -11,7 +11,7 @@ Objectives:
       - '328d73d1-e671-4006-8438-aeb44077b54f' # What NPC to talk to. This UUID is Quest Master's.
     Description: 'Talk to &aQuest Master' # Optional argument, this is usually generated with code but can't always be.
     DisplayItem: # Used for GUIs.
-      ItemMaterial: YELLOW_FLOWER
+      ItemMaterial: YELLOW_FLOWER # Optional. Defaults to GLASS if not set
       ItemData: 0 # Optional (redundant) argument. Defaults to 0.
       DisplayName: '%id_formatted%' # Optional (redundant) argument. defaults to ID (formatted: getting_started -> Getting Started).
     StringRewards: # Optional argument. Can be 'MONEY <amount>', 'ITEM <serialized item>', 'QUEST <id>', or 'MESSAGE <msg>'.
@@ -83,7 +83,7 @@ Objectives:
     TaskInfo:
       - t3aGyt
       - '1'
-      - 'f59c4fb2-4317-4f7f-9405-cb7b0c659a74,RED_FLOWER,1' # Find the missing blue orchid this a blue flower now because Aoba is a type of blue flower
+      - 'f59c4fb2-4317-4f7f-9405-cb7b0c659a74,RED_ROSE,1' # Find the missing blue orchid this a blue flower now because Aoba is a type of blue flower
     Description: 'Find &aAlice''s Blue Orchid'
     DisplayItem:
       ItemMaterial: RED_ROSE
@@ -97,8 +97,8 @@ Objectives:
   help_alice_create_a_pickaxe:
     TaskType: GIVE_TO_NPC
     TaskInfo:
-      - t3aGyt
-      - '128'
+      - t3aGyf
+      - '64'
       - 'f59c4fb2-4317-4f7f-9405-cb7b0c659a74,RED_SANDSTONE,0'
     Description: 'Give &aAlice Red Sandstone'
     DisplayItem:
@@ -111,23 +111,67 @@ Objectives:
       - 'QUEST steal_pickaxe'
     Catagory: STORY_QUEST
 
-    steal_pickaxe:
-      TaskType: TALK_TO_NPC
-      TaskInfo:
-        - t3aGyt
-        - '1'
-        - '' # Create Alice and Put her NPC ID Here.
-      Description: 'Steal Alice''s pickaxe...'
-      DisplayItem:
-        ItemMaterial: RED_ROSE
-        ItemData: 1
-        Amount: 4 # Optional argument, defaults to 1
-      StringRewards:
-        - 'ITEM H4sIAAAAAAAAAGWQ7UrDMBSGzz7U2Svwn0FQFAdu4Nzov7oWHPZjsA6EMUpIs63YJSPtpoL3k/vIfQmeokxh5895c/Lw5j2xAFpQz1I4W2eCM0UXpf0mZcpFssnYK33nNTgayq0oaxY0Sro8hSYXbGUBQK0OjXyXV71y+AILTtKs2OT0AylfKt5C6hgiozuzp5HreuF8FnixM3/0o+HzJAlGoefa3fbL2O60h9NJHAVJ6ASefcUmVKRFKQUn458Y7TiKHT+pULg3uo+CGE07KO+wD/DQn6EwevB5UHg3h6oujGZG58E0duJRFNpGP5C/p3y54wpSdLntXRL8kEwsSbHhPCVSkGvF0xtS7Gk0RU1+abaignGykIog9w8rJSm3SpBMoNqPW9AM6ZrDudEKMx2si7Y9DNoFqMOxS9d0yTH+NxkbahGuAQAA' # Do /serialize to serialize an item, this is a regular wooden pick called sandstone pickaxe
-        - 'MESSAGE &dGuilt' # +Guilt
-        - 'MESSAGE Alice''s rage' # +Alice's rage I think would look pretty funny
-        - 'SCRIPT alicerage' # make script where she says "WHAT THE FUCK.... GIVE MY PICKAXE BACK.... I WILL FIND YOU" or something (ok maybe remove the 'FUCK')
-      Catagory: STORY_QUEST
+  steal_pickaxe:
+    TaskType: TALK_TO_NPC
+    TaskInfo:
+      - t3aGyt
+      - '1'
+      - 'f59c4fb2-4317-4f7f-9405-cb7b0c659a74' # Create Alice and Put her NPC ID Here.
+    Description: 'Steal Alice''s pickaxe...'
+    DisplayItem:
+      ItemMaterial: RED_ROSE
+      ItemData: 1
+      Amount: 4 # Optional argument, defaults to 1
+    StringRewards:
+      - 'ITEM H4sIAAAAAAAAAGWQ7UrDMBSGzz7U2Svwn0FQFAdu4Nzov7oWHPZjsA6EMUpIs63YJSPtpoL3k/vIfQmeokxh5895c/Lw5j2xAFpQz1I4W2eCM0UXpf0mZcpFssnYK33nNTgayq0oaxY0Sro8hSYXbGUBQK0OjXyXV71y+AILTtKs2OT0AylfKt5C6hgiozuzp5HreuF8FnixM3/0o+HzJAlGoefa3fbL2O60h9NJHAVJ6ASefcUmVKRFKQUn458Y7TiKHT+pULg3uo+CGE07KO+wD/DQn6EwevB5UHg3h6oujGZG58E0duJRFNpGP5C/p3y54wpSdLntXRL8kEwsSbHhPCVSkGvF0xtS7Gk0RU1+abaignGykIog9w8rJSm3SpBMoNqPW9AM6ZrDudEKMx2si7Y9DNoFqMOxS9d0yTH+NxkbahGuAQAA' # Do /serialize to serialize an item, this is a regular wooden pick called sandstone pickaxe
+      - 'MESSAGE &dGuilt' # +Guilt
+      - 'MESSAGE Alice''s rage' # +Alice's rage I think would look pretty funny
+      - 'SCRIPT alicerage' # make script where she says "WHAT THE FUCK.... GIVE MY PICKAXE BACK.... I WILL FIND YOU" or something (ok maybe remove the 'FUCK')
+    Catagory: STORY_QUEST
+
+  butchers_shop:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - RAWP0R
+      - '16'
+      - 'a873d167-c76a-448b-8818-80fc67390a7a,PORK'
+    Description: 'Collect 16 &aRaw Pork'
+    DisplayItem:
+      ItemMaterial: PORK
+      Amount: 16
+    StringRewards:
+      - 'MONEY 10.00'
+      - 'QUEST butcher_shop'
+    Catagory: STORY_QUEST
+
+  butcher_shop:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - RAWM0T
+      - '16'
+      - 'a873d167-c76a-448b-8818-80fc67390a7a,MUTTON'
+    Description: 'Collect 16 &aRaw Mutton'
+    DisplayItem:
+      ItemMaterial: MUTTON
+      Amount: 16
+    StringRewards:
+      - 'MONEY 15.00'
+      - 'QUEST butcher_shops'
+    Catagory: STORY_QUEST
+
+  butcher_shops:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - C0WMEE
+      - '16'
+      - 'a873d167-c76a-448b-8818-80fc67390a7a,RAW_BEEF'
+    Description: 'Collect 16 &aRaw Beef'
+    DisplayItem:
+      ItemMaterial: RAW_BEEF
+      Amount: 16
+    StringRewards:
+      - 'MONEY 15.00'
+    Catagory: STORY_QUEST
   ####################
   ### Achievements ###
   ####################
@@ -142,7 +186,9 @@ Objectives:
       ItemMaterial: STONE_PICKAXE
       Lore:  # Optional argument, defaults to the 'Description'
         - '%description%'
-        - '&e(Enhanced blocks are Sandstone, Coal Block, and Iron Block)'
+        - ''
+        - '&7&oEnhanced blocks are (regular) Sandstone,'
+        - '&7&oCoal Block, and Iron Block!'
     Catagory: ACHIEVEMENT
 
   shameless_plug:

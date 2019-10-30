@@ -48,6 +48,7 @@ public class UniversalCoreRemake extends JavaPlugin {
     private static LeaderboardManager leaderboardManager;
     private static RewardManager rewardManager;
     private static WorldGuardPlugin worldGuardPlugin;
+    private static CommandExecutor commandExecutor;
 
     @Override
     public void onEnable() {
@@ -64,8 +65,7 @@ public class UniversalCoreRemake extends JavaPlugin {
         scoreboardManager = new ScoreboardManager();
         leaderboardManager = new LeaderboardManager();
         rewardManager = new RewardManager();
-
-        CommandExecutor executor = new CommandExecutor();
+        commandExecutor = new CommandExecutor();
 
         setupEconomy();
         setupChat();
@@ -81,9 +81,9 @@ public class UniversalCoreRemake extends JavaPlugin {
                 new ChatManager(), motdManager, new ItemMetadata(), universalObjectiveManager, scoreboardManager,
                 new CollectibleSlimesListener(), leaderboardManager, new EnderchestListener(), new SpawnPortalListener(),
                 rewardManager);
-        registerCommands(executor, "reloadmotd", "reloaduniversalobjectives",
-                "exp", "setblockmeta", "readblockmeta", "setitemmeta", "readitemmeta", "emoji",
-                "openmineraltrader", "openfoodtrader", "openstats", "openspawnportal", "openquestmaster",
+        registerCommands(commandExecutor, "reloadmotd", "reloaduniversalobjectives",
+                "exp", "setblockmeta", "readblockmeta", "setitemmeta", "readitemmeta", "emoji", "vote", "discord",
+                "twitter", "openmineraltrader", "openfoodtrader", "openstats", "openspawnportal", "openquestmaster",
                 "saveuniversalplayercachetofile", "saveblockmetadatacachetofile", "selectobjective", "mutate",
                 "serialize", "stringreward");
 
@@ -248,5 +248,9 @@ public class UniversalCoreRemake extends JavaPlugin {
 
     public static Chat getChat() {
         return chat;
+    }
+
+    public static CommandExecutor getCommandExecutor() {
+        return commandExecutor;
     }
 }

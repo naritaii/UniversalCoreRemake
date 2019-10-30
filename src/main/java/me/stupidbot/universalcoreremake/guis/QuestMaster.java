@@ -9,6 +9,7 @@ import fr.minuskube.inv.content.InventoryProvider;
 import fr.minuskube.inv.content.Pagination;
 import fr.minuskube.inv.content.SlotIterator;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
+import me.stupidbot.universalcoreremake.enchantments.UniversalEnchantment;
 import me.stupidbot.universalcoreremake.managers.RewardManager;
 import me.stupidbot.universalcoreremake.managers.universalobjective.UniversalObjective;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
@@ -17,14 +18,12 @@ import me.stupidbot.universalcoreremake.utilities.TextUtils;
 import me.stupidbot.universalcoreremake.utilities.Warp;
 import me.stupidbot.universalcoreremake.utilities.item.ItemBuilder;
 import me.stupidbot.universalcoreremake.utilities.item.Skull;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import xyz.upperlevel.spigot.book.BookUtil;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -71,66 +70,11 @@ public class QuestMaster implements InventoryProvider {
                 .name("&5Discord").lore("&eJoin our Discord for updates, giveaways, and to\n" +
                         "&edirectly give feedback to admins and the community!\n\n" +
                         "&bType &d/sync Discord&b to sync your Minecraft and Discord accounts.").build(), e ->
-                BookUtil.openPlayer(p, BookUtil.writtenBook()
-                        .author("Corrupt Prisons")
-                        .title("Discord")
-                        .pages(
-                                new BookUtil.PageBuilder()
-                                        .add(new TextComponent(TextUtils.centerMessage("&5&lDISCORD", 56)))
-                                        .newLine()
-                                        .newLine()
-                                        .add(new TextComponent("Join our Discord for updates, giveaways, and to " +
-                                                "directly give feedback to admins and the community!"))
-                                        .newLine()
-                                        .newLine()
-                                        .newLine()
-                                        .add(BookUtil.TextBuilder.of(TextUtils.centerMessage("&9&l&nCLICK HERE", 56))
-                                                .onClick(BookUtil.ClickAction.openUrl("https://www.discord.gg/YQsxZh8"))
-                                                .onHover(BookUtil.HoverAction.showText(
-                                                        BookUtil.TextBuilder.of("Click for an invite link to our Discord server!")
-                                                                .color(ChatColor.YELLOW)
-                                                                .build()))
-                                                .build())
-                                        .newLine()
-                                        .newLine()
-                                        .add(BookUtil.TextBuilder.of(TextUtils.centerMessage("&d&l&nSYNC ACCOUNT", 56))
-                                                .onClick(BookUtil.ClickAction.runCommand("/sync Discord"))
-                                                .onHover(BookUtil.HoverAction.showText(
-                                                        BookUtil.TextBuilder.of("Click to run /sync Discord to link your Minecraft and Discord accounts!")
-                                                                .color(ChatColor.YELLOW)
-                                                                .build()))
-                                                .build())
-                                        .build()
-                        )
-                        .build())));
+                p.performCommand("discord")));
 
         contents.set(5, 6, ClickableItem.of(new ItemBuilder(Skull.getCustomSkull(Skull.TWITTER.getId()))
                 .name("&bTwitter").lore("&eFollow our Twitter for updates and giveaways.").build(), e ->
-                BookUtil.openPlayer(p, BookUtil.writtenBook()
-                        .author("Corrupt Prisons")
-                        .title("Twitter")
-                        .pages(
-                                new BookUtil.PageBuilder()
-                                        .add(new TextComponent(TextUtils.centerMessage("&b&lTWITTER", 56)))
-                                        .newLine()
-                                        .newLine()
-                                        .add(new TextComponent("Follow our Twitter for news and giveaways!"))
-                                        .newLine()
-                                        .newLine()
-                                        .newLine()
-                                        .newLine()
-                                        .newLine()
-                                        .newLine()
-                                        .add(BookUtil.TextBuilder.of(TextUtils.centerMessage("&8&l&nCLICK HERE", 56))
-                                                .onClick(BookUtil.ClickAction.openUrl("https://twitter.com/CorruptPrisons"))
-                                                .onHover(BookUtil.HoverAction.showText(
-                                                        BookUtil.TextBuilder.of("Click to visit our Twitter page!")
-                                                                .color(ChatColor.YELLOW)
-                                                                .build()))
-                                                .build())
-                                        .build()
-                        )
-                        .build())));
+                p.performCommand("twitter")));
 
         // Rewards
         UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
@@ -147,15 +91,16 @@ public class QuestMaster implements InventoryProvider {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        ItemBuilder vote = new ItemBuilder(new ItemStack(canVote ? Material.HOPPER_MINECART : Material.MINECART));
+        ItemBuilder vote = new ItemBuilder(new ItemStack(canVote ? Material.STORAGE_MINECART : Material.HOPPER_MINECART));
         vote.name((canVote ? "&a" : "&c") + "Vote Delivery");
 
         if (canVote) {
             StringBuilder streakLore = new StringBuilder("&7Streak: ");
             for (int i = 1; i <= maxStreak; i++)
-                streakLore.append(i == streak + 1 ? ChatColor.GOLD : ChatColor.DARK_GRAY)
+                streakLore.append(i == streak + 1 ? ChatColor.GOLD : (i < streak + 1 ? ChatColor.YELLOW :
+                        ChatColor.DARK_GRAY))
                         .append(TextUtils.toBallNumber(i));
-            StringBuilder rewardLore = new StringBuilder("&aReward: ");
+            StringBuilder rewardLore = new StringBuilder("&aStreak Reward: ");
             StringReward rewards = rm.votingRewards.get(streak);
             if (rewards != null) {
                 String[] asStrings = rewards.asStrings();
@@ -168,57 +113,26 @@ public class QuestMaster implements InventoryProvider {
             } else
                 rewardLore.append("&8NONE");
 
+
             vote.lore("&7Vote for for us DAILY to")
                     .lore("&7get better and BETTER free loot!")
                     .lore("")
-                    .lore(streakLore.toString())
-                    .lore(rewardLore.toString())
-                    .lore("")
+                    .lore(streakLore.toString());
+
+            for (String l : rewardLore.toString().split("\n"))
+                vote.lore(l);
+
+            vote.lore("")
                     .lore("&eClick to vote Corrupt Prisons as the top server!");
+
+            vote.enchantment(UniversalEnchantment.GLOW);
         } else
             vote.lore("&7Vote for us again tomorrow")
-                    .lore("&7for better rewards!") // TODO add countdown to next vote
+                    .lore("&7for better rewards!") // TODO add countdown to next vote/reload gui if player votes
                     .lore("")
                     .lore("&eClick to vote for us again!");
 
-        boolean finalCanVote = canVote; // lambda need (effectively) final variables
-        int finalStreak = streak;
-        contents.set(3, 4, ClickableItem.of(vote.build(), e -> {
-            int voteSite = up.getTimesRewarded("Vote") + 1;
-            int voteSize = rm.voteSiteDictionary.size();
-            while (voteSite > voteSize)
-                voteSite -= voteSize;
-            String siteName = rm.voteSiteDictionary.get(voteSite);
-            String url = rm.voteSite.get(siteName);
-
-            if (finalCanVote) // TODO add /vote and preferably /twitter and /discord
-                BookUtil.openPlayer(p, BookUtil.writtenBook()
-                        .author("Corrupt Prisons")
-                        .title("Vote Link (streak " + (finalStreak + 1) + " site " + (voteSite + 1) + ")")
-                        .pages(
-                                new BookUtil.PageBuilder()
-                                        .add(new TextComponent(TextUtils.centerMessage("&e&lVOTE", 56)))
-                                        .newLine()
-                                        .newLine()
-                                        .add(new TextComponent("Vote for us daily for better and better loot!"))
-                                        .newLine()
-                                        .newLine()
-                                        .newLine()
-                                        .newLine()
-                                        .newLine()
-                                        .newLine()
-                                        .add(BookUtil.TextBuilder.of(TextUtils.centerMessage("&6&l&nCLICK HERE", 56))
-                                                .onClick(BookUtil.ClickAction.openUrl(url))
-                                                .onHover(BookUtil.HoverAction.showText(
-                                                        BookUtil.TextBuilder.of("Click to vote for us on " + siteName)
-                                                                .color(ChatColor.YELLOW)
-                                                                .build()))
-                                                .build())
-                                        .build()
-                        )
-                        .build());
-            else { /* TODO list all voting sites */ }
-        }));
+        contents.set(3, 4, ClickableItem.of(vote.build(), e -> p.performCommand("vote")));
 
         // Quests
         Map<String, Integer> dic = UniversalCoreRemake.getUniversalObjectiveManager().registeredObjectivesDictionary;

@@ -13,6 +13,9 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private final SetItemMeta setItemMeta = new SetItemMeta();
     private final ReadItemMeta readItemMeta = new ReadItemMeta();
     private final Emoji emoji = new Emoji();
+    private final Vote vote = new Vote();
+    private final Discord discord = new Discord();
+    private final Twitter twitter = new Twitter();
     private final OpenMineralTrader openMineralTrader = new OpenMineralTrader();
     private final OpenFoodTrader openFoodTrader = new OpenFoodTrader();
     private final OpenStats openStats = new OpenStats();
@@ -44,6 +47,12 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
             return readItemMeta.execute(s);
         else if (cmd.getName().equalsIgnoreCase("emoji"))
             return emoji.execute(s);
+        else if (cmd.getName().equalsIgnoreCase("vote"))
+            return vote.execute(s);
+        else if (cmd.getName().equalsIgnoreCase("discord"))
+            return discord.execute(s);
+        else if (cmd.getName().equalsIgnoreCase("twitter"))
+            return twitter.execute(s);
         else if (cmd.getName().equalsIgnoreCase("openmineraltrader"))
             return openMineralTrader.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("openfoodtrader"))
@@ -65,5 +74,5 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
         else if (cmd.getName().equalsIgnoreCase("stringreward"))
             return stringReward.execute(s, label, args);
         return false;
-        }
+    }
 }

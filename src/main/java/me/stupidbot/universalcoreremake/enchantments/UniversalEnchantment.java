@@ -18,8 +18,10 @@ public class UniversalEnchantment {
     private static final Enchantment GLASS = new Glass(255);
     private static final Enchantment SPEED_BOOST = new SpeedBoost(254);
     public static final Enchantment SANDSTONE_LOVER = new SandstoneLover(253);
+    public static final Enchantment GLOW = new Glow(252);
 
-    public static final Set<Enchantment> ENCHANTMENTS = new HashSet<>(Arrays.asList(GLASS, SPEED_BOOST, SANDSTONE_LOVER));
+    public static final Set<Enchantment> ENCHANTMENTS = new HashSet<>(Arrays.asList(GLASS, SPEED_BOOST, SANDSTONE_LOVER,
+            GLOW));
 
     public static final Set<Enchantment> MUTATIONS = new HashSet<>(Arrays.asList(GLASS, SPEED_BOOST, SANDSTONE_LOVER));
 

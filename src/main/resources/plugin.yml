@@ -43,6 +43,16 @@ commands:
     aliases: [emojis]
     description: List emojis
     usage: /<command>
+  discord:
+    description: Links Discord
+    usage: /<command>
+  twitter:
+    description: Link Twitter
+    usage: /<command>
+  vote:
+    aliases: [votelink, votelinks, votesite, vctesites, voting]
+    description: List voting sites
+    usage: /<command>
   openmineraltrader:
     aliases: [mineraltrader]
     description: Open Miner Trader GUI

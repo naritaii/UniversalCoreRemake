@@ -31,8 +31,10 @@ C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stu
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\utilities\PlayerLevelling.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\utilities\item\Reflections.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\managers\universalplayer\UniversalPlayer.java
+C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\Discord.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\guis\SpawnPortal.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\listeners\CollectibleSlimesListener.java
+C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\utilities\FileUtils.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\OpenQuestMaster.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\listeners\EnderchestListener.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\Exp.java
@@ -44,6 +46,7 @@ C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stu
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\UniversalCoreExpansion.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\StringReward.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\Emoji.java
+C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\enchantments\Glow.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\utilities\item\ItemUtils.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\listeners\SpawnPortalListener.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\managers\RewardManager.java
@@ -59,6 +62,7 @@ C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stu
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\effects\trail\Halo.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\SetItemMeta.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\ReloadMOTD.java
+C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\Twitter.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\OpenFoodTrader.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\guis\Sell.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\managers\SkillManager.java
@@ -70,4 +74,5 @@ C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stu
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\effects\LevelUp.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\ReadBlockMeta.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\utilities\item\SellItem.java
+C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\Vote.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\events\universalobjective\UniversalObjectiveCompleteEvent.java

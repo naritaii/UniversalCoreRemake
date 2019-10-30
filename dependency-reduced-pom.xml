@@ -58,6 +58,10 @@
                   <pattern>xyz.upperlevel</pattern>
                   <shadedPattern>me.stupidbot.universalcoreremake.upperlevel</shadedPattern>
                 </relocation>
+                <relocation>
+                  <pattern>com.xxmicloxx</pattern>
+                  <shadedPattern>me.stupidbot.universalcoreremake.xxmicloxx</shadedPattern>
+                </relocation>
               </relocations>
             </configuration>
           </execution>
@@ -113,6 +117,10 @@
     <repository>
       <id>bintray-nuvotifier-repo</id>
       <url>https://dl.bintray.com/nuvotifier/maven/</url>
+    </repository>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
     </repository>
   </repositories>
   <dependencies>
