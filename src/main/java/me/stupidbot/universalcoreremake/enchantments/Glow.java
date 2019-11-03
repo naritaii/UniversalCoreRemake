@@ -4,7 +4,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.inventory.ItemStack;
 
-public class Glow extends Enchantment {
+class Glow extends Enchantment {
     private final int id;
 
     public Glow(int id) {

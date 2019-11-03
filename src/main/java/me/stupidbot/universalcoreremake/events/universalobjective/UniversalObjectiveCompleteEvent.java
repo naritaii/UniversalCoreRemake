@@ -28,6 +28,7 @@ public class UniversalObjectiveCompleteEvent extends Event {
         return handlers;
     }
 
+    @SuppressWarnings("unused")
     public static HandlerList getHandlerList() {
         return handlers;
     }

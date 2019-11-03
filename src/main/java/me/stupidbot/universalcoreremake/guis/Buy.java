@@ -35,7 +35,7 @@ public class Buy implements InventoryProvider {
                 .title(title).build();
     }
 
-    private final int page = 1;
+    // --Commented out by Inspection (10/30/2019 3:00 PM):private final int page = 1;
     private final List<ClickableItem> clickableItems = new ArrayList<>();
     private final int amt = 1;
 

@@ -1,15 +1,17 @@
 me\stupidbot\universalcoreremake\events\LevelUpEvent.class
 me\stupidbot\universalcoreremake\managers\universalobjective\UniversalObjective$Catagory.class
-me\stupidbot\universalcoreremake\cosmetics\Tag.class
 me\stupidbot\universalcoreremake\commands\Twitter.class
 me\stupidbot\universalcoreremake\commands\OpenQuestMaster.class
 me\stupidbot\universalcoreremake\guis\Achievements.class
+me\stupidbot\universalcoreremake\listeners\HatListener.class
 me\stupidbot\universalcoreremake\managers\BlockMetadataManger.class
 me\stupidbot\universalcoreremake\UniversalCoreExpansion.class
 me\stupidbot\universalcoreremake\commands\Vote.class
 me\stupidbot\universalcoreremake\managers\ChatManager.class
 me\stupidbot\universalcoreremake\utilities\TextUtils$DefaultFontInfo.class
 me\stupidbot\universalcoreremake\utilities\TextUtils.class
+me\stupidbot\universalcoreremake\commands\Hat.class
+me\stupidbot\universalcoreremake\listeners\InventoryClickBorderCloseListener.class
 me\stupidbot\universalcoreremake\commands\SetBlockMeta.class
 me\stupidbot\universalcoreremake\guis\SpawnPortal.class
 me\stupidbot\universalcoreremake\managers\MiningManager$1.class
@@ -29,9 +31,9 @@ me\stupidbot\universalcoreremake\commands\Exp.class
 me\stupidbot\universalcoreremake\effects\BlockRegen.class
 me\stupidbot\universalcoreremake\listeners\EnderchestListener.class
 me\stupidbot\universalcoreremake\commands\ReloadMOTD.class
-me\stupidbot\universalcoreremake\utilities\PlayerLevelling$1.class
 me\stupidbot\universalcoreremake\utilities\Warp.class
 me\stupidbot\universalcoreremake\managers\universalobjective\UniversalObjective$TaskType.class
+me\stupidbot\universalcoreremake\commands\ReloadRewards.class
 me\stupidbot\universalcoreremake\commands\OpenStats.class
 me\stupidbot\universalcoreremake\effects\BlockBreak.class
 me\stupidbot\universalcoreremake\commands\ReadItemMeta.class
@@ -47,6 +49,7 @@ me\stupidbot\universalcoreremake\utilities\item\ItemLevelling.class
 me\stupidbot\universalcoreremake\utilities\item\Reflections$FieldAccessor.class
 me\stupidbot\universalcoreremake\enchantments\Glow.class
 me\stupidbot\universalcoreremake\managers\ScoreboardManager$ScoreboardFormat.class
+me\stupidbot\universalcoreremake\commands\SortLeaderboards.class
 me\stupidbot\universalcoreremake\utilities\item\Skull.class
 me\stupidbot\universalcoreremake\commands\OpenMineralTrader.class
 me\stupidbot\universalcoreremake\managers\ScoreboardManager.class
@@ -54,7 +57,7 @@ me\stupidbot\universalcoreremake\commands\SelectObjective.class
 me\stupidbot\universalcoreremake\enchantments\mutation\SandstoneLover.class
 me\stupidbot\universalcoreremake\utilities\FileUtils.class
 me\stupidbot\universalcoreremake\commands\SaveBlockmetaCacheToFile.class
-me\stupidbot\universalcoreremake\effects\trail\Halo.class
+me\stupidbot\universalcoreremake\commands\ReloadLeaderboards.class
 me\stupidbot\universalcoreremake\managers\RewardManager.class
 me\stupidbot\universalcoreremake\utilities\item\SellItem.class
 me\stupidbot\universalcoreremake\commands\OpenFoodTrader.class
@@ -70,12 +73,14 @@ me\stupidbot\universalcoreremake\managers\universalplayer\UniversalPlayer.class
 me\stupidbot\universalcoreremake\guis\Buy.class
 me\stupidbot\universalcoreremake\managers\MiningManager$BreakBehavior.class
 me\stupidbot\universalcoreremake\commands\Discord.class
+me\stupidbot\universalcoreremake\commands\SaveLeaderboards.class
 me\stupidbot\universalcoreremake\events\UniversalBlockBreakEvent.class
 me\stupidbot\universalcoreremake\managers\MOTDManager.class
 me\stupidbot\universalcoreremake\guis\QuestMaster.class
 me\stupidbot\universalcoreremake\utilities\item\Reflections$ConstructorInvoker.class
 me\stupidbot\universalcoreremake\commands\OpenSpawnPortal.class
 me\stupidbot\universalcoreremake\utilities\item\ItemUtils.class
+me\stupidbot\universalcoreremake\commands\ReinitializeLeaderboards.class
 me\stupidbot\universalcoreremake\managers\ScoreboardManager$1.class
 me\stupidbot\universalcoreremake\managers\universalobjective\UniversalObjectiveManager$1.class
 me\stupidbot\universalcoreremake\utilities\PlayerLevelling.class
@@ -94,5 +99,4 @@ me\stupidbot\universalcoreremake\utilities\item\Reflections.class
 me\stupidbot\universalcoreremake\events\universalobjective\UniversalObjectiveStartEvent.class
 me\stupidbot\universalcoreremake\commands\ReloadUniversalObjectives.class
 me\stupidbot\universalcoreremake\commands\ReadBlockMeta.class
-me\stupidbot\universalcoreremake\managers\SkillManager.class
 me\stupidbot\universalcoreremake\managers\MiningManager$2.class

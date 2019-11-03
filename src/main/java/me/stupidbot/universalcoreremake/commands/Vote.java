@@ -41,9 +41,17 @@ class Vote {
                     voteSite -= voteSize;
                 String siteName = rm.voteSiteDictionary.get(voteSite - 1);
                 String url = rm.voteSite.get(siteName);
-                StringBuilder rewardLore = new StringBuilder("&aStreak Reward: ");
+                StringBuilder rewardLore = new StringBuilder("\n&aStreak Reward: ");
                 StringReward rewards = rm.votingRewards.get(up.getStreak("Vote"));
-
+                int streak = up.getStreak("Vote");
+                int maxStreak = rm.votingRewards.size();
+                while (streak > maxStreak)
+                    streak -= maxStreak;
+                StringBuilder streakLore = new StringBuilder("&7Streak: ");
+                for (int i = 1; i <= maxStreak; i++)
+                    streakLore.append(i == streak + 1 ? ChatColor.GOLD : (i < streak + 1 ? ChatColor.YELLOW :
+                            ChatColor.DARK_GRAY))
+                            .append(TextUtils.toBallNumber(i));
                 if (rewards != null) {
                     String[] asStrings = rewards.asStrings();
                     if (asStrings != null) {
@@ -75,7 +83,7 @@ class Vote {
                                                 .onHover(BookUtil.HoverAction.showText(
                                                         BookUtil.TextBuilder.of("Click to vote for us on " + siteName
                                                                 + "\n\n" + ChatColor.translateAlternateColorCodes('&',
-                                                                rewardLore.toString()))
+                                                                streakLore.toString() + rewardLore.toString()))
                                                                 .color(ChatColor.YELLOW)
                                                                 .build()))
                                                 .build())

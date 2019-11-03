@@ -20,9 +20,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class PlayerLevelling implements Listener {
     public static void giveXp(Player p, int amount) {
         UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
@@ -67,30 +64,6 @@ public class PlayerLevelling implements Listener {
         updateUI(p);
     }
 
-    private static final Map<Integer, StringReward> levelRewards = new HashMap<Integer, StringReward>() { // TODO Move this to a YAML file
-        {
-            int i = 1;
-            put(++i, new StringReward("MONEY 5")); // 2
-            put(++i, new StringReward("MONEY 10"));
-            put(++i, new StringReward("MONEY 15"));
-            put(++i, new StringReward("MONEY 20")); // 5
-            put(++i, new StringReward("MONEY 50"));
-            put(++i, new StringReward("MONEY 55"));
-            put(++i, new StringReward("MONEY 60"));
-            put(++i, new StringReward("MONEY 65"));
-            put(++i, new StringReward("MONEY 100")); // 10
-            put(++i, new StringReward("MONEY 110"));
-            put(++i, new StringReward("MONEY 120"));
-            put(++i, new StringReward("MONEY 130"));
-            put(++i, new StringReward("MESSAGE &c&oi don't really feel like giving you a reward right now...\n    " +
-                    "&8+&c&othings have just been... tough... at home and...\n    " +
-                    "&8+&c&oplease don't hate me...\n    " +
-                    "&8+&c&o...\n    " +
-                    "&8+&c&oi-i promise i'll make it up to you!"));
-            put(++i, new StringReward("MONEY 150", "MONEY 150")); // 15
-        }
-    };
-
     private static void levelMilestones(Player p, int oldLvl, int lvl) {
         p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                 "&8&l&m---------------------------------------------"));
@@ -107,11 +80,11 @@ public class PlayerLevelling implements Listener {
                 p.sendMessage("");
                 TextUtils.sendCenteredMessage(p, "&7Hey, you're getting pretty good at this. I think");
                 TextUtils.sendCenteredMessage(p, "&aQuest Master &7might have some &ejobs for you&7,");
-                TextUtils.sendCenteredMessage(p, "&7type &c/spawn&7 to warp to spawn!");
+                TextUtils.sendCenteredMessage(p, "&7type &c/hub&7 to teleport!");
             }
 
-            if (levelRewards.containsKey(i)) {
-                StringReward rewards = levelRewards.get(i);
+            if (UniversalCoreRemake.getRewardManager().levelRewards.containsKey(i)) {
+                StringReward rewards = UniversalCoreRemake.getRewardManager().levelRewards.get(i);
                 if (rewards != null) {
                     String[] asStrings = rewards.asStrings();
                     if (asStrings != null) {
@@ -160,8 +133,26 @@ public class PlayerLevelling implements Listener {
         Player p = e.getPlayer();
         UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
 
-        if (up.firstJoin())
+        if (up.firstJoin()) {
             up.setLevel(1);
+
+            UniversalCoreRemake.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(UniversalCoreRemake.getInstance(), () -> {
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e&l\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC"));
+
+                TextUtils.sendCenteredMessage(p, "&lWelcome to Corrupt Prisons,&7 "
+                        + up.getNameColor() + p.getName() + "&f&l!");
+                p.sendMessage("");
+                TextUtils.sendCenteredMessage(p, "&eTalk to &aQuest Master&e to get started, the Corrupt");
+                TextUtils.sendCenteredMessage(p, "&euniverse has many lands to discover, strange creatures");
+                TextUtils.sendCenteredMessage(p, "&eto find, secrets to uncover, and peculiar characters to");
+                TextUtils.sendCenteredMessage(p, "&emeet! Collect resources, upgrade your gear, explore a");
+                TextUtils.sendCenteredMessage(p, "&ewhole new planet, and complete quests to advance your");
+                TextUtils.sendCenteredMessage(p, "&eway through Corrupt Prisons!");
+                TextUtils.sendCenteredMessage(p, "&bHave fun!");
+
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e&l\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC"));
+            });
+        }
 
         PlayerLevelling.updateUI(p);
     }

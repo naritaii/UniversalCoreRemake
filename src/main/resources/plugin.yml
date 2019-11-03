@@ -15,6 +15,19 @@ commands:
     aliases: [universalobjectivesreload, questsreload, reloadquests, achievementssreload, reloadachievements, reloadobjectives, objectivesreload]
     description: Reload Universal Objectives
     usage: /<command>
+  reloadrewards:
+    description: Reload rewards
+    usage: /<command>
+  reloadleaderboards:
+    description: Reload leaderboards
+    usage: /<command>
+  reinitializeleaderboards:
+    description: Reinitialize leaderboards
+    usage: /<command>
+  sortleaderboards:
+    aliases: [resortleaderboards, updateleaderboards]
+    description: Sort leaderboards
+    usage: /<command>
   exp:
     aliases: [xp, giveexp, givexp]
     description: Give exp
@@ -62,12 +75,15 @@ commands:
     description: Open Food Trader GUI
     usage: /<command> [player]
   openstats:
+    aliases: [stats]
     description: Open Stats GUI
     usage: /<command> [player]
   openquestmaster:
+    aliases: [questmaster]
     description: Open Quest Master GUI
     usage: /<command> [player]
   openspawnportal:
+    aliases: [spawnportal]
     description: Open spawn portal GUI
     usage: /<command> [player]
   saveuniversalplayercachetofile:
@@ -77,6 +93,10 @@ commands:
   saveblockmetadatacachetofile:
     aliases: [saveblockmetadatacache, saveblockmetadatadatatofile, saveblockmetadatadata, saveblockmetacachetofile, saveblockmetacache, saveblockmetadatatofile, saveblockmetadata]
     description: Save block metadata cache to file
+    usage: /<command>
+  saveleaderboards:
+    aliases: [saveleaderboardstofile, saveleaderboardscache, saveleaderboardscachetofile]
+    description: Save leaderboards data to file
     usage: /<command>
   mutate:
     aliases: [cenchant, customenchant]
@@ -88,3 +108,6 @@ commands:
   stringreward:
     description: Test a StringReward
     usage: /<command> <string_reward>
+  hat:
+    description: Wear an item as a hat
+    usage: /<command>

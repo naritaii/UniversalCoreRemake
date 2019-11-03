@@ -20,7 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
-@SuppressWarnings("UnusedReturnValue")
+@SuppressWarnings({"UnusedReturnValue", "unused"})
 public class ItemMetadata implements Listener {
     private static final String hiddenPl = ChatColor.translateAlternateColorCodes(
             '&', "&0[HIDDEN]");
@@ -163,6 +163,7 @@ public class ItemMetadata implements Listener {
             return false;
     }
 
+    @SuppressWarnings("unused")
     public static String getMeta(ItemStack i, String meta) {
         Map<String, String> metas = getMeta(i);
         if (!metas.isEmpty())

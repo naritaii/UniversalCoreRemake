@@ -1,6 +1,7 @@
 package me.stupidbot.universalcoreremake;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import me.stupidbot.universalcoreremake.managers.RewardManager;
 import me.stupidbot.universalcoreremake.managers.universalobjective.UniversalObjective;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayerManager;
@@ -9,6 +10,9 @@ import me.stupidbot.universalcoreremake.utilities.TextUtils;
 import me.stupidbot.universalcoreremake.utilities.Warp;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+
+import java.text.ParseException;
+import java.util.Date;
 
 /**
  * This class will automatically register as a placeholder expansion
@@ -111,7 +115,7 @@ class UniversalCoreExpansion extends PlaceholderExpansion {
                                 UniversalCoreRemake.getUniversalObjectiveManager().registeredObjectives.get(
                                         UniversalCoreRemake.getUniversalObjectiveManager().registeredObjectivesDictionary.get(uo)).getCategory()
                                         == UniversalObjective.Catagory.ACHIEVEMENT).count();
-                return  (amt >= UniversalCoreRemake.getUniversalObjectiveManager().totalAchievements ? ChatColor.AQUA :
+                return (amt >= UniversalCoreRemake.getUniversalObjectiveManager().totalAchievements ? ChatColor.AQUA :
                         ChatColor.GREEN) + (amt + "");
             case "allachievements": // %universalcore_allachievements%
                 return TextUtils.addCommas(UniversalCoreRemake.getUniversalObjectiveManager().totalAchievements);
@@ -120,7 +124,18 @@ class UniversalCoreExpansion extends PlaceholderExpansion {
             case "chatcolor": // %universalcore_chatcolor%
                 return TextUtils.getChatColor(p);
             case "reward": // %universalcore_reward%
-                return ""; // TODO
+                UniversalPlayer up3 = upm.getUniversalPlayer(p);
+                RewardManager rm = UniversalCoreRemake.getRewardManager();
+                try {
+                    if (up3.getRewardTimestamp("Vote") == null || rm.checkDaysBetween(up3.getRewardTimestamp("Vote"),
+                            RewardManager.getSimpleDateFormat().format(new Date())) > 0)
+                        return "VOTE DELIVERY AVAILABLE";
+                    else
+                        return "";
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    return "";
+                }
             case "spawnportal": // %universalcore_spawnportal%
                 return Warp.getWarpFromId(upm.getUniversalPlayer(p).getSelectedWarpId()).getName();
             case "dj": // %universalcore_dj%

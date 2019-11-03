@@ -50,7 +50,7 @@ public class LocationUtils {
 
         // Height gain
 
-        double maxGain = heightGain > (endGain + heightGain) ? heightGain : (endGain + heightGain);
+        double maxGain = Math.max(heightGain, (endGain + heightGain));
 
         // Solve quadratic equation for velocity
         double a = -horizDist * horizDist / (4 * maxGain);

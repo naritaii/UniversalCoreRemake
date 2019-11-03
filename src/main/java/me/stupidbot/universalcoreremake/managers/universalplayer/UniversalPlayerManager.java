@@ -75,13 +75,11 @@ public class UniversalPlayerManager implements Listener { // TODO Save as .json 
 
         UniversalPlayer up = new UniversalPlayer(pFile, Objects.requireNonNull(pFileLoc).getPath());
 
-
-        up.setName(p.getName());
-        String prefix = UniversalCoreRemake.getChat().getPlayerPrefix(p);
-        up.setPrefix(prefix);
-        up.setNameColor(prefix.substring(0, 2));
-
         if (up.firstJoin()) {
+            up.setName(p.getName());
+            String prefix = UniversalCoreRemake.getChat().getPlayerPrefix(p);
+            up.setPrefix(prefix);
+            up.setNameColor(prefix.substring(0, 2));
             up.setFirstPlayed(UniversalPlayer.getSimpleDateFormat().format(new Date()));
             try (Stream<Path> files = Files.list(Paths.get(dataFolderPath))) {
                 up.setJoinNumber((int) files.count());
@@ -198,7 +196,8 @@ public class UniversalPlayerManager implements Listener { // TODO Save as .json 
             if (!getAllUniversalPlayers().isEmpty())
                 getAllUniversalPlayers().forEach((UniversalPlayer up) -> {
                     up.setDataLastPlayed(UniversalPlayer.getSimpleDateFormat().format(new Date()));
-                    up.incrementSecondsPlayed((long) ((System.nanoTime() - timePlayed.get(up.getUniqueId())) / 1e+9));
+                    if (timePlayed.containsKey(up.getUniqueId()))
+                        up.incrementSecondsPlayed((long) ((System.nanoTime() - timePlayed.get(up.getUniqueId())) / 1e+9));
                     up.savePlayerDataFile();
                 });
     }
@@ -218,6 +217,14 @@ public class UniversalPlayerManager implements Listener { // TODO Save as .json 
         timePlayed.put(p.getUniqueId(), System.nanoTime());
         if (!universalPlayerDictionary.containsKey(p.getUniqueId()))
             Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () -> createUniversalPlayer(p));
+        else {
+            UniversalPlayer up = getUniversalPlayer(p);
+            up.setName(p.getName());
+            String prefix = UniversalCoreRemake.getChat().getPlayerPrefix(p);
+            up.setPrefix(prefix);
+            up.setNameColor(prefix.substring(0, 2));
+        }
+
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

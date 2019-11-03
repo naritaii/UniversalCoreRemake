@@ -302,6 +302,7 @@ public final class Reflections {
      * @return an object that invokes this specific method
      * @throws IllegalStateException If we cannot find this method
      */
+    @SuppressWarnings("SameParameterValue")
     private static MethodInvoker getTypedMethod(Class<?> clazz, String methodName, Class<?> returnType, Class<?>... params) {
         for (final Method method : clazz.getDeclaredMethods()) {
             if ((methodName == null || method.getName().equals(methodName)) &&
@@ -361,12 +362,14 @@ public final class Reflections {
          * @param arguments the arguments to pass to the constructor.
          * @return the constructed object.
          */
+        @SuppressWarnings("UnusedReturnValue")
         Object invoke(Object... arguments);
     }
 
     /**
      * An interface for invoking a specific method.
      */
+    @SuppressWarnings("UnusedReturnValue")
     public interface MethodInvoker {
         /**
          * Invoke a method on a specific target object.

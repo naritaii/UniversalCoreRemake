@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+@SuppressWarnings("unused")
 public class UniversalObjectiveIncrementEvent extends Event {
     private final Player player;
     private final UniversalObjective universalObjective;

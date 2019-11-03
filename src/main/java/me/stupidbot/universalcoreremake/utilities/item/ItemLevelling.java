@@ -35,6 +35,7 @@ public class ItemLevelling {
         }
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public static ItemStack giveXp(Player p, ItemStack i, int amount) {
         int oldLvl = Integer.parseInt(ItemMetadata.getMeta(i).getOrDefault("LEVEL", "1"));
         ItemStack item = giveXp(i, amount);

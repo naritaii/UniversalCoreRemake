@@ -37,7 +37,7 @@ public class TextUtils {
             return ChatColor.WHITE.toString();
     }
 
-    public static String toBallNumbers(String s) {
+    private static String toBallNumbers(String s) {
         StringBuilder sb = new StringBuilder();
         boolean skipNext = false;
         for (char c : s.toCharArray())

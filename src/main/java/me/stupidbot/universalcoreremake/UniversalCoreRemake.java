@@ -12,9 +12,7 @@ import de.slikey.effectlib.EffectManager;
 import fr.minuskube.inv.InventoryManager;
 import me.stupidbot.universalcoreremake.commands.CommandExecutor;
 import me.stupidbot.universalcoreremake.enchantments.UniversalEnchantment;
-import me.stupidbot.universalcoreremake.listeners.CollectibleSlimesListener;
-import me.stupidbot.universalcoreremake.listeners.EnderchestListener;
-import me.stupidbot.universalcoreremake.listeners.SpawnPortalListener;
+import me.stupidbot.universalcoreremake.listeners.*;
 import me.stupidbot.universalcoreremake.managers.*;
 import me.stupidbot.universalcoreremake.managers.universalobjective.UniversalObjectiveManager;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayerManager;
@@ -80,12 +78,13 @@ public class UniversalCoreRemake extends JavaPlugin {
         registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager, new Stamina(),
                 new ChatManager(), motdManager, new ItemMetadata(), universalObjectiveManager, scoreboardManager,
                 new CollectibleSlimesListener(), leaderboardManager, new EnderchestListener(), new SpawnPortalListener(),
-                rewardManager);
+                rewardManager, new HatListener(), new InventoryClickBorderCloseListener());
         registerCommands(commandExecutor, "reloadmotd", "reloaduniversalobjectives",
-                "exp", "setblockmeta", "readblockmeta", "setitemmeta", "readitemmeta", "emoji", "vote", "discord",
-                "twitter", "openmineraltrader", "openfoodtrader", "openstats", "openspawnportal", "openquestmaster",
-                "saveuniversalplayercachetofile", "saveblockmetadatacachetofile", "selectobjective", "mutate",
-                "serialize", "stringreward");
+                "reloadrewards", "reloadleaderboards", "reinitializeleaderboards", "sortleaderboards",
+                "exp", "setblockmeta", "readblockmeta", "setitemmeta", "readitemmeta", "emoji", "vote",
+                "discord", "twitter", "openmineraltrader", "openfoodtrader", "openstats", "openspawnportal",
+                "openquestmaster", "saveuniversalplayercachetofile", "saveblockmetadatacachetofile",
+                "saveleaderboards", "selectobjective", "mutate", "serialize", "stringreward", "hat");
 
         System.out.println(getName() + " is now enabled!");
     }
@@ -93,7 +92,8 @@ public class UniversalCoreRemake extends JavaPlugin {
     // declare your flag as a field accessible to other parts of your code (so you can use this to check it)
     // note: if you want to use a different type of flag, make sure you change StateFlag here and below to that type
     public static SetFlag UNIVERSAL_MINE;
-    public static StringFlag UNIVERSAL_REGION_NAME;
+    @SuppressWarnings({"FieldCanBeLocal", "unused"})
+    private static StringFlag UNIVERSAL_REGION_NAME;
 
     @Override
     public void onLoad() {

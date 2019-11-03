@@ -24,6 +24,7 @@ public class UniversalObjectiveStartEvent extends Event {
         return universalObjective;
     }
 
+    @SuppressWarnings("unused")
     public int getNeeded() {
         return needed;
     }
@@ -34,6 +35,7 @@ public class UniversalObjectiveStartEvent extends Event {
         return handlers;
     }
 
+    @SuppressWarnings("unused")
     public static HandlerList getHandlerList() {
         return handlers;
     }

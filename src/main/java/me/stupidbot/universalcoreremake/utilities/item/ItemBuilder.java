@@ -8,7 +8,6 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -31,7 +30,7 @@ import java.util.List;
  * @author MiniDigger
  * @version 1.2
  */
-@SuppressWarnings("UnusedReturnValue")
+@SuppressWarnings({"UnusedReturnValue", "unused"})
 public class ItemBuilder implements Listener {
     private static final Plugin	                       plugin	= UniversalCoreRemake.getInstance();
     private static boolean	                           listener	= false;
@@ -336,8 +335,4 @@ public class ItemBuilder implements Listener {
         }
     }
 
-    @EventHandler
-    public void onItemApply(InventoryClickEvent e) {
-        // T/ODO add effects when item is applied
-    }
 }

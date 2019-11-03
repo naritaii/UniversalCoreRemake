@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.upperlevel.spigot.book.BookUtil;
 
+@SuppressWarnings("unused")
 class Discord {
     @SuppressWarnings("SameReturnValue")
     boolean execute(CommandSender s) {

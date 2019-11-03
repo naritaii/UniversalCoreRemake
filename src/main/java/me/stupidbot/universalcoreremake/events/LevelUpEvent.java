@@ -23,6 +23,7 @@ public class LevelUpEvent extends Event {
         return level;
     }
 
+    @SuppressWarnings("unused")
     public int getXp() {
         return xp;
     }
@@ -33,6 +34,7 @@ public class LevelUpEvent extends Event {
         return handlers;
     }
 
+    @SuppressWarnings("unused")
     public static HandlerList getHandlerList() {
         return handlers;
     }

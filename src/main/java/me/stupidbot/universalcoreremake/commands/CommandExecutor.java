@@ -6,6 +6,10 @@ import org.bukkit.command.CommandSender;
 public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private final ReloadMOTD reloadMOTD = new ReloadMOTD();
     private final ReloadUniversalObjectives reloadUniversalObjectives = new ReloadUniversalObjectives();
+    private final ReloadRewards reloadRewards = new ReloadRewards();
+    private final ReloadLeaderboards reloadLeaderboards = new ReloadLeaderboards();
+    private final ReinitializeLeaderboards reinitializeLeaderboards = new ReinitializeLeaderboards();
+    private final SortLeaderboards sortLeaderboards = new SortLeaderboards();
     private final Exp exp = new Exp();
     private final SetBlockMeta setBlockMeta = new SetBlockMeta();
     private final SelectObjective selectObjective = new SelectObjective();
@@ -23,16 +27,26 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private final OpenSpawnPortal openSpawnPortal = new OpenSpawnPortal();
     private final SaveUniversalPlayerCacheToFile saveUniversalPlayerCacheToFile = new SaveUniversalPlayerCacheToFile();
     private final SaveBlockmetaCacheToFile saveBlockmetaCacheToFile = new SaveBlockmetaCacheToFile();
+    private final SaveLeaderboards saveLeaderboards = new SaveLeaderboards();
     private final Mutate mutate = new Mutate();
     private final Serialize serialize = new Serialize();
     private final StringReward stringReward = new StringReward();
+    private final Hat hat = new Hat();
 
     @Override
-    public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
+    public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) { // TODO Tab completion
         if (cmd.getName().equalsIgnoreCase("reloadmotd"))
             return reloadMOTD.execute(s);
         else if (cmd.getName().equalsIgnoreCase("reloaduniversalobjectives"))
             return reloadUniversalObjectives.execute(s);
+        else if (cmd.getName().equalsIgnoreCase("reloadrewards"))
+            return reloadRewards.execute(s);
+        else if (cmd.getName().equalsIgnoreCase("reloadleaderboards"))
+            return reloadLeaderboards.execute(s);
+        else if (cmd.getName().equalsIgnoreCase("reinitializeleaderboards"))
+            return reinitializeLeaderboards.execute(s);
+        else if (cmd.getName().equalsIgnoreCase("sortleaderboards"))
+            return sortLeaderboards.execute(s);
         else if (cmd.getName().equalsIgnoreCase("exp"))
             return exp.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("setblockmeta"))
@@ -67,12 +81,16 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
             return saveUniversalPlayerCacheToFile.execute(s);
         else if (cmd.getName().equalsIgnoreCase("saveblockmetadatacachetofile"))
             return saveBlockmetaCacheToFile.execute(s);
+        else if (cmd.getName().equalsIgnoreCase("saveleaderboards"))
+            return saveLeaderboards.execute(s);
         else if (cmd.getName().equalsIgnoreCase("mutate"))
             return mutate.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("serialize"))
             return serialize.execute(s);
         else if (cmd.getName().equalsIgnoreCase("stringreward"))
             return stringReward.execute(s, label, args);
+        else if (cmd.getName().equalsIgnoreCase("hat"))
+            return hat.execute(s);
         return false;
     }
 }

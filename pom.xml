@@ -22,6 +22,7 @@
                     <include>fr.minuskube</include>
                     <include>com.google</include>
                     <include>xyz.upperlevel</include>
+                    <include>com.xxmicloxx</include>
                 </includes>
             </resource>
         </resources>

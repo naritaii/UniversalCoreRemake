@@ -17,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class Achievements implements InventoryProvider {
+class Achievements implements InventoryProvider {
     public static SmartInventory getInventory(Player p) {
         return SmartInventory.builder()
                 .id("achievements-" + p.getUniqueId().toString())

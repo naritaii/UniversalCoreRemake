@@ -86,7 +86,7 @@ public class LeaderboardManager implements Listener {
             updateHolograms(Bukkit.getPlayer(id));
     }
 
-    private void manuallySortData() {
+    public void manuallySortData() {
         Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () -> {
             lastSort = System.nanoTime();
             sortedData.forEach((String type, Map<UUID, Double> data) -> {
@@ -101,10 +101,11 @@ public class LeaderboardManager implements Listener {
         Bukkit.getOnlinePlayers().forEach(this::updateHolograms);
     }
 
-    private void initializeData() { // TODO add reinitialize command
+    public void initializeData() {
         lastSort = System.nanoTime();
         Map<String, Map<UUID, Double>> playersData = new HashMap<>();
         try {
+            UniversalCoreRemake.getUniversalPlayerManager().saveAll();
             Files.list(new File(UniversalCoreRemake.getUniversalPlayerManager().dataFolderPath).toPath()).forEach(path -> {
                 UUID id = UUID.fromString(FilenameUtils.removeExtension(path.getFileName().toString()));
                 UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(id);
@@ -167,7 +168,7 @@ public class LeaderboardManager implements Listener {
         }
     }
 
-    private void saveSortedData() { // TODO add command to manually save
+    public void saveSortedData() {
         try {
             Gson gson = new Gson();
             String str = gson.toJson(sortedData, new TypeToken<Map<String, Map<UUID, Double>>>() {
@@ -194,7 +195,7 @@ public class LeaderboardManager implements Listener {
     private final Map<String, String> naformats = new ConcurrentHashMap<>();
     private final String configPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator + "leaderboards.yml";
 
-    private void loadConfig() { // TODO Make reloadable
+    public void loadConfig() {
         File path = UniversalCoreRemake.getInstance().getDataFolder();
         File file = new File(configPath);
 

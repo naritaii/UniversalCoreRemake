@@ -101,6 +101,7 @@ public class ItemUtils {
         return nmsClass;
     }
 
+    @SuppressWarnings("SameParameterValue")
     private static Class<?> getOBClass(String className) {
         String packageName = Bukkit.getServer().getClass().getPackage().getName();
         String version = packageName.replace(".", ",").split(",")[3];

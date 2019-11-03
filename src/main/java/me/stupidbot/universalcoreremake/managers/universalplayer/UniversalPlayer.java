@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.UUID;
 
-@SuppressWarnings({"SameParameterValue", "UnusedReturnValue"})
+@SuppressWarnings({"SameParameterValue", "UnusedReturnValue", "unused"})
 public class UniversalPlayer {
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM/dd/yyyy HH:mm:ss");
     private final FileConfiguration pFile;

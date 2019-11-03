@@ -13,6 +13,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.io.File;
 import java.text.ParseException;
@@ -24,16 +25,18 @@ public class RewardManager implements Listener {
     public List<StringReward> votingRewards;
     public List<String> voteSiteDictionary;
     public Map<String, String> voteSite;
+    public Map<Integer, StringReward> levelRewards;
 
     public RewardManager() {
         reload();
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void reload() { // TODO Make file reloadable with command
+    public void reload() {
         votingRewards = new ArrayList<>();
         voteSiteDictionary = new ArrayList<>();
         voteSite = new HashMap<>();
+        levelRewards = new HashMap<>();
         UniversalCoreRemake instance = UniversalCoreRemake.getInstance();
         File path = instance.getDataFolder();
         File file = new File(path.toString() + File.separator + "rewards.yml");
@@ -52,6 +55,10 @@ public class RewardManager implements Listener {
             voteSite.put(s, c.getString("Rewards.Voting.Links." + s));
             voteSiteDictionary.add(s);
         }
+
+        for (String s : c.getConfigurationSection("Rewards.Levelling.PlayerLevel").getKeys(false))
+            levelRewards.put(Integer.parseInt(s),
+                    new StringReward(c.getStringList("Rewards.Levelling.PlayerLevel." + s).toArray(new String[0])));
     }
 
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd");
@@ -71,13 +78,14 @@ public class RewardManager implements Listener {
             String timestamp = simpleDateFormat.format(new Date());
 
             try {
-                if (oldTimestamp == null || checkDaysBetween(oldTimestamp, timestamp) > 0) {
-                    if (oldTimestamp == null || checkDaysBetween(oldTimestamp, timestamp) > 2)
+                long days = checkDaysBetween(oldTimestamp, timestamp);
+                if (oldTimestamp == null || days > 0) {
+                    if (oldTimestamp == null || days < 2)
                         up.incrementStreak("Vote");
                     else {
                         up.resetStreak("Vote");
                         up.incrementStreak("Vote");
-                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eVoting" +
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cVoting" +
                                 " streak reset! Vote every day to increase it!"));
                     }
                     up.setRewardTimestamp("Vote", timestamp);
@@ -92,9 +100,28 @@ public class RewardManager implements Listener {
                                 "know that this is &osomeone's&c fault, this error doesn't *just* happen, someone has " +
                                 "messed something up if this message has appeared, hopefully, assuming the universe has " +
                                 "NOT imploded, your next vote will work. Please try again tomorrow..."));
-                up.setRewardTimestamp("vote", timestamp);
+                up.setRewardTimestamp("Vote", timestamp);
             }
         }
+    }
+
+    @EventHandler
+    public void OnJoin(PlayerJoinEvent e) {
+        Player p = e.getPlayer();
+        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
+        String oldTimestamp = up.getRewardTimestamp("Vote");
+        if (oldTimestamp != null)
+            if (up.getStreak("Vote") > 0)
+                try {
+                    long days = checkDaysBetween(oldTimestamp, simpleDateFormat.format(new Date()));
+                    if (days > 1) {
+                        up.resetStreak("Vote");
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cVoting" +
+                                " streak reset! Vote every day to increase it!"));
+                    }
+                } catch (ParseException ex) {
+                    ex.printStackTrace();
+                }
     }
 
     private void rewardVote(Player p) {
@@ -121,7 +148,7 @@ public class RewardManager implements Listener {
     public long checkDaysBetween(String oldTimestamp, String newTimestamp) throws ParseException {
         Date old = simpleDateFormat.parse(oldTimestamp);
         Date newd = simpleDateFormat.parse(newTimestamp);
-        long diff = old.getTime() - newd.getTime();
+        long diff = newd.getTime() - old.getTime();
 
         return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }

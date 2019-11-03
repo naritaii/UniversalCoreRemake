@@ -26,10 +26,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class QuestMaster implements InventoryProvider {
     public static SmartInventory getInventory(Player p) {
@@ -138,7 +135,9 @@ public class QuestMaster implements InventoryProvider {
         Map<String, Integer> dic = UniversalCoreRemake.getUniversalObjectiveManager().registeredObjectivesDictionary;
         List<UniversalObjective> uo = new ArrayList<>();
         List<String> ids = up.getSelectedObjectives();
+        Collections.reverse(ids);
         List<String> completed = up.getCompletedObjectives();
+        Collections.reverse(completed);
         ids.addAll(completed);
         for (String sel : ids)
             if (dic.containsKey(sel)) {
