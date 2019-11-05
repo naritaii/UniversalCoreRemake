@@ -75,6 +75,7 @@ me\stupidbot\universalcoreremake\managers\MiningManager$BreakBehavior.class
 me\stupidbot\universalcoreremake\commands\Discord.class
 me\stupidbot\universalcoreremake\commands\SaveLeaderboards.class
 me\stupidbot\universalcoreremake\events\UniversalBlockBreakEvent.class
+me\stupidbot\universalcoreremake\listeners\MoneyPickupListener.class
 me\stupidbot\universalcoreremake\managers\MOTDManager.class
 me\stupidbot\universalcoreremake\guis\QuestMaster.class
 me\stupidbot\universalcoreremake\utilities\item\Reflections$ConstructorInvoker.class

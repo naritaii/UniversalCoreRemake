@@ -14,6 +14,7 @@ import me.stupidbot.universalcoreremake.commands.CommandExecutor;
 import me.stupidbot.universalcoreremake.enchantments.UniversalEnchantment;
 import me.stupidbot.universalcoreremake.listeners.*;
 import me.stupidbot.universalcoreremake.managers.*;
+import me.stupidbot.universalcoreremake.managers.mining.MiningManager;
 import me.stupidbot.universalcoreremake.managers.universalobjective.UniversalObjectiveManager;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayerManager;
 import me.stupidbot.universalcoreremake.utilities.PlayerLevelling;
@@ -80,7 +81,8 @@ public class UniversalCoreRemake extends JavaPlugin {
                 new CollectibleSlimesListener(), leaderboardManager, new EnderchestListener(), new SpawnPortalListener(),
                 rewardManager, new HatListener(), new InventoryClickBorderCloseListener(), new MoneyPickupListener());
         registerCommands(commandExecutor, "reloadmotd", "reloaduniversalobjectives",
-                "reloadrewards", "reloadleaderboards", "reinitializeleaderboards", "sortleaderboards",
+                "reloadrewards", "reloadminingmanager", "reloadleaderboards", "reinitializeleaderboards",
+                "sortleaderboards",
                 "exp", "setblockmeta", "readblockmeta", "setitemmeta", "readitemmeta", "emoji", "vote",
                 "discord", "twitter", "openmineraltrader", "openfoodtrader", "openstats", "openspawnportal",
                 "openquestmaster", "saveuniversalplayercachetofile", "saveblockmetadatacachetofile",
@@ -186,6 +188,10 @@ public class UniversalCoreRemake extends JavaPlugin {
         return blockMetadataManager;
     }
 
+    public static MiningManager getMiningManager() {
+        return miningManager;
+    }
+
     public static InventoryManager getInventoryManager() {
         return inventoryManager;
     }
@@ -194,9 +200,9 @@ public class UniversalCoreRemake extends JavaPlugin {
         return motdManager;
     }
 
-    public static ScoreboardManager getScoreboardManager() {
+/*    public static ScoreboardManager getScoreboardManager() {
         return scoreboardManager;
-    }
+    }*/
 
     public static UniversalObjectiveManager getUniversalObjectiveManager() {
         return universalObjectiveManager;
@@ -250,7 +256,7 @@ public class UniversalCoreRemake extends JavaPlugin {
         return chat;
     }
 
-    public static CommandExecutor getCommandExecutor() {
+/*  public static CommandExecutor getCommandExecutor() {
         return commandExecutor;
-    }
+    }*/
 }

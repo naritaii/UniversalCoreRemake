@@ -1,4 +1,4 @@
-package me.stupidbot.universalcoreremake.managers;
+package me.stupidbot.universalcoreremake.managers.mining;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.ListenerPriority;
@@ -17,10 +17,7 @@ import me.stupidbot.universalcoreremake.effects.EnhancedBlockBreak;
 import me.stupidbot.universalcoreremake.enchantments.UniversalEnchantment;
 import me.stupidbot.universalcoreremake.events.UniversalBlockBreakEvent;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
-import me.stupidbot.universalcoreremake.utilities.LocationUtils;
-import me.stupidbot.universalcoreremake.utilities.PlayerLevelling;
-import me.stupidbot.universalcoreremake.utilities.Stamina;
-import me.stupidbot.universalcoreremake.utilities.TextUtils;
+import me.stupidbot.universalcoreremake.utilities.*;
 import me.stupidbot.universalcoreremake.utilities.item.ItemLevelling;
 import me.stupidbot.universalcoreremake.utilities.item.ItemMetadata;
 import me.stupidbot.universalcoreremake.utilities.item.ItemUtils;
@@ -28,6 +25,8 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -40,14 +39,61 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class MiningManager implements Listener {
     public MiningManager() {
+        reload();
         initialize();
     }
+
+    private final String configPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator + "mining.yml";
+    public void reload() {
+        File path = UniversalCoreRemake.getInstance().getDataFolder();
+        if (!path.exists())
+            //noinspection ResultOfMethodCallIgnored
+            path.mkdirs();
+
+        File file = new File(configPath);
+        if (!file.exists())
+            FileUtils.copy(UniversalCoreRemake.getInstance().getResource("mining.yml"), file);
+        FileConfiguration c = YamlConfiguration.loadConfiguration(file);
+
+        registeredMineableBlocks = new ArrayList<>();
+        registeredMineableBlocksDictionary = new HashMap<>();
+
+        // There is FileConfiguration.getFloat so we just get the string and parse it
+        respawnBlock = Material.getMaterial(c.getString("Mining.RespawnBlock"));
+        diamondPickMultiplier = Float.parseFloat(c.getString("Mining.PickaxeMultiplier.Diamond"));
+        goldPickMultiplier = Float.parseFloat(c.getString("Mining.PickaxeMultiplier.Gold"));
+        ironPickMultiplier = Float.parseFloat(c.getString("Mining.PickaxeMultiplier.Iron"));
+        stonePickMultiplier = Float.parseFloat(c.getString("Mining.PickaxeMultiplier.Stone"));
+        woodPickMultiplier = Float.parseFloat(c.getString("Mining.PickaxeMultiplier.Wood"));
+
+        for (String s : c.getConfigurationSection("Mining.Blocks").getKeys(false)) {
+            Material m = Material.getMaterial(s);
+
+            registeredMineableBlocksDictionary.put(m, registeredMineableBlocks.size());
+            registeredMineableBlocks.add(new MineableBlock(
+                    m,
+                    Float.parseFloat(c.getString("Mining.Blocks." + s + ".BlockDurability")),
+                    Float.parseFloat(c.getString("Mining.Blocks." + s + ".RegenerateTime")),
+                    Material.getMaterial(c.getString("Mining.Blocks." + s + ".MutateBlock")),
+                    Float.parseFloat(c.getString("Mining.Blocks." + s + ".MutateChance")),
+                    c.getInt("Mining.Blocks." + s + ".BaseExperience"),
+                    Material.getMaterial(c.getString("Mining.Blocks." + s + ".Loot")),
+                    c.getInt("Mining.Blocks." + s + ".BaseStaminaUsage"),
+                    BreakBehavior.valueOf(c.getString("Mining.Blocks." + s + ".BreakBehavior"))
+            ));
+        }
+    }
+
+    private Material respawnBlock = null;
+    private List<MineableBlock> registeredMineableBlocks = null;
+    private Map<Material, Integer> registeredMineableBlocksDictionary = null;
 
     private final Map<UUID, Block> miningPlayers = new HashMap<>();
     private final Map<Block, Integer> regen = new HashMap<>();
@@ -74,12 +120,10 @@ public class MiningManager implements Listener {
         removeMiningPlayer(e.getPlayer());
     }
 
-    private final Material respawnBlock = Material.BEDROCK;
-
     private void initialize() {
         // Click Listener
         UniversalCoreRemake.getProtocolManager().addPacketListener(new PacketAdapter(UniversalCoreRemake.getInstance(),
-                ListenerPriority.MONITOR, PacketType.Play.Client.BLOCK_DIG) {
+                ListenerPriority.LOW, PacketType.Play.Client.BLOCK_DIG) {
             @Override
             public void onPacketReceiving(PacketEvent e) {
                 if (e.getPacketType() == PacketType.Play.Client.BLOCK_DIG) {
@@ -92,7 +136,8 @@ public class MiningManager implements Listener {
                         Block b = packet.getBlockPositionModifier().read(0).toLocation(p.getWorld())
                                 .getBlock();
 
-                        if (b.getType() != respawnBlock)
+                        if (b.getType() != Material.AIR && !regen.containsKey(b)
+                                && registeredMineableBlocksDictionary.containsKey(b.getType()))
                             if (UniversalCoreRemake.getBlockMetadataManager().hasMeta(b, "MINEABLE"))
                                 putMiningPlayer(p, b);
                             else if (UniversalCoreRemake.UNIVERSAL_MINE != null) { // WorldGuard flag support
@@ -135,7 +180,7 @@ public class MiningManager implements Listener {
                 // Setup Vars
                 Player p = Bukkit.getPlayer(id);
                 Block b = miningPlayers.get(id);
-                MineableBlock mb = MineableBlock.valueOf(b.getType().toString());
+                MineableBlock mb = registeredMineableBlocks.get(registeredMineableBlocksDictionary.get(b.getType()));
                 int stamina = mb.getBaseStaminaUsage();
 
                 if (Stamina.getStamina(p) < stamina) {
@@ -152,7 +197,7 @@ public class MiningManager implements Listener {
                     float speedMod = getItemMultiplier(itemInHand.getType());
                     if (usingItem) {
                         if (itemInHand.containsEnchantment(UniversalEnchantment.SANDSTONE_LOVER))
-                            if (mb == MineableBlock.RED_SANDSTONE || mb == MineableBlock.SANDSTONE)
+                            if (mb.getType() == Material.RED_SANDSTONE || mb.getType() == Material.SANDSTONE)
                                 speedMod += 0.05f;
                         if (itemInHand.containsEnchantment(Enchantment.DIG_SPEED))
                             speedMod += 0.2f + (itemInHand.getEnchantmentLevel(Enchantment.DIG_SPEED) * 0.05f);
@@ -329,16 +374,13 @@ public class MiningManager implements Listener {
         regen.put(b, i);
     }
 
-//    private void removeRegenningBlock(Block b) {
-//        regen.remove(b);
-//    }
+    private float diamondPickMultiplier = 0.75f;
+    private float goldPickMultiplier = 0.55f;
+    private float ironPickMultiplier = 0.5f;
+    private float stonePickMultiplier = 0.4f;
+    private float woodPickMultiplier = 0.2f;
 
     private float getItemMultiplier(Material m) {
-        float diamondPickMultiplier = 0.75f;
-        float goldPickMultiplier = 0.55f;
-        float ironPickMultiplier = 0.5f;
-        float stonePickMultiplier = 0.4f;
-        float woodPickMultiplier = 0.2f;
         switch (m) {
             case WOOD_PICKAXE:
                 return woodPickMultiplier;
@@ -352,91 +394,6 @@ public class MiningManager implements Listener {
                 return diamondPickMultiplier;
             default:
                 return 0f;
-        }
-    }
-
-    @SuppressWarnings("unused")
-    enum MineableBlock {
-        RED_SANDSTONE(6.5f, 6.5f, Material.SANDSTONE, 0.075f, 1,
-                Material.RED_SANDSTONE, 1, BreakBehavior.DEFAULT),
-        SANDSTONE(5.5f, 6.5f, Material.RED_SANDSTONE, 0.4f, 5,
-                Material.SANDSTONE, 3, BreakBehavior.INSTANT_RESPAWN),
-        COAL_ORE(11.1f, 6.5f, Material.COAL_BLOCK, 0.071f, 7,
-                Material.COAL_ORE, 5, BreakBehavior.DEFAULT),
-        COAL_BLOCK(13.1f, 6.5f, Material.COAL_ORE, 0.55f, 10,
-                Material.COAL_BLOCK, 7, BreakBehavior.INSTANT_RESPAWN),
-        IRON_ORE(12.9f, 6.5f, Material.IRON_BLOCK, 0.055f, 9,
-                Material.IRON_ORE, 5, BreakBehavior.DEFAULT),
-        IRON_BLOCK(14.8f, 6.5f, Material.IRON_ORE, 0.38f, 14,
-                Material.IRON_BLOCK, 7, BreakBehavior.INSTANT_RESPAWN),
-
-        // This is to prevent weird nullpointers.
-        AIR(Float.MAX_VALUE, 0f, Material.AIR, 0f, 0,
-                Material.AIR, 0, BreakBehavior.INSTANT_RESPAWN),
-        BEDROCK(Float.MAX_VALUE, 0f, Material.AIR, 0f, 0,
-                Material.BEDROCK, 0, BreakBehavior.INSTANT_RESPAWN);
-
-        private final float durability;
-        private final float regenerateTime;
-        private final Material enhanceBlock;
-        private final float enhanceChance;
-        private final int baseXp;
-        private final Material loot;
-        private final int staminaBaseUsage;
-        private final BreakBehavior onBreak;
-
-        /**
-         * @param durability       Time in seconds block takes to mine with hand and no "modifiers".
-         * @param regenerateTime   Time in seconds block takes to regenerate.
-         * @param enhanceBlock     Block to turn into when enhanced.
-         * @param enhanceChance    Chance of turning block into enhanceBlock.
-         * @param baseXp           XP given without any multipliers.
-         * @param loot             Item dropped.
-         * @param staminaBaseUsage Stamina taken without any multipliers.
-         * @param onBreak          What to do when (@link MineableBlock) is broken.
-         */
-        MineableBlock(float durability, float regenerateTime, Material enhanceBlock, float enhanceChance,
-                      int baseXp, Material loot, int staminaBaseUsage, BreakBehavior onBreak) {
-            this.durability = durability;
-            this.regenerateTime = regenerateTime;
-            this.enhanceBlock = enhanceBlock;
-            this.enhanceChance = enhanceChance;
-            this.baseXp = baseXp;
-            this.loot = loot;
-            this.onBreak = onBreak;
-            this.staminaBaseUsage = staminaBaseUsage;
-        }
-
-        float getDurability() {
-            return durability;
-        }
-
-        float getGetRegenerateTime() {
-            return regenerateTime;
-        }
-
-        Material getEnhanceBlock() {
-            return enhanceBlock;
-        }
-
-        float getEnhanceChance() {
-            return enhanceChance;
-        }
-
-        int getBaseXp() {
-            return baseXp;
-        }
-
-        Material getLoot() {
-            return loot;
-        }
-
-        BreakBehavior getOnBreak() {
-            return onBreak;
-        }
-
-        int getBaseStaminaUsage() {
-            return staminaBaseUsage;
         }
     }
 

@@ -91,6 +91,7 @@ public class RewardManager implements Listener {
                     up.setRewardTimestamp("Vote", timestamp);
                     up.incrementTimesRewarded("Vote");
                     rewardVote(p);
+                    // TODO Vote effect
                 } else
                     p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aThank you " +
                             "for voting! We can only reward you for 1 vote per day but we appreciate it :)!"));

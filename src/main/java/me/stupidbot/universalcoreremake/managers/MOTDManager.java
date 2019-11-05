@@ -12,7 +12,7 @@ import org.bukkit.event.server.ServerListPingEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class MOTDManager implements Listener {
+public class MOTDManager implements Listener { // TODO Player count hover text/hide online players
     public MOTDManager() {
         reload();
     }

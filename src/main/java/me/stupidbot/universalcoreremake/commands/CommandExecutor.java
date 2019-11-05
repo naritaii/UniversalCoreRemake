@@ -7,6 +7,7 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private final ReloadMOTD reloadMOTD = new ReloadMOTD();
     private final ReloadUniversalObjectives reloadUniversalObjectives = new ReloadUniversalObjectives();
     private final ReloadRewards reloadRewards = new ReloadRewards();
+    private final ReloadMiningManager reloadMiningManager = new ReloadMiningManager();
     private final ReloadLeaderboards reloadLeaderboards = new ReloadLeaderboards();
     private final ReinitializeLeaderboards reinitializeLeaderboards = new ReinitializeLeaderboards();
     private final SortLeaderboards sortLeaderboards = new SortLeaderboards();
@@ -41,6 +42,8 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
             return reloadUniversalObjectives.execute(s);
         else if (cmd.getName().equalsIgnoreCase("reloadrewards"))
             return reloadRewards.execute(s);
+        else if (cmd.getName().equalsIgnoreCase("reloadminingmanager"))
+            return reloadMiningManager.execute(s);
         else if (cmd.getName().equalsIgnoreCase("reloadleaderboards"))
             return reloadLeaderboards.execute(s);
         else if (cmd.getName().equalsIgnoreCase("reinitializeleaderboards"))
