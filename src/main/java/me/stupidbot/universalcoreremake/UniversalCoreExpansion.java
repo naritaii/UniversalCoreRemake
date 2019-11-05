@@ -11,6 +11,8 @@ import me.stupidbot.universalcoreremake.utilities.Warp;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -108,7 +110,8 @@ class UniversalCoreExpansion extends PlaceholderExpansion {
                 return TextUtils.addCommas(PlayerLevelling.xpToNextLevel(upm.getUniversalPlayer(p).getLevel()));
             case "levelpercent": // %universalcore_levelpercent%
                 UniversalPlayer up2 = upm.getUniversalPlayer(p);
-                return TextUtils.addCommas(100d * ((double) up2.getXp() / (double) PlayerLevelling.xpToNextLevel(up2.getLevel()))) + "%";
+                double d = 100d * ((double) up2.getXp() / (double) PlayerLevelling.xpToNextLevel(up2.getLevel()));
+                return new BigDecimal(d).setScale(2, RoundingMode.HALF_UP) + "%";
             case "currentachievements": // %universalcore_currentachievements%
                 long amt = upm.getUniversalPlayer(p).getCompletedObjectives().stream().filter((uo) ->
                         UniversalCoreRemake.getUniversalObjectiveManager().registeredObjectivesDictionary.containsKey(uo) &&

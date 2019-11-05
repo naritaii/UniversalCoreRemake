@@ -78,7 +78,7 @@ public class UniversalCoreRemake extends JavaPlugin {
         registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager, new Stamina(),
                 new ChatManager(), motdManager, new ItemMetadata(), universalObjectiveManager, scoreboardManager,
                 new CollectibleSlimesListener(), leaderboardManager, new EnderchestListener(), new SpawnPortalListener(),
-                rewardManager, new HatListener(), new InventoryClickBorderCloseListener());
+                rewardManager, new HatListener(), new InventoryClickBorderCloseListener(), new MoneyPickupListener());
         registerCommands(commandExecutor, "reloadmotd", "reloaduniversalobjectives",
                 "reloadrewards", "reloadleaderboards", "reinitializeleaderboards", "sortleaderboards",
                 "exp", "setblockmeta", "readblockmeta", "setitemmeta", "readitemmeta", "emoji", "vote",
