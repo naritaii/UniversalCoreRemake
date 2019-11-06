@@ -1,6 +1,5 @@
 package me.stupidbot.universalcoreremake.managers.universalobjective;
 
-import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.events.UniversalBlockBreakEvent;
@@ -13,12 +12,10 @@ import me.stupidbot.universalcoreremake.utilities.StringReward;
 import me.stupidbot.universalcoreremake.utilities.TextUtils;
 import me.stupidbot.universalcoreremake.utilities.item.ItemBuilder;
 import me.stupidbot.universalcoreremake.utilities.item.ItemUtils;
-import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -92,8 +89,7 @@ public class UniversalObjectiveManager implements Listener {
                 StringReward stringReward = rewards.isEmpty() ? null : new StringReward(rewards.toArray(new String[0]));
                 UniversalObjective.TaskType task = UniversalObjective.TaskType.valueOf(c.getString(p + "TaskType"));
                 String[] taskInfo = c.getStringList(p + "TaskInfo").toArray(new String[0]);
-                String description = c.getString(p + "Description") == null ? generateDescription(task, taskInfo, id) :
-                        c.getString(p + "Description");
+                String description = c.getString(p + "Description");
                 UniversalObjective.Catagory catagory = UniversalObjective.Catagory.valueOf(c.getString(p + "Catagory"));
 
                 List<String> lore = c.getStringList(p + "DisplayItem.Lore");
@@ -126,31 +122,6 @@ public class UniversalObjectiveManager implements Listener {
         });
     }
 
-
-    /**
-     * @deprecated
-     */
-    private String generateDescription(UniversalObjective.TaskType task, String[] taskInfo, String id) {
-        switch (task) {
-            case MINE_BLOCK:
-                List<String> originalList = Arrays.asList(WordUtils.capitalizeFully(taskInfo[2], new char[]{'_', ','})
-                        .replace("_", " ").split(","));
-                if (originalList.isEmpty())
-                    return "Mine blocks";
-                else if (originalList.size() == 1)
-                    return "Mine " + originalList.get(0);
-                else if (originalList.size() == 2)
-                    return "Mine " + originalList.get(0) + " or " + originalList.get(1);
-                else
-                    return "Mine " + Joiner.on(", ").join(originalList.subList(0, originalList.size() - 1))
-                            .concat(", or ").concat(originalList.get(originalList.size() - 1));
-
-            case TALK_TO_NPC:
-                return "Talk to " + CitizensAPI.getNPCRegistry()
-                        .getByUniqueIdGlobal(UUID.fromString(taskInfo[2])).getFullName();
-        }
-        return "Unable to generate description for " + id;
-    }
 
     public void disable() {
         registeredObjectives.forEach(UniversalObjective::saveData);
@@ -189,6 +160,7 @@ public class UniversalObjectiveManager implements Listener {
                             int amti = 0;
                             for (int i = 0; i < p.getInventory().getSize(); i++) {
                                 ItemStack item = p.getInventory().getItem(i);
+                                //noinspection deprecation
                                 if (item != null &&
                                         item.getType() == m &&
                                         item.getData().getData() == itemData) {
