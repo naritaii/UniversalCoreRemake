@@ -42,7 +42,7 @@ public class Stats implements InventoryProvider {
                 .lore("&7Items Levelled: &a" + TextUtils.addCommas(up.getItemsLevelled()))
                 .lore("&7Kills: &a" + TextUtils.addCommas(up.getDeaths()))
                 .lore("&7Deaths: &a" + TextUtils.addCommas(up.getKills()))
-                .lore("&7Kill/Death Ratio: &a" + (up.getDeaths() > 0 ? TextUtils.addCommas(
+                .lore("&7Kill/Death Ratio: &a" + (up.getDeaths() > 0 ? TextUtils.addCommas( // TODO round this
                         (double) up.getKills() / (double) up.getDeaths()) :
                         TextUtils.addCommas((double) up.getKills())))
                 .build()));

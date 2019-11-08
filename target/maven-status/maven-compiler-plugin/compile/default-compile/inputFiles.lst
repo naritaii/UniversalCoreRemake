@@ -1,6 +1,7 @@
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\managers\universalplayer\UniversalPlayerManager.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\utilities\Warp.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\SaveLeaderboards.java
+C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\managers\mining\MiningManager.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\enchantments\UniversalEnchantment.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\ReloadLeaderboards.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\listeners\MoneyPickupListener.java
@@ -21,7 +22,8 @@ C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stu
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\utilities\item\Skull.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\CommandExecutor.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\events\universalobjective\UniversalObjectiveStartEvent.java
-C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\managers\MiningManager.java
+C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\ReloadMiningManager.java
+C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\managers\mining\MineableBlock.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\managers\ChatManager.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\commands\OpenSpawnPortal.java
 C:\Users\Nicholas\Desktop\Code Projects\UniversalCoreRemake\src\main\java\me\stupidbot\universalcoreremake\enchantments\mutation\SpeedBoost.java

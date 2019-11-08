@@ -2,7 +2,7 @@ package me.stupidbot.universalcoreremake.managers.mining;
 
 import org.bukkit.Material;
 
-public class MineableBlock {
+class MineableBlock {
     private final Material type;
     private final float durability;
     private final float regenerateTime;

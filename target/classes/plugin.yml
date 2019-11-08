@@ -18,6 +18,10 @@ commands:
   reloadrewards:
     description: Reload rewards
     usage: /<command>
+  reloadminingmanager:
+    aliases: [reloadmining, reloadblocks]
+    description: Reload mining manager
+    usage: /<command>
   reloadleaderboards:
     description: Reload leaderboards
     usage: /<command>

@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class MoneyPickupListener implements Listener {
-    Random r = new Random();
+    private final Random r = new Random();
 
     @EventHandler
     public void OnItemPickup(EntityPickupItemEvent e) {

@@ -251,7 +251,8 @@ public class MiningManager implements Listener {
                         // Enhance Block?
                         float enhanceChance = mb.getEnhanceChance();
                         if (usingItem)
-                            if (itemInHand.containsEnchantment(UniversalEnchantment.SANDSTONE_LOVER))
+                            if (mb.getOnBreak() != BreakBehavior.INSTANT_RESPAWN &&
+                                    itemInHand.containsEnchantment(UniversalEnchantment.SANDSTONE_LOVER))
                                 enhanceChance += 0.05f;
                         if (Math.random() < enhanceChance)
                             UniversalCoreRemake.getBlockMetadataManager().setMeta(b, "MINEABLE",
