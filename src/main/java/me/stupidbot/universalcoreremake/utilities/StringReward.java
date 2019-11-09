@@ -64,6 +64,17 @@ public class StringReward {
                     r[i] = ChatColor.translateAlternateColorCodes('&', arg.toString().trim());
                     break;
 
+                case "XP":
+                case "EXP":
+                    try {
+                        r[i] = ChatColor.translateAlternateColorCodes('&',
+                                "&bXP " + TextUtils.addCommas(Integer.parseInt(arg.toString().trim())));
+                    } catch (NumberFormatException e) {
+                        r[i] = ChatColor.translateAlternateColorCodes('&',
+                                "&cCould not parse " + s.toLowerCase() + " " + arg.toString().trim());
+                    }
+                    break;
+
 
                 case "QUEST":
                 case "SCRIPT":
@@ -165,6 +176,19 @@ public class StringReward {
                     Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "ex run " + arg.toString().trim() + " player:p@" + p.getName());
                     break;
 
+                case "XP":
+                case "EXP":
+                    try {
+                        int i = Integer.parseInt(arg.toString().trim());
+                        PlayerLevelling.giveXp(p, i);
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                "&b+" + TextUtils.addCommas(i) + " XP"));
+                    } catch (NumberFormatException e) {
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                "&cCould not parse " + s.toLowerCase() + " " + arg.toString().trim()));
+                    }
+                    break;
+
                 case "NONE":
                 case "NULL":
                     break;
@@ -229,6 +253,15 @@ public class StringReward {
                 case "SCRIPT":
                     Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "ex run " + arg.toString().trim() + " player:p@" + p.getName());
                     break;
+
+                case "XP":
+                case "EXP":
+                    try {
+                        PlayerLevelling.giveXp(p, Integer.parseInt(arg.toString().trim()));
+                    } catch (NumberFormatException e) {
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                "&cCould not parse " + s.toLowerCase() + " " + arg.toString().trim()));
+                    }
 
                 case "MESSAGE":
                 case "NONE":
