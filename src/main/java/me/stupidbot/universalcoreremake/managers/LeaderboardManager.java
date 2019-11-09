@@ -6,8 +6,8 @@ import com.gmail.filoghost.holographicdisplays.api.VisibilityManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
-import me.stupidbot.universalcoreremake.events.LevelUpEvent;
 import me.stupidbot.universalcoreremake.events.UniversalBlockBreakEvent;
+import me.stupidbot.universalcoreremake.events.UniversalLevelUpEvent;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
 import me.stupidbot.universalcoreremake.utilities.PlayerLevelling;
 import me.stupidbot.universalcoreremake.utilities.TextUtils;
@@ -338,7 +338,7 @@ public class LeaderboardManager implements Listener {
     }
 
     @EventHandler
-    public void OnLevelUp(LevelUpEvent e) {
+    public void OnLevelUp(UniversalLevelUpEvent e) {
         lazilyUpdateData("XP.Level", e.getPlayer().getUniqueId(), (double) e.getLevel());
     }
 

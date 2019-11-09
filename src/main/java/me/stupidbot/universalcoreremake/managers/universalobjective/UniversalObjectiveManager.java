@@ -3,9 +3,13 @@ package me.stupidbot.universalcoreremake.managers.universalobjective;
 import com.google.common.collect.ImmutableList;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.events.UniversalBlockBreakEvent;
+import me.stupidbot.universalcoreremake.events.UniversalGainXpEvent;
+import me.stupidbot.universalcoreremake.events.UniversalLevelUpEvent;
 import me.stupidbot.universalcoreremake.events.universalobjective.UniversalObjectiveCompleteEvent;
 import me.stupidbot.universalcoreremake.events.universalobjective.UniversalObjectiveIncrementEvent;
 import me.stupidbot.universalcoreremake.events.universalobjective.UniversalObjectiveStartEvent;
+import me.stupidbot.universalcoreremake.events.worldguard.RegionEnterEvent;
+import me.stupidbot.universalcoreremake.events.worldguard.RegionLeftEvent;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
 import me.stupidbot.universalcoreremake.utilities.FileUtils;
 import me.stupidbot.universalcoreremake.utilities.StringReward;
@@ -185,6 +189,17 @@ public class UniversalObjectiveManager implements Listener {
                     }
                     break;
 
+                   case REACH_LEVEL:
+                    if (uo.getTask() == task && Integer.parseInt(uo.getTaskInfo()[2]) <= Integer.parseInt(taskInfo)) {
+                        int progress = uo.increment(p, amt);
+                        int needed = getNeeded(uo);
+                        UniversalObjectiveIncrementEvent event = new UniversalObjectiveIncrementEvent(p, uo, progress, progress - amt, needed);
+                        Bukkit.getServer().getPluginManager().callEvent(event);
+                        if (progress >= needed)
+                            reward(p, uo);
+                    }
+                break;
+
                 default:
                     if (uo.getTask() == task && uo.getTaskInfo()[2].equals(taskInfo)) {
                         int progress = uo.increment(p, amt);
@@ -343,5 +358,32 @@ public class UniversalObjectiveManager implements Listener {
         String id = npc.getUniqueId().toString();
         increment(TALK_TO_NPC, id, p, 1);
         increment(GIVE_TO_NPC, id, p, 0); // 0 bc contextual
+    }
+
+    @EventHandler
+    public void OnGainXP(UniversalGainXpEvent e) {
+        Player p = e.getPlayer();
+        increment(REACH_LEVEL, e.getLevel() + "", p, 1);
+    }
+
+    @EventHandler
+    public void OnLevelUp(UniversalLevelUpEvent e) {
+        Player p = e.getPlayer();
+        String lvl = e.getLevel() + "";
+        increment(REACH_LEVEL, lvl, p, 1);
+    }
+
+    @EventHandler
+    public void OnRegionEnter(RegionEnterEvent e) {
+        Player p = e.getPlayer();
+        String region = e.getRegion().getId();
+        increment(ENTER_REGION, region, p, 1);
+    }
+
+    @EventHandler
+    public void OnRegionLeave(RegionLeftEvent e) {
+        Player p = e.getPlayer();
+        String region = e.getRegion().getId();
+        increment(LEAVE_REGION, region, p, 1);
     }
 }

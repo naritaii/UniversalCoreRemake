@@ -4,7 +4,8 @@ import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.util.DynamicLocation;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.effects.LevelUp;
-import me.stupidbot.universalcoreremake.events.LevelUpEvent;
+import me.stupidbot.universalcoreremake.events.UniversalGainXpEvent;
+import me.stupidbot.universalcoreremake.events.UniversalLevelUpEvent;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
 import net.milkbowl.vault.economy.Economy;
 import net.minecraft.server.v1_8_R3.PacketPlayInClientCommand;
@@ -26,11 +27,14 @@ public class PlayerLevelling implements Listener {
 
         int currentXp = up.setXp(up.getXp() + amount);
         up.setTotalXp(up.getTotalXp() + amount);
+        int lvl = up.getLevel();
 
-        if (currentXp >= xpToNextLevel(up.getLevel()))
+        if (currentXp >= xpToNextLevel(lvl))
             levelUp(p);
         else
             updateUI(p);
+
+        Bukkit.getServer().getPluginManager().callEvent(new UniversalGainXpEvent(p, lvl, currentXp));
     }
 
     private static void levelUp(Player p) {
@@ -44,7 +48,7 @@ public class PlayerLevelling implements Listener {
             if (xp >= xpNeeded) {
                 xp -= xpNeeded;
                 lvl++;
-                Bukkit.getServer().getPluginManager().callEvent(new LevelUpEvent(p, lvl, xp));
+                Bukkit.getServer().getPluginManager().callEvent(new UniversalLevelUpEvent(p, lvl, xp));
             } else
                 break;
         }

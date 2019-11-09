@@ -71,7 +71,7 @@ public class UniversalObjective {
         return category;
     }
 
-    public Set<UUID> getPlayersTracking() {
+    Set<UUID> getPlayersTracking() {
         return playersToTrack.keySet();
     }
 
@@ -131,7 +131,10 @@ public class UniversalObjective {
     public enum TaskType {
         MINE_BLOCK,
         TALK_TO_NPC,
-        GIVE_TO_NPC
+        GIVE_TO_NPC,
+        REACH_LEVEL,
+        ENTER_REGION,
+        LEAVE_REGION
     }
 
     public enum Catagory {

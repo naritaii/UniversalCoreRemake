@@ -4,12 +4,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class LevelUpEvent extends Event {
+public class UniversalLevelUpEvent extends Event {
     private final Player player;
     private final int level;
     private final int xp;
 
-    public LevelUpEvent(Player player, int level, int xp) {
+    public UniversalLevelUpEvent(Player player, int level, int xp) {
         this.player = player;
         this.level = level;
         this.xp = xp;
