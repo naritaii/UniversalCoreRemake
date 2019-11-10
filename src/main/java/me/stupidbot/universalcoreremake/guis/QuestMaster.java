@@ -11,6 +11,7 @@ import fr.minuskube.inv.content.SlotIterator;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.enchantments.UniversalEnchantment;
 import me.stupidbot.universalcoreremake.managers.RewardManager;
+import me.stupidbot.universalcoreremake.managers.StatsManager;
 import me.stupidbot.universalcoreremake.managers.universalobjective.UniversalObjective;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
 import me.stupidbot.universalcoreremake.utilities.StringReward;
@@ -40,6 +41,8 @@ public class QuestMaster implements InventoryProvider {
 
     @Override
     public void init(Player p, InventoryContents contents) {
+        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
+
         // Misc
         contents.fill(ClickableItem.empty(new ItemBuilder(new ItemStack(
                 Material.STAINED_GLASS_PANE, 1, (short) 15)).name(" ").build())); // TODO Daily rewards
@@ -49,6 +52,14 @@ public class QuestMaster implements InventoryProvider {
 
         contents.set(5, 2, ClickableItem.of(new ItemBuilder(Material.ENDER_CHEST).name("&aEnder Chest")
                 .lore("").lore("&eClick to store items!").build(), e -> p.openInventory(p.getEnderChest())));
+
+        StatsManager sm = UniversalCoreRemake.getStatsManager();
+        contents.set(0, 4, ClickableItem.empty(new ItemBuilder(Skull.getPlayerSkull(p.getName()))
+                .name("&7" + up.getPrefix() + p.getName() + " &cStats")
+                .lore("&3Stamina&f: &d" + up.getStamina() + "/" + sm.getMaxStamina(p)) // TODO format better
+                .lore("&cHealth&f: &d" + (int) p.getHealth() + "/" + (int) p.getMaxHealth())
+                .lore("&aDefense&f: &d" + sm.getDefense(p))
+                .lore("&bSpeed&f: &d" + (int) sm.getDisplayedSpeed(p) + "%").build()));
 
         boolean isInSpawn = false;
         ApplicableRegionSet regions = UniversalCoreRemake.getWorldGuardPlugin().getRegionManager(p.getWorld())
@@ -74,7 +85,6 @@ public class QuestMaster implements InventoryProvider {
                 p.performCommand("twitter")));
 
         // Rewards
-        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
         RewardManager rm = UniversalCoreRemake.getRewardManager();
 
         int streak = up.getStreak("Vote");

@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
  *
  * @author Kristian
  */
+@SuppressWarnings("unused")
 public final class Reflections {
 
     // Deduce the net.minecraft.server.v* package
@@ -386,6 +387,7 @@ public final class Reflections {
      *
      * @param <T> field type
      */
+    @SuppressWarnings("unused")
     public interface FieldAccessor<T> {
         /**
          * Retrieve the content of a field.

@@ -21,9 +21,9 @@ import java.util.Set;
 import java.util.UUID;
 
 public class RegionsListener implements Listener {
-    private RegionContainer container = UniversalCoreRemake.getWorldGuardPlugin().getRegionContainer();
+    private final RegionContainer container = UniversalCoreRemake.getWorldGuardPlugin().getRegionContainer();
 
-    private HashMap<UUID, Set<ProtectedRegion>> playerRegions = new HashMap<>();
+    private final HashMap<UUID, Set<ProtectedRegion>> playerRegions = new HashMap<>();
 
 /*    public HashMap<UUID, Set<ProtectedRegion>> getPlayerRegions() {
         return playerRegions;
@@ -49,7 +49,6 @@ public class RegionsListener implements Listener {
     }
 
     private void changeRegions(UUID u, Set<ProtectedRegion> actual) {
-
         playerRegions.putIfAbsent(u, new HashSet<>());
         // If the sets contain the same info, ignore.
         int previousSize = playerRegions.get(u).size();
@@ -106,34 +105,44 @@ public class RegionsListener implements Listener {
     }
 
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent e) {
+    @EventHandler // TODO Find a way that won't be called every tick
+    public void OnPlayerMove(PlayerMoveEvent e) {
         changeRegions(e.getPlayer().getUniqueId(), getRegions(e.getPlayer().getUniqueId()));
     }
 
     @EventHandler
-    public void onQuit(PlayerQuitEvent e) {
+    public void OnPlayerTeleport(PlayerTeleportEvent e) {
+        changeRegions(e.getPlayer().getUniqueId(), getRegions(e.getPlayer().getUniqueId()));
+    }
+
+    @EventHandler
+    public void OnJoin(PlayerJoinEvent e) {
+        changeRegions(e.getPlayer().getUniqueId(), getRegions(e.getPlayer().getUniqueId()));
+    }
+
+    @EventHandler
+    public void OnQuit(PlayerQuitEvent e) {
         quit(e.getPlayer().getUniqueId());
     }
 
     @EventHandler
-    public void onKick(PlayerKickEvent e) {
+    public void OnKick(PlayerKickEvent e) {
         quit(e.getPlayer().getUniqueId());
     }
 
     @EventHandler
-    public void onRespawn(PlayerRespawnEvent e) {
+    public void OnRespawn(PlayerRespawnEvent e) {
         UUID uuid = e.getPlayer().getUniqueId();
         changeRegions(uuid, getRegions(uuid));
     }
 
     @EventHandler
-    public void onDeath(PlayerDeathEvent e) {
+    public void OnDeath(PlayerDeathEvent e) {
         quit(e.getEntity().getUniqueId());
     }
 
     @EventHandler
-    public void onWorldChange(PlayerChangedWorldEvent e) {
+    public void OnWorldChange(PlayerChangedWorldEvent e) {
         changeWorld(e.getPlayer().getUniqueId());
     }
 }

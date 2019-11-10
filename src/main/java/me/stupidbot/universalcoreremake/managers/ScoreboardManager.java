@@ -204,7 +204,8 @@ public class ScoreboardManager implements Listener {
         if (s.contains("%objective_description%") || s.contains("%objective_progress%")) {
             UniversalObjective storyQuest = null;
             for (UniversalObjective uo : UniversalCoreRemake.getUniversalObjectiveManager().trackedObjectives.get(p.getUniqueId()))
-                if (uo.getCategory() == UniversalObjective.Catagory.STORY_QUEST) {
+                if (uo.getCategory() == UniversalObjective.Catagory.STORY_QUEST ||
+                        uo.getCategory() == UniversalObjective.Catagory.CONTEXTUAL_QUEST) {
                     storyQuest = uo;
                     break;
                 }
@@ -225,7 +226,8 @@ public class ScoreboardManager implements Listener {
     private ScoreboardFormat getFormat(Player p) {
         UniversalObjective storyQuest = null;
         for (UniversalObjective uo : UniversalCoreRemake.getUniversalObjectiveManager().trackedObjectives.getOrDefault(p.getUniqueId(), new ArrayList<>()))
-            if (uo.getCategory() == UniversalObjective.Catagory.STORY_QUEST) {
+            if (uo.getCategory() == UniversalObjective.Catagory.STORY_QUEST ||
+                    uo.getCategory() == UniversalObjective.Catagory.CONTEXTUAL_QUEST) {
                 storyQuest = uo;
                 break;
             }

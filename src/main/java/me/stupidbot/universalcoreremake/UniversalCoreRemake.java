@@ -18,7 +18,6 @@ import me.stupidbot.universalcoreremake.managers.mining.MiningManager;
 import me.stupidbot.universalcoreremake.managers.universalobjective.UniversalObjectiveManager;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayerManager;
 import me.stupidbot.universalcoreremake.utilities.PlayerLevelling;
-import me.stupidbot.universalcoreremake.utilities.Stamina;
 import me.stupidbot.universalcoreremake.utilities.item.ItemMetadata;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
@@ -29,6 +28,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Collections;
+
 @SuppressWarnings("UnusedReturnValue")
 public class UniversalCoreRemake extends JavaPlugin {
     private static UniversalCoreRemake instance;
@@ -36,6 +37,7 @@ public class UniversalCoreRemake extends JavaPlugin {
     private static ProtocolManager protocolManager;
     private static UniversalPlayerManager universalPlayerManager;
     private static BlockMetadataManger blockMetadataManager;
+    private static StatsManager statsManager;
     private static MiningManager miningManager;
     private static Economy econ = null;
     private static Permission perms = null;
@@ -57,6 +59,7 @@ public class UniversalCoreRemake extends JavaPlugin {
         protocolManager = ProtocolLibrary.getProtocolManager();
         universalPlayerManager = new UniversalPlayerManager();
         blockMetadataManager = new BlockMetadataManger();
+        statsManager = new StatsManager();
         miningManager = new MiningManager();
         inventoryManager = new InventoryManager(instance);
         motdManager = new MOTDManager();
@@ -76,10 +79,11 @@ public class UniversalCoreRemake extends JavaPlugin {
         else
             System.out.println("PlaceholderAPI support disabled.");
 
-        registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager, new Stamina(),
+        registerEvents(instance, universalPlayerManager, new PlayerLevelling(), miningManager, statsManager,
                 new ChatManager(), motdManager, new ItemMetadata(), universalObjectiveManager, scoreboardManager,
                 new CollectibleSlimesListener(), leaderboardManager, new EnderchestListener(), new SpawnPortalListener(),
-                rewardManager, new HatListener(), new InventoryClickBorderCloseListener(), new MoneyPickupListener());
+                rewardManager, new HatListener(), new InventoryClickBorderCloseListener(), new MoneyPickupListener(),
+                new ArmorEquipListener(Collections.emptyList()));
         if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null)
             registerEvents(instance, new RegionsListener());
         registerCommands(commandExecutor, "reloadmotd", "reloaduniversalobjectives",
@@ -188,6 +192,10 @@ public class UniversalCoreRemake extends JavaPlugin {
 
     public static BlockMetadataManger getBlockMetadataManager() {
         return blockMetadataManager;
+    }
+
+    public static StatsManager getStatsManager() {
+        return statsManager;
     }
 
     public static MiningManager getMiningManager() {

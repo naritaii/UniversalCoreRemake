@@ -17,13 +17,16 @@ me\stupidbot\universalcoreremake\managers\mining\MiningManager$1.class
 me\stupidbot\universalcoreremake\commands\SetBlockMeta.class
 me\stupidbot\universalcoreremake\guis\SpawnPortal.class
 me\stupidbot\universalcoreremake\events\UniversalLevelUpEvent.class
+me\stupidbot\universalcoreremake\listeners\ArmorEquipListener.class
 me\stupidbot\universalcoreremake\managers\universalobjective\UniversalObjectiveManager.class
 me\stupidbot\universalcoreremake\listeners\CollectibleSlimesListener.class
+me\stupidbot\universalcoreremake\events\armorequip\ArmorEquipEvent.class
 me\stupidbot\universalcoreremake\cosmetics\Trail.class
 me\stupidbot\universalcoreremake\events\universalobjective\UniversalObjectiveCompleteEvent.class
 me\stupidbot\universalcoreremake\managers\LeaderboardManager$2.class
 me\stupidbot\universalcoreremake\utilities\item\Reflections$MethodInvoker.class
 me\stupidbot\universalcoreremake\guis\Stats.class
+me\stupidbot\universalcoreremake\managers\StatsManager$BaseFoodStamina.class
 me\stupidbot\universalcoreremake\commands\Mutate.class
 me\stupidbot\universalcoreremake\commands\CommandExecutor.class
 me\stupidbot\universalcoreremake\effects\FindSlime.class
@@ -39,6 +42,7 @@ me\stupidbot\universalcoreremake\managers\universalobjective\UniversalObjective$
 me\stupidbot\universalcoreremake\commands\ReloadRewards.class
 me\stupidbot\universalcoreremake\commands\OpenStats.class
 me\stupidbot\universalcoreremake\effects\BlockBreak.class
+me\stupidbot\universalcoreremake\events\armorequip\ArmorEquipEvent$EquipMethod.class
 me\stupidbot\universalcoreremake\events\UniversalGainXpEvent.class
 me\stupidbot\universalcoreremake\commands\ReadItemMeta.class
 me\stupidbot\universalcoreremake\effects\LevelUp.class
@@ -81,6 +85,7 @@ me\stupidbot\universalcoreremake\events\UniversalBlockBreakEvent.class
 me\stupidbot\universalcoreremake\listeners\MoneyPickupListener.class
 me\stupidbot\universalcoreremake\managers\MOTDManager.class
 me\stupidbot\universalcoreremake\managers\mining\MiningManager.class
+me\stupidbot\universalcoreremake\managers\StatsManager.class
 me\stupidbot\universalcoreremake\guis\QuestMaster.class
 me\stupidbot\universalcoreremake\managers\mining\MiningManager$BreakBehavior.class
 me\stupidbot\universalcoreremake\utilities\item\Reflections$ConstructorInvoker.class
@@ -91,12 +96,11 @@ me\stupidbot\universalcoreremake\managers\ScoreboardManager$1.class
 me\stupidbot\universalcoreremake\managers\universalobjective\UniversalObjectiveManager$1.class
 me\stupidbot\universalcoreremake\utilities\PlayerLevelling.class
 me\stupidbot\universalcoreremake\utilities\TextUtils$Emoji.class
-me\stupidbot\universalcoreremake\utilities\Stamina$BaseFoodStamina.class
 me\stupidbot\universalcoreremake\managers\universalplayer\UniversalPlayerManager.class
 me\stupidbot\universalcoreremake\enchantments\mutation\Glass.class
 me\stupidbot\universalcoreremake\managers\LeaderboardManager.class
-me\stupidbot\universalcoreremake\utilities\Stamina.class
 me\stupidbot\universalcoreremake\guis\Sell.class
+me\stupidbot\universalcoreremake\events\armorequip\ArmorType.class
 me\stupidbot\universalcoreremake\managers\CustomItemManager.class
 me\stupidbot\universalcoreremake\managers\universalobjective\UniversalObjective.class
 me\stupidbot\universalcoreremake\utilities\item\ItemMetadata.class

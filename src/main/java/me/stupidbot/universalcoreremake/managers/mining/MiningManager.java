@@ -17,7 +17,10 @@ import me.stupidbot.universalcoreremake.effects.EnhancedBlockBreak;
 import me.stupidbot.universalcoreremake.enchantments.UniversalEnchantment;
 import me.stupidbot.universalcoreremake.events.UniversalBlockBreakEvent;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
-import me.stupidbot.universalcoreremake.utilities.*;
+import me.stupidbot.universalcoreremake.utilities.FileUtils;
+import me.stupidbot.universalcoreremake.utilities.LocationUtils;
+import me.stupidbot.universalcoreremake.utilities.PlayerLevelling;
+import me.stupidbot.universalcoreremake.utilities.TextUtils;
 import me.stupidbot.universalcoreremake.utilities.item.ItemLevelling;
 import me.stupidbot.universalcoreremake.utilities.item.ItemMetadata;
 import me.stupidbot.universalcoreremake.utilities.item.ItemUtils;
@@ -183,10 +186,10 @@ public class MiningManager implements Listener {
                 MineableBlock mb = registeredMineableBlocks.get(registeredMineableBlocksDictionary.get(b.getType()));
                 int stamina = mb.getBaseStaminaUsage();
 
-                if (Stamina.getStamina(p) < stamina) {
+                if (UniversalCoreRemake.getStatsManager().getStamina(p) < stamina) {
                     removeMiningPlayer(p);
                     TextUtils.sendTitle(p, "", 5, 20, 5);
-                    if (Stamina.getMaxStamina(p) >= stamina)
+                    if (UniversalCoreRemake.getStatsManager().getMaxStamina(p) >= stamina)
                         TextUtils.sendSubtitle(p, "&c&lEAT TO REGAIN STAMINA", 5, 20, 5);
                     else
                         TextUtils.sendSubtitle(p, "&c&lNOT ENOUGH STAMINA", 5, 20, 5);
@@ -241,7 +244,7 @@ public class MiningManager implements Listener {
                             ItemLevelling.giveXp(p, itemInHand, xp);
 
                         }
-                        Stamina.removeStamina(p, stamina);
+                        UniversalCoreRemake.getStatsManager().removeStamina(p, stamina);
 
                         TextUtils.sendActionbar(p, "&2XP: &a+" + mb.getBaseXp() +
                                 " &e" + TextUtils.capitalizeFully(b.getType().toString()) + ": &a+1" +

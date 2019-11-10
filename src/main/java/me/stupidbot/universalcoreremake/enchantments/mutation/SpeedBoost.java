@@ -1,6 +1,6 @@
 package me.stupidbot.universalcoreremake.enchantments.mutation;
 
-import me.stupidbot.universalcoreremake.utilities.Stamina;
+import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.utilities.TextUtils;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -66,8 +66,8 @@ public class SpeedBoost extends Enchantment implements Listener {
 
             int staminaCost = 25;
             if (i.containsEnchantment(this))
-                if (Stamina.getStamina(p) >= staminaCost) {
-                    Stamina.removeStamina(p, staminaCost);
+                if (UniversalCoreRemake.getStatsManager().getStamina(p) >= staminaCost) {
+                    UniversalCoreRemake.getStatsManager().removeStamina(p, staminaCost);
                     p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 600, 0,
                             true, true), false);
                     TextUtils.sendActionbar(p, "&3Stamina: &c-" + staminaCost + " &bSpeed: &a+20% 30s");

@@ -142,15 +142,18 @@ public class ItemMetadata implements Listener {
 //    }
 
     public static Map<String, String> getMeta(ItemStack i) {
-        int metaLine = getMetaLine(i);
-        if (metaLine > -1) {
-            String meta = i.getItemMeta().getLore().get(metaLine).replace(hiddenPl + metaPl, "");
-            Map<String, String> map = new HashMap<>();
-            for (String m : meta.split(",")) {
-                String[] metaSplit = m.split(":");
-                map.put(metaSplit[0], metaSplit[1]);
-            }
-            return map;
+        if (i != null && i.hasItemMeta()) {
+            int metaLine = getMetaLine(i);
+            if (metaLine > -1) {
+                String meta = i.getItemMeta().getLore().get(metaLine).replace(hiddenPl + metaPl, "");
+                Map<String, String> map = new HashMap<>();
+                for (String m : meta.split(",")) {
+                    String[] metaSplit = m.split(":");
+                    map.put(metaSplit[0], metaSplit[1]);
+                }
+                return map;
+            } else
+                return Collections.emptyMap();
         } else
             return Collections.emptyMap();
     }
@@ -233,11 +236,14 @@ public class ItemMetadata implements Listener {
     }
 
     public static int getMetaLine(ItemStack is) {
-        List<String> lore = is.getItemMeta().getLore();
-        if (lore != null)
-            for (int i = 0; i < lore.size(); i++)
-                if (lore.get(i).startsWith(hiddenPl + metaPl))
-                    return i;
+        if (is != null && is.hasItemMeta()) {
+            List<String> lore = is.getItemMeta().getLore();
+            if (lore != null)
+                for (int i = 0; i < lore.size(); i++)
+                    if (lore.get(i).startsWith(hiddenPl + metaPl))
+                        return i;
+            return -1;
+        } else
         return -1;
     }
 }
