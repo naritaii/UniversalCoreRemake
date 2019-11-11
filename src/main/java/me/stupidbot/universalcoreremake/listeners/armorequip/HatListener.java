@@ -1,6 +1,9 @@
-package me.stupidbot.universalcoreremake.listeners;
+package me.stupidbot.universalcoreremake.listeners.armorequip;
 
+import me.stupidbot.universalcoreremake.events.armorequip.ArmorEquipEvent;
+import me.stupidbot.universalcoreremake.events.armorequip.ArmorType;
 import me.stupidbot.universalcoreremake.utilities.item.ItemMetadata;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,12 +22,15 @@ public class HatListener implements Listener {
                 Player p = e.getPlayer();
                 ItemStack i = p.getItemInHand();
 
-                if (i.getType() != Material.AIR && ItemMetadata.hasMeta(i, "HAT"))
+                if (ItemMetadata.hasMeta(i, "HAT"))
                     if (p.getInventory().getHelmet() == null ||
                             p.getInventory().getHelmet().getType() != Material.AIR) {
                         e.setCancelled(true);
                         p.getInventory().setHelmet(i);
                         p.setItemInHand(new ItemStack(Material.AIR));
+                        ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent(p, ArmorEquipEvent.EquipMethod.HOTBAR, ArmorType.HELMET, null, i);
+                        p.updateInventory();
+                        Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
                     }
             }
         }
@@ -41,6 +47,9 @@ public class HatListener implements Listener {
                 ItemStack cursor = e.getCursor();
                 e.setCurrentItem(cursor);
                 e.getWhoClicked().setItemOnCursor(helm);
+                ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent((Player) e.getWhoClicked(), ArmorEquipEvent.EquipMethod.DRAG, ArmorType.HELMET, helm, cursor);
+                ((Player) e.getWhoClicked()).updateInventory();
+                Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
             }
         }
 
@@ -54,6 +63,9 @@ public class HatListener implements Listener {
                 e.setCancelled(true);
                 e.getWhoClicked().getInventory().setHelmet(e.getCurrentItem());
                 e.setCurrentItem(new ItemStack(Material.AIR));
+                ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent((Player) e.getWhoClicked(), ArmorEquipEvent.EquipMethod.SHIFT_CLICK, ArmorType.HELMET, null, e.getCurrentItem());
+                ((Player) e.getWhoClicked()).updateInventory();
+                Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
             }
         }
     }

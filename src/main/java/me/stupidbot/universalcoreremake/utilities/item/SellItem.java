@@ -44,6 +44,13 @@ public class SellItem {
         this.displayItem = this.item;
     }
 
+    public SellItem(ItemStack item, String displayName, ItemStack... tradeItems) {
+        this.sellCost = -1;
+        this.tradeItems = tradeItems;
+        this.item = item;
+        this.displayItem = new ItemBuilder(getItem()).name(displayName).build();
+    }
+
 //    public SellItem(Material item, ItemStack displayItem, double sellCost) {
 //        this.sellCost = sellCost;
 //        this.item = new ItemStack(item);

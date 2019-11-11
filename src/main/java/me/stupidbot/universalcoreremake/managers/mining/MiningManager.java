@@ -184,7 +184,14 @@ public class MiningManager implements Listener {
                 Player p = Bukkit.getPlayer(id);
                 Block b = miningPlayers.get(id);
                 MineableBlock mb = registeredMineableBlocks.get(registeredMineableBlocksDictionary.get(b.getType()));
+                boolean usingItem = ItemLevelling.getPickaxes().contains(p.getItemInHand().getType());
+                ItemStack itemInHand = p.getItemInHand();
                 int stamina = mb.getBaseStaminaUsage();
+                if (usingItem) {
+                    Map<String, String> m = ItemMetadata.getMeta(itemInHand);
+                    if (m.containsKey("STAMINA_USE"))
+                        stamina += Integer.parseInt(m.get("STAMINA_USE"));
+                }
 
                 if (UniversalCoreRemake.getStatsManager().getStamina(p) < stamina) {
                     removeMiningPlayer(p);
@@ -195,8 +202,6 @@ public class MiningManager implements Listener {
                         TextUtils.sendSubtitle(p, "&c&lNOT ENOUGH STAMINA", 5, 20, 5);
                 } else {
                     int d = timer.getOrDefault(id, 0) + 1;
-                    boolean usingItem = ItemLevelling.getPickaxes().contains(p.getItemInHand().getType());
-                    ItemStack itemInHand = p.getItemInHand();
                     float speedMod = getItemMultiplier(itemInHand.getType());
                     if (usingItem) {
                         if (itemInHand.containsEnchantment(UniversalEnchantment.SANDSTONE_LOVER))

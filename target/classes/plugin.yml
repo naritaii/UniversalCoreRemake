@@ -78,6 +78,10 @@ commands:
     aliases: [foodtrader]
     description: Open Food Trader GUI
     usage: /<command> [player]
+  openblacksmith:
+    aliases: [blacksmith]
+    description: Open Blacksmith GUI
+    usage: /<command> [player]
   openstats:
     aliases: [stats]
     description: Open Stats GUI

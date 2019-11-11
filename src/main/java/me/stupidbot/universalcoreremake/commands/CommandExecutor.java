@@ -23,6 +23,7 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private final Twitter twitter = new Twitter();
     private final OpenMineralTrader openMineralTrader = new OpenMineralTrader();
     private final OpenFoodTrader openFoodTrader = new OpenFoodTrader();
+    private final OpenBlacksmith openBlacksmith =  new OpenBlacksmith();
     private final OpenStats openStats = new OpenStats();
     private final OpenQuestMaster openQuestMaster = new OpenQuestMaster();
     private final OpenSpawnPortal openSpawnPortal = new OpenSpawnPortal();
@@ -74,6 +75,8 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
             return openMineralTrader.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("openfoodtrader"))
             return openFoodTrader.execute(s, label, args);
+        else if (cmd.getName().equalsIgnoreCase("openblacksmith"))
+            return openBlacksmith.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("openstats"))
             return openStats.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("openquestmaster"))

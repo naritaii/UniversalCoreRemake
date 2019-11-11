@@ -12,7 +12,10 @@ import de.slikey.effectlib.EffectManager;
 import fr.minuskube.inv.InventoryManager;
 import me.stupidbot.universalcoreremake.commands.CommandExecutor;
 import me.stupidbot.universalcoreremake.enchantments.UniversalEnchantment;
+import me.stupidbot.universalcoreremake.items.UniversalItem;
 import me.stupidbot.universalcoreremake.listeners.*;
+import me.stupidbot.universalcoreremake.listeners.armorequip.ArmorEquipListener;
+import me.stupidbot.universalcoreremake.listeners.armorequip.HatListener;
 import me.stupidbot.universalcoreremake.managers.*;
 import me.stupidbot.universalcoreremake.managers.mining.MiningManager;
 import me.stupidbot.universalcoreremake.managers.universalobjective.UniversalObjectiveManager;
@@ -74,6 +77,7 @@ public class UniversalCoreRemake extends JavaPlugin {
         setupPermissions();
         inventoryManager.init();
         new UniversalEnchantment(instance);
+        new UniversalItem(instance);
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
             new UniversalCoreExpansion().register();
         else
@@ -89,10 +93,14 @@ public class UniversalCoreRemake extends JavaPlugin {
         registerCommands(commandExecutor, "reloadmotd", "reloaduniversalobjectives",
                 "reloadrewards", "reloadminingmanager", "reloadleaderboards", "reinitializeleaderboards",
                 "sortleaderboards",
-                "exp", "setblockmeta", "readblockmeta", "setitemmeta", "readitemmeta", "emoji", "vote",
-                "discord", "twitter", "openmineraltrader", "openfoodtrader", "openstats", "openspawnportal",
-                "openquestmaster", "saveuniversalplayercachetofile", "saveblockmetadatacachetofile",
-                "saveleaderboards", "selectobjective", "mutate", "serialize", "stringreward", "hat");
+                "exp", "setblockmeta", "readblockmeta", "setitemmeta", "readitemmeta",
+                "emoji", "vote",
+                "discord", "twitter",
+                "openmineraltrader", "openfoodtrader", "openblacksmith", "openstats",
+                "openspawnportal", "openquestmaster",
+                "saveuniversalplayercachetofile", "saveblockmetadatacachetofile",
+                "saveleaderboards", "selectobjective", "mutate", "serialize", "stringreward",
+                "hat");
 
         System.out.println(getName() + " is now enabled!");
     }

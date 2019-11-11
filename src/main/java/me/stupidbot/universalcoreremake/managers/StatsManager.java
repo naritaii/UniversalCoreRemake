@@ -69,20 +69,16 @@ public class StatsManager implements Listener {
                 pe.printStackTrace();
             }
 
-        UniversalCoreRemake plugin = UniversalCoreRemake.getInstance();
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            updateHealth(p);
-            updateStamina(p);
-            p.setWalkSpeed(getSpeed(p));
-        });
-
+        updateHealth(p);
+        updateStamina(p);
+        p.setWalkSpeed(getSpeed(p));
     }
 
     @EventHandler
     public void OnArmorEquip(ArmorEquipEvent e) {
-            updateHealth(e.getPlayer());
-            updateStamina(e.getPlayer());
-            e.getPlayer().setWalkSpeed(getSpeed(e.getPlayer()));
+        updateHealth(e.getPlayer());
+        updateStamina(e.getPlayer());
+        e.getPlayer().setWalkSpeed(getSpeed(e.getPlayer()));
     }
 
     private void addStamina(Player p, int i) {
@@ -161,18 +157,22 @@ public class StatsManager implements Listener {
 
     @EventHandler
     public void OnDamageEntity(EntityDamageByEntityEvent e) {
+        if (e.getDamager() instanceof Player) {
+            Player p = (Player) e.getDamager();
+            Map<String, String> m = ItemMetadata.getMeta(p.getItemInHand());
+            if (m.containsKey("DAMAGE"))
+                e.setDamage(Double.parseDouble(m.get("DAMAGE")));
+        }
+
         if (e.getEntity() instanceof Player) {
             Player p = (Player) e.getEntity();
-
             e.setDamage(calculateDamage(p, e.getDamage()));
         }
     }
 
     private double calculateDamage(Player p, double damage) {
         int defensePoints = getDefense(p);
-
-
-        return damage * (100 - (defensePoints / 100d));
+        return damage * (1 - (defensePoints / 100d));
     }
 
     public int getDefense(Player p) {
