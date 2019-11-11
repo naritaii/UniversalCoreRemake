@@ -24,6 +24,10 @@ public class Warp {
                 "aoba", "Aoba Mine");
         warpsDictionary.put(aoba.getId(), warps.size());
         warps.add(aoba);
+        Warp mountainsVillage = new Warp(new Location(Bukkit.getWorld("world"), -105d, 4d, 91d, 135f, 0f),
+                "mountains_village", "Village");
+        warpsDictionary.put(mountainsVillage.getId(), warps.size());
+        warps.add(mountainsVillage);
     }
 
     public static List<Warp> getWarps() {

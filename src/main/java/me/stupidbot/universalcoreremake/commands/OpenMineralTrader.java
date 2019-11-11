@@ -1,7 +1,6 @@
 package me.stupidbot.universalcoreremake.commands;
 
 import me.stupidbot.universalcoreremake.guis.Sell;
-import me.stupidbot.universalcoreremake.utilities.item.ItemBuilder;
 import me.stupidbot.universalcoreremake.utilities.item.SellItem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -21,8 +20,8 @@ class OpenMineralTrader {
                 new SellItem(Material.SANDSTONE, 2.00),
                 new SellItem(Material.COAL_ORE, 4.20),
                 new SellItem(Material.COAL, 5.55),
-                new SellItem(new ItemBuilder(Material.IRON_ORE).lore("&cCOMING SOON").build(), 0),
-                new SellItem(new ItemBuilder(Material.IRON_INGOT).lore("&cCOMING SOON").build(), 0));
+                new SellItem(Material.IRON_ORE, 5.25),
+                new SellItem(Material.IRON_INGOT, 6.94));
     }
 
     @SuppressWarnings("SameReturnValue")
