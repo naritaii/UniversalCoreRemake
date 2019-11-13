@@ -2,6 +2,7 @@ package me.stupidbot.universalcoreremake.utilities;
 
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.events.universalobjective.UniversalObjectiveStartEvent;
+import me.stupidbot.universalcoreremake.items.UniversalItem;
 import me.stupidbot.universalcoreremake.managers.universalobjective.UniversalObjective;
 import me.stupidbot.universalcoreremake.managers.universalobjective.UniversalObjectiveManager;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
@@ -34,6 +35,7 @@ public class StringReward {
             for (String args : Arrays.copyOfRange(split, 1, split.length))
                 arg.append(" ").append(args);
 
+            final String textToTranslate = "&cCould not parse " + s.toLowerCase() + " " + arg.toString().trim();
             switch (type) {
                 case "MONEY":
                     try {
@@ -60,6 +62,26 @@ public class StringReward {
                                 "&cCould not parse item " + arg.toString().trim());
                     break;
 
+                case "UNIVERSALITEM":
+                case "UITEM":
+                    if (UniversalItem.UNIVERSAL_ITEMS_DICTIONARY.containsKey(arg.toString().trim())) {
+                        ItemStack is1 = UniversalItem.UNIVERSAL_ITEMS.get(UniversalItem.UNIVERSAL_ITEMS_DICTIONARY.get(arg.toString().trim()));
+                        if (is1 != null)
+                            if (is1.hasItemMeta())
+                                r[i] = ChatColor.translateAlternateColorCodes('&',
+                                        "&3x" + is1.getAmount() + "&a " +
+                                                (is1.getItemMeta().hasDisplayName() ? is1.getItemMeta().getDisplayName() :
+                                                        TextUtils.capitalizeFully(is1.getType().toString())));
+                            else
+                                r[i] = TextUtils.capitalizeFully(is1.getType().toString());
+                        else
+                            r[i] = ChatColor.translateAlternateColorCodes('&',
+                                    textToTranslate);
+                    } else
+                        r[i] = ChatColor.translateAlternateColorCodes('&',
+                                textToTranslate);
+                    break;
+
                 case "MESSAGE":
                     r[i] = ChatColor.translateAlternateColorCodes('&', arg.toString().trim());
                     break;
@@ -71,7 +93,7 @@ public class StringReward {
                                 "&bXP " + TextUtils.addCommas(Integer.parseInt(arg.toString().trim())));
                     } catch (NumberFormatException e) {
                         r[i] = ChatColor.translateAlternateColorCodes('&',
-                                "&cCould not parse " + s.toLowerCase() + " " + arg.toString().trim());
+                                textToTranslate);
                     }
                     break;
 
@@ -114,6 +136,7 @@ public class StringReward {
                 arg.append(" ").append(args);
             arg.trimToSize();
 
+            final String textToTranslate = "&cCould not parse " + s.toLowerCase() + " " + arg.toString().trim();
             switch (type) {
                 case "MONEY":
                     try {
@@ -145,6 +168,31 @@ public class StringReward {
                     else
                         p.sendMessage((ChatColor.translateAlternateColorCodes('&',
                                 "&cCould not parse item " + arg.toString().trim())));
+                    break;
+
+                case "UNIVERSALITEM":
+                case "UITEM":
+                    if (UniversalItem.UNIVERSAL_ITEMS_DICTIONARY.containsKey(arg.toString().trim())) {
+                        ItemStack is1 = UniversalItem.UNIVERSAL_ITEMS.get(UniversalItem.UNIVERSAL_ITEMS_DICTIONARY.get(arg.toString().trim()));
+                        if (is1 != null)
+                            if (is1.hasItemMeta()) {
+                                p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                        "&3+x" + is1.getAmount() + "&a " +
+                                                (is1.getItemMeta().hasDisplayName() ? is1.getItemMeta().getDisplayName() :
+                                                        TextUtils.capitalizeFully(is1.getType().toString()))));
+                                ItemUtils.addItemSafe(p, is1);
+                            } else {
+                                p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                        "&3+x" + is1.getAmount() + "&a " +
+                                                TextUtils.capitalizeFully(is1.getType().toString())));
+                                ItemUtils.addItemSafe(p, is1);
+                            }
+                        else
+                            p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                    textToTranslate));
+                    } else
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                textToTranslate));
                     break;
 
                 case "QUEST":
@@ -185,7 +233,7 @@ public class StringReward {
                                 "&b+" + TextUtils.addCommas(i) + " XP"));
                     } catch (NumberFormatException e) {
                         p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                                "&cCould not parse " + s.toLowerCase() + " " + arg.toString().trim()));
+                                textToTranslate));
                     }
                     break;
 
@@ -209,6 +257,7 @@ public class StringReward {
             for (String args : Arrays.copyOfRange(split, 1, split.length))
                 arg.append(" ").append(args);
 
+            final String textToTranslate = "&cCould not parse " + s.toLowerCase() + " " + arg.toString().trim();
             switch (type) {
                 case "MONEY":
                     try {
@@ -227,6 +276,15 @@ public class StringReward {
                     else
                         p.sendMessage((ChatColor.translateAlternateColorCodes('&',
                                 "&cCould not parse item " + arg.toString().trim())));
+                    break;
+
+                case "UNIVERSALITEM":
+                case "UITEM":
+                    if (UniversalItem.UNIVERSAL_ITEMS_DICTIONARY.containsKey(arg.toString().trim()))
+                        ItemUtils.addItemSafe(p, UniversalItem.UNIVERSAL_ITEMS.get(UniversalItem.UNIVERSAL_ITEMS_DICTIONARY.get(arg.toString().trim())));
+                    else
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                textToTranslate));
                     break;
 
                 case "QUEST":
@@ -260,7 +318,7 @@ public class StringReward {
                         PlayerLevelling.giveXp(p, Integer.parseInt(arg.toString().trim()));
                     } catch (NumberFormatException e) {
                         p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                                "&cCould not parse " + s.toLowerCase() + " " + arg.toString().trim()));
+                                textToTranslate));
                     }
 
                 case "MESSAGE":

@@ -9,6 +9,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -187,6 +188,20 @@ public class ItemBuilder implements Listener {
      */
     public ItemBuilder type(final Material material) {
         is.setType(material);
+        return this;
+    }
+
+    public ItemBuilder flag(final ItemFlag... itemFlags) {
+        final ItemMeta meta = is.getItemMeta();
+        meta.addItemFlags(itemFlags);
+        is.setItemMeta(meta);
+        return this;
+    }
+
+    public ItemBuilder unbreakable(final boolean unbreakable) {
+        final ItemMeta meta = is.getItemMeta();
+        meta.spigot().setUnbreakable(unbreakable);
+        is.setItemMeta(meta);
         return this;
     }
 

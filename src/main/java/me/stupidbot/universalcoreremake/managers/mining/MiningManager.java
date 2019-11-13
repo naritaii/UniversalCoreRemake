@@ -204,9 +204,13 @@ public class MiningManager implements Listener {
                     int d = timer.getOrDefault(id, 0) + 1;
                     float speedMod = getItemMultiplier(itemInHand.getType());
                     if (usingItem) {
-                        if (itemInHand.containsEnchantment(UniversalEnchantment.SANDSTONE_LOVER))
-                            if (mb.getType() == Material.RED_SANDSTONE || mb.getType() == Material.SANDSTONE)
-                                speedMod += 0.05f;
+                        if (((mb.getType() == Material.SANDSTONE || mb.getType() == Material.RED_SANDSTONE) &&
+                                itemInHand.containsEnchantment(UniversalEnchantment.SANDSTONE_LOVER)) ||
+                                ((mb.getType() == Material.COAL_ORE || mb.getType() == Material.COAL_BLOCK) &&
+                                        itemInHand.containsEnchantment(UniversalEnchantment.COAL_LOVER))  ||
+                                ((mb.getType() == Material.IRON_ORE || mb.getType() == Material.IRON_BLOCK) &&
+                                        itemInHand.containsEnchantment(UniversalEnchantment.IRON_LOVER)))
+                                speedMod += 0.1f;
                         if (itemInHand.containsEnchantment(Enchantment.DIG_SPEED))
                             speedMod += 0.2f + (itemInHand.getEnchantmentLevel(Enchantment.DIG_SPEED) * 0.05f);
                     }
@@ -259,9 +263,13 @@ public class MiningManager implements Listener {
                         // Enhance Block?
                         float enhanceChance = mb.getEnhanceChance();
                         if (usingItem)
-                            if (mb.getOnBreak() != BreakBehavior.INSTANT_RESPAWN &&
-                                    itemInHand.containsEnchantment(UniversalEnchantment.SANDSTONE_LOVER))
-                                enhanceChance += 0.05f;
+                            if  ((mb.getType() == Material.SANDSTONE &&
+                                itemInHand.containsEnchantment(UniversalEnchantment.SANDSTONE_LOVER)) ||
+                                    (mb.getType() == Material.COAL_ORE &&
+                                            itemInHand.containsEnchantment(UniversalEnchantment.COAL_LOVER)) ||
+                                    (mb.getType() == Material.IRON_ORE &&
+                                            itemInHand.containsEnchantment(UniversalEnchantment.IRON_LOVER)))
+                                enhanceChance += 0.1f;
                         if (Math.random() < enhanceChance)
                             UniversalCoreRemake.getBlockMetadataManager().setMeta(b, "MINEABLE",
                                     mb.getEnhanceBlock().toString());

@@ -7,11 +7,14 @@ import fr.minuskube.inv.content.InventoryProvider;
 import fr.minuskube.inv.content.Pagination;
 import fr.minuskube.inv.content.SlotIterator;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
+import me.stupidbot.universalcoreremake.enchantments.UniversalEnchantment;
+import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
 import me.stupidbot.universalcoreremake.utilities.Warp;
 import me.stupidbot.universalcoreremake.utilities.item.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -36,16 +39,22 @@ public class SpawnPortal implements InventoryProvider {
         Pagination pagination = contents.pagination();
         List<Warp> warps = Warp.getWarps();
         ClickableItem[] items = new ClickableItem[warps.size()];
+        UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
         int i = 0;
         for (Warp w : warps) {
             String name = w.getName();
             String id = w.getId();
             boolean canWarp = p.hasPermission("universalcore.warp." + id);
-            ItemBuilder di = new ItemBuilder(canWarp ? Material.EYE_OF_ENDER : Material.FIREWORK_CHARGE)
-                    .name("&bSet portal to &a" + name)
-                    .lore("")
-                    .lore(canWarp ? "&eClick to change the portal warp location then jump in!" :
-                            "&cYou have not unlocked this location.");
+            ItemBuilder di = new ItemBuilder(canWarp ? Material.EYE_OF_ENDER : Material.FIREWORK_CHARGE).flag(ItemFlag.values());
+
+
+
+            if (up.getSelectedWarpId().equalsIgnoreCase(w.getId()))
+                di.name("&eJump in to warp to &a" + name).enchantment(UniversalEnchantment.GLOW);
+            else
+                di.name("&bSet portal to &a" + name).lore("")
+                        .lore(canWarp ? "&eClick to change the portal location then jump in!" :
+                        "&cYou have not unlocked this location.");
 
             items[i] = ClickableItem.of(di.build(), e -> {
                 if (canWarp) {

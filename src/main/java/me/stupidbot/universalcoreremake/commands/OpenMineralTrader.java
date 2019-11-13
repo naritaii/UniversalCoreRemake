@@ -18,10 +18,10 @@ class OpenMineralTrader {
         array = Arrays.asList(
                 new SellItem(Material.RED_SANDSTONE, 0.70),
                 new SellItem(Material.SANDSTONE, 2.00),
-                new SellItem(Material.COAL_ORE, 4.20),
-                new SellItem(Material.COAL, 5.55),
-                new SellItem(Material.IRON_ORE, 5.25),
-                new SellItem(Material.IRON_INGOT, 6.94));
+                new SellItem(Material.COAL_ORE, 12),
+                new SellItem(Material.COAL, 14.75),
+                new SellItem(Material.IRON_ORE, 17.5),
+                new SellItem(Material.IRON_INGOT, 20));
     }
 
     @SuppressWarnings("SameReturnValue")

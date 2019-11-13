@@ -16,14 +16,16 @@ commands:
     description: Reload Universal Objectives
     usage: /<command>
   reloadrewards:
+    aliases: [rewardsreload, reloadreward, rewardreload]
     description: Reload rewards
     usage: /<command>
   reloadminingmanager:
-    aliases: [reloadmining, reloadblocks]
+    aliases: [reloadmining, reloadblocks, miningreload, blocksreload, miningmanagerreload]
     description: Reload mining manager
     usage: /<command>
   reloadleaderboards:
     description: Reload leaderboards
+      aliases: [leaderboardsreload, reloadleaderboard, leaderboardreload]
     usage: /<command>
   reinitializeleaderboards:
     description: Reinitialize leaderboards
@@ -56,6 +58,12 @@ commands:
     aliases: [readitemmetadata, seeitemmeta, seeitemmetadata, getitemmeta, getitemmetadata]
     description: Read item meta
     usage: /<command>
+  resetobjective:
+    description: Reset Universal Objectives
+    usage: /<command> <id|all|selected|completed> [player]
+  incrementobjective:
+    description: Increment Universal Objectives
+    usage: /<command> <id> [player]
   emoji:
     aliases: [emojis]
     description: List emojis

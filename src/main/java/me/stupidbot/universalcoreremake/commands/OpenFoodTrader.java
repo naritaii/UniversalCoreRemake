@@ -20,9 +20,9 @@ class OpenFoodTrader {
                 new SellItem(new ItemBuilder(Material.ROTTEN_FLESH).name("&rOffal").lore("&3Stamina &a+5").build(), "Offal",
                         3.50),
                 new SellItem(new ItemBuilder(Material.APPLE).name("&rPanacea").lore("&3Stamina &a+20").build(), "Panacea",
-                        14.25),
+                        14),
                 new SellItem(new ItemBuilder(Material.BREAD).name("&rJunie Cake").lore("&3Stamina &a+50").build(), "Junie Cake",
-                        40));
+                        35));
     }
 
     @SuppressWarnings("SameReturnValue")

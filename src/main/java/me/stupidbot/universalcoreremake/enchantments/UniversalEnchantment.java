@@ -1,8 +1,6 @@
 package me.stupidbot.universalcoreremake.enchantments;
 
-import me.stupidbot.universalcoreremake.enchantments.mutation.Glass;
-import me.stupidbot.universalcoreremake.enchantments.mutation.SandstoneLover;
-import me.stupidbot.universalcoreremake.enchantments.mutation.SpeedBoost;
+import me.stupidbot.universalcoreremake.enchantments.mutation.*;
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.Listener;
@@ -19,11 +17,14 @@ public class UniversalEnchantment {
     private static final Enchantment SPEED_BOOST = new SpeedBoost(254);
     public static final Enchantment SANDSTONE_LOVER = new SandstoneLover(253);
     public static final Enchantment GLOW = new Glow(252);
+    public static final Enchantment  COAL_LOVER = new CoalLover(251);
+    public static final Enchantment IRON_LOVER = new IronLover(250);
 
     public static final Set<Enchantment> ENCHANTMENTS = new HashSet<>(Arrays.asList(GLASS, SPEED_BOOST, SANDSTONE_LOVER,
-            GLOW));
+            GLOW, COAL_LOVER, IRON_LOVER));
 
-    public static final Set<Enchantment> MUTATIONS = new HashSet<>(Arrays.asList(GLASS, SPEED_BOOST, SANDSTONE_LOVER));
+    public static final Set<Enchantment> MUTATIONS = new HashSet<>(Arrays.asList(GLASS, SPEED_BOOST, SANDSTONE_LOVER,
+            COAL_LOVER, IRON_LOVER));
 
     public UniversalEnchantment(JavaPlugin plugin) {
         registerEnchantments();
@@ -80,9 +81,13 @@ public class UniversalEnchantment {
         else if (e == SPEED_BOOST)
             return "&7Right click for +20% speed for 30 seconds (costs 25 stamina)";
         else if (e == SANDSTONE_LOVER)
-            return "&75% mining speed on (red) sandstone and\n&7+5% chance for red sandstone to turn into sandstone";
+            return "&710% mining speed on (red) sandstone and\n&7+10% chance for red sandstone to turn into sandstone";
         else if (e == Enchantment.DIG_SPEED)
             return "&7Mine all blocks +25% faster and 5% for subsequent level";
+        else if (e == COAL_LOVER)
+            return "&710% mining speed on coal ore/block and\n&7+10% chance for coal ore to turn into coal block";
+        else if (e == IRON_LOVER)
+            return "&710% mining speed on iron ore/block and\n&7+10% chance for iron ore to turn into iron block";
         return null;
     }
 }

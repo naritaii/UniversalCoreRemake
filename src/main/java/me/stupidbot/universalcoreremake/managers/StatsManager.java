@@ -23,6 +23,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
+import java.util.Random;
 
 public class StatsManager implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
@@ -106,10 +107,10 @@ public class StatsManager implements Listener {
         UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
         int boost = 25;
         for (ItemStack i : p.getInventory().getArmorContents()) {
-                Map<String, String> meta = ItemMetadata.getMeta(i);
-                if (meta.containsKey("STAMINA"))
-                    boost += Integer.parseInt(meta.get("STAMINA"));
-            }
+            Map<String, String> meta = ItemMetadata.getMeta(i);
+            if (meta.containsKey("STAMINA"))
+                boost += Integer.parseInt(meta.get("STAMINA"));
+        }
 
         int staminaPerLevel = 5;
         return ((up.getLevel() - 1) * staminaPerLevel) + boost;
@@ -131,10 +132,10 @@ public class StatsManager implements Listener {
         float spd = 0.2f;
 
         for (ItemStack i : p.getInventory().getArmorContents()) {
-                Map<String, String> meta = ItemMetadata.getMeta(i);
-                if (meta.containsKey("SPEED"))
-                    spd += Float.parseFloat(meta.get("SPEED"));
-            }
+            Map<String, String> meta = ItemMetadata.getMeta(i);
+            if (meta.containsKey("SPEED"))
+                spd += Float.parseFloat(meta.get("SPEED"));
+        }
 
         return spd;
     }
@@ -142,10 +143,10 @@ public class StatsManager implements Listener {
     private double getMaxHealth(Player p) {
         double boost = 0d;
         for (ItemStack i : p.getInventory().getArmorContents()) {
-                Map<String, String> meta = ItemMetadata.getMeta(i);
-                if (meta.containsKey("HEALTH"))
-                    boost += Double.parseDouble(meta.get("HEALTH"));
-            }
+            Map<String, String> meta = ItemMetadata.getMeta(i);
+            if (meta.containsKey("HEALTH"))
+                boost += Double.parseDouble(meta.get("HEALTH"));
+        }
 
         return 100d + boost;
     }
@@ -155,13 +156,25 @@ public class StatsManager implements Listener {
         p.setHealthScale(Math.floor(maxHealth / 5));
     }
 
+    private final Random r = new Random();
+
     @EventHandler
     public void OnDamageEntity(EntityDamageByEntityEvent e) {
         if (e.getDamager() instanceof Player) {
             Player p = (Player) e.getDamager();
             Map<String, String> m = ItemMetadata.getMeta(p.getItemInHand());
-            if (m.containsKey("DAMAGE"))
-                e.setDamage(Double.parseDouble(m.get("DAMAGE")));
+            if (m.containsKey("DAMAGE")) {
+                double damage = 0;
+                String[] range = m.get("DAMAGE").split(",");
+                if (range.length == 1)
+                    damage = Double.parseDouble(range[0]);
+                else {
+                    double rangeMin = Double.parseDouble(range[0]);
+                    double rangeMax = Double.parseDouble(range[1]);
+                    damage = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
+                }
+                e.setDamage(damage);
+            }
         }
 
         if (e.getEntity() instanceof Player) {
@@ -178,10 +191,10 @@ public class StatsManager implements Listener {
     public int getDefense(Player p) {
         int defensePoints = 0;
         for (ItemStack i : p.getInventory().getArmorContents()) {
-                Map<String, String> meta = ItemMetadata.getMeta(i);
-                if (meta.containsKey("DEFENSE"))
-                    defensePoints += Integer.parseInt(meta.get("DEFENSE"));
-            }
+            Map<String, String> meta = ItemMetadata.getMeta(i);
+            if (meta.containsKey("DEFENSE"))
+                defensePoints += Integer.parseInt(meta.get("DEFENSE"));
+        }
 
         return defensePoints;
     }

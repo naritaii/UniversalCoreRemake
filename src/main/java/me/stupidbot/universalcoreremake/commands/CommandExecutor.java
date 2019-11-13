@@ -17,6 +17,8 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private final ReadBlockMeta readBlockMeta = new ReadBlockMeta();
     private final SetItemMeta setItemMeta = new SetItemMeta();
     private final ReadItemMeta readItemMeta = new ReadItemMeta();
+    private final ResetObjective resetObjective = new ResetObjective();
+    private final IncrementObjective incrementObjective = new IncrementObjective();
     private final Emoji emoji = new Emoji();
     private final Vote vote = new Vote();
     private final Discord discord = new Discord();
@@ -63,6 +65,10 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
             return setItemMeta.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("readitemmeta"))
             return readItemMeta.execute(s);
+        else if (cmd.getName().equalsIgnoreCase("resetobjective"))
+            return resetObjective.execute(s, label, args);
+        else if (cmd.getName().equalsIgnoreCase("incrementobjective"))
+            return incrementObjective.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("emoji"))
             return emoji.execute(s);
         else if (cmd.getName().equalsIgnoreCase("vote"))
