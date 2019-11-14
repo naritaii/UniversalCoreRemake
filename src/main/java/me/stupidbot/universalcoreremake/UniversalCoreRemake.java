@@ -98,7 +98,7 @@ public class UniversalCoreRemake extends JavaPlugin {
                 "emoji", "vote",
                 "discord", "twitter",
                 "openmineraltrader", "openfoodtrader", "openblacksmith", "openstats",
-                "openspawnportal", "openquestmaster",
+                "openspawnportal", "openquestmaster", "openbanker",
                 "saveuniversalplayercachetofile", "saveblockmetadatacachetofile",
                 "saveleaderboards", "selectobjective", "mutate", "serialize", "stringreward",
                 "hat");

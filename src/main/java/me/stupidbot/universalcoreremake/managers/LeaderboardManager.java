@@ -35,6 +35,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class LeaderboardManager implements Listener {
+    public static Set<UUID> safeDeposit = new HashSet<>();
     private final String folderPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator + "data";
     private final String dataPath = folderPath + File.separator + "leaderboard_data.json";
     private final Map<String, Map<UUID, Double>> sortedData = new ConcurrentHashMap<>();
@@ -327,13 +328,15 @@ public class LeaderboardManager implements Listener {
 
     @EventHandler
     public void OnUserBalanceUpdate(UserBalanceUpdateEvent e) {
-        double newMoney = e.getNewBalance().doubleValue(); // Double is fine and FileConfiguration doesn't let me store BigDecimal
-        double oldMoney = e.getOldBalance().doubleValue();
-        if (newMoney > oldMoney) {
-            Player p = e.getPlayer();
-            UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
-            up.incrementTotalMoney(newMoney - oldMoney);
-            lazilyUpdateData("TotalMoney", p.getUniqueId(), up.getTotalMoney());
+        Player p = e.getPlayer();
+        if (!safeDeposit.contains(p.getUniqueId())) {
+            double newMoney = e.getNewBalance().doubleValue(); // Double is fine and FileConfiguration doesn't let me store BigDecimal
+            double oldMoney = e.getOldBalance().doubleValue();
+            if (newMoney > oldMoney) {
+                UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p);
+                up.incrementTotalMoney(newMoney - oldMoney);
+                lazilyUpdateData("TotalMoney", p.getUniqueId(), up.getTotalMoney());
+            }
         }
     }
 

@@ -327,4 +327,20 @@ public class UniversalPlayer {
         pFile.set("Reward." + id + ".TimesRewarded", rewarded);
         return rewarded;
     }
+
+    public double getBankedMoney() {
+        return pFile.getDouble("BankedMoney");
+    }
+
+    public double addBankedMoney(double d) {
+        double banked = getBankedMoney() + d;
+        pFile.set("BankedMoney", banked);
+        return banked;
+    }
+
+    public double removeBankedMoney(double d) {
+        double banked = getBankedMoney() - d;
+        pFile.set("BankedMoney", banked);
+        return banked;
+    }
 }

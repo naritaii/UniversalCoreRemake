@@ -29,6 +29,7 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private final OpenStats openStats = new OpenStats();
     private final OpenQuestMaster openQuestMaster = new OpenQuestMaster();
     private final OpenSpawnPortal openSpawnPortal = new OpenSpawnPortal();
+    private final OpenBanker openBanker = new OpenBanker();
     private final SaveUniversalPlayerCacheToFile saveUniversalPlayerCacheToFile = new SaveUniversalPlayerCacheToFile();
     private final SaveBlockmetaCacheToFile saveBlockmetaCacheToFile = new SaveBlockmetaCacheToFile();
     private final SaveLeaderboards saveLeaderboards = new SaveLeaderboards();
@@ -89,6 +90,8 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
             return openQuestMaster.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("openspawnportal"))
             return openSpawnPortal.execute(s, label, args);
+        else if (cmd.getName().equalsIgnoreCase("openbanker"))
+            return openBanker.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("saveuniversalplayercachetofile"))
             return saveUniversalPlayerCacheToFile.execute(s);
         else if (cmd.getName().equalsIgnoreCase("saveblockmetadatacachetofile"))

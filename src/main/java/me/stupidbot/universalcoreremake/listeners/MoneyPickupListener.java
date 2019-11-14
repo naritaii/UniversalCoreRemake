@@ -8,6 +8,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.ItemMergeEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -45,5 +46,15 @@ public class MoneyPickupListener implements Listener {
             p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     "&8+&6$" + TextUtils.addCommas(money)));
         }
+    }
+
+    @EventHandler
+    public void OnItemMerge(ItemMergeEvent e) {
+        Item entity = e.getEntity();
+        ItemStack item = entity.getItemStack();
+        Map<String, String> meta = ItemMetadata.getMeta(item);
+
+        if (meta.containsKey("MONEY"))
+            e.setCancelled(true);
     }
 }
