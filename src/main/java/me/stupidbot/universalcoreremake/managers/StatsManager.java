@@ -165,7 +165,7 @@ public class StatsManager implements Listener {
             Map<String, String> m = ItemMetadata.getMeta(p.getItemInHand());
             if (m.containsKey("DAMAGE")) {
                 double damage = 0;
-                String[] range = m.get("DAMAGE").split(",");
+                String[] range = m.get("DAMAGE").split("_");
                 if (range.length == 1)
                     damage = Double.parseDouble(range[0]);
                 else {

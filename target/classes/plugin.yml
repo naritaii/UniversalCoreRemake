@@ -25,7 +25,7 @@ commands:
     usage: /<command>
   reloadleaderboards:
     description: Reload leaderboards
-      aliases: [leaderboardsreload, reloadleaderboard, leaderboardreload]
+    aliases: [leaderboardsreload, reloadleaderboard, leaderboardreload]
     usage: /<command>
   reinitializeleaderboards:
     description: Reinitialize leaderboards

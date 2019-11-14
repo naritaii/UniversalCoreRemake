@@ -32,8 +32,8 @@ public class MoneyPickupListener implements Listener {
             double money;
             String m = meta.get("MONEY");
 
-            if (m.contains(",")) {
-                String[] range = m.split(",");
+            if (m.contains("_")) {
+                String[] range = m.split("_");
                 double rangeMin = Double.parseDouble(range[0]);
                 double rangeMax = Double.parseDouble(range[1]);
                 money = rangeMin + (rangeMax - rangeMin) * r.nextDouble();

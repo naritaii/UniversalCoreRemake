@@ -70,7 +70,6 @@ public class UniversalCoreRemake extends JavaPlugin {
         scoreboardManager = new ScoreboardManager();
         leaderboardManager = new LeaderboardManager();
         rewardManager = new RewardManager();
-        commandExecutor = new CommandExecutor();
 
         setupEconomy();
         setupChat();
@@ -78,6 +77,7 @@ public class UniversalCoreRemake extends JavaPlugin {
         inventoryManager.init();
         new UniversalEnchantment(instance);
         new UniversalItem(instance);
+        commandExecutor = new CommandExecutor();
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
             new UniversalCoreExpansion().register();
         else
