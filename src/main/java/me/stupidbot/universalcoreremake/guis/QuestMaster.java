@@ -56,10 +56,10 @@ public class QuestMaster implements InventoryProvider {
         StatsManager sm = UniversalCoreRemake.getStatsManager();
         contents.set(0, 4, ClickableItem.empty(new ItemBuilder(Skull.getPlayerSkull(p.getName()))
                 .name("&7" + up.getPrefix() + p.getName() + " &cStats")
-                .lore("&3Stamina&f: &d" + up.getStamina() + "/" + sm.getMaxStamina(p)) // TODO format better
-                .lore("&cHealth&f: &d" + (int) p.getHealth() + "/" + (int) p.getMaxHealth())
-                .lore("&aDefense&f: &d" + sm.getDefense(p))
-                .lore("&bSpeed&f: &d" + (int) sm.getDisplayedSpeed(p) + "%").build()));
+                .lore("&3Stamina&f: " + up.getStamina() + "/" + sm.getMaxStamina(p)) // TODO format better
+                .lore("&cHealth&f: " + (int) p.getHealth() + "/" + (int) p.getMaxHealth())
+                .lore("&aDefense&f: " + sm.getDefense(p))
+                .lore("&bSpeed&f: " + (int) sm.getDisplayedSpeed(p) + "%").build()));
 
         boolean isInSpawn = false;
         ApplicableRegionSet regions = UniversalCoreRemake.getWorldGuardPlugin().getRegionManager(p.getWorld())

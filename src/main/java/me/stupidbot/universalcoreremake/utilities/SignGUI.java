@@ -2,124 +2,155 @@ package me.stupidbot.universalcoreremake.utilities;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.BlockPosition;
-import com.comphenix.protocol.wrappers.WrappedBlockData;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
+import com.comphenix.protocol.wrappers.nbt.NbtCompound;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.util.Vector;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Objects;
+import java.util.function.BiPredicate;
+import java.util.function.Consumer;
+import java.util.stream.IntStream;
 
-public class SignGUI {
-    private final ProtocolManager protocolManager;
-    private final PacketAdapter packetListener;
-    private final Map<String, SignGUIListener> listeners;
-    private final Map<String, Vector> signLocations;
+public final class SignGUI {
+
+    private static final int ACTION_INDEX = 9;
+    private static final int SIGN_LINES = 4;
+
+    private static final String NBT_FORMAT = "{\"text\":\"%s\"}";
+    private static final String NBT_BLOCK_ID = "minecraft:sign";
+
+    private final Plugin plugin;
+
+    private final Map<Player, Menu> inputReceivers;
+    private final Map<Player, BlockPosition> signLocations;
 
     public SignGUI(Plugin plugin) {
-        protocolManager = ProtocolLibrary.getProtocolManager();
-        listeners = new ConcurrentHashMap<>();
-        signLocations = new ConcurrentHashMap<>();
-
-        ProtocolLibrary.getProtocolManager()
-                .addPacketListener(packetListener = new PacketAdapter(plugin, PacketType.Play.Client.UPDATE_SIGN) {
-                    @Override
-                    public void onPacketReceiving(PacketEvent event) {
-                        final Player player = event.getPlayer();
-                        Vector v = signLocations.remove(player.getName());
-                        BlockPosition bp = event.getPacket().getBlockPositionModifier().getValues().get(0);
-                        final WrappedChatComponent[] chatarray = event.getPacket().getChatComponentArrays().getValues()
-                                .get(0);
-                        final String[] lines = { chatarray[0].getJson(), chatarray[1].getJson(), chatarray[2].getJson(),
-                                chatarray[3].getJson() };
-                        final SignGUIListener response = listeners.remove(event.getPlayer().getName());
-
-                        if (v == null)
-                            return;
-                        if (bp.getX() != v.getBlockX())
-                            return;
-                        if (bp.getY() != v.getBlockY())
-                            return;
-                        if (bp.getZ() != v.getBlockZ())
-                            return;
-                        if (response != null) {
-                            event.setCancelled(true);
-                            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> response.onSignDone(lines));
-                        }
-                    }
-                });
+        this.plugin = plugin;
+        this.inputReceivers = new HashMap<>();
+        this.signLocations = new HashMap<>();
+        this.listen();
     }
 
-    @SuppressWarnings("deprecation")
-    public void open(Player player, String[] defaultText, SignGUIListener response) {
-        List<PacketContainer> packets = new ArrayList<>();
-        int x = player.getLocation().getBlockX();
-        int y = 0;
-        int z = player.getLocation().getBlockZ();
-        BlockPosition bpos = new BlockPosition(x, y, z);
-        PacketContainer packet133 = protocolManager.createPacket(PacketType.Play.Server.OPEN_SIGN_ENTITY);
+    public Menu newMenu(Player player, List<String> text) {
+        Objects.requireNonNull(player, "player");
+        Objects.requireNonNull(text, "text");
+        Menu menu = new Menu(player, text);
+        menu.onOpen(blockPosition -> {
+            this.signLocations.put(player, blockPosition);
+            this.inputReceivers.putIfAbsent(player, menu);
+        });
+        return menu;
+    }
 
-        if (defaultText != null) {
-            PacketContainer packet53 = protocolManager.createPacket(PacketType.Play.Server.BLOCK_CHANGE);
-            PacketContainer packet130 = protocolManager.createPacket(PacketType.Play.Server.UPDATE_SIGN);
-            WrappedBlockData iblock = WrappedBlockData.createData(Material.SIGN_POST);
-            WrappedChatComponent[] cc = { WrappedChatComponent.fromText(ChatColor.translateAlternateColorCodes('&', defaultText[0])),
-                    WrappedChatComponent.fromText(ChatColor.translateAlternateColorCodes('&', defaultText[1])),
-                    WrappedChatComponent.fromText(ChatColor.translateAlternateColorCodes('&', defaultText[2])),
-                    WrappedChatComponent.fromText(ChatColor.translateAlternateColorCodes('&', defaultText[3])) };
+    private void listen() {
+        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(this.plugin, PacketType.Play.Client.UPDATE_SIGN) {
+            @Override
+            public void onPacketReceiving(PacketEvent event) {
+                PacketContainer packet = event.getPacket();
+                Player player = event.getPlayer();
+                WrappedChatComponent[] input = packet.getChatComponentArrays().read(0);
 
-            packet53.getBlockPositionModifier().write(0, bpos);
-            packet53.getBlockData().write(0, iblock);
-            packet130.getBlockPositionModifier().write(0, bpos);
-            packet130.getChatComponentArrays().write(0, cc);
-            packets.add(packet53);
-            packets.add(packet130);
-        }
+                Menu menu = inputReceivers.remove(player);
+                BlockPosition blockPosition = signLocations.remove(player);
 
-        packet133.getBlockPositionModifier().write(0, bpos);
-        packets.add(packet133);
+                if (menu == null || blockPosition == null) {
+                    return;
+                }
+                event.setCancelled(true);
 
-        if (defaultText != null) {
-            PacketContainer packet53 = protocolManager.createPacket(PacketType.Play.Server.BLOCK_CHANGE);
-            WrappedBlockData iblock = WrappedBlockData.createData(Material.BEDROCK);
+                String[] inputS = new String[input.length];
+                for (int i = 0; i < input.length; i++)
+                    inputS[i] = input[i].getJson();
 
-            packet53.getBlockPositionModifier().write(0, bpos);
-            packet53.getBlockData().write(0, iblock);
-            packets.add(packet53);
-        }
+                boolean success = menu.response.test(player, inputS);
 
-        try {
-            for (PacketContainer packet : packets) {
-                protocolManager.sendServerPacket(player, packet);
+                if (!success && menu.reopenIfFail) {
+                    Bukkit.getScheduler().runTaskLater(plugin, menu::open, 2L);
+                }
+                player.sendBlockChange(blockPosition.toLocation(player.getWorld()), Material.AIR, (byte) 0);
             }
+        });
+    }
 
-            signLocations.put(player.getName(), new Vector(x, y, z));
-            listeners.put(player.getName(), response);
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
+    public static final class Menu {
+
+        private final Player player;
+
+        private final List<String> text;
+        private BiPredicate<Player, String[]> response;
+
+        private boolean reopenIfFail;
+
+        private Consumer<BlockPosition> onOpen;
+
+        Menu(Player player, List<String> text) {
+            this.player = player;
+            this.text = text;
         }
 
-    }
+        void onOpen(Consumer<BlockPosition> onOpen) {
+            this.onOpen = onOpen;
+        }
 
-    public void destroy() {
-        protocolManager.removePacketListener(packetListener);
-        listeners.clear();
-        signLocations.clear();
-    }
+        public Menu reopenIfFail() {
+            this.reopenIfFail = true;
+            return this;
+        }
 
-    public interface SignGUIListener {
-        void onSignDone(String[] lines);
+        public Menu response(BiPredicate<Player, String[]> response) {
+            this.response = response;
+            return this;
+        }
+
+        public void open() {
+            Location location = this.player.getLocation();
+            BlockPosition blockPosition = new BlockPosition(location.getBlockX(), location.getBlockY() - 5, location.getBlockZ());
+
+            player.sendBlockChange(blockPosition.toLocation(location.getWorld()), Material.WALL_SIGN, (byte) 0);
+
+            PacketContainer openSign = ProtocolLibrary.getProtocolManager().createPacket(PacketType.Play.Server.OPEN_SIGN_EDITOR);
+            PacketContainer signData = ProtocolLibrary.getProtocolManager().createPacket(PacketType.Play.Server.TILE_ENTITY_DATA);
+
+            openSign.getBlockPositionModifier().write(0, blockPosition);
+
+            NbtCompound signNBT = (NbtCompound) signData.getNbtModifier().read(0);
+
+            IntStream.range(0, SIGN_LINES).forEach(line -> signNBT.put(
+                    "Text" + (line + 1), text.size() > line ? String.format(NBT_FORMAT, color(text.get(line))) : "WW"));
+
+            signNBT.put("x", blockPosition.getX());
+            signNBT.put("y", blockPosition.getY());
+            signNBT.put("z", blockPosition.getZ());
+            signNBT.put("id", NBT_BLOCK_ID);
+
+            signData.getBlockPositionModifier().write(0, blockPosition);
+            signData.getIntegers().write(0, ACTION_INDEX);
+            signData.getNbtModifier().write(0, signNBT);
+
+            try {
+                ProtocolLibrary.getProtocolManager().sendServerPacket(player, signData);
+                ProtocolLibrary.getProtocolManager().sendServerPacket(player, openSign);
+            } catch (InvocationTargetException exception) {
+                exception.printStackTrace();
+            }
+            this.onOpen.accept(blockPosition);
+        }
+
+        private String color(String input) {
+            return ChatColor.translateAlternateColorCodes('&', input);
+        }
     }
 }

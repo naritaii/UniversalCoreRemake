@@ -14,13 +14,12 @@ import me.stupidbot.universalcoreremake.commands.CommandExecutor;
 import me.stupidbot.universalcoreremake.enchantments.UniversalEnchantment;
 import me.stupidbot.universalcoreremake.items.UniversalItem;
 import me.stupidbot.universalcoreremake.listeners.*;
-import me.stupidbot.universalcoreremake.listeners.armorequip.ArmorEquipListener;
-import me.stupidbot.universalcoreremake.listeners.armorequip.HatListener;
 import me.stupidbot.universalcoreremake.managers.*;
 import me.stupidbot.universalcoreremake.managers.mining.MiningManager;
 import me.stupidbot.universalcoreremake.managers.universalobjective.UniversalObjectiveManager;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayerManager;
 import me.stupidbot.universalcoreremake.utilities.PlayerLevelling;
+import me.stupidbot.universalcoreremake.utilities.SignGUI;
 import me.stupidbot.universalcoreremake.utilities.item.ItemMetadata;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
@@ -30,8 +29,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.Collections;
 
 @SuppressWarnings("UnusedReturnValue")
 public class UniversalCoreRemake extends JavaPlugin {
@@ -45,6 +42,7 @@ public class UniversalCoreRemake extends JavaPlugin {
     private static Economy econ = null;
     private static Permission perms = null;
     private static Chat chat = null;
+    private static SignGUI signGui;
     private static InventoryManager inventoryManager = null;
     private static MOTDManager motdManager;
     private static UniversalObjectiveManager universalObjectiveManager;
@@ -64,6 +62,7 @@ public class UniversalCoreRemake extends JavaPlugin {
         blockMetadataManager = new BlockMetadataManger();
         statsManager = new StatsManager();
         miningManager = new MiningManager();
+        signGui = new SignGUI(instance);
         inventoryManager = new InventoryManager(instance);
         motdManager = new MOTDManager();
         universalObjectiveManager = new UniversalObjectiveManager();
@@ -87,7 +86,7 @@ public class UniversalCoreRemake extends JavaPlugin {
                 new ChatManager(), motdManager, new ItemMetadata(), universalObjectiveManager, scoreboardManager,
                 new CollectibleSlimesListener(), leaderboardManager, new EnderchestListener(), new SpawnPortalListener(),
                 rewardManager, new HatListener(), new InventoryClickBorderCloseListener(), new MoneyPickupListener(),
-                new ArmorEquipListener(Collections.emptyList()));
+                new XpPickupListener());
         if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null)
             registerEvents(instance, new RegionsListener());
         registerCommands(commandExecutor, "reloadmotd", "reloaduniversalobjectives",
@@ -275,7 +274,11 @@ public class UniversalCoreRemake extends JavaPlugin {
         return chat;
     }
 
-/*  public static CommandExecutor getCommandExecutor() {
+    public static SignGUI getSignGui() {
+        return signGui;
+    }
+
+    /*  public static CommandExecutor getCommandExecutor() {
         return commandExecutor;
     }*/
 }

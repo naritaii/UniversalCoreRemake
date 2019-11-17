@@ -63,7 +63,7 @@ commands:
     usage: /<command> <id|all|selected|completed> [player]
   incrementobjective:
     description: Increment Universal Objectives
-    usage: /<command> <id> [player]
+    usage: /<command> <id> [amt] [player]
   emoji:
     aliases: [emojis]
     description: List emojis
@@ -101,6 +101,10 @@ commands:
   openspawnportal:
     aliases: [spawnportal]
     description: Open spawn portal GUI
+    usage: /<command> [player]
+  openbanker:
+    aliases: [banker, openbank, bank]
+    description: Open spawn banker GUI
     usage: /<command> [player]
   saveuniversalplayercachetofile:
     aliases: [saveuniversalplayercache, saveuniversalplayerdatatofile, saveuniversalplayerdata, saveplayerdata, saveplayercache, saveplayercachetofile, saveplayerdatatofile]

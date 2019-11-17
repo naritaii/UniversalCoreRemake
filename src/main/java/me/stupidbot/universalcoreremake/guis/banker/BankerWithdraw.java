@@ -1,5 +1,6 @@
 package me.stupidbot.universalcoreremake.guis.banker;
 
+import com.google.common.collect.Lists;
 import fr.minuskube.inv.ClickableItem;
 import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.InventoryContents;
@@ -7,10 +8,10 @@ import fr.minuskube.inv.content.InventoryProvider;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
 import me.stupidbot.universalcoreremake.utilities.PlayerUtils;
-import me.stupidbot.universalcoreremake.utilities.SignGUI;
 import me.stupidbot.universalcoreremake.utilities.TextUtils;
 import me.stupidbot.universalcoreremake.utilities.item.ItemBuilder;
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -70,15 +71,25 @@ public class BankerWithdraw implements InventoryProvider {
         }));
 
         contents.set(1, 7, ClickableItem.of(new ItemBuilder(Material.DISPENSER).name("&aWithdraw Specific Amount")
-                .lore("&7Current bank balance: &6$" + bankedS)
-                .lore("")
-                .lore("&eClick to withdraw a specific amount!").build(), e ->
-                new SignGUI(UniversalCoreRemake.getInstance()).open(p, new String[]{"", "&e^^^^^^^^^^^^^^^", "&fEnter the amount", "&fto withdraw"}, (lines) -> {
-                    double withdraw = Math.min(Math.abs(Double.parseDouble(lines[0])), up.getBankedMoney());
-                    up.removeBankedMoney(withdraw);
-                    PlayerUtils.safeDeposit(p, withdraw);
-                    getInventory(p).open(p);
-                })
+                        .lore("&7Current bank balance: &6$" + bankedS)
+                        .lore("")
+                        .lore("&eClick to withdraw a specific amount!").build(), e -> {
+                    UniversalCoreRemake.getSignGui().newMenu(p, Lists.newArrayList("",
+                            "&e^^^^^^^^^^^^^^^", "&rEnter the amount", "&rto withdraw"))
+                            .response((player, lines) -> {
+                                try {
+                                    double withdraw = Math.min(Math.abs(Double.parseDouble(lines[0])), up.getBankedMoney());
+                                    up.removeBankedMoney(withdraw);
+                                    PlayerUtils.safeDeposit(p, withdraw);
+                                    getInventory(p).open(p);
+                                    return true;
+                                } catch (NumberFormatException nfe) {
+                                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cInvalid number."));
+                                    getInventory(p).open(p);
+                                    return false;
+                                }
+                            }).open();
+                }
         ));
 
         contents.set(2, 4, ClickableItem.of(new ItemBuilder(Material.ARROW).name("&eGo Back").build(), e ->

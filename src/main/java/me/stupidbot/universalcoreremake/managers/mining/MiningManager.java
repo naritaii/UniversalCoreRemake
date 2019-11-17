@@ -289,6 +289,18 @@ public class MiningManager implements Listener {
                                 removeMiningPlayer(p);
                                 break;
 
+                            case REPLACE_AIR:
+                                Effect blockBreak1 = new BlockBreak(UniversalCoreRemake.getEffectManager());
+                                blockBreak1.material = b.getType();
+                                blockBreak1.setLocation(b.getLocation());
+                                blockBreak1.run();
+
+                                timer.remove(id);
+                                putRegenningBlock(b, (int) (mb.getGetRegenerateTime() * 20));
+                                b.setType(Material.AIR); // Maybe do barrier?
+                                removeMiningPlayer(p);
+                                break;
+
                             case INSTANT_RESPAWN:
                                 Effect enhancedBlockBreak = new EnhancedBlockBreak(
                                         UniversalCoreRemake.getEffectManager());
@@ -415,6 +427,6 @@ public class MiningManager implements Listener {
     }
 
     enum BreakBehavior {
-        DEFAULT, INSTANT_RESPAWN
+        DEFAULT, INSTANT_RESPAWN, REPLACE_AIR
     }
 }

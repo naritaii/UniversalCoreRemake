@@ -48,13 +48,15 @@ public class SpawnPortal implements InventoryProvider {
             ItemBuilder di = new ItemBuilder(canWarp ? Material.EYE_OF_ENDER : Material.FIREWORK_CHARGE).flag(ItemFlag.values());
 
 
-
-            if (up.getSelectedWarpId().equalsIgnoreCase(w.getId()))
-                di.name("&eJump in to warp to &a" + name).enchantment(UniversalEnchantment.GLOW);
+            String wid = up.getSelectedWarpId();
+            if (wid == null)
+                wid = Warp.getWarps().get(0).getId();
+            if (wid.equalsIgnoreCase(w.getId()))
+                di.name("&eJump in the portal to warp to &6" + name).enchantment(UniversalEnchantment.GLOW);
             else
-                di.name("&bSet portal to &a" + name).lore("")
-                        .lore(canWarp ? "&eClick to change the portal location then jump in!" :
-                        "&cYou have not unlocked this location.");
+                di.name("&aSet portal to &6" + name).lore("")
+                        .lore(canWarp ? "&eClick to change the portal's warp then jump in!" :
+                        "&cYou have not unlocked this warp yet!");
 
             items[i] = ClickableItem.of(di.build(), e -> {
                 if (canWarp) {

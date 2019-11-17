@@ -38,7 +38,7 @@ Objectives:
     TaskInfo:
       - ifg32J
       - '1'
-      - '2005c324-e4af-43ca-8634-e34cb90888eb'
+      - '5b639486-c3fb-4c3c-9534-facd2832bdb2'
     Description: 'Sell to &aMineral Trader'
     DisplayItem:
       ItemMaterial: GOLD_NUGGET
@@ -66,13 +66,12 @@ Objectives:
   alice_in_aoba:
     TaskType: TALK_TO_NPC
     TaskInfo:
-      - Gtr4w5
+      - alice1
       - '1'
-      - 'f59c4fb2-4317-4f7f-9405-cb7b0c659a74'
-    Description: 'Talk to &aAlice'
+      - '20b4eade-295b-4b0d-8325-065ba6a56993'
+    Description: 'Talk To &aAlice'
     DisplayItem:
       ItemMaterial: RED_ROSE
-      ItemData: 1
     StringRewards:
       - 'MONEY 3.50'
       - 'QUEST find_the_missing_poppy'
@@ -90,8 +89,9 @@ Objectives:
       ItemData: 1
       Amount: 2
     StringRewards:
-      - 'MONEY 75.00'
+      - 'MONEY 10.00'
       - 'QUEST help_alice_create_a_pickaxe'
+      - 'SCRIPT aliceinaoba1'
     Catagory: STORY_QUEST
 
   help_alice_create_a_pickaxe:
@@ -106,9 +106,9 @@ Objectives:
       ItemData: 1
       Amount: 3
     StringRewards:
-      - 'MONEY 75.00'
-      - 'MESSAGE &dEvil Thoughts' # +sInFuL Thoughts lol
+      - 'MONEY 25.00'
       - 'QUEST steal_pickaxe'
+      - 'SCRIPT aliceinaoba2'
     Catagory: STORY_QUEST
 
   steal_pickaxe:
@@ -123,55 +123,609 @@ Objectives:
       ItemData: 1
       Amount: 4 # Optional argument, defaults to 1
     StringRewards:
-      - 'ITEM H4sIAAAAAAAAAGWQ7UrDMBSGzz7U2Svwn0FQFAdu4Nzov7oWHPZjsA6EMUpIs63YJSPtpoL3k/vIfQmeokxh5895c/Lw5j2xAFpQz1I4W2eCM0UXpf0mZcpFssnYK33nNTgayq0oaxY0Sro8hSYXbGUBQK0OjXyXV71y+AILTtKs2OT0AylfKt5C6hgiozuzp5HreuF8FnixM3/0o+HzJAlGoefa3fbL2O60h9NJHAVJ6ASefcUmVKRFKQUn458Y7TiKHT+pULg3uo+CGE07KO+wD/DQn6EwevB5UHg3h6oujGZG58E0duJRFNpGP5C/p3y54wpSdLntXRL8kEwsSbHhPCVSkGvF0xtS7Gk0RU1+abaignGykIog9w8rJSm3SpBMoNqPW9AM6ZrDudEKMx2si7Y9DNoFqMOxS9d0yTH+NxkbahGuAQAA' # Do /serialize to serialize an item, this is a regular wooden pick called sandstone pickaxe
+      - 'UNIVERSALITEM RED_SANDSTONE_PICKAXE'
       - 'MESSAGE &dGuilt' # +Guilt
-      - 'MESSAGE Alice''s rage' # +Alice's rage I think would look pretty funny
       - 'SCRIPT alicerage' # make script where she says "WHAT THE FUCK.... GIVE MY PICKAXE BACK.... I WILL FIND YOU" or something (ok maybe remove the 'FUCK')
+      - 'QUEST reach_level_5'
     Catagory: STORY_QUEST
 
-  butchers_shop:
+  reach_level_5:
+    TaskType: REACH_LEVEL
+    TaskInfo:
+      - fsj3ed
+      - '1'
+      - '5'
+    Description: 'Reach &aLevel 5'
+    DisplayItem:
+      ItemMaterial: EXP_BOTTLE
+      Amount: 5
+    StringRewards:
+      - 'MONEY 5.00'
+      - '&7&oYou find a broken stick on the ground, could be useful, or not' # TODO Also move this to levelling rewards in rewards.yml
+      - 'UNIVERSALITEM BROKEN_STICK'
+      - 'QUEST find_a_way'
+    Catagory: STORY_QUEST
+
+  find_a_way:
+    TaskType: TALK_TO_NPC
+    TaskInfo:
+      - found1
+      - '1'
+      - '328d73d1-e671-4006-8438-aeb44077b54f'
+    Description: 'Talk to the &aQuest Master'
+    DisplayItem:
+      ItemMaterial: DIAMOND
+      ItemData: 1
+    StringRewards:
+      - 'MONEY 25.00'
+      - 'QUEST found_a_way'
+    Catagory: STORY_QUEST
+
+  found_a_way:
+    TaskType: TALK_TO_NPC
+    TaskInfo:
+      - found2
+      - '1'
+      - 'c894ac1c-9a68-4c37-b5bf-11ecd519a7fb'
+    Description: 'Talk to the &aTraveller'
+    DisplayItem:
+      ItemMaterial: DIAMOND
+      ItemData: 1
+    StringRewards:
+      - 'MONEY 5.00'
+    Catagory: STORY_QUEST
+
+  mountains_reach_village:
+    TaskType: ENTER_REGION
+    TaskInfo:
+      - fdj4nd
+      - '1'
+      - 'mountains_village'
+    Description: 'Find the Village'
+    DisplayItem:
+      ItemMaterial: WOOD
+    StringRewards:
+      - 'MONEY 5.00'
+    Catagory: STORY_QUEST
+
+  #########################
+  ### Contextual Quests ###
+  #########################
+
+  butcher_shop_1:
     TaskType: GIVE_TO_NPC
     TaskInfo:
       - RAWP0R
       - '16'
-      - 'a873d167-c76a-448b-8818-80fc67390a7a,PORK'
+      - 'a873d167-c76a-448b-8818-80fc67390a7a,PORK,0'
     Description: 'Collect 16 &aRaw Pork'
     DisplayItem:
       ItemMaterial: PORK
       Amount: 16
     StringRewards:
       - 'MONEY 10.00'
-      - 'QUEST butcher_shop'
-    Catagory: STORY_QUEST
+      - 'MESSAGE &aThanks for the pork! I need some Mutton now.'
+      - 'MESSAGE &aIf you walk out of my shop and go right down the math to a big tree you will find sheep.'
+      - 'QUEST butcher_shop_2'
+    Catagory: CONTEXTUAL_QUEST
 
-  butcher_shop:
+  butcher_shop_2:
     TaskType: GIVE_TO_NPC
     TaskInfo:
       - RAWM0T
       - '16'
-      - 'a873d167-c76a-448b-8818-80fc67390a7a,MUTTON'
+      - 'a873d167-c76a-448b-8818-80fc67390a7a,MUTTON,0'
     Description: 'Collect 16 &aRaw Mutton'
     DisplayItem:
       ItemMaterial: MUTTON
       Amount: 16
     StringRewards:
       - 'MONEY 15.00'
-      - 'QUEST butcher_shops'
-    Catagory: STORY_QUEST
+      - 'MESSAGE &aThanks for the Mutton! I need some Beef now.'
+      - 'MESSAGE &aIf you go out of my shop and head back to the Volcano you can find cows.'
+      - 'QUEST butcher_shop_3'
+    Catagory: CONTEXTUAL_QUEST
 
-  butcher_shops:
+  butcher_shop_3:
     TaskType: GIVE_TO_NPC
     TaskInfo:
       - C0WMEE
       - '16'
-      - 'a873d167-c76a-448b-8818-80fc67390a7a,RAW_BEEF'
+      - 'a873d167-c76a-448b-8818-80fc67390a7a,RAW_BEEF,0'
     Description: 'Collect 16 &aRaw Beef'
     DisplayItem:
       ItemMaterial: RAW_BEEF
       Amount: 16
     StringRewards:
       - 'MONEY 15.00'
-    Catagory: STORY_QUEST
+      - 'MESSAGE &aHey! Thanks for your help, I could not have done it without you,'
+      - 'MESSAGE &aHere, take this axe, Its all I have to repay you with.'
+      - 'ITEM H4sIAAAAAAAAAHWPzU7CQBSFT2nFUkOIgnFHujfpzpiwIxDUSHVhWJsLvdQJ7QyZDkYTn8Ut79Fn8HnEwR8iEZf35NzznRMAPioiQSsXkieapqaTqixheU9P7GCvpxbSOAFcQ6mDg5Eca6YZjTN2XNQuRcKDjNICQDXAfiKKeUbPNXhDpdm3qovDcnnep5xSDl/KJYWnZ1ZuW7FcqgulknCgdNhbGCNkGg4yLh6iyId3QzmjaR9iHcVMpgh7GdMja9Rw1DVGi/HCcKwSMRWsi8CGVlz4o9FVP1aFAY47tuD6HDLZ22ufuKh28/Ue6/V81Dcpn6xWypK1mERkDE1mX5VtxO2cNRmhpP3CT7GdZvzmNxqvW/z69duGv1qt3v/wm9uRd3Pm5D/8Lq/dj+p3EeADRg1OpdkBAAA='
+    Catagory: CONTEXTUAL_QUEST
+
+  inn_keeper:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - IInKee
+      - '8'
+      - '02f9e300-bd81-456b-b325-8a5315794198,LEATHER,0' # Give 8 Leather.
+    Description: 'Gather &e8 Leather.'
+    DisplayItem:
+      ItemMaterial: LEATHER
+      Amount: 8
+      Lore:  # Lul Lore Lul
+        - '%description%'
+        - ''
+        - '&7&oGather some leather to help the inn keeper fix her rooms.'
+        - '&7&oThe butcher can help you find leather, try speaking to him.'
+    StringRewards:
+      - 'MONEY 40.00'
+      - 'MESSAGE &aThank you, with this I will be able to fix up the rooms, Are you still looking for work?.'
+      - 'QUEST inn_keeper_1'
+      - 'SCRIPT inn_keeper1'
+    Catagory: CONTEXTUAL_QUEST
+
+  inn_keeper_1:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - InKeep
+      - '12'
+      - '02f9e300-bd81-456b-b325-8a5315794198,IRON_ORE,0' # Give 12 Iron Ore.
+    Description: 'Gather &e12 Iron Ore.'
+    DisplayItem:
+      ItemMaterial: IRON_ORE
+      Amount: 12
+      Lore:  # info on how the FUCK to get iron...
+        - '%description%'
+        - ''
+        - '&7&oThe Inn Keeper wants you to find Iron Ore,'
+        - '&7&oIron Ore can only be found in the Group Pve mine, Time to find some friends!'
+    StringRewards:
+      - 'MONEY 35.00'
+      - 'MESSAGE &aThank you, with this I will be able to finish fixing up the rooms, Are you still looking for work?.'
+      - 'QUEST inn_keeper_2'
+      - 'SCRIPT inn_keeper2'
+    Catagory: CONTEXTUAL_QUEST
+
+  inn_keeper_2:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - InKeee
+      - '10'
+      - '02f9e300-bd81-456b-b325-8a5315794198,PRISMARINE_SHARD,0' # Give 10 Corrupted Shards.
+    Description: 'Gather &e10 Corrupted Shards.'
+    DisplayItem:
+      ItemMaterial: PRISMARINE_SHARD
+      Amount: 12
+      Lore:  # Backstory yeaaa...
+        - '%description%'
+        - ''
+        - '&7&oI have been hearing stories of these mysterious shards...'
+        - '&7&oNobody is quite sure how to get them.'
+    StringRewards:
+      - 'MONEY 50.00'
+      - 'MESSAGE &aVery interesting, these shards seem to be Corrupted, Maybe our &cBlacksmith &acan help you.'
+      - 'QUEST inn_keeper_3'
+    Catagory: CONTEXTUAL_QUEST
+
+  inn_keeper_3:
+    TaskType: TALK_TO_NPC
+    TaskInfo:
+      - InKppp
+      - '1'
+      - '2176c5f2-631d-401d-a8ea-f2cba567d536' # uuid of blacksmith.
+    Description: 'Find and speak to the Blacksmith.'
+    DisplayItem:
+      ItemMaterial: PRISMARINE_SHARD
+      Lore:  # Backstory yeaaa...
+        - '%description%'
+        - ''
+        - '&7&oI have never seen these shards around here...'
+        - '&7&oThe Blacksmith has lived here the longest maybe he will know.'
+    StringRewards:
+      - 'MONEY 100.00'
+      - 'MESSAGE &aThat is all I need your help with for now, please be sure to come back later I will have more work for you.'
+    Catagory: CONTEXTUAL_QUEST
+
+  miner_1:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - miner1
+      - '32'
+      - 'f158ee44-edd6-4dcc-a0a3-68a15203d428,IRON_ORE,0' # Give 12 Iron Ore.
+    Description: 'Gather &e32 Iron Ore.'
+    DisplayItem:
+      ItemMaterial: IRON_ORE
+      Amount: 1
+      Lore:  # info on how the FUCK to get iron...
+        - '%description%'
+        - ''
+        - '&7&oMine Iron Ore'
+        - '&7&oIron Ore can only be found in Caverna, time to find some friends!'
+    StringRewards:
+      - 'MONEY 500.00'
+      - 'MESSAGE &aThank you young miner, You are learning quick... Would you like more work?!'
+      - 'QUEST miner_2'
+    Catagory: CONTEXTUAL_QUEST
+
+  miner_2:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - miner2
+      - '32'
+      - 'f158ee44-edd6-4dcc-a0a3-68a15203d428,IRON_INGOT,0' # Give 12 Iron Ore.
+    Description: 'Gather &e32 Iron.'
+    DisplayItem:
+      ItemMaterial: IRON_INGOT
+      Amount: 1
+      Lore:  # info on how the FUCK to get iron...
+        - '%description%'
+        - ''
+        - '&7&oMine Iron'
+        - '&7&oIron can only be found in the Group Pve mine, Time to find some friends!'
+    StringRewards:
+      - 'MONEY 700.00'
+      - 'MESSAGE &aI am quite suprised, You are learning very fast. I have a few more jobs for you.'
+      - 'QUEST miner_3'
+    Catagory: CONTEXTUAL_QUEST
+
+  miner_3:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - miner3
+      - '64'
+      - 'f158ee44-edd6-4dcc-a0a3-68a15203d428,COAL,0' # Give 12 Iron Ore.
+    Description: 'Gather &e64 Coal.'
+    DisplayItem:
+      ItemMaterial: COAL
+      Amount: 1
+      Lore:  # info on how the FUCK to get iron...
+        - '%description%'
+        - ''
+        - '&7&oMine Coal'
+        - '&7&oCoal can be find at the Volcano!'
+    StringRewards:
+      - 'MONEY 500.00'
+      - 'MESSAGE &aI still need more coal, Please gather me more.'
+      - 'QUEST miner_4'
+    Catagory: CONTEXTUAL_QUEST
+
+  miner_4:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - miner4
+      - '64'
+      - 'f158ee44-edd6-4dcc-a0a3-68a15203d428,COAL,0' # Give 12 Iron Ore.
+    Description: 'Gather &e64 Coal.'
+    DisplayItem:
+      ItemMaterial: COAL
+      Amount: 1
+      Lore:  # info on how the FUCK to get iron...
+        - '%description%'
+        - ''
+        - '&7&oMine Coal'
+        - '&7&oCoal can be find at the Volcano!'
+    StringRewards:
+      - 'MONEY 500.00'
+      - 'MESSAGE &aIm very impressed. You are clearly a Master at mining, I have one last thing to test your skills.'
+      - 'QUEST miner_5'
+    Catagory: CONTEXTUAL_QUEST
+
+  miner_5:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - miner5
+      - '64'
+      - 'f158ee44-edd6-4dcc-a0a3-68a15203d428,IRON_ORE,0' # Give 12 Iron Ore.
+    Description: 'Gather &e64 Iron Ore.'
+    DisplayItem:
+      ItemMaterial: IRON_ORE
+      Amount: 1
+      Lore:  # info on how the FUCK to get iron...
+        - '%description%'
+        - ''
+        - '&7&oMine Iron Ore'
+        - '&7&oIron can only be found in the Group Pve mine, Time to find some friends!'
+    StringRewards:
+      - 'MONEY 2000.00'
+      - 'MESSAGE &aI require even more Iron, Please gather me more.'
+      - 'QUEST miner_6'
+    Catagory: CONTEXTUAL_QUEST
+
+  miner_6:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - miner6
+      - '64'
+      - 'f158ee44-edd6-4dcc-a0a3-68a15203d428,IRON_ORE,0' # Give 12 Iron Ore.
+    Description: 'Gather &e64 Iron Ore.'
+    DisplayItem:
+      ItemMaterial: IRON_ORE
+      Amount: 1
+      Lore:  # info on how the FUCK to get iron...
+        - '%description%'
+        - ''
+        - '&7&oMine Iron Ore'
+        - '&7&oIron can only be found in the Group Pve mine, Time to find some friends!'
+    StringRewards:
+      - 'MONEY 2000.00'
+      - 'QUEST miner_7'
+      - 'MESSAGE &aYou are a true master at the art of mining. I have one last thing for you to do...'
+    Catagory: CONTEXTUAL_QUEST
+
+  miner_7:
+    TaskType: TALK_TO_NPC
+    TaskInfo:
+      - miner7
+      - '1'
+      - '2176c5f2-631d-401d-a8ea-f2cba567d536' # uuid of blacksmith.
+    Description: 'Speak to the &cBlacksmith&f.'
+    DisplayItem:
+      ItemMaterial: PRISMARINE_SHARD
+      Amount: 1
+    StringRewards:
+      - 'MONEY 2500.00'
+      - 'ITEM H4sIAAAAAAAAAJVQy04CMRS9PEScD3DdhWFFogzyyOwQJpE4DwKDMSGEFKjQWFoyU1AS/sNP6H/0y7zoQmPc2E3PvT3n9NzrAJQhz5dwueGSLVL6rD2eKjnb8sULfWM5OOuqndQ5Bwqari6gyORi7QBALg8FsRen+6Qn4MD5kmdbQQ/IClTKysgqwbs1N5P7fq/nR9NJ6Ced6V0Qdx9Gs7Af+T2vUQ3ioe9VWhUVS3EglOh0x0hIM81SEmKolGRrKgRRr5LoNc/I4Cta9Wnguc1qdzxK4nAWdUJ0mf/UfTMD/9EPvJpbTeKkE8xQeOtCy5oWImINdZuIrxHU622sWxOER2vax98H36Y41dCahTUiHCedpB9HHrZJpCRzEIQ7TTVXMiM0ZWRzOOXhapeRrcq45ntG4iGRbEU/MZ1zgV2WoWsD1db8dw1lKEZ0w+DKmtSavxeAM6G5qLkAeSj16IauGH74AaYSTL/9AQAA'
+      - 'MESSAGE &aYou have proven your self worthy of this pickaxe... Take care of it, It was my fathers...'
+    Catagory: CONTEXTUAL_QUEST
+
+  night_night_knight:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - ryan01
+      - '1'
+      - 'addcf9ea-7f80-429a-b78b-9f2ee0afc8ad,BONE,0'
+    Description: 'Give &aRyan &ea &dCorrupted Bone'
+    DisplayItem:
+      ItemMaterial: BLAZE_POWDER
+    StringRewards:
+      - 'MONEY 100.00'
+      - 'SCRIPT ryan1'
+      - 'QUEST is_he_gonna_cook_the_bone'
+    Catagory: CONTEXTUAL_QUEST
+
+  is_he_gonna_cook_the_bone:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - ryan02
+      - '64'
+      - 'addcf9ea-7f80-429a-b78b-9f2ee0afc8ad,COAL,0'
+    Description: 'Collect &aCoal'
+    DisplayItem:
+      ItemMaterial: BLAZE_POWDER
+      Amount: 2
+    StringRewards:
+      - 'MONEY 150.00'
+      - 'SCRIPT ryan2'
+      - 'QUEST night_night_knight_night'
+    Catagory: CONTEXTUAL_QUEST
+
+  night_night_knight_night:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - ryan03
+      - '25'
+      - 'addcf9ea-7f80-429a-b78b-9f2ee0afc8ad,PRISMARINE_SHARD,0'
+    Description: 'Collect &dCorrupted Shards'
+    DisplayItem:
+      ItemMaterial: BLAZE_POWDER
+      Amount: 3
+    StringRewards:
+      - 'MONEY 400.00'
+      - 'SCRIPT ryan3'
+      - 'QUEST wherefore_arth_thou_o_lovely_beast'
+    Catagory: CONTEXTUAL_QUEST
+
+  wherefore_arth_thou_o_lovely_beast:
+    TaskType: ENTER_REGION
+    TaskInfo:
+      - ryan04
+      - '1'
+      - 'mountains_boss0'
+    Description: 'Find &c&oThe Beast'
+    DisplayItem:
+      ItemMaterial: BLAZE_POWDER
+      Amount: 4
+      Lore:  #bEaSt inFo
+        - '%description%'
+        - ''
+        - '&9&oTo the east of Ryan''s house there is a hill,'
+        - '&9&oat the top of that hill you will find &c&oThe Beast'
+    StringRewards:
+      - 'QUEST oh_there_you_are'
+    Catagory: CONTEXTUAL_QUEST
+
+  oh_there_you_are:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - ryan05
+      - '1'
+      - 'addcf9ea-7f80-429a-b78b-9f2ee0afc8ad,BLAZE_POWDER,0'
+    Description: 'Slay &c&oThe Beast&e, return to &aRyan'
+    DisplayItem:
+      ItemMaterial: BLAZE_POWDER
+      Amount: 5
+      Lore:  #SlayTheBeast
+        - '%description%'
+        - ''
+        - '&9&oSlay the beast and return to &aRyan'
+        - '&9&owith the &6Infested Fire'
+    StringRewards:
+      - 'SCRIPT ryan4'
+      - 'QUEST that_was_fast'
+    Catagory: CONTEXTUAL_QUEST
+
+  that_was_fast:
+    TaskType: TALK_TO_NPC
+    TaskInfo:
+      - ryan06
+      - '1'
+      - 'addcf9ea-7f80-429a-b78b-9f2ee0afc8ad'
+    Description: 'Speak to &aRyan'
+    DisplayItem:
+      ItemMaterial: BLAZE_POWDER
+      Amount: 6
+      Lore:  #SlayTheBeast
+        - '%description%'
+        - ''
+        - '&9&oThe Infested Sword,'
+        - '&9&olike the one in legends,'
+        - '&9&oit doesn''t exist. Just kidding.'
+    StringRewards:
+      - 'MONEY 1000.00'
+      - 'ITEM H4sIAAAAAAAAAG2PzU4CMRSFzzCAwxhNNMT17FgY2fqzQ4iRBHShrM1lemdomGlJWzQkvg/voDuezBZ/Vq7anp779WsKJGhIgbNaKs4NFe6m1JVg9WLftBERWkO9Vi5KETsqO2iyyhcpgKiBuHqtwhrmu4hwOFNzw7SkecVRjM69FHxXUWl9vZ3iQEi7qmjjIRNtOPFpjJPd9nJENZWcve+2lJ1f+bjnw91WD4MOi6wwus6eF5zdMlnXs5nhmqSy/QTNB6o5QK7HqmAb2k/BGx2cDpwzcr52PNVCFpKN3XvHSGaz8WiqrUPr49N7huMkoHF84a/bgzp82XeTBEd/lP1L3ZIVG5n3yTnKl9/mHvG4YkNOaoUw9qP1bxlooP27xRf/CfaegAEAAA=='
+      - 'MESSAGE &cYou enjoy that... its crafted with the remains of &c&oThe Beast'
+    Catagory: CONTEXTUAL_QUEST
+
+  lumber_1:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - Lumb01
+      - '8'
+      - '996a6d6e-c893-469c-bbd9-0bf0de5a42c1,LOG,0'
+    Description: 'Collect 8 Logs'
+    DisplayItem:
+      ItemMaterial: LOG
+      Amount: 1
+    StringRewards:
+      - 'MESSAGE &aI knew you could do it!'
+      - 'MESSAGE &aHere, Take this axe, I need some more wood.'
+      - 'ITEM H4sIAAAAAAAAAB3IPQ6CMBgG4LeAUtDRA3gCVxM3f2IcjJuz+aCfTWNpTakRT8Q9OJmE7clTAhKJUVg1xnEd6Bl3X+8Vuwd1LDA7+o+LokQaSQss7q4KTC+qLIsUxcUoPlvSLYC8RK5M+7b0K5BdfWA5rsBy6LdD7w/Umnojkd2o4SmnWe87BhLMT9SQHok/1s2aepMAAAA='
+      - 'QUEST lumber_2'
+    Catagory: CONTEXTUAL_QUEST
+
+  lumber_2:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - Lumb02
+      - '32'
+      - '996a6d6e-c893-469c-bbd9-0bf0de5a42c1,LOG,0'
+    Description: 'Collect 32 Logs'
+    DisplayItem:
+      ItemMaterial: LOG
+      Amount: 1
+    StringRewards:
+      - 'MESSAGE &aGreat Job! You really are good at this,'
+      - 'MESSAGE &aI have another job for you.'
+      - 'MONEY 320.00'
+      - 'QUEST lumber_3'
+    Catagory: CONTEXTUAL_QUEST
+
+  lumber_3:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - Lumb03
+      - '64'
+      - '996a6d6e-c893-469c-bbd9-0bf0de5a42c1,LOG,0'
+    Description: 'Collect 64 Logs'
+    DisplayItem:
+      ItemMaterial: LOG
+      Amount: 1
+    StringRewards:
+      - 'MESSAGE &aHaha! I knew you could do it!'
+      - 'MESSAGE &aI have an idea to make a new axe. But I will need your help, We can do it!'
+      - 'MONEY 640.00'
+      - 'QUEST lumber_4'
+    Catagory: CONTEXTUAL_QUEST
+
+  lumber_4:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - Lumb04
+      - '30'
+      - '996a6d6e-c893-469c-bbd9-0bf0de5a42c1,PRISMARINE_SHARD,0'
+    Description: 'Collect 30 &dCorrupted Shards'
+    DisplayItem:
+      ItemMaterial: PRISMARINE_SHARD
+      Amount: 1
+    StringRewards:
+      - 'MESSAGE &aGood job, Step 1 down!'
+      - 'MESSAGE &aNow lets see... Now we need Iron, Do you think you can get me some?'
+      - 'MONEY 1000.00'
+      - 'QUEST lumber_5'
+    Catagory: CONTEXTUAL_QUEST
+
+  lumber_5:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - Lumb05
+      - '12'
+      - '996a6d6e-c893-469c-bbd9-0bf0de5a42c1,IRON_INGOT,0'
+    Description: 'Collect 12 Iron Ingots'
+    DisplayItem:
+      ItemMaterial: IRON_INGOT
+      Amount: 1
+    StringRewards:
+      - 'MESSAGE &aGood job, Step 2 down!'
+      - 'MESSAGE &aLast step! I need a &dCorrupted Bone.'
+      - 'MONEY 200.00'
+      - 'QUEST lumber_6'
+    Catagory: CONTEXTUAL_QUEST
+
+  lumber_6:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - Lumb06
+      - '1'
+      - '996a6d6e-c893-469c-bbd9-0bf0de5a42c1,BONE,0'
+    Description: 'Collect 1 &dCorrupted Bone'
+    DisplayItem:
+      ItemMaterial: BONE
+      Amount: 1
+    StringRewards:
+      - 'MESSAGE &aNice job! You Did It!'
+      - 'MESSAGE &aYou earned this... Speak with me again when your ready for your axe.'
+      - 'QUEST lumber_7'
+    Catagory: CONTEXTUAL_QUEST
+
+  lumber_7:
+    TaskType: TALK_TO_NPC
+    TaskInfo:
+      - Lumb07
+      - '1'
+      - '996a6d6e-c893-469c-bbd9-0bf0de5a42c1'
+    Description: 'Speak to the LumberJack'
+    DisplayItem:
+      ItemMaterial: PRISMARINE_SHARD
+      Amount: 1
+    StringRewards:
+      - 'MESSAGE &aHere you go, I worked hard on this bad boy.'
+      - 'MESSAGE &aIf you ever want to sell some logs to me, Let me know!'
+      - 'H4sIAAAAAAAAAEVNOw6CQBQcwA9iyQW208rWxM5ojAWxszYPeMDq7mLY1eiJuAcnE0JhMcl8MjMREMKXOWItDWcNFW5nXW34Rh/2MD3UL+O8CIGjcoEJm6yKAHgBAvVWIxvqgECA5dWkDdODUsVjtjjLnE+KStvreYR5Lu1T0bffSuqGw971e6y7dtu19WH451ykX+EqFslLp9zcKXuISmrLqtiEmFxIM+KupX+8smL/4WFqdiRN5XD+AxSWv0/aAAAA=='
+      - 'QUEST lumber_8'
+    Catagory: CONTEXTUAL_QUEST
+
+  lumber_8:
+    TaskType: GIVE_TO_NPC
+    TaskInfo:
+      - Lumb08
+      - '32'
+      - '996a6d6e-c893-469c-bbd9-0bf0de5a42c1,LOG,0'
+    Description: 'Collect 32 Logs'
+    DisplayItem:
+      ItemMaterial: LOG
+      Amount: 1
+    StringRewards:
+      - 'MESSAGE &aThanks for the logs!'
+      - 'MESSAGE &aI always need more!'
+      - 'MESSAGE &8&oThis quest is repeatable.'
+      - 'MONEY 320.00'
+      - 'QUEST lumber_8'
+    Catagory: CONTEXTUAL_QUEST
+
+  ################
+  ### Triggers ###
+  ################
+  trigger_reach_mountains_village:
+    TaskType: ENTER_REGION
+    TaskInfo:
+      - tr1goM
+      - '1'
+      - 'mountains_village'
+    StringRewards:
+      - 'MESSAGE &aYou can now fast travel to the village from the portal at &c/hub' # TODO Add permission
+    Catagory: TRIGGER
+
   ####################
   ### Achievements ###
   ####################
@@ -187,8 +741,8 @@ Objectives:
       Lore:  # Optional argument, defaults to the 'Description'
         - '%description%'
         - ''
-        - '&7&oEnhanced blocks are (regular) Sandstone,'
-        - '&7&oCoal Block, and Iron Block!'
+        - '&9&oEnhanced blocks are (regular) &eSandstone,'
+        - '&eCoal Block&9&o, and &eIron Block&9&o!'
     Catagory: ACHIEVEMENT
 
   shameless_plug:

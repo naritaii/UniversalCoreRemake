@@ -75,7 +75,7 @@ class SelectObjective {
                     s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             "&c" + args[0] + " is not a valid objective ID! Try " +
                                     Joiner.on(", ").join(ids .subList(0, ids .size() - 1))
-                                    .concat(", or ").concat(ids.get(ids .size() - 1))));
+                                            .concat(", or ").concat(ids.get(ids .size() - 1))));
                 }
             }
         }
