@@ -75,9 +75,9 @@ public class QuestMaster implements InventoryProvider {
                 .name("&bWarp to: &e" + warp.getName()).lore("").lore("&eClick to warp!").build(), e -> warp.warp(p)));
 
         contents.set(5, 5, ClickableItem.of(new ItemBuilder(Skull.getCustomSkull(Skull.DISCORD.getId()))
-                .name("&5Discord").lore("&eJoin our Discord for updates, giveaways, and to\n" +
-                        "&edirectly give feedback to admins and the community!\n\n" +
-                        "&bType &d/sync Discord&b to sync your Minecraft and Discord accounts.").build(), e ->
+                .name("&5Discord").lore("&eJoin our Discord for updates, giveaways, and to")
+                .lore("&edirectly give feedback to admins and the community!")
+                .lore("&bType &d/sync Discord&b to sync your Minecraft and Discord accounts.").build(), e ->
                 p.performCommand("discord")));
 
         contents.set(5, 6, ClickableItem.of(new ItemBuilder(Skull.getCustomSkull(Skull.TWITTER.getId()))

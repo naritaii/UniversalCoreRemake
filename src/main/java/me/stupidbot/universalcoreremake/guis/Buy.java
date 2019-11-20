@@ -8,6 +8,7 @@ import fr.minuskube.inv.content.Pagination;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.utilities.TextUtils;
 import me.stupidbot.universalcoreremake.utilities.item.ItemBuilder;
+import me.stupidbot.universalcoreremake.utilities.item.ItemMetadata;
 import me.stupidbot.universalcoreremake.utilities.item.ItemUtils;
 import me.stupidbot.universalcoreremake.utilities.item.SellItem;
 import net.milkbowl.vault.economy.Economy;
@@ -97,7 +98,12 @@ public class Buy implements InventoryProvider {
                         for (ItemStack tradeItem : tradeItems) {
                             int has = 0;
                             for (ItemStack item : pinv.getContents()) {
-                                if (item != null && item.isSimilar(tradeItem))
+                                if (item != null &&
+                                        (item.isSimilar(tradeItem) ||
+                                                (ItemMetadata.hasMeta(tradeItem, "ITEM") &&
+                                                        ItemMetadata.getMeta(tradeItem, "ITEM").equalsIgnoreCase(
+                                                                ItemMetadata.getMeta(item, "ITEM"))) ||
+                                                (!ItemMetadata.hasMeta(tradeItem, "ITEM") && tradeItem.getType() == item.getType())))
                                     has += item.getAmount();
                             }
                             hasItems = has >= tradeItem.getAmount() * amt;
@@ -112,7 +118,12 @@ public class Buy implements InventoryProvider {
                                 int needed = tradeItem.getAmount();
                                 for (ItemStack item : pinv.getContents())
                                     if (removed < needed)
-                                        if (item != null && item.isSimilar(tradeItem)) {
+                                        if (item != null &&
+                                                (item.isSimilar(tradeItem) ||
+                                                        (ItemMetadata.hasMeta(tradeItem, "ITEM") &&
+                                                                ItemMetadata.getMeta(tradeItem, "ITEM").equalsIgnoreCase(
+                                                                        ItemMetadata.getMeta(item, "ITEM"))) ||
+                                                        (!ItemMetadata.hasMeta(tradeItem, "ITEM") && tradeItem.getType() == item.getType()))) {
                                             removed += item.getAmount();
                                             if (removed >= needed)
                                                 ItemUtils.removeItem(item,

@@ -1,6 +1,7 @@
 package me.stupidbot.universalcoreremake.commands;
 
 import me.stupidbot.universalcoreremake.guis.Buy;
+import me.stupidbot.universalcoreremake.managers.StatsManager;
 import me.stupidbot.universalcoreremake.utilities.item.ItemBuilder;
 import me.stupidbot.universalcoreremake.utilities.item.SellItem;
 import org.bukkit.Bukkit;
@@ -17,12 +18,24 @@ class OpenFoodTrader {
 
     OpenFoodTrader() {
         array = Arrays.asList(
-                new SellItem(new ItemBuilder(Material.ROTTEN_FLESH).name("&rOffal").lore("&3Stamina &a+5").build(), "Offal",
-                        3.50),
-                new SellItem(new ItemBuilder(Material.APPLE).name("&rPanacea").lore("&3Stamina &a+20").build(), "Panacea",
-                        14),
-                new SellItem(new ItemBuilder(Material.BREAD).name("&rJunie Cake").lore("&3Stamina &a+50").build(), "Junie Cake",
-                        35));
+                new SellItem(new ItemBuilder(Material.ROTTEN_FLESH).name("&rOffal").lore("&3Stamina &a+" +
+                        StatsManager.BaseFoodStamina.ROTTEN_FLESH.getBaseFoodStamina()).build(), "Offal",
+                        StatsManager.BaseFoodStamina.ROTTEN_FLESH.getBaseFoodStamina() * 0.70d),
+                new SellItem(new ItemBuilder(Material.APPLE).name("&rPanacea").lore("&3Stamina &a+" +
+                        StatsManager.BaseFoodStamina.APPLE.getBaseFoodStamina()).build(), "Panacea",
+                        StatsManager.BaseFoodStamina.APPLE.getBaseFoodStamina() * 0.70d),
+                new SellItem(new ItemBuilder(Material.BREAD).name("&rJunie Cake").lore("&3Stamina &a+" +
+                        StatsManager.BaseFoodStamina.BREAD.getBaseFoodStamina()).build(), "Junie Cake",
+                        StatsManager.BaseFoodStamina.BREAD.getBaseFoodStamina() * 0.70d),
+                new SellItem(new ItemBuilder(Material.RAW_FISH).name("&rCod Dead").lore("&3Stamina &a+" +
+                        StatsManager.BaseFoodStamina.RAW_FISH.getBaseFoodStamina()).build(), "Cod Dead",
+                        StatsManager.BaseFoodStamina.RAW_FISH.getBaseFoodStamina() * 0.70d),
+                new SellItem(new ItemBuilder(Material.MUSHROOM_SOUP).name("&rSouper Bowl Of Broth").lore("&3Stamina &a+" +
+                        StatsManager.BaseFoodStamina.MUSHROOM_SOUP.getBaseFoodStamina()).build(), "Souper Bowl Of Broth",
+                        StatsManager.BaseFoodStamina.MUSHROOM_SOUP.getBaseFoodStamina() * 0.70d),
+                new SellItem(new ItemBuilder(Material.RAW_CHICKEN).name("&rEggonomics").lore("&3Stamina &a+" +
+                        StatsManager.BaseFoodStamina.RAW_CHICKEN.getBaseFoodStamina()).build(), "Eggonomics",
+                        StatsManager.BaseFoodStamina.RAW_CHICKEN.getBaseFoodStamina() * 0.70d));
     }
 
     @SuppressWarnings("SameReturnValue")

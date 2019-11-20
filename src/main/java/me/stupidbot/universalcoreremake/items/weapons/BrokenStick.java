@@ -1,4 +1,4 @@
-package me.stupidbot.universalcoreremake.items;
+package me.stupidbot.universalcoreremake.items.weapons;
 
 import me.stupidbot.universalcoreremake.utilities.item.ItemBuilder;
 import me.stupidbot.universalcoreremake.utilities.item.ItemMetadata;

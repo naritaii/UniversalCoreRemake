@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,7 +40,9 @@ public class StatsManager implements Listener {
                         equipment.put(p.getUniqueId(), currentEquipment);
                         recalculateStats(p);
                     }
-                }), 0, 20);
+                }), 0, 10);
+        modifyOverStack(net.minecraft.server.v1_8_R3.Item.getById(282), 64); // Mushroom Soup
+        modifyOverStack(net.minecraft.server.v1_8_R3.Item.getById(413), 64); // Rabbit Soup
     }
 
     private List<ItemStack> getEquipment(Player p) {
@@ -231,9 +234,20 @@ public class StatsManager implements Listener {
         return defensePoints;
     }
 
+    private void modifyOverStack(net.minecraft.server.v1_8_R3.Item item, int amount) {
+        try {
+            Field field = net.minecraft.server.v1_8_R3.Item.class.getDeclaredField("maxStackSize");
+            field.setAccessible(true);
+            field.setInt(item, amount);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @SuppressWarnings("unused")
-    enum BaseFoodStamina {
-        ROTTEN_FLESH(5), APPLE(20), BREAD(50);
+    public enum BaseFoodStamina {
+        ROTTEN_FLESH(5), APPLE(20), BREAD(50), RAW_FISH(75), MUSHROOM_SOUP(125), // TODO make this stack and remove bowls
+        RAW_CHICKEN(175);
 
         final int baseFoodStamina;
 
@@ -241,7 +255,7 @@ public class StatsManager implements Listener {
             this.baseFoodStamina = baseFoodStamina;
         }
 
-        int getBaseFoodStamina() {
+        public int getBaseFoodStamina() {
             return baseFoodStamina;
         }
     }

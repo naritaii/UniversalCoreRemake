@@ -98,6 +98,8 @@ public class StringReward {
                     break;
 
 
+                case "SETPERMISSION":
+                case "UNSETPERMISSION":
                 case "QUEST":
                 case "SCRIPT":
                 case "NONE":
@@ -237,6 +239,14 @@ public class StringReward {
                     }
                     break;
 
+                case "SETPERMISSION":
+                    UniversalCoreRemake.getPermissions().playerAdd(p, arg.toString().trim());
+                    break;
+
+                    case "UNSETPERMISSION":
+                    UniversalCoreRemake.getPermissions().playerRemove(p, arg.toString().trim());
+                    break;
+
                 case "NONE":
                 case "NULL":
                     break;
@@ -320,6 +330,14 @@ public class StringReward {
                         p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                 textToTranslate));
                     }
+
+                case "SETPERMISSION":
+                    UniversalCoreRemake.getPermissions().playerAdd(p, arg.toString().trim());
+                    break;
+
+                case "UNSETPERMISSION":
+                    UniversalCoreRemake.getPermissions().playerRemove(p, arg.toString().trim());
+                    break;
 
                 case "MESSAGE":
                 case "NONE":

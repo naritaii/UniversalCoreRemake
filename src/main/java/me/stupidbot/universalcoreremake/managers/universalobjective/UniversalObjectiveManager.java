@@ -277,7 +277,7 @@ public class UniversalObjectiveManager implements Listener {
 
             case TRIGGER:
                 if (rewards != null)
-                    rewards.giveNoMessage(p);
+                    rewards.give(p);
                 break;
 
             default:

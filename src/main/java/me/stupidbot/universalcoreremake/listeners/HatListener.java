@@ -49,8 +49,7 @@ public class HatListener implements Listener {
                         e.getWhoClicked().getInventory().getHelmet().getType() == Material.AIR) &&
                 e.getCurrentItem().getType() != Material.AIR)
             if (e.getCurrentItem().getType() == Material.SKULL_ITEM ||
-                    ItemMetadata.hasMeta(e.getCurrentItem(), "HAT") ||
-                    e.getWhoClicked().hasPermission("universalcore.hat")) {
+                    ItemMetadata.hasMeta(e.getCurrentItem(), "HAT")) {
                 e.setCancelled(true);
                 e.getWhoClicked().getInventory().setHelmet(e.getCurrentItem());
                 e.setCurrentItem(new ItemStack(Material.AIR));

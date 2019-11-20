@@ -6,6 +6,7 @@ import me.stupidbot.universalcoreremake.utilities.item.ItemBuilder;
 import me.stupidbot.universalcoreremake.utilities.item.SellItem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -18,9 +19,25 @@ class OpenBlacksmith {
 
     OpenBlacksmith() {
         array = Arrays.asList(
-                new SellItem(UniversalItem.BROKEN_STICK,"Broken Stick",
-                        new ItemBuilder(new ItemStack(UniversalItem.CORRUPTED_SHARD.getType()))
-                                .name(UniversalItem.CORRUPTED_SHARD.getItemMeta().getDisplayName()).build()));
+                new SellItem(UniversalItem.BROKEN_STICK,
+                        ChatColor.stripColor(UniversalItem.BROKEN_STICK.getItemMeta().getDisplayName()),
+                        new ItemBuilder(UniversalItem.CORRUPTED_SHARD).amount(1).build()),
+                new SellItem(UniversalItem.CORRUPTED_SWORD,
+                        ChatColor.stripColor(UniversalItem.CORRUPTED_SWORD.getItemMeta().getDisplayName()),
+                        new ItemBuilder(UniversalItem.CORRUPTED_SHARD).amount(96).build(),
+                        new ItemStack(Material.IRON_INGOT, 16),
+                        new ItemBuilder(UniversalItem.CORRUPTED_BONE).amount(16).build()),
+                new SellItem(UniversalItem.BONE_SWORD,
+                        ChatColor.stripColor(UniversalItem.BONE_SWORD.getItemMeta().getDisplayName()),
+                        new ItemBuilder(UniversalItem.CORRUPTED_SHARD).amount(32).build(),
+                        new ItemBuilder(UniversalItem.CORRUPTED_BONE).amount(32).build(),
+                        new ItemStack(Material.WOOD, 128)),
+                new SellItem(UniversalItem.FIRE_WAND,
+                        ChatColor.stripColor(UniversalItem.FIRE_WAND.getItemMeta().getDisplayName()),
+                        new ItemBuilder(UniversalItem.INFESTED_FIRE).amount(5).build(),
+                        new ItemStack(Material.IRON_INGOT, 128),
+                        new ItemStack(Material.WOOD, 64),
+                        new ItemBuilder(UniversalItem.CORRUPTED_BONE).amount(32).build()));
     }
 
     @SuppressWarnings("SameReturnValue")

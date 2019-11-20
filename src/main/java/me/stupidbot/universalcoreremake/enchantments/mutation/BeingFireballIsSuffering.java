@@ -5,18 +5,17 @@ import me.stupidbot.universalcoreremake.utilities.TextUtils;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.SmallFireball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
-public class SpeedBoost extends Enchantment implements Listener {
+public class BeingFireballIsSuffering extends Enchantment implements Listener {
     private final int id;
 
-    public SpeedBoost(int id) {
+    public BeingFireballIsSuffering(int id) {
         super(id);
         this.id = id;
     }
@@ -28,7 +27,7 @@ public class SpeedBoost extends Enchantment implements Listener {
 
     @Override
     public String getName() {
-        return "Speed Boost";
+        return "Being Fireball Is Suffering";
     }
 
     @Override
@@ -64,13 +63,12 @@ public class SpeedBoost extends Enchantment implements Listener {
             Player p = e.getPlayer();
             ItemStack i = p.getItemInHand();
 
-            int staminaCost = 10;
+            int staminaCost = 30;
             if (i.containsEnchantment(this))
                 if (UniversalCoreRemake.getStatsManager().getStamina(p) >= staminaCost) {
                     UniversalCoreRemake.getStatsManager().removeStamina(p, staminaCost);
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 600, 0,
-                            true, true), false);
-                    TextUtils.sendActionbar(p, "&3Stamina: &c-" + staminaCost + " &bSpeed: &a+20% 30s");
+                    p.launchProjectile(SmallFireball.class).setVelocity(p.getLocation().getDirection().multiply(0.5));
+                    TextUtils.sendActionbar(p, "&3Stamina: &c-" + staminaCost);
                 }
         }
     }
