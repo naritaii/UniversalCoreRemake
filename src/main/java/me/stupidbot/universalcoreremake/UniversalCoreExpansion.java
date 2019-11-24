@@ -146,8 +146,8 @@ class UniversalCoreExpansion extends PlaceholderExpansion {
                         "(Fake)" :
                         "";
             case "balance": // %universalcore_balance%
-                return TextUtils.format(upm.getUniversalPlayer(p).getBankedMoney() +
-                        UniversalCoreRemake.getEconomy().getBalance(p));
+                return TextUtils.formatValue((long) (upm.getUniversalPlayer(p).getBankedMoney() +
+                                        UniversalCoreRemake.getEconomy().getBalance(p)));
             default:
                 return null;
         }

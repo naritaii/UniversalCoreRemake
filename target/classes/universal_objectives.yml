@@ -9,7 +9,7 @@ Objectives:
       - iGD8Jw # Random ID for the task, can be anything as long as the ID isn't used elsewhere. This is for if there are multiple tasks to be tracked (not yet implemented).
       - '1' # How many times to talk to the NPC.
       - '328d73d1-e671-4006-8438-aeb44077b54f' # What NPC to talk to. This UUID is Quest Master's.
-    Description: 'Talk to &aQuest Master' # Optional argument, this is usually generated with code but can't always be.
+    Description: 'Talk to &aQuest Master'
     DisplayItem: # Used for GUIs.
       ItemMaterial: YELLOW_FLOWER # Optional. Defaults to GLASS if not set
       ItemData: 0 # Optional (redundant) argument. Defaults to 0.
@@ -29,7 +29,7 @@ Objectives:
     DisplayItem:
       ItemMaterial: RED_SANDSTONE
     StringRewards:
-      - 'MONEY 1.00'
+      - 'MONEY 5.00'
       - 'QUEST making_bank'
     Catagory: STORY_QUEST
 
@@ -39,7 +39,7 @@ Objectives:
       - ifg32J
       - '1'
       - '5b639486-c3fb-4c3c-9534-facd2832bdb2'
-    Description: 'Sell to &aMineral Trader'
+    Description: 'Talk to the &aMineral Trader'
     DisplayItem:
       ItemMaterial: GOLD_NUGGET
     StringRewards:
@@ -54,7 +54,7 @@ Objectives:
       - Gtr4w5
       - '1'
       - 'd0193a46-b263-484a-972a-6a41c76d3ea8'
-    Description: 'Buy from &aFood Trader'
+    Description: 'Talk to the &aFood Trader'
     DisplayItem:
       ItemMaterial: ROTTEN_FLESH
     StringRewards:
@@ -73,7 +73,7 @@ Objectives:
     DisplayItem:
       ItemMaterial: RED_ROSE
     StringRewards:
-      - 'MONEY 3.50'
+      - 'MONEY 5.50'
       - 'QUEST find_the_missing_poppy'
     Catagory: STORY_QUEST
 
@@ -89,7 +89,7 @@ Objectives:
       ItemData: 1
       Amount: 2
     StringRewards:
-      - 'MONEY 10.00'
+      - 'MONEY 20.00'
       - 'QUEST help_alice_create_a_pickaxe'
       - 'SCRIPT aliceinaoba1'
     Catagory: STORY_QUEST
@@ -106,7 +106,7 @@ Objectives:
       ItemData: 1
       Amount: 3
     StringRewards:
-      - 'MONEY 25.00'
+      - 'MONEY 50.00'
       - 'QUEST steal_pickaxe'
       - 'SCRIPT aliceinaoba2'
     Catagory: STORY_QUEST
@@ -116,7 +116,7 @@ Objectives:
     TaskInfo:
       - t3aGyt
       - '1'
-      - 'f59c4fb2-4317-4f7f-9405-cb7b0c659a74' # Create Alice and Put her NPC ID Here.
+      - 'f59c4fb2-4317-4f7f-9405-cb7b0c659a74'
     Description: 'Steal Alice''s pickaxe...'
     DisplayItem:
       ItemMaterial: RED_ROSE
@@ -140,151 +140,170 @@ Objectives:
       ItemMaterial: EXP_BOTTLE
       Amount: 5
     StringRewards:
-      - 'MONEY 5.00'
-      - '&7&oYou find a broken stick on the ground, could be useful, or not' # TODO Also move this to levelling rewards in rewards.yml
+      - 'MONEY 35.00'
+      - '&7&oYou find a broken stick on the ground, could be useful, or not...'
       - 'UNIVERSALITEM BROKEN_STICK'
       - 'QUEST find_a_way'
     Catagory: STORY_QUEST
 
+      #   reach_level_5:
+      #     TaskType: TALK_TO_NPC
+      #     TaskInfo:
+      #       - found1
+      #       - '1'
+      #      - '328d73d1-e671-4006-8438-aeb44077b54f'
+      # Description: 'Speak to the &aQuest Master'
+      # DisplayItem:
+      # ItemMaterial: EXP_BOTTLE
+      # Amount: 1
+      # StringRewards:
+      # - 'MONEY 25.00'
+      # - 'QUEST found_a_way'
+    # - 'MESSAGE &aLooks like you made it! Good job, head back over there and find the portal, you will find a friend of mine.'
+    # Catagory: STORY_QUEST
+
   find_a_way:
     TaskType: TALK_TO_NPC
     TaskInfo:
-      - found1
+      - found2
       - '1'
-      - '328d73d1-e671-4006-8438-aeb44077b54f'
-    Description: 'Talk to the &aQuest Master'
+      - 'c894ac1c-9a68-4c37-b5bf-11ecd519a7fb'
+    Description: 'Talk To &aTraveller'
     DisplayItem:
-      ItemMaterial: DIAMOND
-      ItemData: 1
+      ItemMaterial: LEASH
     StringRewards:
-      - 'MONEY 25.00'
+      - 'QUEST reach_mountains_village'
+    Catagory: STORY_QUEST
+
+  reach_mountains_village:
+    TaskType: ENTER_REGION
+    TaskInfo:
+      - fdj4nd
+      - '1'
+      - 'mountains_village'
+    Description: 'Find The &aVillage'
+    DisplayItem:
+      ItemMaterial: LEASH
+      Amount: 2
+    StringRewards:
       - 'QUEST found_a_way'
     Catagory: STORY_QUEST
 
   found_a_way:
     TaskType: TALK_TO_NPC
     TaskInfo:
-      - found2
+      - findin
       - '1'
-      - 'c894ac1c-9a68-4c37-b5bf-11ecd519a7fb'
-    Description: 'Talk to the &aTraveller'
+      - '02f9e300-bd81-456b-b325-8a5315794198'
+    Description: 'Talk To &aInn Keeper'
     DisplayItem:
-      ItemMaterial: DIAMOND
-      ItemData: 1
+      ItemMaterial: LEASH
+      Amount: 3
     StringRewards:
-      - 'MONEY 5.00'
-    Catagory: STORY_QUEST
-
-  mountains_reach_village:
-    TaskType: ENTER_REGION
-    TaskInfo:
-      - fdj4nd
-      - '1'
-      - 'mountains_village'
-    Description: 'Find the Village'
-    DisplayItem:
-      ItemMaterial: WOOD
-    StringRewards:
-      - 'MONEY 5.00'
+      - 'MONEY 15.00'
     Catagory: STORY_QUEST
 
   #########################
   ### Contextual Quests ###
   #########################
-
-  butcher_shop_1:
+  the_meats:
     TaskType: GIVE_TO_NPC
     TaskInfo:
       - RAWP0R
       - '16'
       - 'a873d167-c76a-448b-8818-80fc67390a7a,PORK,0'
-    Description: 'Collect 16 &aRaw Pork'
+    Description: 'Give &aButcher Raw Pork'
     DisplayItem:
       ItemMaterial: PORK
-      Amount: 16
     StringRewards:
-      - 'MONEY 10.00'
-      - 'MESSAGE &aThanks for the pork! I need some Mutton now.'
-      - 'MESSAGE &aIf you walk out of my shop and go right down the math to a big tree you will find sheep.'
-      - 'QUEST butcher_shop_2'
+      - 'MONEY 100.00'
+      - 'SCRIPT butcher1'
+      - 'QUEST de_sheeps'
     Catagory: CONTEXTUAL_QUEST
 
-  butcher_shop_2:
+  de_sheeps:
     TaskType: GIVE_TO_NPC
     TaskInfo:
       - RAWM0T
       - '16'
       - 'a873d167-c76a-448b-8818-80fc67390a7a,MUTTON,0'
-    Description: 'Collect 16 &aRaw Mutton'
+    Description: 'Give &aButcher Raw Mutton'
     DisplayItem:
-      ItemMaterial: MUTTON
-      Amount: 16
+      ItemMaterial: PORK
+      Amount: 2
+      Lore:
+        - '%description%'
+        - ''
+        - '&7&oWalk out the butcher''s shop and'
+        - '&7&oturn right, you''ll see a big tree.'
+        - '&7&oThat is where ''de sheeps'' reside...'
     StringRewards:
-      - 'MONEY 15.00'
-      - 'MESSAGE &aThanks for the Mutton! I need some Beef now.'
-      - 'MESSAGE &aIf you go out of my shop and head back to the Volcano you can find cows.'
-      - 'QUEST butcher_shop_3'
+      - 'MONEY 150.00'
+      - 'SCRIPT butcher2'
+      - 'QUEST fresh_never_frozen_beef'
     Catagory: CONTEXTUAL_QUEST
 
-  butcher_shop_3:
+  fresh_never_frozen_beef:
     TaskType: GIVE_TO_NPC
     TaskInfo:
       - C0WMEE
       - '16'
       - 'a873d167-c76a-448b-8818-80fc67390a7a,RAW_BEEF,0'
-    Description: 'Collect 16 &aRaw Beef'
+    Description: 'Give &aButcher Raw Beef'
     DisplayItem:
-      ItemMaterial: RAW_BEEF
-      Amount: 16
+      ItemMaterial: PORK
+      Amount: 3
+      Lore:
+        - '%description%'
+        - ''
+        - '&7&oGo kill cows by the volcano mine, &b&oBebex&7&o I guess...'
     StringRewards:
-      - 'MONEY 15.00'
-      - 'MESSAGE &aHey! Thanks for your help, I could not have done it without you,'
-      - 'MESSAGE &aHere, take this axe, Its all I have to repay you with.'
-      - 'ITEM H4sIAAAAAAAAAHWPzU7CQBSFT2nFUkOIgnFHujfpzpiwIxDUSHVhWJsLvdQJ7QyZDkYTn8Ut79Fn8HnEwR8iEZf35NzznRMAPioiQSsXkieapqaTqixheU9P7GCvpxbSOAFcQ6mDg5Eca6YZjTN2XNQuRcKDjNICQDXAfiKKeUbPNXhDpdm3qovDcnnep5xSDl/KJYWnZ1ZuW7FcqgulknCgdNhbGCNkGg4yLh6iyId3QzmjaR9iHcVMpgh7GdMja9Rw1DVGi/HCcKwSMRWsi8CGVlz4o9FVP1aFAY47tuD6HDLZ22ufuKh28/Ue6/V81Dcpn6xWypK1mERkDE1mX5VtxO2cNRmhpP3CT7GdZvzmNxqvW/z69duGv1qt3v/wm9uRd3Pm5D/8Lq/dj+p3EeADRg1OpdkBAAA='
+      - 'MONEY 150.00'
+      - 'SCRIPT butcher3'
+      - 'UNIVERSALITEM MR_MEATS_CLEAVER'
     Catagory: CONTEXTUAL_QUEST
 
-  inn_keeper:
+  cow_slayer:
     TaskType: GIVE_TO_NPC
     TaskInfo:
       - IInKee
       - '8'
       - '02f9e300-bd81-456b-b325-8a5315794198,LEATHER,0' # Give 8 Leather.
-    Description: 'Gather &e8 Leather.'
+    Description: 'Give &aInn Keeper Leather'
     DisplayItem:
       ItemMaterial: LEATHER
-      Amount: 8
       Lore:  # Lul Lore Lul
         - '%description%'
         - ''
-        - '&7&oGather some leather to help the inn keeper fix her rooms.'
-        - '&7&oThe butcher can help you find leather, try speaking to him.'
+        - '&c&oThe only good cow is a dead one&m--'
+        - '&7&oGather some leather to help the'
+        - '&7&oinn keeper fix her rooms, adventurer!'
+        - '&7&oThe butcher might know where to get some.'
     StringRewards:
-      - 'MONEY 40.00'
-      - 'MESSAGE &aThank you, with this I will be able to fix up the rooms, Are you still looking for work?.'
-      - 'QUEST inn_keeper_1'
-      - 'SCRIPT inn_keeper1'
+      - 'MONEY 90.00'
+      - 'QUEST adventure_time'
+      - 'SCRIPT innkeeper1'
     Catagory: CONTEXTUAL_QUEST
 
-  inn_keeper_1:
+  adventure_time:
     TaskType: GIVE_TO_NPC
     TaskInfo:
       - InKeep
       - '12'
       - '02f9e300-bd81-456b-b325-8a5315794198,IRON_ORE,0' # Give 12 Iron Ore.
-    Description: 'Gather &e12 Iron Ore.'
+    Description: 'Give &aInn Keeper Iron Ore'
     DisplayItem:
-      ItemMaterial: IRON_ORE
-      Amount: 12
+      ItemMaterial: LEATHER
+      Amount: 2
       Lore:  # info on how the FUCK to get iron...
         - '%description%'
         - ''
-        - '&7&oThe Inn Keeper wants you to find Iron Ore,'
-        - '&7&oIron Ore can only be found in the Group Pve mine, Time to find some friends!'
+        - '&7&oThe cute inn keeper gave you a job!'
+        - '&7&oFind iron ore at the volcano mine, &b&oBebex&7&o.'
     StringRewards:
-      - 'MONEY 35.00'
-      - 'MESSAGE &aThank you, with this I will be able to finish fixing up the rooms, Are you still looking for work?.'
+      - 'MONEY 200.00'
       - 'QUEST inn_keeper_2'
-      - 'SCRIPT inn_keeper2'
+      - 'SCRIPT innkeeper2'
     Catagory: CONTEXTUAL_QUEST
 
   inn_keeper_2:
@@ -295,16 +314,16 @@ Objectives:
       - '02f9e300-bd81-456b-b325-8a5315794198,PRISMARINE_SHARD,0' # Give 10 Corrupted Shards.
     Description: 'Gather &e10 Corrupted Shards.'
     DisplayItem:
-      ItemMaterial: PRISMARINE_SHARD
-      Amount: 12
+      ItemMaterial: LEATHER
+      Amount: 3
       Lore:  # Backstory yeaaa...
         - '%description%'
         - ''
         - '&7&oI have been hearing stories of these mysterious shards...'
         - '&7&oNobody is quite sure how to get them.'
     StringRewards:
-      - 'MONEY 50.00'
-      - 'MESSAGE &aVery interesting, these shards seem to be Corrupted, Maybe our &cBlacksmith &acan help you.'
+      - 'MONEY 150.00'
+      - 'MESSAGE &aVery interesting, these shards seem to be corrupted, Maybe our &cBlacksmith &acan help you.'
       - 'QUEST inn_keeper_3'
     Catagory: CONTEXTUAL_QUEST
 
@@ -316,7 +335,8 @@ Objectives:
       - '2176c5f2-631d-401d-a8ea-f2cba567d536' # uuid of blacksmith.
     Description: 'Find and speak to the Blacksmith.'
     DisplayItem:
-      ItemMaterial: PRISMARINE_SHARD
+      ItemMaterial: LEATHER
+      Amount: 4
       Lore:  # Backstory yeaaa...
         - '%description%'
         - ''
@@ -465,7 +485,7 @@ Objectives:
       Amount: 1
     StringRewards:
       - 'MONEY 2500.00'
-      - 'ITEM H4sIAAAAAAAAAJVQy04CMRS9PEScD3DdhWFFogzyyOwQJpE4DwKDMSGEFKjQWFoyU1AS/sNP6H/0y7zoQmPc2E3PvT3n9NzrAJQhz5dwueGSLVL6rD2eKjnb8sULfWM5OOuqndQ5Bwqari6gyORi7QBALg8FsRen+6Qn4MD5kmdbQQ/IClTKysgqwbs1N5P7fq/nR9NJ6Ced6V0Qdx9Gs7Af+T2vUQ3ioe9VWhUVS3EglOh0x0hIM81SEmKolGRrKgRRr5LoNc/I4Cta9Wnguc1qdzxK4nAWdUJ0mf/UfTMD/9EPvJpbTeKkE8xQeOtCy5oWImINdZuIrxHU622sWxOER2vax98H36Y41dCahTUiHCedpB9HHrZJpCRzEIQ7TTVXMiM0ZWRzOOXhapeRrcq45ntG4iGRbEU/MZ1zgV2WoWsD1db8dw1lKEZ0w+DKmtSavxeAM6G5qLkAeSj16IauGH74AaYSTL/9AQAA'
+      - 'UNIVERSALITEM MASTER_MINERS_PICKAXE'
       - 'MESSAGE &aYou have proven your self worthy of this pickaxe... Take care of it, It was my fathers...'
     Catagory: CONTEXTUAL_QUEST
 
@@ -474,7 +494,7 @@ Objectives:
     TaskInfo:
       - ryan01
       - '1'
-      - 'addcf9ea-7f80-429a-b78b-9f2ee0afc8ad,BONE,0'
+      - 'addcf9ea-7f80-429a-b78b-9f2ee0afc8ad,UNIVERSALITEM,CORRUPTED_BONE'
     Description: 'Give &aRyan &ea &dCorrupted Bone'
     DisplayItem:
       ItemMaterial: BLAZE_POWDER
@@ -505,7 +525,7 @@ Objectives:
     TaskInfo:
       - ryan03
       - '25'
-      - 'addcf9ea-7f80-429a-b78b-9f2ee0afc8ad,PRISMARINE_SHARD,0'
+      - 'addcf9ea-7f80-429a-b78b-9f2ee0afc8ad,UNIVERSALITEM,CORRUPTED_SHARD'
     Description: 'Collect &dCorrupted Shards'
     DisplayItem:
       ItemMaterial: BLAZE_POWDER
@@ -540,7 +560,7 @@ Objectives:
     TaskInfo:
       - ryan05
       - '1'
-      - 'addcf9ea-7f80-429a-b78b-9f2ee0afc8ad,BLAZE_POWDER,0'
+      - 'addcf9ea-7f80-429a-b78b-9f2ee0afc8ad,UNIVERSALITEM,INFESTED_FIRE'
     Description: 'Slay &c&oThe Beast&e, return to &aRyan'
     DisplayItem:
       ItemMaterial: BLAZE_POWDER
@@ -723,7 +743,8 @@ Objectives:
       - '1'
       - 'mountains_village'
     StringRewards:
-      - 'MESSAGE &aYou can now fast travel to the village from the portal at &c/hub' # TODO Add permission
+      - 'MESSAGE &aYou can now fast travel to the village from the portal at &c/hub'
+      - "SETPERMISSION universalcore.warp.mountains_village"
     Catagory: TRIGGER
 
   ####################

@@ -85,7 +85,7 @@ public class UniversalEnchantment {
         else if (e == SANDSTONE_LOVER)
             return "&710% mining speed on (red) sandstone and\n&7+10% chance for red sandstone to turn into sandstone";
         else if (e == Enchantment.DIG_SPEED)
-            return "&7Mine all blocks +25% faster and 5% for subsequent level";
+            return "&7Mine all blocks +25% faster and +5% for subsequent levels";
         else if (e == COAL_LOVER)
             return "&710% mining speed on coal ore/block and\n&7+10% chance for coal ore to turn into coal block";
         else if (e == IRON_LOVER)

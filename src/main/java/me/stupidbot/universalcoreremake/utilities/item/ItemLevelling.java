@@ -51,7 +51,7 @@ public class ItemLevelling {
             ItemBuilder ib = new ItemBuilder(i).name("&r" + name + " &5&l" + lvl)
                     .clearLore()
                     .lore(metaStr, false)
-                    .lore("&7XP: &a" + TextUtils.addCommas(currentXp) + "&7/&a" + TextUtils.addCommas(xpToNextLevel(lvl))
+                    .lore("&7XP: &a" + TextUtils.addCommas(currentXp) + "&7/&b" + TextUtils.addCommas(xpToNextLevel(lvl))
                             + " &7[" + TextUtils.getProgressBar(currentXp, xpToNextLevel(lvl), 18, "|",
                             "&a", "&8") + "&7]");
 

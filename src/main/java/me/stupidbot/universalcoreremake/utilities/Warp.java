@@ -30,7 +30,7 @@ public class Warp {
         warpsDictionary.put(mountainsVillage.getId(), warps.size());
         warps.add(mountainsVillage);
 
-        Warp bebex = new Warp(new Location(Bukkit.getWorld("world"), -78.5d, 4d, -153.5d, -90f, 0f),
+        Warp bebex = new Warp(new Location(Bukkit.getWorld("world"), 78.5d, 4d, -153.5d, 90f, 0f),
                 "bebex", "Bebex Mine");
         warpsDictionary.put(bebex.getId(), warps.size());
         warps.add(bebex);
