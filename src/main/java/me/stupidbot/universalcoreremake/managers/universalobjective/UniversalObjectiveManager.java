@@ -15,6 +15,7 @@ import me.stupidbot.universalcoreremake.utilities.FileUtils;
 import me.stupidbot.universalcoreremake.utilities.StringReward;
 import me.stupidbot.universalcoreremake.utilities.TextUtils;
 import me.stupidbot.universalcoreremake.utilities.item.ItemBuilder;
+import me.stupidbot.universalcoreremake.utilities.item.ItemMetadata;
 import me.stupidbot.universalcoreremake.utilities.item.ItemUtils;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
@@ -157,17 +158,24 @@ public class UniversalObjectiveManager implements Listener {
                     if (uo.getTask() == task) {
                         String[] data = uo.getTaskInfo()[2].split(",");
                         if (data[0].equals(taskInfo)) { // Is the right NPC clicked? Yes? Then do item checks
+                            boolean useMaterial = !(data[1].equalsIgnoreCase("UNIVERSALITEM") ||
+                                    data[1].equalsIgnoreCase("UITEM"));
                             Material m = Material.matchMaterial(data[1]);
-                            short itemData = Short.parseShort(data[2]);
+                            short itemData = 0;
+                            try {
+                                itemData = Short.parseShort(data[2]);
+                            } catch (NumberFormatException | NullPointerException ignored) { }
                             int progress = uo.getProgress(p);
 
                             int amti = 0;
                             for (int i = 0; i < p.getInventory().getSize(); i++) {
                                 ItemStack item = p.getInventory().getItem(i);
                                 //noinspection deprecation
-                                if (item != null &&
+                                if ((useMaterial && item != null &&
                                         item.getType() == m &&
-                                        item.getData().getData() == itemData) {
+                                        item.getData().getData() == itemData) ||
+                                        (!useMaterial && ItemMetadata.hasMeta(item, "ITEM") &&
+                                                data[2].equalsIgnoreCase(ItemMetadata.getMeta(item, "ITEM")))) {
                                     int remove = Math.min(item.getAmount(), getNeeded(uo) - (progress + amti));
                                     amti += remove;
 

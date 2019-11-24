@@ -11,7 +11,7 @@ public class CorruptedSword extends ItemStack {
     public CorruptedSword() {
         super(ItemMetadata.setMeta(
                 ItemMetadata.setMeta(
-                        new ItemBuilder(new ItemStack(Material.GOLD_SWORD)).name("&rCorrupted Sword")
+                        new ItemBuilder(Material.GOLD_SWORD).name("&rCorrupted Sword")
                                 .enchantment(UniversalEnchantment.GLOW).flag(ItemFlag.values())
                                 .lore("&7Damage: &a+10")
                                 .lore("")

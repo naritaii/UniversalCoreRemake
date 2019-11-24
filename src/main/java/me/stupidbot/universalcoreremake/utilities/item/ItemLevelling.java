@@ -3,20 +3,14 @@ package me.stupidbot.universalcoreremake.utilities.item;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.enchantments.UniversalEnchantment;
 import me.stupidbot.universalcoreremake.utilities.TextUtils;
-import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 public class ItemLevelling {
-    private static final List<Material> pickaxes =  Arrays.asList(Material.WOOD_PICKAXE, Material.STONE_PICKAXE,
-            Material.IRON_PICKAXE, Material.GOLD_PICKAXE, Material.DIAMOND_PICKAXE);
-
     private static ItemStack giveXp(ItemStack i, int amount) {
         Map<String, String> meta = ItemMetadata.getMeta(i);
         int currentXp = Integer.parseInt(meta.getOrDefault("XP", "0")) + amount;
@@ -25,7 +19,7 @@ public class ItemLevelling {
         int neededXp = xpToNextLevel(lvl);
 
         ItemMetadata.setMeta(i, "TOTAL_XP", totalXp);
-        if (currentXp  >= neededXp) { // TODO Account for multiple level ups
+        if (currentXp >= neededXp) { // TODO Account for multiple level ups
             ItemMetadata.setMeta(i, "XP", currentXp - neededXp);
             ItemMetadata.setMeta(i, "LEVEL", ++lvl);
             return updateItem(i);
@@ -108,9 +102,5 @@ public class ItemLevelling {
 
     private static int xpToNextLevel(int lvl) {
         return (int) ((Math.pow(++lvl, 2) * 2));
-    }
-
-    public static List<Material> getPickaxes() {
-        return pickaxes;
     }
 }

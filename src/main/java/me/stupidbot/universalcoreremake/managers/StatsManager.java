@@ -1,6 +1,7 @@
 package me.stupidbot.universalcoreremake.managers;
 
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
+import me.stupidbot.universalcoreremake.items.UniversalItem;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
 import me.stupidbot.universalcoreremake.utilities.TextUtils;
 import me.stupidbot.universalcoreremake.utilities.item.ItemMetadata;
@@ -8,16 +9,19 @@ import me.stupidbot.universalcoreremake.utilities.item.ItemUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -27,7 +31,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class StatsManager implements Listener {
-    private final Map<UUID, List<ItemStack>> equipment = new ConcurrentHashMap<>();
+    public final Map<UUID, List<ItemStack>> equipment = new ConcurrentHashMap<>();
 
     public StatsManager() {
         Bukkit.getScheduler().runTaskTimer(UniversalCoreRemake.getInstance(), () ->
@@ -51,7 +55,7 @@ public class StatsManager implements Listener {
                 p.getItemInHand().getType() != Material.AIR &&
                 !p.getItemInHand().getType().toString().endsWith("_HELMET") &&
                 !p.getItemInHand().getType().toString().endsWith("_CHESTPLATE") &&
-                !p.getItemInHand().getType().toString().endsWith("_CHESTPLATE") &&
+                !p.getItemInHand().getType().toString().endsWith("_LEGGINGS") &&
                 !p.getItemInHand().getType().toString().endsWith("_BOOTS") &&
                 p.getItemInHand().getType() != Material.SKULL_ITEM &&
                 !ItemMetadata.hasMeta(p.getItemInHand(), "HAT"))
@@ -59,7 +63,20 @@ public class StatsManager implements Listener {
         return equipment;
     }
 
+    private final Set<UUID> slimeSet = new HashSet<>();
     private void recalculateStats(Player p) {
+        if (equipment.get(p.getUniqueId()).containsAll(Arrays.asList(UniversalItem.SLIME_HELMET,
+                UniversalItem.SLIME_CHESTPLATE, UniversalItem.SLIME_LEGGINGS, UniversalItem.SLIME_BOOTS))) {
+            if (!slimeSet.contains(p.getUniqueId())) {
+                slimeSet.add(p.getUniqueId());
+                p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 0,
+                        true, true), true);
+            }
+        }  else if (slimeSet.contains(p.getUniqueId())) {
+            slimeSet.remove(p.getUniqueId());
+            p.removePotionEffect(PotionEffectType.JUMP);
+        }
+
         updateHealth(p);
         updateStamina(p);
         p.setWalkSpeed(getSpeed(p));
@@ -73,15 +90,19 @@ public class StatsManager implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void OnPlayerItemConsume(PlayerItemConsumeEvent e) {
-        ItemStack i = e.getItem();
-        if (i.getType() != Material.POTION) {
-            Player p = e.getPlayer();
+        try {
+            ItemStack i = e.getItem();
+            if (i.getType() != Material.POTION) {
+                Player p = e.getPlayer();
+                e.setCancelled(true);
+                p.setItemInHand(ItemUtils.removeItem(p.getItemInHand(), 1));
+                int stamina = BaseFoodStamina.valueOf(i.getType().toString()).getBaseFoodStamina();
+                addStamina(p, stamina);
+                TextUtils.sendActionbar(p, "&3Stamina &a+" + stamina +
+                        " &e(" + getStamina(p) + "/" + getMaxStamina(p) + ")");
+            }
+        } catch (IllegalArgumentException ex) {
             e.setCancelled(true);
-            p.setItemInHand(ItemUtils.removeItem(p.getItemInHand(), 1));
-            int stamina = BaseFoodStamina.valueOf(i.getType().toString()).getBaseFoodStamina();
-            addStamina(p, stamina);
-            TextUtils.sendActionbar(p, "&3Stamina &a+" + stamina +
-                    " &e(" + getStamina(p) + "/" + getMaxStamina(p) + ")");
         }
     }
 
@@ -159,6 +180,9 @@ public class StatsManager implements Listener {
                 break;
             }
 
+        if (slimeSet.contains(p.getUniqueId()))
+            base += 0.15f;
+
         return (base + 0.8f) * 100;
     }
 
@@ -170,6 +194,9 @@ public class StatsManager implements Listener {
             if (meta.containsKey("SPEED"))
                 spd += Float.parseFloat(meta.get("SPEED"));
         }
+
+        if (slimeSet.contains(p.getUniqueId()))
+            spd += 0.2f;
 
         return spd;
     }
@@ -188,7 +215,7 @@ public class StatsManager implements Listener {
     private void updateHealth(Player p) {
         double maxHealth = getMaxHealth(p);
         p.setMaxHealth(maxHealth);
-        p.setHealthScale(Math.floor(maxHealth / 5));
+        p.setHealthScale(Math.floor(maxHealth / 10) * 2);
     }
 
     private final Random r = new Random();
@@ -210,12 +237,33 @@ public class StatsManager implements Listener {
                 }
                 e.setDamage(damage);
             }
+        } else if (e.getDamager() instanceof Arrow) {
+            Arrow a = (Arrow) e.getDamager();
+            ItemStack bow = (ItemStack) a.getMetadata("BOW").get(0).value();
+            Map<String, String> m = ItemMetadata.getMeta(bow);
+            if (m.containsKey("DAMAGE")) {
+                double damage;
+                String[] range = m.get("DAMAGE").split("_");
+                if (range.length == 1)
+                    damage = Double.parseDouble(range[0]);
+                else {
+                    double rangeMin = Double.parseDouble(range[0]);
+                    double rangeMax = Double.parseDouble(range[1]);
+                    damage = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
+                }
+                e.setDamage(damage);
+            }
         }
 
         if (e.getEntity() instanceof Player) {
             Player p = (Player) e.getEntity();
             e.setDamage(calculateDamage(p, e.getDamage()));
         }
+    }
+
+    @EventHandler
+    public void OnFireArrow(EntityShootBowEvent e) {
+        e.getProjectile().setMetadata("BOW", new FixedMetadataValue(UniversalCoreRemake.getInstance(), e.getBow()));
     }
 
     private double calculateDamage(Player p, double damage) {
@@ -234,6 +282,7 @@ public class StatsManager implements Listener {
         return defensePoints;
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void modifyOverStack(net.minecraft.server.v1_8_R3.Item item, int amount) {
         try {
             Field field = net.minecraft.server.v1_8_R3.Item.class.getDeclaredField("maxStackSize");

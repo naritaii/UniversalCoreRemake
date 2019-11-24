@@ -29,6 +29,16 @@ public class Warp {
                 "mountains_village", "Village");
         warpsDictionary.put(mountainsVillage.getId(), warps.size());
         warps.add(mountainsVillage);
+
+        Warp bebex = new Warp(new Location(Bukkit.getWorld("world"), -78.5d, 4d, -153.5d, -90f, 0f),
+                "bebex", "Bebex Mine");
+        warpsDictionary.put(bebex.getId(), warps.size());
+        warps.add(bebex);
+
+        Warp caverna = new Warp(new Location(Bukkit.getWorld("world"), 680.5d, 72d, -415.5d, -90f, 0f),
+                "caverna", "Caverna Mine");
+        warpsDictionary.put(caverna.getId(), warps.size());
+        warps.add(caverna);
     }
 
     public static List<Warp> getWarps() {

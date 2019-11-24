@@ -16,6 +16,7 @@ import me.stupidbot.universalcoreremake.effects.BlockRegen;
 import me.stupidbot.universalcoreremake.effects.EnhancedBlockBreak;
 import me.stupidbot.universalcoreremake.enchantments.UniversalEnchantment;
 import me.stupidbot.universalcoreremake.events.UniversalBlockBreakEvent;
+import me.stupidbot.universalcoreremake.items.UniversalItem;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
 import me.stupidbot.universalcoreremake.utilities.FileUtils;
 import me.stupidbot.universalcoreremake.utilities.LocationUtils;
@@ -54,6 +55,7 @@ public class MiningManager implements Listener {
     }
 
     private final String configPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator + "mining.yml";
+
     public void reload() {
         File path = UniversalCoreRemake.getInstance().getDataFolder();
         if (!path.exists())
@@ -75,6 +77,11 @@ public class MiningManager implements Listener {
         ironPickMultiplier = Float.parseFloat(c.getString("Mining.PickaxeMultiplier.Iron"));
         stonePickMultiplier = Float.parseFloat(c.getString("Mining.PickaxeMultiplier.Stone"));
         woodPickMultiplier = Float.parseFloat(c.getString("Mining.PickaxeMultiplier.Wood"));
+        diamondAxeMultiplier = Float.parseFloat(c.getString("Mining.AxeMultiplier.Diamond"));
+        goldAxeMultiplier = Float.parseFloat(c.getString("Mining.AxeMultiplier.Gold"));
+        ironAxeMultiplier = Float.parseFloat(c.getString("Mining.AxeMultiplier.Iron"));
+        stoneAxeMultiplier = Float.parseFloat(c.getString("Mining.AxeMultiplier.Stone"));
+        woodAxeMultiplier = Float.parseFloat(c.getString("Mining.AxeMultiplier.Wood"));
 
         for (String s : c.getConfigurationSection("Mining.Blocks").getKeys(false)) {
             Material m = Material.getMaterial(s);
@@ -184,8 +191,9 @@ public class MiningManager implements Listener {
                 Player p = Bukkit.getPlayer(id);
                 Block b = miningPlayers.get(id);
                 MineableBlock mb = registeredMineableBlocks.get(registeredMineableBlocksDictionary.get(b.getType()));
-                boolean usingItem = ItemLevelling.getPickaxes().contains(p.getItemInHand().getType());
                 ItemStack itemInHand = p.getItemInHand();
+                float speedMod = getItemMultiplier(itemInHand, mb.getType());
+                boolean usingItem = speedMod > 0;
                 int stamina = mb.getBaseStaminaUsage();
                 if (usingItem) {
                     Map<String, String> m = ItemMetadata.getMeta(itemInHand);
@@ -202,27 +210,30 @@ public class MiningManager implements Listener {
                         TextUtils.sendSubtitle(p, "&c&lNOT ENOUGH STAMINA", 5, 20, 5);
                 } else {
                     int d = timer.getOrDefault(id, 0) + 1;
-                    float speedMod = getItemMultiplier(itemInHand.getType());
                     if (usingItem) {
                         if (((mb.getType() == Material.SANDSTONE || mb.getType() == Material.RED_SANDSTONE) &&
                                 itemInHand.containsEnchantment(UniversalEnchantment.SANDSTONE_LOVER)) ||
                                 ((mb.getType() == Material.COAL_ORE || mb.getType() == Material.COAL_BLOCK) &&
-                                        itemInHand.containsEnchantment(UniversalEnchantment.COAL_LOVER))  ||
+                                        itemInHand.containsEnchantment(UniversalEnchantment.COAL_LOVER)) ||
                                 ((mb.getType() == Material.IRON_ORE || mb.getType() == Material.IRON_BLOCK) &&
                                         itemInHand.containsEnchantment(UniversalEnchantment.IRON_LOVER)))
-                                speedMod += 0.1f;
+                            speedMod += 0.1f;
                         if (itemInHand.containsEnchantment(Enchantment.DIG_SPEED))
                             speedMod += 0.2f + (itemInHand.getEnchantmentLevel(Enchantment.DIG_SPEED) * 0.05f);
                     }
+
+                    if (UniversalCoreRemake.getStatsManager().equipment.get(p.getUniqueId()).containsAll(
+                            Arrays.asList(UniversalItem.MINERS_HELMET,
+                            UniversalItem.MINERS_CHESTPLATE, UniversalItem.MINERS_LEGGINGS, UniversalItem.MINERS_BOOTS)))
+                        speedMod += 0.2f;
 
                     float durabilityMod = mb.getDurability() * speedMod;
                     int finishedInt = (int) ((mb.getDurability() - durabilityMod) * 20);
 
                     if (d < finishedInt) { // If Still Mining
-                        if (d % 4 == 0) { // Animate lazily
-                            int stage = (int) Math.floor((d * 10f) / finishedInt);
-                            breakAnim(p, b, stage);
-                        }
+                        // Animate
+                        int stage = (int) Math.floor((d * 10f) / finishedInt);
+                        breakAnim(p, b, stage);
                         timer.put(id, d);
                     }
                     // If Finished Mining
@@ -236,7 +247,7 @@ public class MiningManager implements Listener {
                         xp = e.getXp();
                         stamina = e.getStamina();
                         itemInHand = p.getItemInHand(); // Updating in case it's removed e.g. by an enchant
-                        usingItem = ItemLevelling.getPickaxes().contains(p.getItemInHand().getType());
+                        // usingItem = speedMod > 0;
 
 
                         // Handling player
@@ -263,8 +274,8 @@ public class MiningManager implements Listener {
                         // Enhance Block?
                         float enhanceChance = mb.getEnhanceChance();
                         if (usingItem)
-                            if  ((mb.getType() == Material.SANDSTONE &&
-                                itemInHand.containsEnchantment(UniversalEnchantment.SANDSTONE_LOVER)) ||
+                            if ((mb.getType() == Material.SANDSTONE &&
+                                    itemInHand.containsEnchantment(UniversalEnchantment.SANDSTONE_LOVER)) ||
                                     (mb.getType() == Material.COAL_ORE &&
                                             itemInHand.containsEnchantment(UniversalEnchantment.COAL_LOVER)) ||
                                     (mb.getType() == Material.IRON_ORE &&
@@ -274,12 +285,18 @@ public class MiningManager implements Listener {
                             UniversalCoreRemake.getBlockMetadataManager().setMeta(b, "MINEABLE",
                                     mb.getEnhanceBlock().toString());
 
+                        //noinspection deprecation
+                        UniversalCoreRemake.getBlockMetadataManager().setMeta(b, "BLOCK_DATA",
+                                   b.getData() + "");
+
 
                         // What To Do On Block Break?
                         switch (mb.getOnBreak()) {
                             case DEFAULT:
                                 Effect blockBreak = new BlockBreak(UniversalCoreRemake.getEffectManager());
                                 blockBreak.material = b.getType();
+                                //noinspection deprecation
+                                blockBreak.materialData = b.getData();
                                 blockBreak.setLocation(b.getLocation());
                                 blockBreak.run();
 
@@ -292,6 +309,8 @@ public class MiningManager implements Listener {
                             case REPLACE_AIR:
                                 Effect blockBreak1 = new BlockBreak(UniversalCoreRemake.getEffectManager());
                                 blockBreak1.material = b.getType();
+                                //noinspection deprecation
+                                blockBreak1.materialData = b.getData();
                                 blockBreak1.setLocation(b.getLocation());
                                 blockBreak1.run();
 
@@ -331,13 +350,17 @@ public class MiningManager implements Listener {
 
                 // Regen Block
                 if (i < 1 && UniversalCoreRemake.getBlockMetadataManager().hasMeta(b, "MINEABLE")) {
-                         b.setType(Material.valueOf(
+                    b.setType(Material.valueOf(
                             UniversalCoreRemake.getBlockMetadataManager().getMeta(b, "MINEABLE")));
+                    //noinspection deprecation
+                    b.setData(Byte.parseByte(UniversalCoreRemake.getBlockMetadataManager().getMeta(b, "BLOCK_DATA")));
 
                     if (UniversalCoreRemake.getBlockMetadataManager().hasMeta(b, "IN_UNIVERSAL_MINE_REGION")) { // If it's in a mining region we don't need to store that its mineable
                         UniversalCoreRemake.getBlockMetadataManager().setMeta(b, "IN_UNIVERSAL_MINE_REGION", null);
                         UniversalCoreRemake.getBlockMetadataManager().setMeta(b, "MINEABLE", null);
                     }
+                    UniversalCoreRemake.getBlockMetadataManager().setMeta(b, "BLOCK_DATA", null);
+
 
                     Effect eff = new BlockRegen(UniversalCoreRemake.getEffectManager());
                     eff.setLocation(b.getLocation());
@@ -355,10 +378,13 @@ public class MiningManager implements Listener {
             b.getChunk().load();
             b.setType(Material.valueOf(
                     UniversalCoreRemake.getBlockMetadataManager().getMeta(b, "MINEABLE")));
+            //noinspection deprecation
+            b.setData(Byte.parseByte(UniversalCoreRemake.getBlockMetadataManager().getMeta(b, "BLOCK_DATA")));
             if (UniversalCoreRemake.getBlockMetadataManager().hasMeta(b, "IN_UNIVERSAL_MINE_REGION")) { // If it's in a mining region we don't need to store that its mineable
                 UniversalCoreRemake.getBlockMetadataManager().setMeta(b, "IN_UNIVERSAL_MINE_REGION", null);
                 UniversalCoreRemake.getBlockMetadataManager().setMeta(b, "MINEABLE", null);
             }
+            UniversalCoreRemake.getBlockMetadataManager().setMeta(b, "BLOCK_DATA", null);
             regen.remove(b);
         });
     }
@@ -389,7 +415,7 @@ public class MiningManager implements Listener {
             UniversalCoreRemake.getProtocolManager().sendServerPacket(p, breakAnim);
 
             for (Player other : Bukkit.getOnlinePlayers()) {
-                if (other != p && other.getLocation().distanceSquared(p.getLocation()) <= 11.3137085) { // 128 blocks squared
+                if (other != p && other.getLocation().distanceSquared(p.getLocation()) <= 16384) { // 128 blocks squared
                     UniversalCoreRemake.getProtocolManager().sendServerPacket(other, breakAnim);
                     ((CraftPlayer) other).getHandle().playerConnection.sendPacket(punchAnim);
                 }
@@ -408,22 +434,47 @@ public class MiningManager implements Listener {
     private float ironPickMultiplier = 0.5f;
     private float stonePickMultiplier = 0.4f;
     private float woodPickMultiplier = 0.2f;
+    private float diamondAxeMultiplier = 0.75f;
+    private float goldAxeMultiplier = 0.55f;
+    private float ironAxeMultiplier = 0.5f;
+    private float stoneAxeMultiplier = 0.4f;
+    private float woodAxeMultiplier = 0.2f;
 
-    private float getItemMultiplier(Material m) {
-        switch (m) {
-            case WOOD_PICKAXE:
-                return woodPickMultiplier;
-            case STONE_PICKAXE:
-                return stonePickMultiplier;
-            case IRON_PICKAXE:
-                return ironPickMultiplier;
-            case GOLD_PICKAXE:
-                return goldPickMultiplier;
-            case DIAMOND_PICKAXE:
-                return diamondPickMultiplier;
-            default:
-                return 0f;
-        }
+    private float getItemMultiplier(ItemStack i, Material b) {
+        if (ItemMetadata.hasMeta(i, "NO_MINING_XP"))
+            return 0f;
+
+        Material m = i.getType();
+        if (b == Material.LOG || b == Material.LOG_2)
+            switch (m) {
+                case WOOD_AXE:
+                    return woodAxeMultiplier;
+                case STONE_AXE:
+                    return stoneAxeMultiplier;
+                case IRON_AXE:
+                    return ironAxeMultiplier;
+                case GOLD_AXE:
+                    return goldAxeMultiplier;
+                case DIAMOND_AXE:
+                    return diamondAxeMultiplier;
+                default:
+                    return 0f;
+            }
+        else
+            switch (m) {
+                case WOOD_PICKAXE:
+                    return woodPickMultiplier;
+                case STONE_PICKAXE:
+                    return stonePickMultiplier;
+                case IRON_PICKAXE:
+                    return ironPickMultiplier;
+                case GOLD_PICKAXE:
+                    return goldPickMultiplier;
+                case DIAMOND_PICKAXE:
+                    return diamondPickMultiplier;
+                default:
+                    return 0f;
+            }
     }
 
     enum BreakBehavior {

@@ -35,7 +35,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class LeaderboardManager implements Listener {
-    public static Set<UUID> safeDeposit = new HashSet<>();
+    public static final Set<UUID> safeDeposit = new HashSet<>();
     private final String folderPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator + "data";
     private final String dataPath = folderPath + File.separator + "leaderboard_data.json";
     private final Map<String, Map<UUID, Double>> sortedData = new ConcurrentHashMap<>();

@@ -11,7 +11,7 @@ public class BoneSword extends ItemStack {
     public BoneSword() {
         super(ItemMetadata.setMeta(
                 ItemMetadata.setMeta(
-                        new ItemBuilder(new ItemStack(Material.IRON_SWORD)).name("&rBone Sword")
+                        new ItemBuilder(Material.IRON_SWORD).name("&rBone Sword")
                                 .enchantment(UniversalEnchantment.KILLER_OF_DEATH).flag(ItemFlag.values())
                                 .lore("&7Damage: &a+6")
                                 .lore("")

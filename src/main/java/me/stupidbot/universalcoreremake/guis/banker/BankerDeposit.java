@@ -15,7 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class BankerDeposit implements InventoryProvider {
+class BankerDeposit implements InventoryProvider {
 
     public static SmartInventory getInventory(Player p) {
         return SmartInventory.builder()
@@ -72,23 +72,21 @@ public class BankerDeposit implements InventoryProvider {
         contents.set(1, 7, ClickableItem.of(new ItemBuilder(Material.CHEST).name("&aDeposit Specific Amount")
                         .lore("&7Current bank balance: &6$" + bankedS)
                         .lore("")
-                        .lore("&eClick to deposit a specific amount!").build(), e -> {
-                    UniversalCoreRemake.getSignGui().newMenu(p, Lists.newArrayList("",
-                            "&e^^^^^^^^^^^^^^^", "&rEnter the amount", "&rto deposit"))
-                            .response((player, lines) -> {
-                                try {
-                                    double deposit = Math.min(Math.abs(Double.parseDouble(lines[0])), UniversalCoreRemake.getEconomy().getBalance(p));
-                                    up.addBankedMoney(deposit);
-                                    UniversalCoreRemake.getEconomy().withdrawPlayer(p, deposit);
-                                    getInventory(p).open(p);
-                                    return true;
-                                } catch (NumberFormatException nfe) {
-                                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cInvalid number."));
-                                    getInventory(p).open(p);
-                                    return false;
-                                }
-                            }).open();
-                }
+                        .lore("&eClick to deposit a specific amount!").build(), e -> UniversalCoreRemake.getSignGui().newMenu(p, Lists.newArrayList("",
+                                "&e^^^^^^^^^^^^^^^", "&rEnter the amount", "&rto deposit"))
+                                .response((player, lines) -> {
+                                    try {
+                                        double deposit = Math.min(Math.abs(Double.parseDouble(lines[0])), UniversalCoreRemake.getEconomy().getBalance(p));
+                                        up.addBankedMoney(deposit);
+                                        UniversalCoreRemake.getEconomy().withdrawPlayer(p, deposit);
+                                        getInventory(p).open(p);
+                                        return true;
+                                    } catch (NumberFormatException nfe) {
+                                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cInvalid number."));
+                                        getInventory(p).open(p);
+                                        return false;
+                                    }
+                                }).open()
         ));
 
         contents.set(2, 4, ClickableItem.of(new ItemBuilder(Material.ARROW).name("&eGo Back").build(), e ->

@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 public class RedSandstonePickaxe extends ItemStack {
     public RedSandstonePickaxe() {
         super(ItemLevelling.updateItem(ItemMetadata.setMeta(ItemMetadata.setMeta(ItemMetadata.setMeta(
-                new ItemBuilder(new ItemStack(Material.WOOD_PICKAXE))
+                new ItemBuilder(Material.WOOD_PICKAXE)
                         .enchantment(UniversalEnchantment.SANDSTONE_LOVER).unbreakable(true).flag(ItemFlag.values()).build(),
                 "CUSTOM_NAME", "&cRed Sandstone Pickaxe"),
                 "STAMINA_USE", "1"),

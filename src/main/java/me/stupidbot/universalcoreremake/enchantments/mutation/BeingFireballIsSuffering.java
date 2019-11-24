@@ -67,7 +67,12 @@ public class BeingFireballIsSuffering extends Enchantment implements Listener {
             if (i.containsEnchantment(this))
                 if (UniversalCoreRemake.getStatsManager().getStamina(p) >= staminaCost) {
                     UniversalCoreRemake.getStatsManager().removeStamina(p, staminaCost);
-                    p.launchProjectile(SmallFireball.class).setVelocity(p.getLocation().getDirection().multiply(0.5));
+                    SmallFireball f = p.launchProjectile(SmallFireball.class);
+                    f.setVelocity(p.getLocation().getDirection().multiply(0.5));
+                    f.setBounce(true);
+                    f.setIsIncendiary(true);
+                    f.setShooter(p);
+                    // f.setOp(true);
                     TextUtils.sendActionbar(p, "&3Stamina: &c-" + staminaCost);
                 }
         }

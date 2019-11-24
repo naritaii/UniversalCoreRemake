@@ -10,6 +10,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -25,6 +26,19 @@ public class TextUtils {
 
     public static String addCommas(double d) {
         return NumberFormat.getCurrencyInstance(Locale.US).format(d).substring(1);
+    }
+
+    public static String format(double value) {
+        int power;
+        String suffix = " kmbt";
+        String formattedNumber = "";
+
+        NumberFormat formatter = new DecimalFormat("#,###.##");
+        power = (int) StrictMath.log10(value);
+        value = value / (Math.pow(10, (power / 3d) * 3));
+        formattedNumber = formatter.format(value);
+        formattedNumber = formattedNumber + suffix.charAt(power / 3);
+        return formattedNumber.length() > 4 ? formattedNumber.replaceAll("\\.[0-9]+", "") : formattedNumber;
     }
 
     public static String getChatColor(OfflinePlayer p) {

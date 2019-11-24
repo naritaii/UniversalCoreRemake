@@ -46,10 +46,12 @@ public class UniversalCoreRemake extends JavaPlugin {
     private static InventoryManager inventoryManager = null;
     private static MOTDManager motdManager;
     private static UniversalObjectiveManager universalObjectiveManager;
+    @SuppressWarnings("FieldCanBeLocal")
     private static ScoreboardManager scoreboardManager;
     private static LeaderboardManager leaderboardManager;
     private static RewardManager rewardManager;
     private static WorldGuardPlugin worldGuardPlugin;
+    @SuppressWarnings("FieldCanBeLocal")
     private static CommandExecutor commandExecutor;
 
     @Override

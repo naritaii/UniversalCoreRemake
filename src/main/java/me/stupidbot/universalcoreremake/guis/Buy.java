@@ -98,12 +98,14 @@ public class Buy implements InventoryProvider {
                         for (ItemStack tradeItem : tradeItems) {
                             int has = 0;
                             for (ItemStack item : pinv.getContents()) {
+                                //noinspection deprecation,ConstantConditions
                                 if (item != null &&
                                         (item.isSimilar(tradeItem) ||
                                                 (ItemMetadata.hasMeta(tradeItem, "ITEM") &&
                                                         ItemMetadata.getMeta(tradeItem, "ITEM").equalsIgnoreCase(
                                                                 ItemMetadata.getMeta(item, "ITEM"))) ||
-                                                (!ItemMetadata.hasMeta(tradeItem, "ITEM") && tradeItem.getType() == item.getType())))
+                                                (!ItemMetadata.hasMeta(tradeItem, "ITEM") && tradeItem.getType() == item.getType()
+                                                        && item.getData().getData() == tradeItem.getData().getData())))
                                     has += item.getAmount();
                             }
                             hasItems = has >= tradeItem.getAmount() * amt;
@@ -118,12 +120,14 @@ public class Buy implements InventoryProvider {
                                 int needed = tradeItem.getAmount();
                                 for (ItemStack item : pinv.getContents())
                                     if (removed < needed)
+                                        //noinspection deprecation,ConstantConditions
                                         if (item != null &&
                                                 (item.isSimilar(tradeItem) ||
                                                         (ItemMetadata.hasMeta(tradeItem, "ITEM") &&
                                                                 ItemMetadata.getMeta(tradeItem, "ITEM").equalsIgnoreCase(
                                                                         ItemMetadata.getMeta(item, "ITEM"))) ||
-                                                        (!ItemMetadata.hasMeta(tradeItem, "ITEM") && tradeItem.getType() == item.getType()))) {
+                                                        (!ItemMetadata.hasMeta(tradeItem, "ITEM") && tradeItem.getType() == item.getType()
+                                                                && item.getData().getData() == tradeItem.getData().getData()))) {
                                             removed += item.getAmount();
                                             if (removed >= needed)
                                                 ItemUtils.removeItem(item,
@@ -134,8 +138,7 @@ public class Buy implements InventoryProvider {
                             }
 
                             for (int i = 0; i < amt; i++)
-                                for (ItemStack tradeItem : tradeItems)
-                                    ItemUtils.addItemSafe(p, tradeItem);
+                                ItemUtils.addItemSafe(p, si.getItem());
 
                             p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                     "&aYou bought &3" + amt + "x&6 " + dName));

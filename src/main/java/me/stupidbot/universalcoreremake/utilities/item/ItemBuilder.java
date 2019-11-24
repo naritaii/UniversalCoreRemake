@@ -58,7 +58,7 @@ public class ItemBuilder implements Listener {
      * @since 1.0
      */
     public ItemBuilder(final ItemStack is) {
-        this.is = is;
+        this.is = is.clone();
     }
 
     /**

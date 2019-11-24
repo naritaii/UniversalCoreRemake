@@ -96,7 +96,7 @@ class UniversalCoreExpansion extends PlaceholderExpansion {
                 return PlayerLevelling.levelTag(upm.getUniversalPlayer(p).getLevel());
             case "levelbar": // %universalcore_levelbar%
                 UniversalPlayer up = upm.getUniversalPlayer(p);
-                return ChatColor.translateAlternateColorCodes('7', "&7[" +
+                return ChatColor.translateAlternateColorCodes('&', "&7[" +
                         TextUtils.getProgressBar(up.getXp(),
                                 PlayerLevelling.xpToNextLevel(up.getLevel()),
                                 18,
@@ -132,7 +132,7 @@ class UniversalCoreExpansion extends PlaceholderExpansion {
                 try {
                     if (up3.getRewardTimestamp("Vote") == null || rm.checkDaysBetween(up3.getRewardTimestamp("Vote"),
                             RewardManager.getSimpleDateFormat().format(new Date())) > 0)
-                        return "VOTE DELIVERY AVAILABLE";
+                        return "VOTE REWARD AVAILABLE";
                     else
                         return "";
                 } catch (ParseException e) {
@@ -145,6 +145,9 @@ class UniversalCoreExpansion extends PlaceholderExpansion {
                 return UniversalCoreRemake.getPermissions().playerHas("world", p, "universalcore.dj") ?
                         "(Fake)" :
                         "";
+            case "balance": // %universalcore_balance%
+                return TextUtils.format(upm.getUniversalPlayer(p).getBankedMoney() +
+                        UniversalCoreRemake.getEconomy().getBalance(p));
             default:
                 return null;
         }

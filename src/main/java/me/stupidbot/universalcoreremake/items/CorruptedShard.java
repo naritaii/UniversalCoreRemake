@@ -5,10 +5,10 @@ import me.stupidbot.universalcoreremake.utilities.item.ItemMetadata;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class CorruptedShard extends ItemStack {
+class CorruptedShard extends ItemStack {
     public CorruptedShard() {
         super(ItemMetadata.setMeta(
-                new ItemBuilder(new ItemStack(Material.PRISMARINE_SHARD)).name("&dCorrupted Shard").build(),
+                new ItemBuilder(Material.PRISMARINE_SHARD).name("&dCorrupted Shard").build(),
                 "ITEM", "CORRUPTED_SHARD"));
     }
 }

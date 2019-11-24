@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 public class CoalOrePickaxe extends ItemStack {
     public CoalOrePickaxe() {
         super(ItemLevelling.updateItem(ItemMetadata.setMeta(ItemMetadata.setMeta(ItemMetadata.setMeta(
-                new ItemBuilder(new ItemStack(Material.WOOD_PICKAXE))
+                new ItemBuilder(Material.WOOD_PICKAXE)
                         .enchantment(UniversalEnchantment.COAL_LOVER).unbreakable(true).flag(ItemFlag.values()).build(),
                 "CUSTOM_NAME", "&cCoal Ore Pickaxe"),
                 "STAMINA_USE", "2"),

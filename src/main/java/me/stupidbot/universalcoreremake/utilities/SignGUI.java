@@ -119,6 +119,7 @@ public final class SignGUI {
             Location location = this.player.getLocation();
             BlockPosition blockPosition = new BlockPosition(location.getBlockX(), location.getBlockY() - 5, location.getBlockZ());
 
+            //noinspection deprecation
             player.sendBlockChange(blockPosition.toLocation(location.getWorld()), Material.WALL_SIGN, (byte) 0);
 
             PacketContainer openSign = ProtocolLibrary.getProtocolManager().createPacket(PacketType.Play.Server.OPEN_SIGN_EDITOR);
