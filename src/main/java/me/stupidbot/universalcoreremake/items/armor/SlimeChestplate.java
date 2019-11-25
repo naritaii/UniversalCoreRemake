@@ -11,7 +11,7 @@ public class SlimeChestplate extends ItemStack {
     public SlimeChestplate() {
         super(ItemMetadata.setMeta(ItemMetadata.setMeta(
                 ItemMetadata.setMeta(
-                        new ItemBuilder(Material.LEATHER_CHESTPLATE).name("&bSlime Chestplate").flag(ItemFlag.values())
+                        new ItemBuilder(Material.LEATHER_CHESTPLATE).name("&bSlime Chestplate").flag(ItemFlag.values()).unbreakable(true)
                                 .color(Color.fromRGB(85, 255, 255))
                                 .lore("&7Health: &a+20")
                                 .lore("&7Defense: &a+1")

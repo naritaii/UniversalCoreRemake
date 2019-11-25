@@ -9,7 +9,7 @@ public class MrMeatsCleaver extends ItemStack {
     public MrMeatsCleaver() {
         super(ItemMetadata.setMeta(ItemMetadata.setMeta(
                 ItemMetadata.setMeta(
-                        new ItemBuilder(Material.GOLD_AXE).name("&aMr. Meat's Cleaver")
+                        new ItemBuilder(Material.GOLD_AXE).name("&aMr. Meat's Cleaver").unbreakable(true)
                                 .lore("&7Damage: &a+5-6")
                                 .lore("")
                                 .lore("&7&oGood for cutting flesh...").build(),

@@ -10,7 +10,7 @@ public class ReinforcedIronBoots extends ItemStack {
     public ReinforcedIronBoots() {
         super(ItemMetadata.setMeta(ItemMetadata.setMeta(
                 ItemMetadata.setMeta(
-                        new ItemBuilder(Material.IRON_BOOTS).name("&rReinforced Iron Boots")
+                        new ItemBuilder(Material.IRON_BOOTS).name("&rReinforced Iron Boots").unbreakable(true)
                                 .flag(ItemFlag.values())
                                 .lore("&7Health: &a+5")
                                 .lore("&7Defense: &a+6").build(),

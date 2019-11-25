@@ -11,7 +11,7 @@ public class MinersChestplate extends ItemStack {
     public MinersChestplate() {
         super(ItemMetadata.setMeta(
                 ItemMetadata.setMeta(
-                        new ItemBuilder(Material.LEATHER_CHESTPLATE).name("&rMiner's Chestplate")
+                        new ItemBuilder(Material.LEATHER_CHESTPLATE).name("&rMiner's Chestplate").unbreakable(true)
                                 .color(Color.fromRGB(196, 69, 105))
                                 .flag(ItemFlag.values())
                                 .lore("&7Defense: &a+15")

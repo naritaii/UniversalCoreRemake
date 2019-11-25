@@ -11,7 +11,7 @@ public class LeatherHelmet extends ItemStack {
     public LeatherHelmet() {
         super(ItemMetadata.setMeta(
                 ItemMetadata.setMeta(
-                        new ItemBuilder(Material.LEATHER_HELMET).name("&rLeather Helmet")
+                        new ItemBuilder(Material.LEATHER_HELMET).name("&rLeather Helmet").unbreakable(true)
                                 .color(Color.fromRGB(204, 174, 98))
                                 .flag(ItemFlag.values())
                                 .lore("&7Defense: &a+1").build(),

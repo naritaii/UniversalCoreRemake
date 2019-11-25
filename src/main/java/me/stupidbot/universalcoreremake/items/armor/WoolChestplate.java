@@ -11,7 +11,7 @@ public class WoolChestplate extends ItemStack {
     public WoolChestplate() {
         super(ItemMetadata.setMeta(ItemMetadata.setMeta(
                 ItemMetadata.setMeta(
-                        new ItemBuilder(Material.LEATHER_CHESTPLATE).name("&rWool Chestplate")
+                        new ItemBuilder(Material.LEATHER_CHESTPLATE).name("&rWool Chestplate").unbreakable(true)
                                 .color(Color.fromRGB(245, 246, 250))
                                 .flag(ItemFlag.values())
                                 .lore("&7Health: &a+11")

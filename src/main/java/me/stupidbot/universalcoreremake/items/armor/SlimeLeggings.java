@@ -11,7 +11,7 @@ public class SlimeLeggings extends ItemStack {
     public SlimeLeggings() {
         super(ItemMetadata.setMeta(ItemMetadata.setMeta(
                 ItemMetadata.setMeta(
-                        new ItemBuilder(Material.LEATHER_LEGGINGS).name("&bSlime Leggings").flag(ItemFlag.values())
+                        new ItemBuilder(Material.LEATHER_LEGGINGS).name("&bSlime Leggings").flag(ItemFlag.values()).unbreakable(true)
                                 .color(Color.fromRGB(85, 255, 255))
                                 .lore("&7Health: &a+13")
                                 .lore("&7Defense: &a+1")

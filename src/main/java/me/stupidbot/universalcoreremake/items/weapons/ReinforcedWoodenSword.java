@@ -10,7 +10,7 @@ public class ReinforcedWoodenSword extends ItemStack {
     public ReinforcedWoodenSword() {
         super(ItemMetadata.setMeta(
                 ItemMetadata.setMeta(
-                        new ItemBuilder(Material.WOOD_SWORD).name("&rReinforced Wooden Sword")
+                        new ItemBuilder(Material.WOOD_SWORD).name("&rReinforced Wooden Sword").unbreakable(true)
                                 .flag(ItemFlag.values())
                                 .lore("&7Damage: &a+7").build(),
                         "DAMAGE", "7"),

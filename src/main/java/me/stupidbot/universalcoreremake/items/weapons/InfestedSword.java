@@ -11,7 +11,7 @@ public class InfestedSword extends ItemStack {
     public InfestedSword() {
         super(ItemMetadata.setMeta(
                 ItemMetadata.setMeta(
-                        new ItemBuilder(Material.GOLD_SWORD).name("&9Infested Sword")
+                        new ItemBuilder(Material.GOLD_SWORD).name("&9Infested Sword").unbreakable(true)
                                 .enchantment(Enchantment.FIRE_ASPECT, 2).flag(ItemFlag.values())
                                 .lore("&7Damage: &a+8")
                                 .lore("")

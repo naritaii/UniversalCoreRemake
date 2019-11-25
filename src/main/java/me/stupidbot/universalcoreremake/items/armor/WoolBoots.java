@@ -11,7 +11,7 @@ public class WoolBoots extends ItemStack {
     public WoolBoots() {
         super(ItemMetadata.setMeta(ItemMetadata.setMeta(ItemMetadata.setMeta(
                 ItemMetadata.setMeta(
-                        new ItemBuilder(Material.LEATHER_BOOTS).name("&rWool Boots")
+                        new ItemBuilder(Material.LEATHER_BOOTS).name("&rWool Boots").unbreakable(true)
                                 .color(Color.fromRGB(245, 246, 250))
                                 .flag(ItemFlag.values())
                                 .lore("&7Health: &a+5")

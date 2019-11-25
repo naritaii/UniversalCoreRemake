@@ -10,7 +10,7 @@ public class BasicBow extends ItemStack {
     public BasicBow() {
         super(ItemMetadata.setMeta(
                 ItemMetadata.setMeta(
-                        new ItemBuilder(Material.BOW).name("&rBasic Bow")
+                        new ItemBuilder(Material.BOW).name("&rBasic Bow").unbreakable(true)
                                 .flag(ItemFlag.values())
                                 .lore("&7Damage: &a+7")
                                 .lore("")

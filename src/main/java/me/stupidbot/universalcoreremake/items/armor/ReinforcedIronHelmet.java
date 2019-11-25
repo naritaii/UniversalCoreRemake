@@ -10,7 +10,7 @@ public class ReinforcedIronHelmet extends ItemStack {
     public ReinforcedIronHelmet() {
         super(ItemMetadata.setMeta(ItemMetadata.setMeta(
                 ItemMetadata.setMeta(
-                        new ItemBuilder(Material.IRON_HELMET).name("&rReinforced Iron Helmet")
+                        new ItemBuilder(Material.IRON_HELMET).name("&rReinforced Iron Helmet").unbreakable(true)
                                 .flag(ItemFlag.values())
                                 .lore("&7Health: &a+2")
                                 .lore("&7Defense: &a+5").build(),

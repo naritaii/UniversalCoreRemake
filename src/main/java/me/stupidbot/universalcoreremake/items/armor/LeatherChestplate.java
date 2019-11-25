@@ -11,7 +11,7 @@ public class LeatherChestplate extends ItemStack {
     public LeatherChestplate() {
         super(ItemMetadata.setMeta(ItemMetadata.setMeta(
                 ItemMetadata.setMeta(
-                        new ItemBuilder(Material.LEATHER_CHESTPLATE).name("&rLeather Chestplate")
+                        new ItemBuilder(Material.LEATHER_CHESTPLATE).name("&rLeather Chestplate").unbreakable(true)
                                 .color(Color.fromRGB(204, 174, 98))
                                 .flag(ItemFlag.values())
                                 .lore("&7Health: &a+4")

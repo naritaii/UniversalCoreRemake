@@ -11,7 +11,7 @@ public class LeatherBoots extends ItemStack {
     public LeatherBoots() {
         super(ItemMetadata.setMeta(ItemMetadata.setMeta(
                 ItemMetadata.setMeta(
-                        new ItemBuilder(Material.LEATHER_BOOTS).name("&rLeather Boots")
+                        new ItemBuilder(Material.LEATHER_BOOTS).name("&rLeather Boots").unbreakable(true)
                                 .color(Color.fromRGB(204, 174, 98))
                                 .flag(ItemFlag.values())
                                 .lore("&7Defense: &a+1")

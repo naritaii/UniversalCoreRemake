@@ -9,7 +9,7 @@ public class WoolHelmet extends ItemStack {
     public WoolHelmet() {
         super(ItemMetadata.setMeta(ItemMetadata.setMeta(ItemMetadata.setMeta(ItemMetadata.setMeta(
                 ItemMetadata.setMeta(
-                        new ItemBuilder(Material.WOOL).name("&rWool Helmet")
+                        new ItemBuilder(Material.WOOL).name("&rWool Helmet").unbreakable(true)
                                 .lore("&7Health: &a+2")
                                 .lore("&7Defense: &a+1").build(),
                         "HEALTH", "2"),

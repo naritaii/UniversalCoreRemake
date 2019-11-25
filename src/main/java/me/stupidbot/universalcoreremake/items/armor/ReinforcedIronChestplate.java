@@ -10,7 +10,7 @@ public class ReinforcedIronChestplate extends ItemStack {
     public ReinforcedIronChestplate() {
         super(ItemMetadata.setMeta(ItemMetadata.setMeta(
                 ItemMetadata.setMeta(
-                        new ItemBuilder(Material.IRON_CHESTPLATE).name("&rReinforced Iron Chestplate")
+                        new ItemBuilder(Material.IRON_CHESTPLATE).name("&rReinforced Iron Chestplate").unbreakable(true)
                                 .flag(ItemFlag.values())
                                 .lore("&7Health: &a+12")
                                 .lore("&7Defense: &a+18").build(),

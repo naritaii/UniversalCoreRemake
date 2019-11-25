@@ -10,7 +10,7 @@ public class ReinforcedIronLeggings extends ItemStack {
     public ReinforcedIronLeggings() {
         super(ItemMetadata.setMeta(ItemMetadata.setMeta(
                 ItemMetadata.setMeta(
-                        new ItemBuilder(Material.IRON_LEGGINGS).name("&rReinforced Iron Leggings")
+                        new ItemBuilder(Material.IRON_LEGGINGS).name("&rReinforced Iron Leggings").unbreakable(true)
                                 .flag(ItemFlag.values())
                                 .lore("&7Health: &a+6")
                                 .lore("&7Defense: &a+7").build(),
