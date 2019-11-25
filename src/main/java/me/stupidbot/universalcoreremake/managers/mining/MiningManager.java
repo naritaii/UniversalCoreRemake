@@ -350,6 +350,7 @@ public class MiningManager implements Listener {
 
                 // Regen Block
                 if (i < 1 && UniversalCoreRemake.getBlockMetadataManager().hasMeta(b, "MINEABLE")) {
+                    b.getChunk().load();
                     b.setType(Material.valueOf(
                             UniversalCoreRemake.getBlockMetadataManager().getMeta(b, "MINEABLE")));
                     //noinspection deprecation
