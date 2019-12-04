@@ -74,6 +74,10 @@ commands:
   twitter:
     description: Link Twitter
     usage: /<command>
+  facebook:
+    aliases: [facebookpage]
+    description: Link Facebook page
+    usage: /<command>
   vote:
     aliases: [votelink, votelinks, votesite, vctesites, voting]
     description: List voting sites

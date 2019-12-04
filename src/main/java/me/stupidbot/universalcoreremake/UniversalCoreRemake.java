@@ -97,7 +97,7 @@ public class UniversalCoreRemake extends JavaPlugin {
                 "exp", "setblockmeta", "readblockmeta", "setitemmeta", "readitemmeta", "resetobjective",
                 "incrementobjective",
                 "emoji", "vote",
-                "discord", "twitter",
+                "discord", "twitter", "facebook",
                 "openmineraltrader", "openfoodtrader", "openblacksmith", "openstats",
                 "openspawnportal", "openquestmaster", "openbanker",
                 "saveuniversalplayercachetofile", "saveblockmetadatacachetofile",

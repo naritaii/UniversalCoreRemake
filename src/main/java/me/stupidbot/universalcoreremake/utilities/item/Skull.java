@@ -21,6 +21,7 @@ public enum Skull {
     SLIME_SANS("http://textures.minecraft.net/texture/1e72f5f653ed99b5be593094bb510b6395c51b35d70d00a0f9ba38082ca91d20"),
     DISCORD("http://textures.minecraft.net/texture/7873c12bffb5251a0b88d5ae75c7247cb39a75ff1a81cbe4c8a39b311ddeda"),
     TWITTER("http://textures.minecraft.net/texture/3685a0be743e9067de95cd8c6d1ba21ab21d37371b3d597211bb75e43279"),
+    FACEBOOK("http://textures.minecraft.net/texture/deb46126904463f07ecfc972aaa37373a22359b5ba271821b689cd5367f75762"),
     SPACE_HELMET("http://textures.minecraft.net/texture/3e8aad673157c92317a88b1f86f5271f1cd7397d7fc8ec3281f733f751634"),
     NETHER_PORTAL("http://textures.minecraft.net/texture/b0bfc2577f6e26c6c6f7365c2c4076bccee653124989382ce93bca4fc9e39b");
 

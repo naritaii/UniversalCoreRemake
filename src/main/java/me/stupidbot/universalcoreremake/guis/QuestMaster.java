@@ -47,19 +47,19 @@ public class QuestMaster implements InventoryProvider {
         contents.fill(ClickableItem.empty(new ItemBuilder(new ItemStack(
                 Material.STAINED_GLASS_PANE, 1, (short) 15)).name(" ").build())); // TODO Daily rewards
 
+        StatsManager sm = UniversalCoreRemake.getStatsManager();
+        contents.set(0, 4, ClickableItem.empty(new ItemBuilder(Skull.getPlayerSkull(p.getName()))
+                .name("&7" + up.getPrefix() + p.getName() + " &cStats")
+                .lore("&3Stamina&f: " + up.getStamina() + "/" + sm.getMaxStamina(p))
+                .lore("&cHealth&f: " + (int) p.getHealth() + "/" + (int) p.getMaxHealth())
+                .lore("&aDefense&f: " + sm.getDefense(p))
+                .lore("&bSpeed&f: " + (int) sm.getDisplayedSpeed(p) + "%").build()));
+
         contents.set(5, 4, ClickableItem.of(new ItemBuilder(Material.BARRIER).name("&cClose").build(),
                 e -> p.closeInventory()));
 
         contents.set(5, 2, ClickableItem.of(new ItemBuilder(Material.ENDER_CHEST).name("&aEnder Chest")
                 .lore("").lore("&eClick to store items!").build(), e -> p.openInventory(p.getEnderChest())));
-
-        StatsManager sm = UniversalCoreRemake.getStatsManager();
-        contents.set(0, 4, ClickableItem.empty(new ItemBuilder(Skull.getPlayerSkull(p.getName()))
-                .name("&7" + up.getPrefix() + p.getName() + " &cStats")
-                .lore("&3Stamina&f: " + up.getStamina() + "/" + sm.getMaxStamina(p)) // TODO format better
-                .lore("&cHealth&f: " + (int) p.getHealth() + "/" + (int) p.getMaxHealth())
-                .lore("&aDefense&f: " + sm.getDefense(p))
-                .lore("&bSpeed&f: " + (int) sm.getDisplayedSpeed(p) + "%").build()));
 
         boolean isInSpawn = false;
         ApplicableRegionSet regions = UniversalCoreRemake.getWorldGuardPlugin().getRegionManager(p.getWorld())
@@ -72,17 +72,22 @@ public class QuestMaster implements InventoryProvider {
         Warp warp = isInSpawn ? Warp.getWarpFromId(UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(p).getSelectedWarpId()) :
                 new Warp(new Location(Bukkit.getWorld("world"), 15214.5, 65, 10152.5, -180, 0), "hub", "Hub");
         contents.set(5, 3, ClickableItem.of(new ItemBuilder(Skull.getCustomSkull(Skull.NETHER_PORTAL.getId()))
-                .name("&bWarp to: &e" + warp.getName()).lore("").lore("&eClick to warp!").build(), e -> warp.warp(p)));
+                .name("&bWarp to &e" + warp.getName()).lore("").lore("&eClick to warp!").build(), e -> warp.warp(p)));
 
-        contents.set(5, 5, ClickableItem.of(new ItemBuilder(Skull.getCustomSkull(Skull.DISCORD.getId()))
-                .name("&5Discord").lore("&eJoin our Discord for updates, giveaways, and to")
-                .lore("&edirectly give feedback to admins and the community!")
-                .lore("&bType &d/sync Discord&b to sync your Minecraft and Discord accounts.").build(), e ->
-                p.performCommand("discord")));
+        contents.set(5, 5, ClickableItem.of(new ItemBuilder(Skull.getCustomSkull(Skull.FACEBOOK.getId()))
+                .name("&9Facebook Page")
+                .lore("&eFollow and like our Facebook page")
+                .lore("&efor updates and giveaways.").build(), e -> p.performCommand("facebook")));
 
         contents.set(5, 6, ClickableItem.of(new ItemBuilder(Skull.getCustomSkull(Skull.TWITTER.getId()))
                 .name("&bTwitter").lore("&eFollow our Twitter for updates and giveaways.").build(), e ->
                 p.performCommand("twitter")));
+
+        contents.set(5, 7, ClickableItem.of(new ItemBuilder(Skull.getCustomSkull(Skull.DISCORD.getId()))
+                .name("&5Discord").lore("&eJoin our Discord for updates, giveaways, and to")
+                .lore("&edirectly give feedback to admins and the community!")
+                .lore("&bType &d/sync Discord&b to sync your Minecraft and Discord accounts.").build(), e ->
+                p.performCommand("discord")));
 
         // Rewards
         RewardManager rm = UniversalCoreRemake.getRewardManager();

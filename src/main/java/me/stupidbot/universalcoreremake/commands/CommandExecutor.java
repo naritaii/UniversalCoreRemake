@@ -23,6 +23,7 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private final Vote vote = new Vote();
     private final Discord discord = new Discord();
     private final Twitter twitter = new Twitter();
+    private final Facebook facebook = new Facebook();
     private final OpenMineralTrader openMineralTrader = new OpenMineralTrader();
     private final OpenFoodTrader openFoodTrader = new OpenFoodTrader();
     private final OpenBlacksmith openBlacksmith =  new OpenBlacksmith();
@@ -78,6 +79,8 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
             return discord.execute(s);
         else if (cmd.getName().equalsIgnoreCase("twitter"))
             return twitter.execute(s);
+        else if (cmd.getName().equalsIgnoreCase("facebook"))
+            return facebook.execute(s);
         else if (cmd.getName().equalsIgnoreCase("openmineraltrader"))
             return openMineralTrader.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("openfoodtrader"))
