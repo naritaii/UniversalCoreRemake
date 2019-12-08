@@ -29,7 +29,7 @@ class Facebook {
                                 .newLine()
                                 .newLine()
                                 .add(BookUtil.TextBuilder.of(TextUtils.centerMessage("&7&l&nCLICK HERE", 56))
-                                        .onClick(BookUtil.ClickAction.openUrl("https://www.facebook.com/Corrupt-Prisons-101026687999857/"))
+                                        .onClick(BookUtil.ClickAction.openUrl("https://www.facebook.com/Corrupt-Prisons-Server-for-Minecraft-101026687999857/"))
                                         .onHover(BookUtil.HoverAction.showText(
                                                 BookUtil.TextBuilder.of("Click to visit our Facebook page!")
                                                         .color(ChatColor.YELLOW)
@@ -40,7 +40,7 @@ class Facebook {
                 .build());
         else
             s.sendMessage(ChatColor.translateAlternateColorCodes('&', "&bFollow and like our " +
-                    "Facebook page for updates and giveaways &ehttps://www.facebook.com/Corrupt-Prisons-101026687999857/"));
+                    "Facebook page for updates and giveaways &ehttps://www.facebook.com/Corrupt-Prisons-Server-for-Minecraft-101026687999857/"));
         return true;
     }
 }

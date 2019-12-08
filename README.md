@@ -1,2 +1,2 @@
 # UniversalCoreRemake
-// TODO
+© All Rights Reserved.

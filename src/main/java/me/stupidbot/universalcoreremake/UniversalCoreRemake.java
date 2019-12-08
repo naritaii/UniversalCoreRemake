@@ -88,7 +88,7 @@ public class UniversalCoreRemake extends JavaPlugin {
                 new ChatManager(), motdManager, new ItemMetadata(), universalObjectiveManager, scoreboardManager,
                 new CollectibleSlimesListener(), leaderboardManager, new EnderchestListener(), new SpawnPortalListener(),
                 rewardManager, new HatListener(), new InventoryClickBorderCloseListener(), new MoneyPickupListener(),
-                new XpPickupListener());
+                new XpPickupListener(), new CraftingListener());
         if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null)
             registerEvents(instance, new RegionsListener());
         registerCommands(commandExecutor, "reloadmotd", "reloaduniversalobjectives",
