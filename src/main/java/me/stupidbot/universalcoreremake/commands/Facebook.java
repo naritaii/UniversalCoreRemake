@@ -27,7 +27,6 @@ class Facebook {
                                 .newLine()
                                 .newLine()
                                 .newLine()
-                                .newLine()
                                 .add(BookUtil.TextBuilder.of(TextUtils.centerMessage("&7&l&nCLICK HERE", 56))
                                         .onClick(BookUtil.ClickAction.openUrl("https://www.facebook.com/Corrupt-Prisons-Server-for-Minecraft-101026687999857/"))
                                         .onHover(BookUtil.HoverAction.showText(
