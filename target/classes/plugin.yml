@@ -1,9 +1,9 @@
 name: UniversalCoreRemake
-version: 0.2
+version: 0.2.1
 author: CorruptedPrisonsDevTeam
 website: https://github.com/StupidBot/UniversalCoreRemake
 api-version: "1.8"
-softdepend: [PlaceholderAPI, WorldGuard]
+softdepend: [PlaceholderAPI, WorldGuard, SuperVanish, PremiumVanish]
 depend: [Vault, ProtocolLib, Citizens, HolographicDisplays, Essentials, Votifier]
 main: me.stupidbot.universalcoreremake.UniversalCoreRemake
 commands:

@@ -3,20 +3,24 @@ Rewards:
     Streak: # You can add more less days by simply removing/adding sections
       Day1: # Uses StringReward format
         - 'MONEY 25'
-        - 'XP 25'
       Day2:
-        - 'MONEY 2'
+        - 'MONEY 25'
+        - 'XP 25'
       Day3:
-        - 'MONEY 3'
+        - 'MONEY 50'
+        - 'XP 25'
       Day4:
-        - 'MONEY 4'
+        - 'MONEY 50'
+        - 'XP 50'
       Day5:
-        - 'MONEY 5'
+        - 'MONEY 75'
+        - 'XP 50'
       Day6:
-        - 'MONEY 6'
+        - 'MONEY 75'
+        - 'XP 75'
       Day7:
-        - 'MONEY 9'
-        - 'MONEY 10'
+        - 'MONEY 100'
+        - 'XP 100'
     Links:
       COMING-SOON: 'https://www.votinglink.moe/coming-soon'
   Levelling:
@@ -50,9 +54,10 @@ Rewards:
         - "MONEY 95"
       10:
         - "MESSAGE &3Stamina &a+5"
-        - "MONEY 124.99"
-        - "QUEST capitalism_is_clearly_broken" # Quest here to regain the penny you rightfully deserve!
-        - "MESSAGE &6&lNEW QUEST\n&7&o     You seem to have been payed a penny short..."
+        - "MONEY 125"
+        # - "MONEY 124.99"
+        # - "QUEST capitalism_is_clearly_broken" # Quest here to regain the penny you rightfully deserve!
+        # - "MESSAGE &6&lNEW QUEST\n&7&o     You seem to have been payed a penny short..."
       11:
         - "MESSAGE &3Stamina &a+5"
         - "MONEY 135"
@@ -63,7 +68,6 @@ Rewards:
         - "MESSAGE &3Stamina &a+5"
         - "MONEY 145"
       14:
-        - "MESSAGE &3Stamina &a+5"
         - "MESSAGE &c&oi don't really feel like giving you a reward right now..."
         - "MESSAGE &c&othings have just been... tough... at home and..."
         - "MESSAGE &c&oplease don't hate me..."

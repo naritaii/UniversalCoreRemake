@@ -11,6 +11,7 @@ import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import de.slikey.effectlib.EffectManager;
 import fr.minuskube.inv.InventoryManager;
 import me.stupidbot.universalcoreremake.commands.CommandExecutor;
+import me.stupidbot.universalcoreremake.effects.PremiumLogIn;
 import me.stupidbot.universalcoreremake.enchantments.UniversalEnchantment;
 import me.stupidbot.universalcoreremake.items.UniversalItem;
 import me.stupidbot.universalcoreremake.listeners.*;
@@ -29,6 +30,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Set;
 
 @SuppressWarnings("UnusedReturnValue")
 public class UniversalCoreRemake extends JavaPlugin {
@@ -53,6 +56,10 @@ public class UniversalCoreRemake extends JavaPlugin {
     private static WorldGuardPlugin worldGuardPlugin;
     @SuppressWarnings("FieldCanBeLocal")
     private static CommandExecutor commandExecutor;
+
+    // declare your flag as a field accessible to other parts of your code (so you can use this to check it)
+    // note: if you want to use a different type of flag, make sure you change StateFlag here and below to that type
+    public static Flag<Set<String>> UNIVERSAL_MINE;
 
     @Override
     public void onEnable() {
@@ -88,7 +95,7 @@ public class UniversalCoreRemake extends JavaPlugin {
                 new ChatManager(), motdManager, new ItemMetadata(), universalObjectiveManager, scoreboardManager,
                 new CollectibleSlimesListener(), leaderboardManager, new EnderchestListener(), new SpawnPortalListener(),
                 rewardManager, new HatListener(), new InventoryClickBorderCloseListener(), new MoneyPickupListener(),
-                new XpPickupListener(), new CraftingListener());
+                new XpPickupListener(), new CraftingListener(), new PremiumLogIn(effectManager));
         if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null)
             registerEvents(instance, new RegionsListener());
         registerCommands(commandExecutor, "reloadmotd", "reloaduniversalobjectives",
@@ -106,10 +113,6 @@ public class UniversalCoreRemake extends JavaPlugin {
 
         System.out.println(getName() + " is now enabled!");
     }
-
-    // declare your flag as a field accessible to other parts of your code (so you can use this to check it)
-    // note: if you want to use a different type of flag, make sure you change StateFlag here and below to that type
-    public static SetFlag UNIVERSAL_MINE;
     @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private static StringFlag UNIVERSAL_REGION_NAME;
 
@@ -122,7 +125,7 @@ public class UniversalCoreRemake extends JavaPlugin {
 
             try {
                 // create a flag with the name "my-custom-flag", defaulting to true
-                SetFlag flag = new SetFlag<>("universal-mine", new StringFlag(null));
+                Flag<Set<String>> flag = new SetFlag<>("universal-mine", new StringFlag(null));
                 registry.register(flag);
                 UNIVERSAL_MINE = flag; // only set our field if there was no error
             } catch (FlagConflictException e) {
@@ -130,7 +133,8 @@ public class UniversalCoreRemake extends JavaPlugin {
                 // you can use the existing flag, but this may cause conflicts - be sure to check type
                 Flag<?> existing = registry.get("universal-mine");
                 if (existing instanceof SetFlag)
-                    UNIVERSAL_MINE = (SetFlag) existing;
+                    //noinspection unchecked
+                    UNIVERSAL_MINE = (Flag<Set<String>>) existing;
                 else
                     // types don't match - this is bad news! some other plugin conflicts with you
                     // hopefully this never actually happens

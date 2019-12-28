@@ -154,7 +154,6 @@ public class MiningManager implements Listener {
                                 ApplicableRegionSet regions = UniversalCoreRemake.getWorldGuardPlugin().getRegionManager(b.getWorld())
                                         .getApplicableRegions(b.getLocation());
                                 for (ProtectedRegion region : regions) {
-                                    @SuppressWarnings("unchecked")
                                     Set<String> s = region.getFlag(UniversalCoreRemake.UNIVERSAL_MINE);
 
                                     if (s != null && (!s.isEmpty())) {

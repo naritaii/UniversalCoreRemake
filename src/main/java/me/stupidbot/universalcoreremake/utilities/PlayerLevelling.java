@@ -1,5 +1,6 @@
 package me.stupidbot.universalcoreremake.utilities;
 
+import de.myzelyam.api.vanish.VanishAPI;
 import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.util.DynamicLocation;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
@@ -53,9 +54,13 @@ public class PlayerLevelling implements Listener {
                 break;
         }
 
-        Effect lvlAnim = new LevelUp(UniversalCoreRemake.getEffectManager(), p, lvl);
-        lvlAnim.setDynamicOrigin(new DynamicLocation(p));
-        lvlAnim.start();
+        if (!(Bukkit.getPluginManager().isPluginEnabled("SuperVanish") ||
+                Bukkit.getPluginManager().isPluginEnabled("PremiumVanish")) || !VanishAPI.isInvisible(p)) {
+            Effect lvlAnim = new LevelUp(UniversalCoreRemake.getEffectManager(), p, lvl);
+            lvlAnim.setDynamicOrigin(new DynamicLocation(p));
+            lvlAnim.start();
+        } else
+            TextUtils.sendTitle(p, "&6&lLEVEL UP", 5, 80, 0);
         TextUtils.sendSubtitle(p, "&a" + TextUtils.toRoman(oldLvl) + " &e\u27A2 &a" + TextUtils.toRoman(lvl),
                 5, 80, 0);
 

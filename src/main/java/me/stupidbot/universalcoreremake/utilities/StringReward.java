@@ -90,7 +90,7 @@ public class StringReward {
                 case "EXP":
                     try {
                         r[i] = ChatColor.translateAlternateColorCodes('&',
-                                "&bXP " + TextUtils.addCommas(Integer.parseInt(arg.toString().trim())));
+                                "&b" + TextUtils.addCommas(Integer.parseInt(arg.toString().trim())) + " XP");
                     } catch (NumberFormatException e) {
                         r[i] = ChatColor.translateAlternateColorCodes('&',
                                 textToTranslate);

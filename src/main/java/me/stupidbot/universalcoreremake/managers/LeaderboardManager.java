@@ -111,21 +111,21 @@ public class LeaderboardManager implements Listener {
                 UUID id = UUID.fromString(FilenameUtils.removeExtension(path.getFileName().toString()));
                 UniversalPlayer up = UniversalCoreRemake.getUniversalPlayerManager().getUniversalPlayer(id);
 
-                Double money = up.getTotalMoney();
+                double money = up.getTotalMoney();
                 if (money > 0) {
                     Map<UUID, Double> data = playersData.getOrDefault("TotalMoney", new ConcurrentHashMap<>());
                     data.put(id, money);
                     playersData.put("TotalMoney", data);
                 }
 
-                Double level = (double) up.getLevel();
+                double level = up.getLevel();
                 if (level > 1) {
                     Map<UUID, Double> data = playersData.getOrDefault("XP.Level", new ConcurrentHashMap<>());
                     data.put(id, level);
                     playersData.put("XP.Level", data);
                 }
 
-                Double blocksMined = (double) up.getBlocksMined();
+                double blocksMined = up.getBlocksMined();
                 if (blocksMined > 0) {
                     Map<UUID, Double> data = playersData.getOrDefault("Stats.BlocksMined", new ConcurrentHashMap<>());
                     data.put(id, blocksMined);

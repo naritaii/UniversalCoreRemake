@@ -18,7 +18,7 @@ public class BoneSword extends ItemStack {
                                 .lore("&c&lMUTATION:&6 " + UniversalEnchantment.KILLER_OF_DEATH.getName())
                                 .lore(UniversalEnchantment.getDescription(UniversalEnchantment.KILLER_OF_DEATH))
                                 .lore("")
-                                .lore("&7&oIt kills death things and")
+                                .lore("&7&oIt kills dead things and")
                                 .lore("&7&ois made of... bones? Ew...").build(),
                         "DAMAGE", "6"),
                 "ITEM", "BONE_SWORD"));

@@ -15,6 +15,8 @@ import org.bukkit.entity.Player;
 
 import java.awt.*;
 
+import static java.lang.Math.*;
+
 public class LevelUp extends Effect {
     private int step = 0;
     private int hue = 0;
@@ -51,9 +53,9 @@ public class LevelUp extends Effect {
     @Override
     public void onRun() {
         Location loc = getLocation().subtract(0, 0.5, 0);
-        double dx = 0.75 * Math.sin(Math.PI / 8 * step);
-        double dy = Math.sin(2 * Math.PI / 64 * step);
-        double dz = 0.75 * Math.cos(Math.PI / 8 * step);
+        double dx = 0.75 * sin(PI / 8 * step);
+        double dy = sin(2 * PI / 64 * step);
+        double dz = 0.75 * cos(PI / 8 * step);
         loc.add(dx, dy, dz);
 
         Color rgb = Color.getHSBColor(hue / 360F, 1.0F, 1.0F);
@@ -67,8 +69,7 @@ public class LevelUp extends Effect {
         if (step % 3 == 0)
             display(ParticleEffect.ENCHANTMENT_TABLE, loc, color);
 
-        loc.subtract(dx, dy, dz);
-        loc.subtract(dx, dy, dz);
+        loc.subtract(dx * 2, dy * 2, dz * 2);
 
 
         display(ParticleEffect.REDSTONE, loc, color);
@@ -84,7 +85,7 @@ public class LevelUp extends Effect {
         if (p != null && p.isOnline()) {
             if (hologram != null)
                 hologram.teleport(p.getLocation().add(0.0,
-                        3.2 + 0.3 * Math.sin(Math.PI / 16 * step), 0.0));
+                        3.2 + 0.3 * sin(PI / 16 * step), 0.0));
 
             if (initAnim == 0)
                 TextUtils.sendTitle(p, "&6&lLEVEL UP", 5, 80, 0);
@@ -110,7 +111,8 @@ public class LevelUp extends Effect {
                 TextUtils.sendTitle(p, "&6&lLEVEL UP", 0, 17, 5);
 
             initAnim++;
-        }
+        } else if (hologram != null)
+            hologram.delete();
     }
 
     @Override

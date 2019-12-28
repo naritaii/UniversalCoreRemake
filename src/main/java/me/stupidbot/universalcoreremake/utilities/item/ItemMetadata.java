@@ -230,9 +230,8 @@ public class ItemMetadata implements Listener {
             lore.remove(l);
             im.setLore(lore);
             i.setItemMeta(im);
-            return i;
-        } else
-            return i;
+        }
+        return i;
     }
 
     public static int getMetaLine(ItemStack is) {

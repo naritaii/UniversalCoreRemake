@@ -19,14 +19,17 @@ public class ItemLevelling {
         int neededXp = xpToNextLevel(lvl);
 
         ItemMetadata.setMeta(i, "TOTAL_XP", totalXp);
-        if (currentXp >= neededXp) { // TODO Account for multiple level ups
-            ItemMetadata.setMeta(i, "XP", currentXp - neededXp);
-            ItemMetadata.setMeta(i, "LEVEL", ++lvl);
-            return updateItem(i);
+        if (currentXp >= neededXp) {
+            int difference = currentXp;
+            while (difference >= neededXp) {
+                difference -= xpToNextLevel(lvl);
+                ItemMetadata.setMeta(i, "XP", difference);
+                ItemMetadata.setMeta(i, "LEVEL", ++lvl);
+            }
         } else {
             ItemMetadata.setMeta(i, "XP", currentXp);
-            return updateItem(i);
         }
+        return updateItem(i);
     }
 
     @SuppressWarnings("UnusedReturnValue")
@@ -68,7 +71,7 @@ public class ItemLevelling {
                         ib.lore("&7" + (e != Enchantment.DIG_SPEED ? e.getName() : "Efficiency") + " " + TextUtils.toRoman(l));
                         String desc = UniversalEnchantment.getDescription(e);
                         if (desc != null)
-                            for (String line : desc.split("\n")) // I recall being able to just use \n with .lore() but ot broke last time i tried it
+                            for (String line : desc.split("\n")) // \n with .lore(...) breaks on some clients
                                 ib.lore(line);
                     } else {
                         mutation = e;
@@ -87,7 +90,8 @@ public class ItemLevelling {
                 if (desc != null)
                     ib.lore(desc);
             } else
-                ib.lore("&c&lMUTATION:&7 None\n&7Mutations are mysterious positive OR negative abilities");
+                ib.lore("&c&lMUTATION:&7 None")
+                        .lore("&7Mutations are mysterious positive OR negative abilities");
 
             if (meta.containsKey("LORE")) { // "LORE:Line 1^Line &b2"
                 ib.lore("");
