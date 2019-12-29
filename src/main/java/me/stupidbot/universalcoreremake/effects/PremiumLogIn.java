@@ -21,17 +21,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import static java.lang.Math.*;
 
 public class PremiumLogIn extends Effect implements Listener {
-    boolean initalized = false;
-    List<Item> items = new ArrayList<>();
+    private final Set<Item> items = Collections.synchronizedSet(new HashSet<>());
+    private boolean initialized = false;
     private int step = 0;
-    private int hue = 0;
-    private int initAnim = 0;
 
     public PremiumLogIn(EffectManager effectManager) {
         super(effectManager);
@@ -42,7 +41,7 @@ public class PremiumLogIn extends Effect implements Listener {
     @Override
     public void onRun() {
         Location loc = getLocation();
-        if (!initalized) {
+        if (!initialized) {
             loc.subtract(0, 1, 0);
             for (int i = 0; i < 8; i++) {
                 Item item = loc.getWorld().dropItem(loc, new ItemStack(RandomUtils.getRandomMaterial(
@@ -75,7 +74,7 @@ public class PremiumLogIn extends Effect implements Listener {
                 }
             }.runTaskTimer(UniversalCoreRemake.getInstance(), 5, 5);
 
-            initalized = true;
+            initialized = true;
         }
         loc.subtract(0, 1, 0);
 

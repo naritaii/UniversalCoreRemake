@@ -1,0 +1,87 @@
+Mining:
+  RespawnBlock: BEDROCK # Block to show while respawning
+  Blocks:
+    RED_SANDSTONE:
+      BlockDurability: 4.25 # Time in seconds block takes to mine with no kind of multiplier
+      RegenerateTime: 20 # Time in seconds block takes to regenerate
+      BaseExperience: 1 # Experience points given with no kind of multiplier
+      Loot: RED_SANDSTONE # What item mining this block gives
+      BaseStaminaUsage: 1 # Stamina required to mine this block with no kind of multiplier
+      MutateChance: 0.075 # Chance for block to mutate
+      MutateBlock: SANDSTONE # What block to turn into when mutating
+      BreakBehavior: DEFAULT # What to do when block is broken
+    SANDSTONE:
+      BlockDurability: 5.25
+      RegenerateTime: 20 # Since this block's break behavior is INSTANT_RESPAWN this is the time it takes to respawn when mutating back into red sandstone
+      BaseExperience: 4
+      Loot: SANDSTONE
+      BaseStaminaUsage: 3
+      MutateChance: 0.35
+      MutateBlock: RED_SANDSTONE
+      BreakBehavior: INSTANT_RESPAWN
+    COAL_ORE:
+      BlockDurability: 11.1
+      RegenerateTime: 30
+      BaseExperience: 6
+      Loot: COAL_ORE
+      BaseStaminaUsage: 8
+      MutateChance: 0.071
+      MutateBlock: COAL_BLOCK
+      BreakBehavior: DEFAULT
+    COAL_BLOCK:
+      BlockDurability: 13.5
+      RegenerateTime: 30
+      BaseExperience: 10
+      Loot: COAL
+      BaseStaminaUsage: 11
+      MutateChance: 0.55
+      MutateBlock: COAL_BLOCK
+      BreakBehavior: INSTANT_RESPAWN
+    IRON_ORE:
+      BlockDurability: 16.9
+      RegenerateTime: 35
+      BaseExperience: 9
+      Loot: IRON_ORE
+      BaseStaminaUsage: 13
+      MutateChance: 0.055
+      MutateBlock: IRON_BLOCK
+      BreakBehavior: DEFAULT
+    IRON_BLOCK:
+      BlockDurability: 19.1
+      RegenerateTime: 40
+      BaseExperience: 14
+      Loot: IRON_INGOT
+      BaseStaminaUsage: 16
+      MutateChance: 0.38
+      MutateBlock: IRON_ORE
+      BreakBehavior: INSTANT_RESPAWN
+    LOG:
+      BlockDurability: 5
+      RegenerateTime: 40
+      BaseExperience: 4
+      Loot: WOOD
+      BaseStaminaUsage: 4
+      MutateChance: 0
+      MutateBlock: LOG
+      BreakBehavior: REPLACE_AIR
+    LOG_2:
+      BlockDurability: 5
+      RegenerateTime: 40
+      BaseExperience: 4
+      Loot: WOOD
+      BaseStaminaUsage: 4
+      MutateChance: 0
+      MutateBlock: LOG_2
+      BreakBehavior: REPLACE_AIR
+  PickaxeMultiplier: # Speed multiplier when mining with pickaxes
+    Diamond: 0.75
+    Gold: 0.55
+    Iron: 0.5
+    Stone: 0.4
+    Wood: 0.2
+  AxeMultiplier: # Speed multiplier when mining logs with axes
+    Diamond: 0.75
+    Gold: 0.55
+    Iron: 0.5
+    Stone: 0.4
+    Wood: 0.2

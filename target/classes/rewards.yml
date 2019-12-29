@@ -1,0 +1,250 @@
+Rewards:
+  Voting:
+    Streak: # You can add more less days by simply removing/adding sections
+      Day1: # Uses StringReward format
+        - 'MONEY 25'
+      Day2:
+        - 'MONEY 25'
+        - 'XP 25'
+      Day3:
+        - 'MONEY 50'
+        - 'XP 25'
+      Day4:
+        - 'MONEY 50'
+        - 'XP 50'
+      Day5:
+        - 'MONEY 75'
+        - 'XP 50'
+      Day6:
+        - 'MONEY 75'
+        - 'XP 75'
+      Day7:
+        - 'MONEY 100'
+        - 'XP 100'
+    Links:
+      COMING-SOON: 'https://www.votinglink.moe/coming-soon'
+  Levelling:
+    PlayerLevel: # Uses StringReward format
+      1:
+        - "MESSAGE &3Stamina &a+5"
+        - "MONEY 5"
+      2:
+        - "MESSAGE &3Stamina &a+5"
+        - "MONEY 10"
+      3:
+        - "MESSAGE &3Stamina &a+5"
+        - "MONEY 25"
+      4:
+        - "MESSAGE &3Stamina &a+5"
+        - "MONEY 35"
+      5:
+        - "MESSAGE &3Stamina &a+5"
+        - "MONEY 50"
+      6:
+        - "MESSAGE &3Stamina &a+5"
+        - "MONEY 60"
+      7:
+        - "MESSAGE &3Stamina &a+5"
+        - "MONEY 75"
+      8:
+        - "MESSAGE &3Stamina &a+5"
+        - "MONEY 85"
+      9:
+        - "MESSAGE &3Stamina &a+5"
+        - "MONEY 95"
+      10:
+        - "MESSAGE &3Stamina &a+5"
+        - "MONEY 125"
+        # - "MONEY 124.99"
+        # - "QUEST capitalism_is_clearly_broken" # Quest here to regain the penny you rightfully deserve!
+        # - "MESSAGE &6&lNEW QUEST\n&7&o     You seem to have been payed a penny short..."
+      11:
+        - "MESSAGE &3Stamina &a+5"
+        - "MONEY 135"
+      12:
+        - "MESSAGE &3Stamina &a+5"
+        - "MONEY 140"
+      13:
+        - "MESSAGE &3Stamina &a+5"
+        - "MONEY 145"
+      14:
+        - "MESSAGE &c&oi don't really feel like giving you a reward right now..."
+        - "MESSAGE &c&othings have just been... tough... at home and..."
+        - "MESSAGE &c&oplease don't hate me..."
+        - "MESSAGE &c&o..."
+        - "MESSAGE &c&oi-i promise i'll make it up to you!"
+      15:
+        - "MESSAGE &3Stamina &a+5"
+        - "MESSAGE &3Stamina &a+5"
+        - "MONEY 150"
+        - "MONEY 150"
+      16:
+        - "MESSAGE &3Stamina &a+5"
+      17:
+        - "MESSAGE &3Stamina &a+5"
+      18:
+        - "MESSAGE &3Stamina &a+5"
+      19:
+        - "MESSAGE &3Stamina &a+5"
+      20:
+        - "MESSAGE &3Stamina &a+5"
+      21:
+        - "MESSAGE &3Stamina &a+5"
+      22:
+        - "MESSAGE &3Stamina &a+5"
+      23:
+        - "MESSAGE &3Stamina &a+5"
+      24:
+        - "MESSAGE &3Stamina &a+5"
+      25:
+        - "MESSAGE &3Stamina &a+5"
+      26:
+        - "MESSAGE &3Stamina &a+5"
+      27:
+        - "MESSAGE &3Stamina &a+5"
+      28:
+        - "MESSAGE &3Stamina &a+5"
+      29:
+        - "MESSAGE &3Stamina &a+5"
+      30:
+        - "MESSAGE &3Stamina &a+5"
+      31:
+        - "MESSAGE &3Stamina &a+5"
+      32:
+        - "MESSAGE &3Stamina &a+5"
+      33:
+        - "MESSAGE &3Stamina &a+5"
+      34:
+        - "MESSAGE &3Stamina &a+5"
+      35:
+        - "MESSAGE &3Stamina &a+5"
+      36:
+        - "MESSAGE &3Stamina &a+5"
+      37:
+        - "MESSAGE &3Stamina &a+5"
+      38:
+        - "MESSAGE &3Stamina &a+5"
+      39:
+        - "MESSAGE &3Stamina &a+5"
+      40:
+        - "MESSAGE &3Stamina &a+5"
+      41:
+        - "MESSAGE &3Stamina &a+5"
+      42:
+        - "MESSAGE &3Stamina &a+5"
+      43:
+        - "MESSAGE &3Stamina &a+5"
+      44:
+        - "MESSAGE &3Stamina &a+5"
+      45:
+        - "MESSAGE &3Stamina &a+5"
+      46:
+        - "MESSAGE &3Stamina &a+5"
+      47:
+        - "MESSAGE &3Stamina &a+5"
+      48:
+        - "MESSAGE &3Stamina &a+5"
+      49:
+        - "MESSAGE &3Stamina &a+5"
+      50:
+        - "MESSAGE &3Stamina &a+5"
+      51:
+        - "MESSAGE &3Stamina &a+5"
+      52:
+        - "MESSAGE &3Stamina &a+5"
+      53:
+        - "MESSAGE &3Stamina &a+5"
+      54:
+        - "MESSAGE &3Stamina &a+5"
+      55:
+        - "MESSAGE &3Stamina &a+5"
+      56:
+        - "MESSAGE &3Stamina &a+5"
+      57:
+        - "MESSAGE &3Stamina &a+5"
+      58:
+        - "MESSAGE &3Stamina &a+5"
+      59:
+        - "MESSAGE &3Stamina &a+5"
+      60:
+        - "MESSAGE &3Stamina &a+5"
+      61:
+        - "MESSAGE &3Stamina &a+5"
+      62:
+        - "MESSAGE &3Stamina &a+5"
+      63:
+        - "MESSAGE &3Stamina &a+5"
+      64:
+        - "MESSAGE &3Stamina &a+5"
+      65:
+        - "MESSAGE &3Stamina &a+5"
+      66:
+        - "MESSAGE &3Stamina &a+5"
+      67:
+        - "MESSAGE &3Stamina &a+5"
+      68:
+        - "MESSAGE &3Stamina &a+5"
+      69:
+        - "MESSAGE &3Stamina &a+5"
+      70:
+        - "MESSAGE &3Stamina &a+5"
+      71:
+        - "MESSAGE &3Stamina &a+5"
+      72:
+        - "MESSAGE &3Stamina &a+5"
+      73:
+        - "MESSAGE &3Stamina &a+5"
+      74:
+        - "MESSAGE &3Stamina &a+5"
+      75:
+        - "MESSAGE &3Stamina &a+5"
+      76:
+        - "MESSAGE &3Stamina &a+5"
+      77:
+        - "MESSAGE &3Stamina &a+5"
+      78:
+        - "MESSAGE &3Stamina &a+5"
+      79:
+        - "MESSAGE &3Stamina &a+5"
+      80:
+        - "MESSAGE &3Stamina &a+5"
+      81:
+        - "MESSAGE &3Stamina &a+5"
+      82:
+        - "MESSAGE &3Stamina &a+5"
+      83:
+        - "MESSAGE &3Stamina &a+5"
+      84:
+        - "MESSAGE &3Stamina &a+5"
+      85:
+        - "MESSAGE &3Stamina &a+5"
+      86:
+        - "MESSAGE &3Stamina &a+5"
+      87:
+        - "MESSAGE &3Stamina &a+5"
+      88:
+        - "MESSAGE &3Stamina &a+5"
+      89:
+        - "MESSAGE &3Stamina &a+5"
+      90:
+        - "MESSAGE &3Stamina &a+5"
+      91:
+        - "MESSAGE &3Stamina &a+5"
+      92:
+        - "MESSAGE &3Stamina &a+5"
+      93:
+        - "MESSAGE &3Stamina &a+5"
+      94:
+        - "MESSAGE &3Stamina &a+5"
+      95:
+        - "MESSAGE &3Stamina &a+5"
+      96:
+        - "MESSAGE &3Stamina &a+5"
+      97:
+        - "MESSAGE &3Stamina &a+5"
+      98:
+        - "MESSAGE &3Stamina &a+5"
+      99:
+        - "MESSAGE &3Stamina &a+5"
+      100:
+        - "MESSAGE &3Stamina &a+5"
