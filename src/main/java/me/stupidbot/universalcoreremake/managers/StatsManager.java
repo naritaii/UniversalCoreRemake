@@ -115,8 +115,26 @@ public class StatsManager implements Listener {
         recalculateStats(p);
 
         if (up.firstJoin()) {
-            up.setStamina(getMaxStamina(p));
             p.setHealth(getMaxHealth(p));
+            setStamina(p, getMaxStamina(p));
+            // Making player type "/spawn" and executing messages from a different thread as temporary bug fixes
+            p.performCommand("spawn");
+            UniversalCoreRemake.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(UniversalCoreRemake.getInstance(), () -> {
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e&l\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC"));
+
+                TextUtils.sendCenteredMessage(p, "&lWelcome to Corrupt Prisons,&7 "
+                        + up.getNameColor() + p.getName() + "&f&l!");
+                p.sendMessage("");
+                TextUtils.sendCenteredMessage(p, "&eTalk to &aQuest Master&e to get started, the Corrupt");
+                TextUtils.sendCenteredMessage(p, "&euniverse has many lands to discover, strange creatures");
+                TextUtils.sendCenteredMessage(p, "&eto find, secrets to uncover, and peculiar characters to");
+                TextUtils.sendCenteredMessage(p, "&emeet! Collect resources, upgrade your gear, explore a");
+                TextUtils.sendCenteredMessage(p, "&ewhole new planet, and complete quests to advance your");
+                TextUtils.sendCenteredMessage(p, "&eway through Corrupt Prisons!");
+                TextUtils.sendCenteredMessage(p, "&bHave fun!");
+
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&e&l\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC\u25AC"));
+            });
         } else
             try {
                 if (new Date().getTime() - UniversalPlayer.getSimpleDateFormat().parse(up.getLastPlayed())

@@ -37,10 +37,10 @@
         <version>3.2.1</version>
         <executions>
           <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
+              <phase>package</phase>
+              <goals>
+                  <goal>shade</goal>
+              </goals>
               <configuration>
                   <filters>
                       <filter>
@@ -60,16 +60,16 @@
                           <shadedPattern>me.stupidbot.universalcoreremake.minuskube</shadedPattern>
                       </relocation>
                       <relocation>
-                  <pattern>com.google</pattern>
-                  <shadedPattern>me.stupidbot.universalcoreremake.google</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>xyz.upperlevel</pattern>
-                  <shadedPattern>me.stupidbot.universalcoreremake.upperlevel</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>com.xxmicloxx</pattern>
-                  <shadedPattern>me.stupidbot.universalcoreremake.xxmicloxx</shadedPattern>
+                          <pattern>com.google</pattern>
+                          <shadedPattern>me.stupidbot.universalcoreremake.google</shadedPattern>
+                      </relocation>
+                      <relocation>
+                          <pattern>xyz.upperlevel</pattern>
+                          <shadedPattern>me.stupidbot.universalcoreremake.upperlevel</shadedPattern>
+                      </relocation>
+                      <relocation>
+                          <pattern>com.xxmicloxx</pattern>
+                          <shadedPattern>me.stupidbot.universalcoreremake.xxmicloxx</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>
@@ -113,16 +113,16 @@
     </repository>
     <repository>
       <id>ess-repo</id>
-      <url>https://ci.ender.zone/plugin/repository/everything/</url>
+        <url>https://ci.ender.zone/plugin/repository/everything/</url>
     </repository>
-    <repository>
-      <id>enginehub-maven</id>
-      <url>http://maven.enginehub.org/repo/</url>
-    </repository>
-    <repository>
-        <id>sk89q-repo</id>
-        <url>https://maven.enginehub.org/repo/</url>
-    </repository>
+      <repository>
+          <id>enginehub-maven</id>
+          <url>http://maven.enginehub.org/repo/</url>
+      </repository>
+      <repository>
+          <id>sk89q-repo</id>
+          <url>https://maven.enginehub.org/repo/</url>
+      </repository>
       <repository>
           <id>bintray-nuvotifier-repo</id>
           <url>https://dl.bintray.com/nuvotifier/maven/</url>
@@ -301,14 +301,14 @@
           <artifactId>bukkit-classloader-check</artifactId>
           <groupId>org.sk89q.bukkit</groupId>
         </exclusion>
-        <exclusion>
-          <artifactId>dummypermscompat</artifactId>
-          <groupId>com.sk89q</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>bukkit</artifactId>
-          <groupId>org.bukkit</groupId>
-        </exclusion>
+          <exclusion>
+              <artifactId>dummypermscompat</artifactId>
+              <groupId>com.sk89q</groupId>
+          </exclusion>
+          <exclusion>
+              <artifactId>bukkit</artifactId>
+              <groupId>org.bukkit</groupId>
+          </exclusion>
       </exclusions>
     </dependency>
       <dependency>
