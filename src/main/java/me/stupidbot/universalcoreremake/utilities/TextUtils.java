@@ -368,28 +368,30 @@ public class TextUtils {
     }
 
     public static String escapeRegex(String str) {
-        return str.replaceAll("[<(\\[{\\\\^\\-=$!|\\]})?*+.>]",
-                "\\\\$0");
+        return str.replaceAll("[<(\\[{\\\\^\\-=$!|\\]})?*+.>]", "\\\\$0");
     }
 
     public enum Emoji {
-        TABLE_FLIP(":tableflip:",
-                "&c\uFF08\u256F\u00B0\u25A1\u00B0\uFF09\u256F&f\uFE35 &7\u253B\u2501\u253B"),
+        UWU(":uwu:", "&dU&5w&dU"),
         REAL_SMOOTH(":realsmooth:",
                 "&e(\u3065 \uFFE3 \u00B3\uFFE3)\u3065&6\u24C8\u24C2\u24C4\u24C4\u24C9\u24BD"),
         SHRUG(":shrug:", "&e\u00AF\\_(\u30C4)_/\u00AF"),
-        UWU(":uwu:", "&dU&5w&dU"),
         WUT(":wut:", "&b\u2609&e_&b\u2609"),
         SRS(":srs:", "&c(\u0CA0_\u0CA0)"),
+        POOF(":poof:", "&e(&b'&e-&b'&e)\u2283&c\u2501&d\u2606\uFF9F.*\uFF65\uFF61\uFF9F"),
+        THINKING(":thinking:", "&6(&a0&6.&ao&c?&6)"),
         WOOF(":woof:", "&e(\u1D54\u1D25\u1D54)"),
+        SNAIL(":snail:", "&e@&a'&e-&a'"), // TODO Add aliases so I can make one :mayoihachikuji:
         WAVE(":wave:", "&d( \uFF9F\u25E1\uFF9F)/"),
         DAB(":dab:", "&9<o/"),
         CHEER(":cheer:", "&ed(^o^)b"),
         THANKS(":thanks:", "&e\\(^-^)/"),
         HEART(":heart:", "&c\u2764"),
-        STAR(":star:", "&6\u272F"),
-        CROSS(":cross:", "&6\u271E"),
+        SWORDS(":swords:", "&c\u2694"),
         PEACE(":peace:", "&a\u270C"),
+        YES(":yes:", "&a\u2714"),
+        NO(":no:", "&c\u2716"),
+        JAVA(":java:", "&b\u2615"),
         ONE_TWO_THREE(":123:", "&a1&e2&c3"),
         OOF(":oof:", "&c&lOOF"),
         ONE_HUNDRED(":100:", "&c&n100");

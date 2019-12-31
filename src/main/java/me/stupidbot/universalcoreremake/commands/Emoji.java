@@ -15,6 +15,8 @@ class Emoji {
     boolean execute(CommandSender s) {
         if (s instanceof Player) {
             Player p = (Player) s;
+            p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    "&6PREMIUM &ahas access to the following emotes in chat:"));
             Arrays.stream(TextUtils.Emoji.values()).forEach((TextUtils.Emoji e) -> {
                 ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, e.getPlaceholder());
                 HoverEvent he = new HoverEvent(HoverEvent.Action.SHOW_TEXT,
@@ -25,14 +27,17 @@ class Emoji {
 
                 p.spigot().sendMessage(new ComponentBuilder(
                         ChatColor.translateAlternateColorCodes('&',
-                                "&a" + e.getPlaceholder() + " &f-> " + e.getEmoji()))
-                                .event(he).event(ce).create());
+                                "&6" + e.getPlaceholder() + " &r\u279C " + e.getEmoji()))
+                        .event(he).event(ce).create());
 
             });
-        } else
+        } else {
+            s.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    "&6PREMIUM &ahas access to the following emotes in chat:"));
             Arrays.stream(TextUtils.Emoji.values()).forEach((TextUtils.Emoji e) -> s.sendMessage(
                     ChatColor.translateAlternateColorCodes('&',
-                            "&a" + e.getPlaceholder() + " &f-> " + e.getEmoji())));
+                            "&6" + e.getPlaceholder() + " &r\u279C " + e.getEmoji())));
+        }
         return true;
     }
 }
