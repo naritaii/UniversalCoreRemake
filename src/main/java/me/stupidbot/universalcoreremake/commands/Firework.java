@@ -59,8 +59,8 @@ class Firework {
                 } else
                     s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             "&cYou must wait &6" +
-                                    (int) (System.nanoTime() - cooldowns.get(p.getUniqueId()) / 1000000000) + "s&c " +
-                                    "before using this command again!"));
+                                    (3 - ((int) ((System.nanoTime() - cooldowns.get(p.getUniqueId())) / 1000000000))) +
+                                    "s&c before using this command again!"));
             } else
                 s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     "&cOnly players may use this command!"));
