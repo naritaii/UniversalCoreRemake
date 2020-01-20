@@ -97,10 +97,14 @@ public class UniversalItem {
             .put("REINFORCED_IRON_CHESTPLATE", 28)
             .put("REINFORCED_IRON_LEGGINGS", 29)
             .put("REINFORCED_IRON_BOOTS", 30)
-            .put("MINERS_HELMET", 31)
-            .put("MINERS_CHESTPLATE", 32)
-            .put("MINERS_LEGGINGS", 33)
-            .put("MINERS_BOOTS", 34)
+            .put("SLIME_HELMET", 31)
+            .put("SLIME_CHESTPLATE", 32)
+            .put("SLIME_LEGGINGS", 33)
+            .put("SLIME_BOOTS", 34)
+            .put("MINERS_HELMET", 35)
+            .put("MINERS_CHESTPLATE", 36)
+            .put("MINERS_LEGGINGS", 37)
+            .put("MINERS_BOOTS", 38)
             .build();
 
     public UniversalItem(JavaPlugin plugin) {

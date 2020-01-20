@@ -21,14 +21,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import static java.lang.Math.*;
 
 public class PremiumLogIn extends Effect implements Listener {
-    private final Set<Item> items = Collections.synchronizedSet(new HashSet<>());
+    private final Set<Item> items = new CopyOnWriteArraySet<>();
     private boolean initialized = false;
     private int step = 0;
 

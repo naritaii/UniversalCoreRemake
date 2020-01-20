@@ -26,7 +26,7 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private final Facebook facebook = new Facebook();
     private final OpenMineralTrader openMineralTrader = new OpenMineralTrader();
     private final OpenFoodTrader openFoodTrader = new OpenFoodTrader();
-    private final OpenBlacksmith openBlacksmith =  new OpenBlacksmith();
+    private final OpenBlacksmith openBlacksmith = new OpenBlacksmith();
     private final OpenStats openStats = new OpenStats();
     private final OpenQuestMaster openQuestMaster = new OpenQuestMaster();
     private final OpenSpawnPortal openSpawnPortal = new OpenSpawnPortal();
@@ -38,6 +38,8 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private final Serialize serialize = new Serialize();
     private final StringReward stringReward = new StringReward();
     private final Hat hat = new Hat();
+    private final Dangle dangle = new Dangle();
+    private final Firework firework = new Firework();
 
     @Override
     public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) { // TODO Tab completion
@@ -109,6 +111,10 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
             return stringReward.execute(s, label, args);
         else if (cmd.getName().equalsIgnoreCase("hat"))
             return hat.execute(s);
+        else if (cmd.getName().equalsIgnoreCase("dangle"))
+            return dangle.execute(s);
+        else if (cmd.getName().equalsIgnoreCase("firework"))
+            return firework.execute(s);
         return false;
     }
 }

@@ -84,4 +84,16 @@ public class LocationUtils {
 
         return dx * dx + dz * dz;
     }
+
+/*    public Location getLocationAroundCircle(Location center, double radius, double angleInRadian) {
+        double x = center.getX() + radius * Math.cos(angleInRadian);
+        double z = center.getZ() + radius * Math.sin(angleInRadian);
+        double y = center.getY();
+
+        Location loc = new Location(center.getWorld(), x, y, z);
+        Vector difference = center.toVector().clone().subtract(loc.toVector()); // this sets the returned location's direction toward the center of the circle
+        loc.setDirection(difference);
+
+        return loc;
+    }*/
 }

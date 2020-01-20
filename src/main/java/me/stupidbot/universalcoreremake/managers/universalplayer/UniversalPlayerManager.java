@@ -1,5 +1,7 @@
 package me.stupidbot.universalcoreremake.managers.universalplayer;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -22,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
-public class UniversalPlayerManager implements Listener { // TODO Save as .json instead
+public class UniversalPlayerManager implements Listener {
     public final String dataFolderPath = UniversalCoreRemake.getInstance().getDataFolder() + File.separator +
             "data" + File.separator + "player_data";
     private final List<UniversalPlayer> universalPlayers = Collections.synchronizedList(new ArrayList<>());
@@ -70,10 +72,15 @@ public class UniversalPlayerManager implements Listener { // TODO Save as .json 
 
     private void createUniversalPlayer(Player p) {
         lazilyRefreshCache();
-        File pFileLoc = getPlayerDataFile(p);
-        FileConfiguration pFile = loadPlayerDataFile(pFileLoc);
+        Path pFileLoc = getPlayerDataFile(p);
+        FileConfiguration pFile = null;
+        try {
+            pFile = loadPlayerDataFile(pFileLoc);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        UniversalPlayer up = new UniversalPlayer(pFile, Objects.requireNonNull(pFileLoc).getPath());
+        UniversalPlayer up = new UniversalPlayer(pFile, Objects.requireNonNull(pFileLoc).toString());
 
         if (up.firstJoin()) {
             up.setName(p.getName());
@@ -93,14 +100,14 @@ public class UniversalPlayerManager implements Listener { // TODO Save as .json 
         ups.add(up);
     }
 
-    private void createUniversalPlayer(OfflinePlayer p) {
+    private void createUniversalPlayer(OfflinePlayer p) throws IOException {
         lazilyRefreshCache();
-        File pFileLoc = getPlayerDataFile(p);
+        Path pFileLoc = getPlayerDataFile(p);
 
         if (pFileLoc != null) {
             FileConfiguration pFile = loadPlayerDataFile(pFileLoc);
 
-            UniversalPlayer up = new UniversalPlayer(pFile, pFileLoc.getPath());
+            UniversalPlayer up = new UniversalPlayer(pFile, pFileLoc.toString());
 
             List<UniversalPlayer> ups = getAllUniversalPlayers();
             getUniversalPlayerDictionary().put(p.getUniqueId(), ups.size());
@@ -113,7 +120,7 @@ public class UniversalPlayerManager implements Listener { // TODO Save as .json 
         UniversalPlayer up;
 
         if (!getUniversalPlayerDictionary().containsKey(p.getUniqueId()))
-            createUniversalPlayer(p);
+                createUniversalPlayer(p);
 
         index = getUniversalPlayerDictionary().get(p.getUniqueId());
 
@@ -126,8 +133,13 @@ public class UniversalPlayerManager implements Listener { // TODO Save as .json 
         int index;
         UniversalPlayer up;
 
-        if (!getUniversalPlayerDictionary().containsKey(p.getUniqueId()))
-            createUniversalPlayer(p);
+        if (!getUniversalPlayerDictionary().containsKey(p.getUniqueId())) {
+            try {
+                createUniversalPlayer(p);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         index = getUniversalPlayerDictionary().get(p.getUniqueId());
 
@@ -140,28 +152,36 @@ public class UniversalPlayerManager implements Listener { // TODO Save as .json 
         return getUniversalPlayer(Bukkit.getOfflinePlayer(id));
     }
 
-    private File getPlayerDataFile(Player p) {
-        File pFile = new File(dataFolderPath + File.separator + p.getUniqueId() + ".yml");
-        File pdf = new File(dataFolderPath);
+    private Path getPlayerDataFile(Player p) {
+        Path pFile = Paths.get(dataFolderPath + File.separator + p.getUniqueId() + ".yml");
+        Path json = Paths.get(dataFolderPath + File.separator + p.getUniqueId() + ".json");
 
-        if (!pdf.exists())
-            pdf.mkdirs();
-        if (!pFile.exists())
-            try {
-                pFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
+
+        if (!Files.exists(Paths.get(dataFolderPath)))
+            new File(dataFolderPath).mkdirs();
+
+        if (!Files.exists(pFile))
+            if (!Files.exists(json))
+                try {
+                    new File(pFile.toString()).createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            else
+                return json;
 
         return pFile;
     }
 
-    private File getPlayerDataFile(OfflinePlayer p) {
-        File pFile = new File(dataFolderPath + File.separator + p.getUniqueId() + ".yml");
+    private Path getPlayerDataFile(OfflinePlayer p) {
+        Path pFile = Paths.get(dataFolderPath + File.separator + p.getUniqueId() + ".yml");
+        Path json = Paths.get(dataFolderPath + File.separator + p.getUniqueId() + ".json");
 
-        if (!pFile.exists())
-            return null;
+        if (!Files.exists(pFile))
+            if (!Files.exists(json))
+                return null;
+            else
+                return json;
         else
             return pFile;
     }
@@ -173,13 +193,19 @@ public class UniversalPlayerManager implements Listener { // TODO Save as .json 
         return YamlConfiguration.loadConfiguration(pFile);
     }*/
 
-    private FileConfiguration loadPlayerDataFile(File f) {
-        return YamlConfiguration.loadConfiguration(f);
+    private FileConfiguration loadPlayerDataFile(Path f) throws IOException {
+        if (f.toString().endsWith(".json")) {
+            String str = Files.readAllLines(f).get(0);
+            Gson gson = new Gson();
+            return gson.fromJson(str, new TypeToken<FileConfiguration>() {
+            }.getType());
+        } else
+            return YamlConfiguration.loadConfiguration(f.toFile());
     }
 
     private void initialize() {
         Bukkit.getOnlinePlayers().forEach((p) -> {
-            createUniversalPlayer(p);
+                createUniversalPlayer(p);
             timePlayed.put(p.getUniqueId(), System.nanoTime());
         });
 

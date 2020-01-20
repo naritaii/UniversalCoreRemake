@@ -9,6 +9,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,7 +40,7 @@ public class BlockMetadataManger {
                 metaDataMap.remove(metadata);
 
             if (!metaDataMap.isEmpty())
-                 blocksMetas.put(loc, metaDataMap);
+                blocksMetas.put(loc, metaDataMap);
             else
                 blocksMetas.remove(loc);
         } else {
@@ -83,64 +86,64 @@ public class BlockMetadataManger {
     }
 
     private long lastSave = System.nanoTime();
-    private void initialize() {
-        File path = new File(folderPath);
-        File file = new File(dataPath);
 
-        if (!path.exists())
-            path.mkdirs();
-        if (!file.exists())
+    private void initialize() {
+        Path path = Paths.get(folderPath);
+        Path file = Paths.get(dataPath);
+
+        if (!Files.exists(path))
+            new File(path.toString()).mkdirs();
+        if (!Files.exists(file))
             try {
-                file.createNewFile();
+                new File(file.toString()).createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
         Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () -> {
-                    FileConfiguration data = YamlConfiguration.loadConfiguration(file);
-
-                    try {
-                        data.getConfigurationSection("Block").getKeys(false).forEach((String locStr) -> {
-                            String[] locS = locStr.split("_");
-                            Location loc = new Location(Bukkit.getWorld(locS[0]), Integer.parseInt(locS[1]), Integer.parseInt(locS[2]),
-                                    Integer.parseInt(locS[3]));
-                            Map<String, String> metas = data.getConfigurationSection("Block." + locStr).getKeys(false)
-                                    .stream().collect(Collectors.toMap(key -> key, key ->
-                                            data.getString("Block." + locStr + "." + key), (a, b) -> b));
-                            blocksMetas.put(loc, metas);
-                        });
-                    } catch (Exception e) { // If loading doesn't work try to load using legacy format
-                        if (data.get("Block") != null) {
-                            int i = 0;
-                            while (true) {
-                                String locF = (String) data.get("Block." + i + ".Location");
-                                if (locF == null)
-                                    break;
-                                String[] locS = locF.split(",");
-                                Location loc = new Location(Bukkit.getWorld(locS[0]), Integer.parseInt(locS[1]), Integer.parseInt(locS[2]),
-                                        Integer.parseInt(locS[3]));
-
-                                String metadatasF = ((String) data.get("Block." + i + ".Metadata"));
-                                if (metadatasF == null)
-                                    continue;
-                                String[] metadatas = metadatasF.split(",");
-
-                                String valuesF = (String) data.get("Block." + i + ".Values");
-                                if (valuesF == null)
-                                    continue;
-                                String[] values = valuesF.split(",");
-
-
-                                Map<String, String> metas = new HashMap<>();
-                                for (int s = 0; s < metadatas.length; s++)
-                                    metas.put(metadatas[s], values[s]);
-                                blocksMetas.put(loc, metas);
-
-                                i++;
-                            }
-                        }
-                    }
+            FileConfiguration data = YamlConfiguration.loadConfiguration(new File(file.toString()));
+            try {
+                data.getConfigurationSection("Block").getKeys(false).forEach((String locStr) -> {
+                    String[] locS = locStr.split("_");
+                    Location loc = new Location(Bukkit.getWorld(locS[0]), Integer.parseInt(locS[1]), Integer.parseInt(locS[2]),
+                            Integer.parseInt(locS[3]));
+                    Map<String, String> metas = data.getConfigurationSection("Block." + locStr).getKeys(false)
+                            .stream().collect(Collectors.toMap(key -> key, key ->
+                                    data.getString("Block." + locStr + "." + key), (a, b) -> b));
+                    blocksMetas.put(loc, metas);
                 });
+            } catch (Exception e) { // If loading doesn't work try to load using legacy format
+                if (data.get("Block") != null) {
+                    int i = 0;
+                    while (true) {
+                        String locF = (String) data.get("Block." + i + ".Location");
+                        if (locF == null)
+                            break;
+                        String[] locS = locF.split(",");
+                        Location loc = new Location(Bukkit.getWorld(locS[0]), Integer.parseInt(locS[1]), Integer.parseInt(locS[2]),
+                                Integer.parseInt(locS[3]));
+
+                        String metadatasF = ((String) data.get("Block." + i + ".Metadata"));
+                        if (metadatasF == null)
+                            continue;
+                        String[] metadatas = metadatasF.split(",");
+
+                        String valuesF = (String) data.get("Block." + i + ".Values");
+                        if (valuesF == null)
+                            continue;
+                        String[] values = valuesF.split(",");
+
+
+                        Map<String, String> metas = new HashMap<>();
+                        for (int s = 0; s < metadatas.length; s++)
+                            metas.put(metadatas[s], values[s]);
+                        blocksMetas.put(loc, metas);
+
+                        i++;
+                    }
+                }
+            }
+        });
 
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(UniversalCoreRemake.getInstance(), () -> {
@@ -156,34 +159,34 @@ public class BlockMetadataManger {
     }
 
     public void save() {
-            if (!blocksMetas.isEmpty()) {
-                File path = new File(folderPath);
-                File file = new File(dataPath);
+        if (!blocksMetas.isEmpty()) {
+            File path = new File(folderPath);
+            File file = new File(dataPath);
 
-                if (!path.exists())
-                    path.mkdirs();
-                if (file.exists())
-                    file.delete();
-                try {
-                    file.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                FileConfiguration data = YamlConfiguration.loadConfiguration(file);
-
-                data.set("SaveVersion", 2);
-                blocksMetas.forEach((Location loc, Map<String, String> meta) -> {
-                    String subSection = loc.getWorld().getName() + "_" + loc.getBlockX() + "_" + loc.getBlockY() + "_"
-                            + loc.getBlockZ();
-                    meta.forEach((String key, String value) -> data.set("Block." + subSection + "." + key, value));
-                });
-
-                try {
-                    data.save(dataPath);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            if (!path.exists())
+                path.mkdirs();
+            if (file.exists())
+                file.delete();
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            FileConfiguration data = YamlConfiguration.loadConfiguration(file);
+
+            data.set("SaveVersion", 2);
+            blocksMetas.forEach((Location loc, Map<String, String> meta) -> {
+                String subSection = loc.getWorld().getName() + "_" + loc.getBlockX() + "_" + loc.getBlockY() + "_"
+                        + loc.getBlockZ();
+                meta.forEach((String key, String value) -> data.set("Block." + subSection + "." + key, value));
+            });
+
+            try {
+                data.save(dataPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 /*    public void save() {

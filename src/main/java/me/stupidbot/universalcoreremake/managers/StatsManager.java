@@ -214,7 +214,7 @@ public class StatsManager implements Listener {
         }
 
         if (slimeSet.contains(p.getUniqueId()))
-            spd += 0.2f;
+            spd += 0.15f;
 
         return spd;
     }
@@ -313,7 +313,7 @@ public class StatsManager implements Listener {
 
     @SuppressWarnings("unused")
     public enum BaseFoodStamina {
-        ROTTEN_FLESH(5), APPLE(20), BREAD(50), RAW_FISH(75), MUSHROOM_SOUP(125), // TODO make this stack and remove bowls
+        ROTTEN_FLESH(5), APPLE(20), BREAD(50), RAW_FISH(75), MUSHROOM_SOUP(125),
         RAW_CHICKEN(175);
 
         final int baseFoodStamina;

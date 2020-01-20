@@ -384,8 +384,6 @@ public class TextUtils {
         SNAIL(":snail:", "&e@&a'&e-&a'"), // TODO Add aliases so I can make one :mayoihachikuji:
         WAVE(":wave:", "&d( \uFF9F\u25E1\uFF9F)/"),
         DAB(":dab:", "&9<o/"),
-        CHEER(":cheer:", "&ed(^o^)b"),
-        THANKS(":thanks:", "&e\\(^-^)/"),
         HEART(":heart:", "&c\u2764"),
         SWORDS(":swords:", "&c\u2694"),
         PEACE(":peace:", "&a\u270C"),

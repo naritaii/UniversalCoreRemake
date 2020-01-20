@@ -134,7 +134,8 @@ public class UniversalObjective {
         GIVE_TO_NPC,
         REACH_LEVEL,
         ENTER_REGION,
-        LEAVE_REGION
+        LEAVE_REGION,
+        DIE
     }
 
     public enum Catagory {

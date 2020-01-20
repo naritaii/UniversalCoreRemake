@@ -9,7 +9,7 @@ public class SlimeHelmet extends ItemStack {
     public SlimeHelmet() {
         super(ItemMetadata.setMeta(ItemMetadata.setMeta(ItemMetadata.setMeta(ItemMetadata.setMeta(
                 ItemMetadata.setMeta(
-                        new ItemBuilder(Skull.getCustomSkull(Skull.SLIME_SANS.getId())).name("&bSlime Helmet").unbreakable(true)
+                        new ItemBuilder(Skull.getCustomSkull(Skull.SLIME_SANS.getId())).name("&bSlime Helmet")
                                 .lore("&7Health: &a+10")
                                 .lore("&7Defense: &a+1")
                                 .lore("")

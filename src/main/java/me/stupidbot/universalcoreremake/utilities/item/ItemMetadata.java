@@ -22,7 +22,7 @@ import java.util.*;
 
 @SuppressWarnings({"UnusedReturnValue", "unused"})
 public class ItemMetadata implements Listener {
-    private static final String hiddenPl = ChatColor.translateAlternateColorCodes(
+    public static final String hiddenPl = ChatColor.translateAlternateColorCodes(
             '&', "&0[HIDDEN]");
     private static final String metaPl = "[META]";
 

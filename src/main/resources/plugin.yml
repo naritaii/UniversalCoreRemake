@@ -135,3 +135,10 @@ commands:
   hat:
     description: Wear an item as a hat
     usage: /<command>
+  dangle:
+    description: Dangle an item in front of you
+    usage: /<command>
+  firework:
+    aliases: [fw]
+    description: Launch a firework
+    usage: /<command>

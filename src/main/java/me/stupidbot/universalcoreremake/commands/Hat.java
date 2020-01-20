@@ -23,7 +23,8 @@ class Hat {
                 } else
                     s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             "&cYou're not holding any items!"));
-            } else s.sendMessage(ChatColor.translateAlternateColorCodes('&',
+            } else
+                s.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     "&cOnly players may use this command!"));
         else
             s.sendMessage(ChatColor.translateAlternateColorCodes('&',

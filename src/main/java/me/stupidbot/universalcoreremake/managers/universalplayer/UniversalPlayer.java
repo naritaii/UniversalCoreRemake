@@ -36,7 +36,7 @@ public class UniversalPlayer {
         return UUID.fromString(FilenameUtils.removeExtension(pFileLoc).substring(pFileLoc.length() - 36));
     }
 
-    void savePlayerDataFile() {
+    void savePlayerDataFile() { // TODO save as .json
         try {
             pFile.save(pFileLoc);
         } catch (IOException e) {

@@ -65,7 +65,7 @@ commands:
     description: Increment Universal Objectives
     usage: /<command> <id> [amt] [player]
   emoji:
-    aliases: [emojis]
+    aliases: [emojis, emojilist, emojislist, emojihelp, emojishelp, emote, emotes, emotelist, emoteslist, emotehelp, emoteshelp, emoticon, emoticons, emoticonlist, emoticonslist, emoticonhelp, emoticonshelp]
     description: List emojis
     usage: /<command>
   discord:
@@ -134,4 +134,11 @@ commands:
     usage: /<command> <string_reward>
   hat:
     description: Wear an item as a hat
+    usage: /<command>
+  dangle:
+    description: Dangle an item in front of you
+    usage: /<command>
+  firework:
+    aliases: [fw]
+    description: Launch a firework
     usage: /<command>

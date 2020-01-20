@@ -90,16 +90,20 @@ public class LeaderboardManager implements Listener {
     public void manuallySortData() {
         Bukkit.getScheduler().runTaskAsynchronously(UniversalCoreRemake.getInstance(), () -> {
             lastSort = System.nanoTime();
-            sortedData.forEach((String type, Map<UUID, Double> data) -> {
-                Map<UUID, Double> sortedMap = sortByValues(data);
-                sortedData.put(type, sortedMap);
-
-                List<UUID> orderedList = new ArrayList<>(sortedMap.keySet()); // Creates list from set using iterator which can access position, so its stays sorted
-                sortedPositions.put(type, orderedList);
-            });
+            sort(sortedData);
         });
         updateHolograms();
         Bukkit.getOnlinePlayers().forEach(this::updateHolograms);
+    }
+
+    private void sort(Map<String, Map<UUID, Double>> sortedData) {
+        sortedData.forEach((String type, Map<UUID, Double> data) -> {
+            Map<UUID, Double> sortedMap = sortByValues(data);
+            sortedData.put(type, sortedMap);
+
+            List<UUID> orderedList = new ArrayList<>(sortedMap.keySet()); // Creates list from set using iterator which can access position, so its stays sorted
+            sortedPositions.put(type, orderedList);
+        });
     }
 
     public void initializeData() {
@@ -138,13 +142,7 @@ public class LeaderboardManager implements Listener {
         UniversalCoreRemake.getUniversalPlayerManager().manuallyRefreshCache();
 
         // Sort data
-        playersData.forEach((String type, Map<UUID, Double> data) -> {
-            Map<UUID, Double> sortedMap = sortByValues(data);
-            sortedData.put(type, sortedMap);
-
-            List<UUID> orderedList = new ArrayList<>(sortedMap.keySet()); // Creates list from set using iterator which can access position, so its stays sorted
-            sortedPositions.put(type, orderedList);
-        });
+        sort(playersData);
         saveSortedData();
     }
 
@@ -157,13 +155,7 @@ public class LeaderboardManager implements Listener {
             Map<String, Map<UUID, Double>> data = gson.fromJson(str, new TypeToken<Map<String, Map<UUID, Double>>>() {
             }.getType());
             // Sort data
-            data.forEach((String dataType, Map<UUID, Double> dataMap) -> {
-                Map<UUID, Double> sortedMap = sortByValues(dataMap);
-                sortedData.put(dataType, sortedMap);
-
-                List<UUID> orderedList = new ArrayList<>(sortedMap.keySet()); // Creates list from set using iterator which can access position, so its stays sorted
-                sortedPositions.put(dataType, orderedList);
-            });
+            sort(data);
         } catch (IOException e) {
             e.printStackTrace();
         }

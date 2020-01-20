@@ -109,7 +109,7 @@ public class UniversalCoreRemake extends JavaPlugin {
                 "openspawnportal", "openquestmaster", "openbanker",
                 "saveuniversalplayercachetofile", "saveblockmetadatacachetofile",
                 "saveleaderboards", "selectobjective", "mutate", "serialize", "stringreward",
-                "hat");
+                "hat", "dangle", "firework");
 
         System.out.println(getName() + " is now enabled!");
     }
