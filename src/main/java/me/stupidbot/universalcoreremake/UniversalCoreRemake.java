@@ -5,6 +5,7 @@ import com.comphenix.protocol.ProtocolManager;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.SetFlag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.StringFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
@@ -60,6 +61,7 @@ public class UniversalCoreRemake extends JavaPlugin {
     // declare your flag as a field accessible to other parts of your code (so you can use this to check it)
     // note: if you want to use a different type of flag, make sure you change StateFlag here and below to that type
     public static Flag<Set<String>> UNIVERSAL_MINE;
+    public static StateFlag UNIVERSAL_FLY;
 
     @Override
     public void onEnable() {
@@ -95,7 +97,7 @@ public class UniversalCoreRemake extends JavaPlugin {
                 new ChatManager(), motdManager, new ItemMetadata(), universalObjectiveManager, scoreboardManager,
                 new CollectibleSlimesListener(), leaderboardManager, new EnderchestListener(), new SpawnPortalListener(),
                 rewardManager, new HatListener(), new InventoryClickBorderCloseListener(), new MoneyPickupListener(),
-                new XpPickupListener(), new CraftingListener(), new PremiumLogIn(effectManager));
+                new XpPickupListener(), new CraftingListener(), new PremiumLogIn(effectManager), new FlyListener());
         if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null)
             registerEvents(instance, new RegionsListener());
         registerCommands(commandExecutor, "reloadmotd", "reloaduniversalobjectives",
@@ -109,7 +111,7 @@ public class UniversalCoreRemake extends JavaPlugin {
                 "openspawnportal", "openquestmaster", "openbanker",
                 "saveuniversalplayercachetofile", "saveblockmetadatacachetofile",
                 "saveleaderboards", "selectobjective", "mutate", "serialize", "stringreward",
-                "hat", "dangle", "firework");
+                "hat", "dangle", "firework", "fly");
 
         System.out.println(getName() + " is now enabled!");
     }
@@ -139,6 +141,18 @@ public class UniversalCoreRemake extends JavaPlugin {
                     // types don't match - this is bad news! some other plugin conflicts with you
                     // hopefully this never actually happens
                     System.out.println("Could not initialize universal-mine WorldGuard flag.");
+            }
+
+            try {
+                StateFlag flag = new StateFlag("universal-fly", false);
+                registry.register(flag);
+                UNIVERSAL_FLY = flag;
+            } catch (FlagConflictException e) {
+                Flag<?> existing = registry.get("universal-fly");
+                if (existing instanceof StateFlag)
+                    UNIVERSAL_FLY = (StateFlag) existing;
+                else
+                    System.out.println("Could not initialize universal-fly WorldGuard flag.");
             }
 
             try {

@@ -55,7 +55,7 @@ public class Dangle {
                         public void run() {
                             if (timer < 20 * 60 && p.isOnline() && dangling.contains(p.getUniqueId()) && !p.isSneaking()) {
                                 Location inFront = p.getEyeLocation().add(p.getLocation().getDirection().multiply(2.5));
-                                hologram.teleport(inFront.subtract(0, hologram.getHeight() / 3, 0));
+                                hologram.teleport(inFront.add(0, hologram.getHeight() / 3, 0));
 
                                 TextUtils.sendActionbar(p, "&e&lSNEAK TO STOP DANGLING");
 

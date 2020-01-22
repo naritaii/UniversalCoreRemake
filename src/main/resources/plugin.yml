@@ -142,3 +142,6 @@ commands:
     aliases: [fw]
     description: Launch a firework
     usage: /<command>
+  fly:
+    description: Toggle flight
+    usage: /<command>

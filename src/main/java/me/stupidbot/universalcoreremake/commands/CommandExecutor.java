@@ -40,6 +40,7 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
     private final Hat hat = new Hat();
     private final Dangle dangle = new Dangle();
     private final Firework firework = new Firework();
+    private final Fly fly = new Fly();
 
     @Override
     public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) { // TODO Tab completion
@@ -115,6 +116,8 @@ public class CommandExecutor implements org.bukkit.command.CommandExecutor {
             return dangle.execute(s);
         else if (cmd.getName().equalsIgnoreCase("firework"))
             return firework.execute(s);
+        else if (cmd.getName().equalsIgnoreCase("fly"))
+            return fly.execute(s);
         return false;
     }
 }
