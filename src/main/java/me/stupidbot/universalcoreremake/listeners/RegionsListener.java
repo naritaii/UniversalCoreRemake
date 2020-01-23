@@ -103,15 +103,9 @@ public class RegionsListener implements Listener {
     private void changeWorld(UUID u) {
         changeRegions(u, getRegions(u));
     }
-
-
-    @EventHandler // TODO Find a way that won't be called every tick
+    
+    @EventHandler // TODO Find a way that won't be called every tick and works on teleport
     public void OnPlayerMove(PlayerMoveEvent e) {
-        changeRegions(e.getPlayer().getUniqueId(), getRegions(e.getPlayer().getUniqueId()));
-    }
-
-    @EventHandler
-    public void OnPlayerTeleport(PlayerTeleportEvent e) {
         changeRegions(e.getPlayer().getUniqueId(), getRegions(e.getPlayer().getUniqueId()));
     }
 
