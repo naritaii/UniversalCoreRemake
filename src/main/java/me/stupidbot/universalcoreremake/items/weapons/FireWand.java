@@ -19,7 +19,7 @@ public class FireWand extends ItemStack {
                                         .lore(UniversalEnchantment.getDescription(UniversalEnchantment.BEING_FIREBALL_IS_SUFFERING))
                                         .lore("")
                                         .lore("&7&oI always wanted to")
-                                        .lore("&7&obe a magical girl~").build(),
+                                        .lore("&7&obe a magical girl〜").build(),
                                 "DAMAGE", "14_16"),
                         "ITEM", "FIRE_WAND"),
                 "NO_STACKING", "1"));
