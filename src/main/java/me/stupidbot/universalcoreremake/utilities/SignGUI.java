@@ -24,7 +24,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
-public final class SignGUI {
+public final class SignGUI { // TODO it doesnt fucking work
 
     private static final int ACTION_INDEX = 9;
     private static final int SIGN_LINES = 4;

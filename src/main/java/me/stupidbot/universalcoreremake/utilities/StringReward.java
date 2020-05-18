@@ -9,6 +9,7 @@ import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer
 import me.stupidbot.universalcoreremake.utilities.item.ItemUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -16,9 +17,23 @@ import java.util.Arrays;
 
 public class StringReward {
     private final String[] rewards;
+    private final ItemStack displayItem;
 
     public StringReward(String... rewards) {
         this.rewards = rewards;
+        this.displayItem = null;
+    }
+
+    public StringReward(String[] reward, ItemStack displayItem) {
+        this.rewards = reward;
+        this.displayItem = displayItem;
+    }
+
+    public ItemStack getDisplayItem() {
+        if (displayItem != null)
+            return displayItem;
+        else
+            return new ItemStack(Material.AIR);
     }
 
     public String[] getRewards() {
