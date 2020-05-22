@@ -12,7 +12,7 @@ Objectives:
     Description: 'Talk to &aQuest Master'
     DisplayItem: # Used for GUIs.
       ItemMaterial: YELLOW_FLOWER # Optional. Defaults to GLASS if not set
-      ItemData: 0 # Optional (redundant) argument. Defaults to 0.
+      ItemData: 0 # Optional (redundant) argument. Defaults to null.
       DisplayName: '%id_formatted%' # Optional (redundant) argument. defaults to ID (formatted: getting_started -> Getting Started).
     StringRewards: # Optional argument. Can be 'MONEY <amount>', 'ITEM <serialized item>', 'QUEST <id>', or 'MESSAGE <msg>'.
       - 'MONEY 2.50'

@@ -248,3 +248,19 @@ Rewards:
         - "MESSAGE &3Stamina &a+5"
       100:
         - "MESSAGE &3Stamina &a+5"
+  Artifact:
+    Common:
+      CommonRewardTest:
+        StringReward: "MESSAGE &aThis is a common reward"
+        Weight: 10.0
+        DisplayItem:
+          ItemMaterial: STONE
+          DisplayName: "&aCommon Reward"
+      RareRewardTest:
+        StringReward: "MESSAGE &dThis is a rare reward"
+        Weight: 2.0
+        DisplayItem:
+          ItemMaterial: INK_SACK
+          ItemData: 4
+          DisplayName: "&dRare Reward"
+          Amount: 5

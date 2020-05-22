@@ -5,15 +5,20 @@ import com.vexsoftware.votifier.model.VotifierEvent;
 import me.stupidbot.universalcoreremake.UniversalCoreRemake;
 import me.stupidbot.universalcoreremake.managers.universalplayer.UniversalPlayer;
 import me.stupidbot.universalcoreremake.utilities.FileUtils;
+import me.stupidbot.universalcoreremake.utilities.RandomCollection;
 import me.stupidbot.universalcoreremake.utilities.StringReward;
+import me.stupidbot.universalcoreremake.utilities.TextUtils;
+import me.stupidbot.universalcoreremake.utilities.item.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.text.ParseException;
@@ -26,6 +31,7 @@ public class RewardManager implements Listener {
     public List<String> voteSiteDictionary;
     public Map<String, String> voteSite;
     public Map<Integer, StringReward> levelRewards;
+    public RandomCollection<StringReward> commonArtifactRewards;
 
     public RewardManager() {
         reload();
@@ -37,6 +43,7 @@ public class RewardManager implements Listener {
         voteSiteDictionary = new ArrayList<>();
         voteSite = new HashMap<>();
         levelRewards = new HashMap<>();
+        commonArtifactRewards = new RandomCollection<>();
         UniversalCoreRemake instance = UniversalCoreRemake.getInstance();
         File path = instance.getDataFolder();
         File file = new File(path.toString() + File.separator + "rewards.yml");
@@ -59,6 +66,26 @@ public class RewardManager implements Listener {
         for (String s : c.getConfigurationSection("Rewards.Levelling.PlayerLevel").getKeys(false))
             levelRewards.put(Integer.parseInt(s),
                     new StringReward(c.getStringList("Rewards.Levelling.PlayerLevel." + s).toArray(new String[0])));
+
+        for (String s : c.getConfigurationSection("Rewards.Artifact.Common").getKeys(false)) {
+            String p = "Rewards.Artifact.Common." + s;
+            Material material = (c.getString(p + ".DisplayItem.ItemMaterial") != null ?
+                    Material.matchMaterial(c.getString(p + ".DisplayItem.ItemMaterial")) : Material.GLASS);
+            ItemBuilder displayItem = new ItemBuilder(
+                    new ItemStack(material,
+                            Math.max(1, c.getInt(p + ".DisplayItem.Amount")),
+                            (short) c.getInt(p + ".DisplayItem.ItemData")));
+
+            displayItem.name("&a" + (c.getString(p + ".DisplayItem.DisplayName") == null ?
+                    TextUtils.capitalizeFully(material.toString()) :
+                    ChatColor.translateAlternateColorCodes('&',
+                            c.getString(p + ".DisplayItem.DisplayName"))));
+
+
+            commonArtifactRewards.add(
+                    c.getDouble(p + ".Weight"), new StringReward(c.getStringList(p + ".StringReward")
+                            .toArray(new String[0]), displayItem.build()));
+        }
     }
 
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd");

@@ -56,6 +56,7 @@ public class UniversalItem {
     public static final ItemStack MINERS_CHESTPLATE = new MinersChestplate();
     public static final ItemStack MINERS_LEGGINGS = new MinersLeggings();
     public static final ItemStack MINERS_BOOTS = new MinersBoots();
+    public static final ItemStack ARTIFACT_COMMON = new CommonArtifact();
 
     public static final List<ItemStack> UNIVERSAL_ITEMS = Arrays.asList(RED_SANDSTONE_PICKAXE,
             CORRUPTED_SHARD, BROKEN_STICK, COAL_ORE_PICKAXE, IRON_ORE_PICKAXE, CORRUPTED_SWORD,
@@ -64,7 +65,7 @@ public class UniversalItem {
             LEATHER_LEGGINGS, LEATHER_BOOTS, INFESTED_SWORD, LUMBERJACKS_AXE, BASIC_AXE, WOOL_HELMET, WOOL_CHESTPLATE,
             WOOL_LEGGINGS, WOOL_BOOTS, REINFORCED_IRON_HELMET, REINFORCED_IRON_CHESTPLATE, REINFORCED_IRON_LEGGINGS,
             REINFORCED_IRON_BOOTS, SLIME_HELMET, SLIME_CHESTPLATE, SLIME_LEGGINGS, SLIME_BOOTS, MINERS_HELMET,
-            MINERS_CHESTPLATE, MINERS_LEGGINGS, MINERS_BOOTS);
+            MINERS_CHESTPLATE, MINERS_LEGGINGS, MINERS_BOOTS, ARTIFACT_COMMON);
     public static final Map<String, Integer> UNIVERSAL_ITEMS_DICTIONARY = ImmutableMap.<String, Integer>builder()
             .put("RED_SANDSTONE_PICKAXE", 0)
             .put("CORRUPTED_SHARD", 1)
@@ -105,6 +106,7 @@ public class UniversalItem {
             .put("MINERS_CHESTPLATE", 36)
             .put("MINERS_LEGGINGS", 37)
             .put("MINERS_BOOTS", 38)
+            .put("ARTIFACT_COMMON", 39)
             .build();
 
     public UniversalItem(JavaPlugin plugin) {

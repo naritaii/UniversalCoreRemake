@@ -30,11 +30,19 @@ public class Roller implements InventoryProvider {
                 .title(title).build();
     }
 
+    private final int[][] spinSlots = new int[][]{{0, 5}, {1, 4}, {1, 3}, {2, 2}, {3, 2}, {4, 1},
+            {5, 2}, {6, 2}, {7, 3}, {7, 4}, {8, 5}};
+    private final int winIndex = 5;
+
     @Override
     public void init(Player p, InventoryContents contents) {
         contents.fill(ClickableItem.empty(new ItemBuilder(new ItemStack(
                 Material.STAINED_GLASS_PANE, 1, (short) 15)).name(" ").build()));
+
+        for (int[] i : spinSlots)
+            contents.set(i[0], i[1], ClickableItem.empty(new ItemStack(Material.AIR)));
     }
+
 
     @Override
     public void update(Player player, InventoryContents contents) {
