@@ -267,7 +267,7 @@
         <dependency>
             <groupId>xyz.upperlevel.spigot.book</groupId>
             <artifactId>spigot-book-api</artifactId>
-            <version>1.3</version>
+            <version>1.4.2</version>
             <scope>compile</scope>
         </dependency>
         <!--Votifier-->
